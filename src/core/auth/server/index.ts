@@ -1,0 +1,39 @@
+'use server';
+
+import { prisma } from '@/lib/db';
+import createClient from '@/lib/supabase/server';
+export async function getCurrentUser() {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  return user;
+}
+
+export async function getCurrentProfile() {
+  const user = await getCurrentUser();
+
+  if (!user) return null;
+  const profile = await prisma.users.findFirst({ where: { id: user.id } });
+  if (!profile) {
+    return await prisma.users.create({
+      data: { id: user.id, name: '', email: user.email },
+    });
+  }
+
+  return profile;
+}
+
+export async function getStudens() {
+  const profile = await getCurrentProfile();
+  if (!profile || profile.role == 'user') return null;
+  if (profile.role == 'admin') {
+    const students = await prisma.users.findMany({
+      select: { id: true, name: true },
+      where: { role: 'user' },
+    });
+    return students;
+  }
+}

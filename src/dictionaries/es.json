@@ -1,0 +1,22 @@
+{
+  "dashboard": "Panel del Profesor",
+  "totalStudents": "Total de Estudiantes",
+  "activeClasses": "Clases Activas",
+  "toolsAvailable": "Herramientas Disponibles",
+  "recentClasses": "Clases Recientes",
+  "quickTools": "Herramientas Rápidas",
+  "noClasses": "No hay clases creadas",
+  "lessonPlanner": "Planificador de Lecciones",
+  "examGenerator": "Generador de Exámenes",
+  "homeworkGenerator": "Generador de Tareas",
+  "studentManager": "Gestor de Estudiantes",
+  "createClass": "Crear Clase",
+  "dashboard_nav": "Panel",
+  "students_nav": "Estudiantes",
+  "classrooms_nav": "Aulas",
+  "lessonPlanner_nav": "Planificador de Lecciones",
+  "examGenerator_nav": "Generador de Exámenes",
+  "homeworkGenerator_nav": "Generador de Tareas",
+  "allTools_nav": "Todas las Herramientas",
+  "settings_nav": "Configuración"
+}
