@@ -24,7 +24,7 @@ export function UserNav() {
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
             <AvatarImage
-              src="/assets/images/avatars/sarah.png"
+              src="/assets/images/avatars/avatar.png"
               alt="@username"
             />
             <AvatarFallback>{getInitials(profile?.name)}</AvatarFallback>

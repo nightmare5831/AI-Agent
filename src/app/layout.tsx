@@ -4,7 +4,6 @@ import { Inter } from 'next/font/google';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { LanguageProvider } from '@/components/language-selector';
 
-import { NotificationProvider } from '@/contexts/notification-context';
 import { AuthProvider } from '@/core/auth/AuthProvider';
 import { getCurrentProfile, getCurrentUser } from '@/core/auth/server';
 import { Toaster } from 'sonner';
@@ -30,7 +29,6 @@ export default async function RootLayout({
         <AuthProvider
           defaultUser={user}
           defaultProfile={profile}
-          defaultNotifications={[]}
         >
           <ThemeProvider
             attribute="class"
@@ -38,9 +36,7 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <NotificationProvider>
-              <LanguageProvider>{children}</LanguageProvider>
-            </NotificationProvider>
+            <LanguageProvider>{children}</LanguageProvider>
           </ThemeProvider>
         </AuthProvider>
         <Toaster

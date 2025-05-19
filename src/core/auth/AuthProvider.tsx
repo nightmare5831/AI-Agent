@@ -28,7 +28,6 @@ type State = {
   profile: ProfileInput;
   error: string;
   view: React.ReactNode;
-  notifications?: Notification[];
 };
 
 type Actions = {
@@ -36,7 +35,6 @@ type Actions = {
   setProfile: (x: ProfileInput) => void;
   setView: (x: React.ReactNode) => void;
   actionSignOut: () => void;
-  setNotifications?: (x: Notification[]) => void;
 };
 
 export const AuthContext = createContext<[State, Actions]>([null, null]);
@@ -46,7 +44,6 @@ interface AuthProviderProps {
   defaultUser: User;
   defaultProfile: ProfileInput;
   children: ReactNode;
-  defaultNotifications: Notification[];
 }
 
 function reducer(
@@ -63,12 +60,9 @@ export const AuthProvider = ({
   defaultUser,
   defaultProfile,
   children,
-  defaultNotifications,
 }: AuthProviderProps) => {
   const router = useRouter();
   const pathName = usePathname();
-
-  const [notifications, setNotifications] = useState(defaultNotifications);
 
   const [state, dispatch] = useReducer(reducer, {
     loading: true,
@@ -113,7 +107,6 @@ export const AuthProvider = ({
         } else {
           setUser(null);
           setProfile(null);
-          setNotifications([]);
         }
       }
     );
@@ -123,49 +116,17 @@ export const AuthProvider = ({
     };
   }, []);
 
-  useEffect(() => {
-    if (state?.user?.id) {
-      const channel = supabase
-        .channel('notifications')
-        .on(
-          'postgres_changes',
-          {
-            event: '*',
-            schema: 'public',
-            table: 'notifications',
-            filter: `to=eq.${state.user.id}`,
-          },
-          (payload: any) => {
-            console.log(payload);
-            if (payload.eventType === 'INSERT') {
-              setNotifications((notifications) => [
-                payload.new,
-                ...notifications,
-              ]);
-              toast.success(payload.new.message);
-            } 
-          }
-        )
-        .subscribe();
-
-      return () => {
-        supabase.removeChannel(channel);
-      };
-    }
-  }, [state.user?.id]);
-
   const value = useMemo((): [State, Actions] => {
     return [
-      { ...state, notifications } as State,
+      { ...state } as State,
       {
         setError,
         setView,
         setProfile,
         actionSignOut,
-        setNotifications,
       },
     ];
-  }, [state, notifications]); //eslint-disable-line
+  }, [state]); //eslint-disable-line
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
