@@ -12,19 +12,18 @@ datasource db {
 }
 
 model users {
-  id                String              @id @db.Uuid
-  email             String              @unique
+  id                String                @id @db.Uuid
+  email             String                @unique
   name              String
-  role              UserRole            @default(user)
+  role              UserRole              @default(user)
   subscription_plan String?
-  credits_balance   Int                 @default(0)
-  created_at        DateTime            @default(now())
-  
-  subscriptions     subscriptions[]
+  credits_balance   Int                   @default(0)
+  created_at        DateTime              @default(now())
+  admin_activities  admin_activity_logs[] @relation("AdminActivities")
   credit_purchases  credit_purchases[]
+  subscriptions     subscriptions[]
   tasks_log         tasks_log[]
   whatsapp_messages whatsapp_messages[]
-  admin_activities  admin_activity_logs[] @relation("AdminActivities")
 
   @@schema("public")
 }
@@ -44,60 +43,60 @@ model subscriptions {
 }
 
 model credit_purchases {
-  id           String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  user_id      String    @db.Uuid
+  id           String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id      String   @db.Uuid
   pack_type    PackType
   credits      Int
   price        Float
-  purchased_at DateTime  @default(now())
-  user         users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  purchased_at DateTime @default(now())
+  user         users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@schema("public")
 }
 
 model tasks_log {
-  id            String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  user_id       String    @db.Uuid
+  id            String         @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id       String         @db.Uuid
   agent_type    String
   task_type     String
   credits_spent Int
   output_type   String
-  timestamp     DateTime  @default(now())
-  user          users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  timestamp     DateTime       @default(now())
   agent_results agent_results?
+  user          users          @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@schema("public")
 }
 
 model agent_results {
-  task_id       String   @id @db.Uuid
+  task_id       String    @id @db.Uuid
   output_text   String?
   file_url      String?
   image_url     String?
-  whatsapp_sent Boolean  @default(false)
+  whatsapp_sent Boolean   @default(false)
   task          tasks_log @relation(fields: [task_id], references: [id], onDelete: Cascade)
 
   @@schema("public")
 }
 
 model whatsapp_messages {
-  id           String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  user_id      String   @db.Uuid
+  id           String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id      String           @db.Uuid
   direction    MessageDirection
   message_text String
-  timestamp    DateTime @default(now())
-  user         users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  timestamp    DateTime         @default(now())
+  user         users            @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@schema("public")
 }
 
 model admin_activity_logs {
-  id         String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  admin_id   String   @db.Uuid
+  id          String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  admin_id    String   @db.Uuid
   action_type String
-  target_id  String
-  timestamp  DateTime @default(now())
-  admin      users    @relation("AdminActivities", fields: [admin_id], references: [id], onDelete: Cascade)
+  target_id   String
+  timestamp   DateTime @default(now())
+  admin       users    @relation("AdminActivities", fields: [admin_id], references: [id], onDelete: Cascade)
 
   @@schema("public")
 }

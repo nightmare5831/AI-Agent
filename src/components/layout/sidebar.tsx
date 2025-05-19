@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import LanguageSelector from '@/components/teacher/language-selector';
+import LanguageSelector from '@/components/language-selector';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -11,7 +11,7 @@ import { adminItems, userItems } from '@/lib/constants/navigation';
 import { ChevronLeft, ChevronRight, Settings } from 'lucide-react';
 
 import { usePathname } from 'next/navigation';
-import { useLanguage } from '@/components/teacher/language-selector';
+import { useLanguage } from '@/components/language-selector';
 
 interface SidebarProps {
   open: boolean;

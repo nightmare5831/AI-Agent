@@ -2,7 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ThemeProvider } from '@/components/providers/theme-provider';
-import { LanguageProvider } from '@/components/teacher/language-selector';
+import { LanguageProvider } from '@/components/language-selector';
 
 import { NotificationProvider } from '@/contexts/notification-context';
 import { AuthProvider } from '@/core/auth/AuthProvider';

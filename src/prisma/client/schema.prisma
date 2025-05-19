@@ -12,19 +12,18 @@ datasource db {
 }
 
 model users {
-  id                String   @id @db.Uuid
-  email             String   @unique
+  id                String                @id @db.Uuid
+  email             String                @unique
   name              String
-  role              UserRole @default(user)
+  role              UserRole              @default(user)
   subscription_plan String?
-  credits_balance   Int      @default(0)
-  created_at        DateTime @default(now())
-
-  subscriptions     subscriptions[]
+  credits_balance   Int                   @default(0)
+  created_at        DateTime              @default(now())
+  admin_activities  admin_activity_logs[] @relation("AdminActivities")
   credit_purchases  credit_purchases[]
+  subscriptions     subscriptions[]
   tasks_log         tasks_log[]
   whatsapp_messages whatsapp_messages[]
-  admin_activities  admin_activity_logs[] @relation("AdminActivities")
 
   @@schema("public")
 }
@@ -63,8 +62,8 @@ model tasks_log {
   credits_spent Int
   output_type   String
   timestamp     DateTime       @default(now())
-  user          users          @relation(fields: [user_id], references: [id], onDelete: Cascade)
   agent_results agent_results?
+  user          users          @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@schema("public")
 }
