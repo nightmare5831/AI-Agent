@@ -25,15 +25,3 @@ export async function getCurrentProfile() {
 
   return profile;
 }
-
-export async function getStudens() {
-  const profile = await getCurrentProfile();
-  if (!profile || profile.role == 'user') return null;
-  if (profile.role == 'admin') {
-    const students = await prisma.users.findMany({
-      select: { id: true, name: true },
-      where: { role: 'user' },
-    });
-    return students;
-  }
-}
