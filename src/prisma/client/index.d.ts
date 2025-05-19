@@ -1470,19 +1470,19 @@ export namespace Prisma {
    */
 
   export type UsersCountOutputType = {
-    subscriptions: number
+    admin_activities: number
     credit_purchases: number
+    subscriptions: number
     tasks_log: number
     whatsapp_messages: number
-    admin_activities: number
   }
 
   export type UsersCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    subscriptions?: boolean | UsersCountOutputTypeCountSubscriptionsArgs
+    admin_activities?: boolean | UsersCountOutputTypeCountAdmin_activitiesArgs
     credit_purchases?: boolean | UsersCountOutputTypeCountCredit_purchasesArgs
+    subscriptions?: boolean | UsersCountOutputTypeCountSubscriptionsArgs
     tasks_log?: boolean | UsersCountOutputTypeCountTasks_logArgs
     whatsapp_messages?: boolean | UsersCountOutputTypeCountWhatsapp_messagesArgs
-    admin_activities?: boolean | UsersCountOutputTypeCountAdmin_activitiesArgs
   }
 
   // Custom InputTypes
@@ -1499,8 +1499,8 @@ export namespace Prisma {
   /**
    * UsersCountOutputType without action
    */
-  export type UsersCountOutputTypeCountSubscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: subscriptionsWhereInput
+  export type UsersCountOutputTypeCountAdmin_activitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: admin_activity_logsWhereInput
   }
 
   /**
@@ -1508,6 +1508,13 @@ export namespace Prisma {
    */
   export type UsersCountOutputTypeCountCredit_purchasesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: credit_purchasesWhereInput
+  }
+
+  /**
+   * UsersCountOutputType without action
+   */
+  export type UsersCountOutputTypeCountSubscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: subscriptionsWhereInput
   }
 
   /**
@@ -1522,13 +1529,6 @@ export namespace Prisma {
    */
   export type UsersCountOutputTypeCountWhatsapp_messagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: whatsapp_messagesWhereInput
-  }
-
-  /**
-   * UsersCountOutputType without action
-   */
-  export type UsersCountOutputTypeCountAdmin_activitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: admin_activity_logsWhereInput
   }
 
 
@@ -1750,11 +1750,11 @@ export namespace Prisma {
     subscription_plan?: boolean
     credits_balance?: boolean
     created_at?: boolean
-    subscriptions?: boolean | users$subscriptionsArgs<ExtArgs>
+    admin_activities?: boolean | users$admin_activitiesArgs<ExtArgs>
     credit_purchases?: boolean | users$credit_purchasesArgs<ExtArgs>
+    subscriptions?: boolean | users$subscriptionsArgs<ExtArgs>
     tasks_log?: boolean | users$tasks_logArgs<ExtArgs>
     whatsapp_messages?: boolean | users$whatsapp_messagesArgs<ExtArgs>
-    admin_activities?: boolean | users$admin_activitiesArgs<ExtArgs>
     _count?: boolean | UsersCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["users"]>
 
@@ -1790,11 +1790,11 @@ export namespace Prisma {
 
   export type usersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "role" | "subscription_plan" | "credits_balance" | "created_at", ExtArgs["result"]["users"]>
   export type usersInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    subscriptions?: boolean | users$subscriptionsArgs<ExtArgs>
+    admin_activities?: boolean | users$admin_activitiesArgs<ExtArgs>
     credit_purchases?: boolean | users$credit_purchasesArgs<ExtArgs>
+    subscriptions?: boolean | users$subscriptionsArgs<ExtArgs>
     tasks_log?: boolean | users$tasks_logArgs<ExtArgs>
     whatsapp_messages?: boolean | users$whatsapp_messagesArgs<ExtArgs>
-    admin_activities?: boolean | users$admin_activitiesArgs<ExtArgs>
     _count?: boolean | UsersCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type usersIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1803,11 +1803,11 @@ export namespace Prisma {
   export type $usersPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "users"
     objects: {
-      subscriptions: Prisma.$subscriptionsPayload<ExtArgs>[]
+      admin_activities: Prisma.$admin_activity_logsPayload<ExtArgs>[]
       credit_purchases: Prisma.$credit_purchasesPayload<ExtArgs>[]
+      subscriptions: Prisma.$subscriptionsPayload<ExtArgs>[]
       tasks_log: Prisma.$tasks_logPayload<ExtArgs>[]
       whatsapp_messages: Prisma.$whatsapp_messagesPayload<ExtArgs>[]
-      admin_activities: Prisma.$admin_activity_logsPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2211,11 +2211,11 @@ export namespace Prisma {
    */
   export interface Prisma__usersClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    subscriptions<T extends users$subscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, users$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$subscriptionsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    admin_activities<T extends users$admin_activitiesArgs<ExtArgs> = {}>(args?: Subset<T, users$admin_activitiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$admin_activity_logsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     credit_purchases<T extends users$credit_purchasesArgs<ExtArgs> = {}>(args?: Subset<T, users$credit_purchasesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$credit_purchasesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    subscriptions<T extends users$subscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, users$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$subscriptionsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tasks_log<T extends users$tasks_logArgs<ExtArgs> = {}>(args?: Subset<T, users$tasks_logArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$tasks_logPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     whatsapp_messages<T extends users$whatsapp_messagesArgs<ExtArgs> = {}>(args?: Subset<T, users$whatsapp_messagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$whatsapp_messagesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    admin_activities<T extends users$admin_activitiesArgs<ExtArgs> = {}>(args?: Subset<T, users$admin_activitiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$admin_activity_logsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2640,27 +2640,27 @@ export namespace Prisma {
   }
 
   /**
-   * users.subscriptions
+   * users.admin_activities
    */
-  export type users$subscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type users$admin_activitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the subscriptions
+     * Select specific fields to fetch from the admin_activity_logs
      */
-    select?: subscriptionsSelect<ExtArgs> | null
+    select?: admin_activity_logsSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the subscriptions
+     * Omit specific fields from the admin_activity_logs
      */
-    omit?: subscriptionsOmit<ExtArgs> | null
+    omit?: admin_activity_logsOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: subscriptionsInclude<ExtArgs> | null
-    where?: subscriptionsWhereInput
-    orderBy?: subscriptionsOrderByWithRelationInput | subscriptionsOrderByWithRelationInput[]
-    cursor?: subscriptionsWhereUniqueInput
+    include?: admin_activity_logsInclude<ExtArgs> | null
+    where?: admin_activity_logsWhereInput
+    orderBy?: admin_activity_logsOrderByWithRelationInput | admin_activity_logsOrderByWithRelationInput[]
+    cursor?: admin_activity_logsWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: SubscriptionsScalarFieldEnum | SubscriptionsScalarFieldEnum[]
+    distinct?: Admin_activity_logsScalarFieldEnum | Admin_activity_logsScalarFieldEnum[]
   }
 
   /**
@@ -2685,6 +2685,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: Credit_purchasesScalarFieldEnum | Credit_purchasesScalarFieldEnum[]
+  }
+
+  /**
+   * users.subscriptions
+   */
+  export type users$subscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the subscriptions
+     */
+    select?: subscriptionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the subscriptions
+     */
+    omit?: subscriptionsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: subscriptionsInclude<ExtArgs> | null
+    where?: subscriptionsWhereInput
+    orderBy?: subscriptionsOrderByWithRelationInput | subscriptionsOrderByWithRelationInput[]
+    cursor?: subscriptionsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SubscriptionsScalarFieldEnum | SubscriptionsScalarFieldEnum[]
   }
 
   /**
@@ -2733,30 +2757,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: Whatsapp_messagesScalarFieldEnum | Whatsapp_messagesScalarFieldEnum[]
-  }
-
-  /**
-   * users.admin_activities
-   */
-  export type users$admin_activitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the admin_activity_logs
-     */
-    select?: admin_activity_logsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the admin_activity_logs
-     */
-    omit?: admin_activity_logsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: admin_activity_logsInclude<ExtArgs> | null
-    where?: admin_activity_logsWhereInput
-    orderBy?: admin_activity_logsOrderByWithRelationInput | admin_activity_logsOrderByWithRelationInput[]
-    cursor?: admin_activity_logsWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: Admin_activity_logsScalarFieldEnum | Admin_activity_logsScalarFieldEnum[]
   }
 
   /**
@@ -5232,8 +5232,8 @@ export namespace Prisma {
     credits_spent?: boolean
     output_type?: boolean
     timestamp?: boolean
-    user?: boolean | usersDefaultArgs<ExtArgs>
     agent_results?: boolean | tasks_log$agent_resultsArgs<ExtArgs>
+    user?: boolean | usersDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tasks_log"]>
 
   export type tasks_logSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5270,8 +5270,8 @@ export namespace Prisma {
 
   export type tasks_logOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "agent_type" | "task_type" | "credits_spent" | "output_type" | "timestamp", ExtArgs["result"]["tasks_log"]>
   export type tasks_logInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | usersDefaultArgs<ExtArgs>
     agent_results?: boolean | tasks_log$agent_resultsArgs<ExtArgs>
+    user?: boolean | usersDefaultArgs<ExtArgs>
   }
   export type tasks_logIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | usersDefaultArgs<ExtArgs>
@@ -5283,8 +5283,8 @@ export namespace Prisma {
   export type $tasks_logPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "tasks_log"
     objects: {
-      user: Prisma.$usersPayload<ExtArgs>
       agent_results: Prisma.$agent_resultsPayload<ExtArgs> | null
+      user: Prisma.$usersPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5688,8 +5688,8 @@ export namespace Prisma {
    */
   export interface Prisma__tasks_logClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends usersDefaultArgs<ExtArgs> = {}>(args?: Subset<T, usersDefaultArgs<ExtArgs>>): Prisma__usersClient<$Result.GetResult<Prisma.$usersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     agent_results<T extends tasks_log$agent_resultsArgs<ExtArgs> = {}>(args?: Subset<T, tasks_log$agent_resultsArgs<ExtArgs>>): Prisma__agent_resultsClient<$Result.GetResult<Prisma.$agent_resultsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    user<T extends usersDefaultArgs<ExtArgs> = {}>(args?: Subset<T, usersDefaultArgs<ExtArgs>>): Prisma__usersClient<$Result.GetResult<Prisma.$usersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9594,11 +9594,11 @@ export namespace Prisma {
     subscription_plan?: StringNullableFilter<"users"> | string | null
     credits_balance?: IntFilter<"users"> | number
     created_at?: DateTimeFilter<"users"> | Date | string
-    subscriptions?: SubscriptionsListRelationFilter
+    admin_activities?: Admin_activity_logsListRelationFilter
     credit_purchases?: Credit_purchasesListRelationFilter
+    subscriptions?: SubscriptionsListRelationFilter
     tasks_log?: Tasks_logListRelationFilter
     whatsapp_messages?: Whatsapp_messagesListRelationFilter
-    admin_activities?: Admin_activity_logsListRelationFilter
   }
 
   export type usersOrderByWithRelationInput = {
@@ -9609,11 +9609,11 @@ export namespace Prisma {
     subscription_plan?: SortOrderInput | SortOrder
     credits_balance?: SortOrder
     created_at?: SortOrder
-    subscriptions?: subscriptionsOrderByRelationAggregateInput
+    admin_activities?: admin_activity_logsOrderByRelationAggregateInput
     credit_purchases?: credit_purchasesOrderByRelationAggregateInput
+    subscriptions?: subscriptionsOrderByRelationAggregateInput
     tasks_log?: tasks_logOrderByRelationAggregateInput
     whatsapp_messages?: whatsapp_messagesOrderByRelationAggregateInput
-    admin_activities?: admin_activity_logsOrderByRelationAggregateInput
   }
 
   export type usersWhereUniqueInput = Prisma.AtLeast<{
@@ -9627,11 +9627,11 @@ export namespace Prisma {
     subscription_plan?: StringNullableFilter<"users"> | string | null
     credits_balance?: IntFilter<"users"> | number
     created_at?: DateTimeFilter<"users"> | Date | string
-    subscriptions?: SubscriptionsListRelationFilter
+    admin_activities?: Admin_activity_logsListRelationFilter
     credit_purchases?: Credit_purchasesListRelationFilter
+    subscriptions?: SubscriptionsListRelationFilter
     tasks_log?: Tasks_logListRelationFilter
     whatsapp_messages?: Whatsapp_messagesListRelationFilter
-    admin_activities?: Admin_activity_logsListRelationFilter
   }, "id" | "email">
 
   export type usersOrderByWithAggregationInput = {
@@ -9807,8 +9807,8 @@ export namespace Prisma {
     credits_spent?: IntFilter<"tasks_log"> | number
     output_type?: StringFilter<"tasks_log"> | string
     timestamp?: DateTimeFilter<"tasks_log"> | Date | string
-    user?: XOR<UsersScalarRelationFilter, usersWhereInput>
     agent_results?: XOR<Agent_resultsNullableScalarRelationFilter, agent_resultsWhereInput> | null
+    user?: XOR<UsersScalarRelationFilter, usersWhereInput>
   }
 
   export type tasks_logOrderByWithRelationInput = {
@@ -9819,8 +9819,8 @@ export namespace Prisma {
     credits_spent?: SortOrder
     output_type?: SortOrder
     timestamp?: SortOrder
-    user?: usersOrderByWithRelationInput
     agent_results?: agent_resultsOrderByWithRelationInput
+    user?: usersOrderByWithRelationInput
   }
 
   export type tasks_logWhereUniqueInput = Prisma.AtLeast<{
@@ -9834,8 +9834,8 @@ export namespace Prisma {
     credits_spent?: IntFilter<"tasks_log"> | number
     output_type?: StringFilter<"tasks_log"> | string
     timestamp?: DateTimeFilter<"tasks_log"> | Date | string
-    user?: XOR<UsersScalarRelationFilter, usersWhereInput>
     agent_results?: XOR<Agent_resultsNullableScalarRelationFilter, agent_resultsWhereInput> | null
+    user?: XOR<UsersScalarRelationFilter, usersWhereInput>
   }, "id">
 
   export type tasks_logOrderByWithAggregationInput = {
@@ -10039,11 +10039,11 @@ export namespace Prisma {
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
-    subscriptions?: subscriptionsCreateNestedManyWithoutUserInput
+    admin_activities?: admin_activity_logsCreateNestedManyWithoutAdminInput
     credit_purchases?: credit_purchasesCreateNestedManyWithoutUserInput
+    subscriptions?: subscriptionsCreateNestedManyWithoutUserInput
     tasks_log?: tasks_logCreateNestedManyWithoutUserInput
     whatsapp_messages?: whatsapp_messagesCreateNestedManyWithoutUserInput
-    admin_activities?: admin_activity_logsCreateNestedManyWithoutAdminInput
   }
 
   export type usersUncheckedCreateInput = {
@@ -10054,11 +10054,11 @@ export namespace Prisma {
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
-    subscriptions?: subscriptionsUncheckedCreateNestedManyWithoutUserInput
+    admin_activities?: admin_activity_logsUncheckedCreateNestedManyWithoutAdminInput
     credit_purchases?: credit_purchasesUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: subscriptionsUncheckedCreateNestedManyWithoutUserInput
     tasks_log?: tasks_logUncheckedCreateNestedManyWithoutUserInput
     whatsapp_messages?: whatsapp_messagesUncheckedCreateNestedManyWithoutUserInput
-    admin_activities?: admin_activity_logsUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type usersUpdateInput = {
@@ -10069,11 +10069,11 @@ export namespace Prisma {
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    subscriptions?: subscriptionsUpdateManyWithoutUserNestedInput
+    admin_activities?: admin_activity_logsUpdateManyWithoutAdminNestedInput
     credit_purchases?: credit_purchasesUpdateManyWithoutUserNestedInput
+    subscriptions?: subscriptionsUpdateManyWithoutUserNestedInput
     tasks_log?: tasks_logUpdateManyWithoutUserNestedInput
     whatsapp_messages?: whatsapp_messagesUpdateManyWithoutUserNestedInput
-    admin_activities?: admin_activity_logsUpdateManyWithoutAdminNestedInput
   }
 
   export type usersUncheckedUpdateInput = {
@@ -10084,11 +10084,11 @@ export namespace Prisma {
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    subscriptions?: subscriptionsUncheckedUpdateManyWithoutUserNestedInput
+    admin_activities?: admin_activity_logsUncheckedUpdateManyWithoutAdminNestedInput
     credit_purchases?: credit_purchasesUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: subscriptionsUncheckedUpdateManyWithoutUserNestedInput
     tasks_log?: tasks_logUncheckedUpdateManyWithoutUserNestedInput
     whatsapp_messages?: whatsapp_messagesUncheckedUpdateManyWithoutUserNestedInput
-    admin_activities?: admin_activity_logsUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type usersCreateManyInput = {
@@ -10266,8 +10266,8 @@ export namespace Prisma {
     credits_spent: number
     output_type: string
     timestamp?: Date | string
-    user: usersCreateNestedOneWithoutTasks_logInput
     agent_results?: agent_resultsCreateNestedOneWithoutTaskInput
+    user: usersCreateNestedOneWithoutTasks_logInput
   }
 
   export type tasks_logUncheckedCreateInput = {
@@ -10288,8 +10288,8 @@ export namespace Prisma {
     credits_spent?: IntFieldUpdateOperationsInput | number
     output_type?: StringFieldUpdateOperationsInput | string
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: usersUpdateOneRequiredWithoutTasks_logNestedInput
     agent_results?: agent_resultsUpdateOneWithoutTaskNestedInput
+    user?: usersUpdateOneRequiredWithoutTasks_logNestedInput
   }
 
   export type tasks_logUncheckedUpdateInput = {
@@ -10568,16 +10568,22 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type SubscriptionsListRelationFilter = {
-    every?: subscriptionsWhereInput
-    some?: subscriptionsWhereInput
-    none?: subscriptionsWhereInput
+  export type Admin_activity_logsListRelationFilter = {
+    every?: admin_activity_logsWhereInput
+    some?: admin_activity_logsWhereInput
+    none?: admin_activity_logsWhereInput
   }
 
   export type Credit_purchasesListRelationFilter = {
     every?: credit_purchasesWhereInput
     some?: credit_purchasesWhereInput
     none?: credit_purchasesWhereInput
+  }
+
+  export type SubscriptionsListRelationFilter = {
+    every?: subscriptionsWhereInput
+    some?: subscriptionsWhereInput
+    none?: subscriptionsWhereInput
   }
 
   export type Tasks_logListRelationFilter = {
@@ -10592,22 +10598,20 @@ export namespace Prisma {
     none?: whatsapp_messagesWhereInput
   }
 
-  export type Admin_activity_logsListRelationFilter = {
-    every?: admin_activity_logsWhereInput
-    some?: admin_activity_logsWhereInput
-    none?: admin_activity_logsWhereInput
-  }
-
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
   }
 
-  export type subscriptionsOrderByRelationAggregateInput = {
+  export type admin_activity_logsOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type credit_purchasesOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type subscriptionsOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -10616,10 +10620,6 @@ export namespace Prisma {
   }
 
   export type whatsapp_messagesOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type admin_activity_logsOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -11046,11 +11046,11 @@ export namespace Prisma {
     timestamp?: SortOrder
   }
 
-  export type subscriptionsCreateNestedManyWithoutUserInput = {
-    create?: XOR<subscriptionsCreateWithoutUserInput, subscriptionsUncheckedCreateWithoutUserInput> | subscriptionsCreateWithoutUserInput[] | subscriptionsUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: subscriptionsCreateOrConnectWithoutUserInput | subscriptionsCreateOrConnectWithoutUserInput[]
-    createMany?: subscriptionsCreateManyUserInputEnvelope
-    connect?: subscriptionsWhereUniqueInput | subscriptionsWhereUniqueInput[]
+  export type admin_activity_logsCreateNestedManyWithoutAdminInput = {
+    create?: XOR<admin_activity_logsCreateWithoutAdminInput, admin_activity_logsUncheckedCreateWithoutAdminInput> | admin_activity_logsCreateWithoutAdminInput[] | admin_activity_logsUncheckedCreateWithoutAdminInput[]
+    connectOrCreate?: admin_activity_logsCreateOrConnectWithoutAdminInput | admin_activity_logsCreateOrConnectWithoutAdminInput[]
+    createMany?: admin_activity_logsCreateManyAdminInputEnvelope
+    connect?: admin_activity_logsWhereUniqueInput | admin_activity_logsWhereUniqueInput[]
   }
 
   export type credit_purchasesCreateNestedManyWithoutUserInput = {
@@ -11058,6 +11058,13 @@ export namespace Prisma {
     connectOrCreate?: credit_purchasesCreateOrConnectWithoutUserInput | credit_purchasesCreateOrConnectWithoutUserInput[]
     createMany?: credit_purchasesCreateManyUserInputEnvelope
     connect?: credit_purchasesWhereUniqueInput | credit_purchasesWhereUniqueInput[]
+  }
+
+  export type subscriptionsCreateNestedManyWithoutUserInput = {
+    create?: XOR<subscriptionsCreateWithoutUserInput, subscriptionsUncheckedCreateWithoutUserInput> | subscriptionsCreateWithoutUserInput[] | subscriptionsUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: subscriptionsCreateOrConnectWithoutUserInput | subscriptionsCreateOrConnectWithoutUserInput[]
+    createMany?: subscriptionsCreateManyUserInputEnvelope
+    connect?: subscriptionsWhereUniqueInput | subscriptionsWhereUniqueInput[]
   }
 
   export type tasks_logCreateNestedManyWithoutUserInput = {
@@ -11074,18 +11081,11 @@ export namespace Prisma {
     connect?: whatsapp_messagesWhereUniqueInput | whatsapp_messagesWhereUniqueInput[]
   }
 
-  export type admin_activity_logsCreateNestedManyWithoutAdminInput = {
+  export type admin_activity_logsUncheckedCreateNestedManyWithoutAdminInput = {
     create?: XOR<admin_activity_logsCreateWithoutAdminInput, admin_activity_logsUncheckedCreateWithoutAdminInput> | admin_activity_logsCreateWithoutAdminInput[] | admin_activity_logsUncheckedCreateWithoutAdminInput[]
     connectOrCreate?: admin_activity_logsCreateOrConnectWithoutAdminInput | admin_activity_logsCreateOrConnectWithoutAdminInput[]
     createMany?: admin_activity_logsCreateManyAdminInputEnvelope
     connect?: admin_activity_logsWhereUniqueInput | admin_activity_logsWhereUniqueInput[]
-  }
-
-  export type subscriptionsUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<subscriptionsCreateWithoutUserInput, subscriptionsUncheckedCreateWithoutUserInput> | subscriptionsCreateWithoutUserInput[] | subscriptionsUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: subscriptionsCreateOrConnectWithoutUserInput | subscriptionsCreateOrConnectWithoutUserInput[]
-    createMany?: subscriptionsCreateManyUserInputEnvelope
-    connect?: subscriptionsWhereUniqueInput | subscriptionsWhereUniqueInput[]
   }
 
   export type credit_purchasesUncheckedCreateNestedManyWithoutUserInput = {
@@ -11093,6 +11093,13 @@ export namespace Prisma {
     connectOrCreate?: credit_purchasesCreateOrConnectWithoutUserInput | credit_purchasesCreateOrConnectWithoutUserInput[]
     createMany?: credit_purchasesCreateManyUserInputEnvelope
     connect?: credit_purchasesWhereUniqueInput | credit_purchasesWhereUniqueInput[]
+  }
+
+  export type subscriptionsUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<subscriptionsCreateWithoutUserInput, subscriptionsUncheckedCreateWithoutUserInput> | subscriptionsCreateWithoutUserInput[] | subscriptionsUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: subscriptionsCreateOrConnectWithoutUserInput | subscriptionsCreateOrConnectWithoutUserInput[]
+    createMany?: subscriptionsCreateManyUserInputEnvelope
+    connect?: subscriptionsWhereUniqueInput | subscriptionsWhereUniqueInput[]
   }
 
   export type tasks_logUncheckedCreateNestedManyWithoutUserInput = {
@@ -11107,13 +11114,6 @@ export namespace Prisma {
     connectOrCreate?: whatsapp_messagesCreateOrConnectWithoutUserInput | whatsapp_messagesCreateOrConnectWithoutUserInput[]
     createMany?: whatsapp_messagesCreateManyUserInputEnvelope
     connect?: whatsapp_messagesWhereUniqueInput | whatsapp_messagesWhereUniqueInput[]
-  }
-
-  export type admin_activity_logsUncheckedCreateNestedManyWithoutAdminInput = {
-    create?: XOR<admin_activity_logsCreateWithoutAdminInput, admin_activity_logsUncheckedCreateWithoutAdminInput> | admin_activity_logsCreateWithoutAdminInput[] | admin_activity_logsUncheckedCreateWithoutAdminInput[]
-    connectOrCreate?: admin_activity_logsCreateOrConnectWithoutAdminInput | admin_activity_logsCreateOrConnectWithoutAdminInput[]
-    createMany?: admin_activity_logsCreateManyAdminInputEnvelope
-    connect?: admin_activity_logsWhereUniqueInput | admin_activity_logsWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -11140,18 +11140,18 @@ export namespace Prisma {
     set?: Date | string
   }
 
-  export type subscriptionsUpdateManyWithoutUserNestedInput = {
-    create?: XOR<subscriptionsCreateWithoutUserInput, subscriptionsUncheckedCreateWithoutUserInput> | subscriptionsCreateWithoutUserInput[] | subscriptionsUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: subscriptionsCreateOrConnectWithoutUserInput | subscriptionsCreateOrConnectWithoutUserInput[]
-    upsert?: subscriptionsUpsertWithWhereUniqueWithoutUserInput | subscriptionsUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: subscriptionsCreateManyUserInputEnvelope
-    set?: subscriptionsWhereUniqueInput | subscriptionsWhereUniqueInput[]
-    disconnect?: subscriptionsWhereUniqueInput | subscriptionsWhereUniqueInput[]
-    delete?: subscriptionsWhereUniqueInput | subscriptionsWhereUniqueInput[]
-    connect?: subscriptionsWhereUniqueInput | subscriptionsWhereUniqueInput[]
-    update?: subscriptionsUpdateWithWhereUniqueWithoutUserInput | subscriptionsUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: subscriptionsUpdateManyWithWhereWithoutUserInput | subscriptionsUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: subscriptionsScalarWhereInput | subscriptionsScalarWhereInput[]
+  export type admin_activity_logsUpdateManyWithoutAdminNestedInput = {
+    create?: XOR<admin_activity_logsCreateWithoutAdminInput, admin_activity_logsUncheckedCreateWithoutAdminInput> | admin_activity_logsCreateWithoutAdminInput[] | admin_activity_logsUncheckedCreateWithoutAdminInput[]
+    connectOrCreate?: admin_activity_logsCreateOrConnectWithoutAdminInput | admin_activity_logsCreateOrConnectWithoutAdminInput[]
+    upsert?: admin_activity_logsUpsertWithWhereUniqueWithoutAdminInput | admin_activity_logsUpsertWithWhereUniqueWithoutAdminInput[]
+    createMany?: admin_activity_logsCreateManyAdminInputEnvelope
+    set?: admin_activity_logsWhereUniqueInput | admin_activity_logsWhereUniqueInput[]
+    disconnect?: admin_activity_logsWhereUniqueInput | admin_activity_logsWhereUniqueInput[]
+    delete?: admin_activity_logsWhereUniqueInput | admin_activity_logsWhereUniqueInput[]
+    connect?: admin_activity_logsWhereUniqueInput | admin_activity_logsWhereUniqueInput[]
+    update?: admin_activity_logsUpdateWithWhereUniqueWithoutAdminInput | admin_activity_logsUpdateWithWhereUniqueWithoutAdminInput[]
+    updateMany?: admin_activity_logsUpdateManyWithWhereWithoutAdminInput | admin_activity_logsUpdateManyWithWhereWithoutAdminInput[]
+    deleteMany?: admin_activity_logsScalarWhereInput | admin_activity_logsScalarWhereInput[]
   }
 
   export type credit_purchasesUpdateManyWithoutUserNestedInput = {
@@ -11166,6 +11166,20 @@ export namespace Prisma {
     update?: credit_purchasesUpdateWithWhereUniqueWithoutUserInput | credit_purchasesUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: credit_purchasesUpdateManyWithWhereWithoutUserInput | credit_purchasesUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: credit_purchasesScalarWhereInput | credit_purchasesScalarWhereInput[]
+  }
+
+  export type subscriptionsUpdateManyWithoutUserNestedInput = {
+    create?: XOR<subscriptionsCreateWithoutUserInput, subscriptionsUncheckedCreateWithoutUserInput> | subscriptionsCreateWithoutUserInput[] | subscriptionsUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: subscriptionsCreateOrConnectWithoutUserInput | subscriptionsCreateOrConnectWithoutUserInput[]
+    upsert?: subscriptionsUpsertWithWhereUniqueWithoutUserInput | subscriptionsUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: subscriptionsCreateManyUserInputEnvelope
+    set?: subscriptionsWhereUniqueInput | subscriptionsWhereUniqueInput[]
+    disconnect?: subscriptionsWhereUniqueInput | subscriptionsWhereUniqueInput[]
+    delete?: subscriptionsWhereUniqueInput | subscriptionsWhereUniqueInput[]
+    connect?: subscriptionsWhereUniqueInput | subscriptionsWhereUniqueInput[]
+    update?: subscriptionsUpdateWithWhereUniqueWithoutUserInput | subscriptionsUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: subscriptionsUpdateManyWithWhereWithoutUserInput | subscriptionsUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: subscriptionsScalarWhereInput | subscriptionsScalarWhereInput[]
   }
 
   export type tasks_logUpdateManyWithoutUserNestedInput = {
@@ -11196,7 +11210,7 @@ export namespace Prisma {
     deleteMany?: whatsapp_messagesScalarWhereInput | whatsapp_messagesScalarWhereInput[]
   }
 
-  export type admin_activity_logsUpdateManyWithoutAdminNestedInput = {
+  export type admin_activity_logsUncheckedUpdateManyWithoutAdminNestedInput = {
     create?: XOR<admin_activity_logsCreateWithoutAdminInput, admin_activity_logsUncheckedCreateWithoutAdminInput> | admin_activity_logsCreateWithoutAdminInput[] | admin_activity_logsUncheckedCreateWithoutAdminInput[]
     connectOrCreate?: admin_activity_logsCreateOrConnectWithoutAdminInput | admin_activity_logsCreateOrConnectWithoutAdminInput[]
     upsert?: admin_activity_logsUpsertWithWhereUniqueWithoutAdminInput | admin_activity_logsUpsertWithWhereUniqueWithoutAdminInput[]
@@ -11208,20 +11222,6 @@ export namespace Prisma {
     update?: admin_activity_logsUpdateWithWhereUniqueWithoutAdminInput | admin_activity_logsUpdateWithWhereUniqueWithoutAdminInput[]
     updateMany?: admin_activity_logsUpdateManyWithWhereWithoutAdminInput | admin_activity_logsUpdateManyWithWhereWithoutAdminInput[]
     deleteMany?: admin_activity_logsScalarWhereInput | admin_activity_logsScalarWhereInput[]
-  }
-
-  export type subscriptionsUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<subscriptionsCreateWithoutUserInput, subscriptionsUncheckedCreateWithoutUserInput> | subscriptionsCreateWithoutUserInput[] | subscriptionsUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: subscriptionsCreateOrConnectWithoutUserInput | subscriptionsCreateOrConnectWithoutUserInput[]
-    upsert?: subscriptionsUpsertWithWhereUniqueWithoutUserInput | subscriptionsUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: subscriptionsCreateManyUserInputEnvelope
-    set?: subscriptionsWhereUniqueInput | subscriptionsWhereUniqueInput[]
-    disconnect?: subscriptionsWhereUniqueInput | subscriptionsWhereUniqueInput[]
-    delete?: subscriptionsWhereUniqueInput | subscriptionsWhereUniqueInput[]
-    connect?: subscriptionsWhereUniqueInput | subscriptionsWhereUniqueInput[]
-    update?: subscriptionsUpdateWithWhereUniqueWithoutUserInput | subscriptionsUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: subscriptionsUpdateManyWithWhereWithoutUserInput | subscriptionsUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: subscriptionsScalarWhereInput | subscriptionsScalarWhereInput[]
   }
 
   export type credit_purchasesUncheckedUpdateManyWithoutUserNestedInput = {
@@ -11236,6 +11236,20 @@ export namespace Prisma {
     update?: credit_purchasesUpdateWithWhereUniqueWithoutUserInput | credit_purchasesUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: credit_purchasesUpdateManyWithWhereWithoutUserInput | credit_purchasesUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: credit_purchasesScalarWhereInput | credit_purchasesScalarWhereInput[]
+  }
+
+  export type subscriptionsUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<subscriptionsCreateWithoutUserInput, subscriptionsUncheckedCreateWithoutUserInput> | subscriptionsCreateWithoutUserInput[] | subscriptionsUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: subscriptionsCreateOrConnectWithoutUserInput | subscriptionsCreateOrConnectWithoutUserInput[]
+    upsert?: subscriptionsUpsertWithWhereUniqueWithoutUserInput | subscriptionsUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: subscriptionsCreateManyUserInputEnvelope
+    set?: subscriptionsWhereUniqueInput | subscriptionsWhereUniqueInput[]
+    disconnect?: subscriptionsWhereUniqueInput | subscriptionsWhereUniqueInput[]
+    delete?: subscriptionsWhereUniqueInput | subscriptionsWhereUniqueInput[]
+    connect?: subscriptionsWhereUniqueInput | subscriptionsWhereUniqueInput[]
+    update?: subscriptionsUpdateWithWhereUniqueWithoutUserInput | subscriptionsUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: subscriptionsUpdateManyWithWhereWithoutUserInput | subscriptionsUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: subscriptionsScalarWhereInput | subscriptionsScalarWhereInput[]
   }
 
   export type tasks_logUncheckedUpdateManyWithoutUserNestedInput = {
@@ -11264,20 +11278,6 @@ export namespace Prisma {
     update?: whatsapp_messagesUpdateWithWhereUniqueWithoutUserInput | whatsapp_messagesUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: whatsapp_messagesUpdateManyWithWhereWithoutUserInput | whatsapp_messagesUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: whatsapp_messagesScalarWhereInput | whatsapp_messagesScalarWhereInput[]
-  }
-
-  export type admin_activity_logsUncheckedUpdateManyWithoutAdminNestedInput = {
-    create?: XOR<admin_activity_logsCreateWithoutAdminInput, admin_activity_logsUncheckedCreateWithoutAdminInput> | admin_activity_logsCreateWithoutAdminInput[] | admin_activity_logsUncheckedCreateWithoutAdminInput[]
-    connectOrCreate?: admin_activity_logsCreateOrConnectWithoutAdminInput | admin_activity_logsCreateOrConnectWithoutAdminInput[]
-    upsert?: admin_activity_logsUpsertWithWhereUniqueWithoutAdminInput | admin_activity_logsUpsertWithWhereUniqueWithoutAdminInput[]
-    createMany?: admin_activity_logsCreateManyAdminInputEnvelope
-    set?: admin_activity_logsWhereUniqueInput | admin_activity_logsWhereUniqueInput[]
-    disconnect?: admin_activity_logsWhereUniqueInput | admin_activity_logsWhereUniqueInput[]
-    delete?: admin_activity_logsWhereUniqueInput | admin_activity_logsWhereUniqueInput[]
-    connect?: admin_activity_logsWhereUniqueInput | admin_activity_logsWhereUniqueInput[]
-    update?: admin_activity_logsUpdateWithWhereUniqueWithoutAdminInput | admin_activity_logsUpdateWithWhereUniqueWithoutAdminInput[]
-    updateMany?: admin_activity_logsUpdateManyWithWhereWithoutAdminInput | admin_activity_logsUpdateManyWithWhereWithoutAdminInput[]
-    deleteMany?: admin_activity_logsScalarWhereInput | admin_activity_logsScalarWhereInput[]
   }
 
   export type usersCreateNestedOneWithoutSubscriptionsInput = {
@@ -11324,30 +11324,22 @@ export namespace Prisma {
     update?: XOR<XOR<usersUpdateToOneWithWhereWithoutCredit_purchasesInput, usersUpdateWithoutCredit_purchasesInput>, usersUncheckedUpdateWithoutCredit_purchasesInput>
   }
 
-  export type usersCreateNestedOneWithoutTasks_logInput = {
-    create?: XOR<usersCreateWithoutTasks_logInput, usersUncheckedCreateWithoutTasks_logInput>
-    connectOrCreate?: usersCreateOrConnectWithoutTasks_logInput
-    connect?: usersWhereUniqueInput
-  }
-
   export type agent_resultsCreateNestedOneWithoutTaskInput = {
     create?: XOR<agent_resultsCreateWithoutTaskInput, agent_resultsUncheckedCreateWithoutTaskInput>
     connectOrCreate?: agent_resultsCreateOrConnectWithoutTaskInput
     connect?: agent_resultsWhereUniqueInput
   }
 
+  export type usersCreateNestedOneWithoutTasks_logInput = {
+    create?: XOR<usersCreateWithoutTasks_logInput, usersUncheckedCreateWithoutTasks_logInput>
+    connectOrCreate?: usersCreateOrConnectWithoutTasks_logInput
+    connect?: usersWhereUniqueInput
+  }
+
   export type agent_resultsUncheckedCreateNestedOneWithoutTaskInput = {
     create?: XOR<agent_resultsCreateWithoutTaskInput, agent_resultsUncheckedCreateWithoutTaskInput>
     connectOrCreate?: agent_resultsCreateOrConnectWithoutTaskInput
     connect?: agent_resultsWhereUniqueInput
-  }
-
-  export type usersUpdateOneRequiredWithoutTasks_logNestedInput = {
-    create?: XOR<usersCreateWithoutTasks_logInput, usersUncheckedCreateWithoutTasks_logInput>
-    connectOrCreate?: usersCreateOrConnectWithoutTasks_logInput
-    upsert?: usersUpsertWithoutTasks_logInput
-    connect?: usersWhereUniqueInput
-    update?: XOR<XOR<usersUpdateToOneWithWhereWithoutTasks_logInput, usersUpdateWithoutTasks_logInput>, usersUncheckedUpdateWithoutTasks_logInput>
   }
 
   export type agent_resultsUpdateOneWithoutTaskNestedInput = {
@@ -11358,6 +11350,14 @@ export namespace Prisma {
     delete?: agent_resultsWhereInput | boolean
     connect?: agent_resultsWhereUniqueInput
     update?: XOR<XOR<agent_resultsUpdateToOneWithWhereWithoutTaskInput, agent_resultsUpdateWithoutTaskInput>, agent_resultsUncheckedUpdateWithoutTaskInput>
+  }
+
+  export type usersUpdateOneRequiredWithoutTasks_logNestedInput = {
+    create?: XOR<usersCreateWithoutTasks_logInput, usersUncheckedCreateWithoutTasks_logInput>
+    connectOrCreate?: usersCreateOrConnectWithoutTasks_logInput
+    upsert?: usersUpsertWithoutTasks_logInput
+    connect?: usersWhereUniqueInput
+    update?: XOR<XOR<usersUpdateToOneWithWhereWithoutTasks_logInput, usersUpdateWithoutTasks_logInput>, usersUncheckedUpdateWithoutTasks_logInput>
   }
 
   export type agent_resultsUncheckedUpdateOneWithoutTaskNestedInput = {
@@ -11678,6 +11678,56 @@ export namespace Prisma {
     _max?: NestedEnumMessageDirectionFilter<$PrismaModel>
   }
 
+  export type admin_activity_logsCreateWithoutAdminInput = {
+    id?: string
+    action_type: string
+    target_id: string
+    timestamp?: Date | string
+  }
+
+  export type admin_activity_logsUncheckedCreateWithoutAdminInput = {
+    id?: string
+    action_type: string
+    target_id: string
+    timestamp?: Date | string
+  }
+
+  export type admin_activity_logsCreateOrConnectWithoutAdminInput = {
+    where: admin_activity_logsWhereUniqueInput
+    create: XOR<admin_activity_logsCreateWithoutAdminInput, admin_activity_logsUncheckedCreateWithoutAdminInput>
+  }
+
+  export type admin_activity_logsCreateManyAdminInputEnvelope = {
+    data: admin_activity_logsCreateManyAdminInput | admin_activity_logsCreateManyAdminInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type credit_purchasesCreateWithoutUserInput = {
+    id?: string
+    pack_type: $Enums.PackType
+    credits: number
+    price: number
+    purchased_at?: Date | string
+  }
+
+  export type credit_purchasesUncheckedCreateWithoutUserInput = {
+    id?: string
+    pack_type: $Enums.PackType
+    credits: number
+    price: number
+    purchased_at?: Date | string
+  }
+
+  export type credit_purchasesCreateOrConnectWithoutUserInput = {
+    where: credit_purchasesWhereUniqueInput
+    create: XOR<credit_purchasesCreateWithoutUserInput, credit_purchasesUncheckedCreateWithoutUserInput>
+  }
+
+  export type credit_purchasesCreateManyUserInputEnvelope = {
+    data: credit_purchasesCreateManyUserInput | credit_purchasesCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type subscriptionsCreateWithoutUserInput = {
     id?: string
     plan_type: $Enums.PlanType
@@ -11705,32 +11755,6 @@ export namespace Prisma {
 
   export type subscriptionsCreateManyUserInputEnvelope = {
     data: subscriptionsCreateManyUserInput | subscriptionsCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type credit_purchasesCreateWithoutUserInput = {
-    id?: string
-    pack_type: $Enums.PackType
-    credits: number
-    price: number
-    purchased_at?: Date | string
-  }
-
-  export type credit_purchasesUncheckedCreateWithoutUserInput = {
-    id?: string
-    pack_type: $Enums.PackType
-    credits: number
-    price: number
-    purchased_at?: Date | string
-  }
-
-  export type credit_purchasesCreateOrConnectWithoutUserInput = {
-    where: credit_purchasesWhereUniqueInput
-    create: XOR<credit_purchasesCreateWithoutUserInput, credit_purchasesUncheckedCreateWithoutUserInput>
-  }
-
-  export type credit_purchasesCreateManyUserInputEnvelope = {
-    data: credit_purchasesCreateManyUserInput | credit_purchasesCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -11788,28 +11812,59 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type admin_activity_logsCreateWithoutAdminInput = {
-    id?: string
-    action_type: string
-    target_id: string
-    timestamp?: Date | string
-  }
-
-  export type admin_activity_logsUncheckedCreateWithoutAdminInput = {
-    id?: string
-    action_type: string
-    target_id: string
-    timestamp?: Date | string
-  }
-
-  export type admin_activity_logsCreateOrConnectWithoutAdminInput = {
+  export type admin_activity_logsUpsertWithWhereUniqueWithoutAdminInput = {
     where: admin_activity_logsWhereUniqueInput
+    update: XOR<admin_activity_logsUpdateWithoutAdminInput, admin_activity_logsUncheckedUpdateWithoutAdminInput>
     create: XOR<admin_activity_logsCreateWithoutAdminInput, admin_activity_logsUncheckedCreateWithoutAdminInput>
   }
 
-  export type admin_activity_logsCreateManyAdminInputEnvelope = {
-    data: admin_activity_logsCreateManyAdminInput | admin_activity_logsCreateManyAdminInput[]
-    skipDuplicates?: boolean
+  export type admin_activity_logsUpdateWithWhereUniqueWithoutAdminInput = {
+    where: admin_activity_logsWhereUniqueInput
+    data: XOR<admin_activity_logsUpdateWithoutAdminInput, admin_activity_logsUncheckedUpdateWithoutAdminInput>
+  }
+
+  export type admin_activity_logsUpdateManyWithWhereWithoutAdminInput = {
+    where: admin_activity_logsScalarWhereInput
+    data: XOR<admin_activity_logsUpdateManyMutationInput, admin_activity_logsUncheckedUpdateManyWithoutAdminInput>
+  }
+
+  export type admin_activity_logsScalarWhereInput = {
+    AND?: admin_activity_logsScalarWhereInput | admin_activity_logsScalarWhereInput[]
+    OR?: admin_activity_logsScalarWhereInput[]
+    NOT?: admin_activity_logsScalarWhereInput | admin_activity_logsScalarWhereInput[]
+    id?: UuidFilter<"admin_activity_logs"> | string
+    admin_id?: UuidFilter<"admin_activity_logs"> | string
+    action_type?: StringFilter<"admin_activity_logs"> | string
+    target_id?: StringFilter<"admin_activity_logs"> | string
+    timestamp?: DateTimeFilter<"admin_activity_logs"> | Date | string
+  }
+
+  export type credit_purchasesUpsertWithWhereUniqueWithoutUserInput = {
+    where: credit_purchasesWhereUniqueInput
+    update: XOR<credit_purchasesUpdateWithoutUserInput, credit_purchasesUncheckedUpdateWithoutUserInput>
+    create: XOR<credit_purchasesCreateWithoutUserInput, credit_purchasesUncheckedCreateWithoutUserInput>
+  }
+
+  export type credit_purchasesUpdateWithWhereUniqueWithoutUserInput = {
+    where: credit_purchasesWhereUniqueInput
+    data: XOR<credit_purchasesUpdateWithoutUserInput, credit_purchasesUncheckedUpdateWithoutUserInput>
+  }
+
+  export type credit_purchasesUpdateManyWithWhereWithoutUserInput = {
+    where: credit_purchasesScalarWhereInput
+    data: XOR<credit_purchasesUpdateManyMutationInput, credit_purchasesUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type credit_purchasesScalarWhereInput = {
+    AND?: credit_purchasesScalarWhereInput | credit_purchasesScalarWhereInput[]
+    OR?: credit_purchasesScalarWhereInput[]
+    NOT?: credit_purchasesScalarWhereInput | credit_purchasesScalarWhereInput[]
+    id?: UuidFilter<"credit_purchases"> | string
+    user_id?: UuidFilter<"credit_purchases"> | string
+    pack_type?: EnumPackTypeFilter<"credit_purchases"> | $Enums.PackType
+    credits?: IntFilter<"credit_purchases"> | number
+    price?: FloatFilter<"credit_purchases"> | number
+    purchased_at?: DateTimeFilter<"credit_purchases"> | Date | string
   }
 
   export type subscriptionsUpsertWithWhereUniqueWithoutUserInput = {
@@ -11840,34 +11895,6 @@ export namespace Prisma {
     end_date?: DateTimeFilter<"subscriptions"> | Date | string
     method?: StringFilter<"subscriptions"> | string
     amount?: IntFilter<"subscriptions"> | number
-  }
-
-  export type credit_purchasesUpsertWithWhereUniqueWithoutUserInput = {
-    where: credit_purchasesWhereUniqueInput
-    update: XOR<credit_purchasesUpdateWithoutUserInput, credit_purchasesUncheckedUpdateWithoutUserInput>
-    create: XOR<credit_purchasesCreateWithoutUserInput, credit_purchasesUncheckedCreateWithoutUserInput>
-  }
-
-  export type credit_purchasesUpdateWithWhereUniqueWithoutUserInput = {
-    where: credit_purchasesWhereUniqueInput
-    data: XOR<credit_purchasesUpdateWithoutUserInput, credit_purchasesUncheckedUpdateWithoutUserInput>
-  }
-
-  export type credit_purchasesUpdateManyWithWhereWithoutUserInput = {
-    where: credit_purchasesScalarWhereInput
-    data: XOR<credit_purchasesUpdateManyMutationInput, credit_purchasesUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type credit_purchasesScalarWhereInput = {
-    AND?: credit_purchasesScalarWhereInput | credit_purchasesScalarWhereInput[]
-    OR?: credit_purchasesScalarWhereInput[]
-    NOT?: credit_purchasesScalarWhereInput | credit_purchasesScalarWhereInput[]
-    id?: UuidFilter<"credit_purchases"> | string
-    user_id?: UuidFilter<"credit_purchases"> | string
-    pack_type?: EnumPackTypeFilter<"credit_purchases"> | $Enums.PackType
-    credits?: IntFilter<"credit_purchases"> | number
-    price?: FloatFilter<"credit_purchases"> | number
-    purchased_at?: DateTimeFilter<"credit_purchases"> | Date | string
   }
 
   export type tasks_logUpsertWithWhereUniqueWithoutUserInput = {
@@ -11926,33 +11953,6 @@ export namespace Prisma {
     timestamp?: DateTimeFilter<"whatsapp_messages"> | Date | string
   }
 
-  export type admin_activity_logsUpsertWithWhereUniqueWithoutAdminInput = {
-    where: admin_activity_logsWhereUniqueInput
-    update: XOR<admin_activity_logsUpdateWithoutAdminInput, admin_activity_logsUncheckedUpdateWithoutAdminInput>
-    create: XOR<admin_activity_logsCreateWithoutAdminInput, admin_activity_logsUncheckedCreateWithoutAdminInput>
-  }
-
-  export type admin_activity_logsUpdateWithWhereUniqueWithoutAdminInput = {
-    where: admin_activity_logsWhereUniqueInput
-    data: XOR<admin_activity_logsUpdateWithoutAdminInput, admin_activity_logsUncheckedUpdateWithoutAdminInput>
-  }
-
-  export type admin_activity_logsUpdateManyWithWhereWithoutAdminInput = {
-    where: admin_activity_logsScalarWhereInput
-    data: XOR<admin_activity_logsUpdateManyMutationInput, admin_activity_logsUncheckedUpdateManyWithoutAdminInput>
-  }
-
-  export type admin_activity_logsScalarWhereInput = {
-    AND?: admin_activity_logsScalarWhereInput | admin_activity_logsScalarWhereInput[]
-    OR?: admin_activity_logsScalarWhereInput[]
-    NOT?: admin_activity_logsScalarWhereInput | admin_activity_logsScalarWhereInput[]
-    id?: UuidFilter<"admin_activity_logs"> | string
-    admin_id?: UuidFilter<"admin_activity_logs"> | string
-    action_type?: StringFilter<"admin_activity_logs"> | string
-    target_id?: StringFilter<"admin_activity_logs"> | string
-    timestamp?: DateTimeFilter<"admin_activity_logs"> | Date | string
-  }
-
   export type usersCreateWithoutSubscriptionsInput = {
     id: string
     email: string
@@ -11961,10 +11961,10 @@ export namespace Prisma {
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
+    admin_activities?: admin_activity_logsCreateNestedManyWithoutAdminInput
     credit_purchases?: credit_purchasesCreateNestedManyWithoutUserInput
     tasks_log?: tasks_logCreateNestedManyWithoutUserInput
     whatsapp_messages?: whatsapp_messagesCreateNestedManyWithoutUserInput
-    admin_activities?: admin_activity_logsCreateNestedManyWithoutAdminInput
   }
 
   export type usersUncheckedCreateWithoutSubscriptionsInput = {
@@ -11975,10 +11975,10 @@ export namespace Prisma {
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
+    admin_activities?: admin_activity_logsUncheckedCreateNestedManyWithoutAdminInput
     credit_purchases?: credit_purchasesUncheckedCreateNestedManyWithoutUserInput
     tasks_log?: tasks_logUncheckedCreateNestedManyWithoutUserInput
     whatsapp_messages?: whatsapp_messagesUncheckedCreateNestedManyWithoutUserInput
-    admin_activities?: admin_activity_logsUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type usersCreateOrConnectWithoutSubscriptionsInput = {
@@ -12005,10 +12005,10 @@ export namespace Prisma {
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    admin_activities?: admin_activity_logsUpdateManyWithoutAdminNestedInput
     credit_purchases?: credit_purchasesUpdateManyWithoutUserNestedInput
     tasks_log?: tasks_logUpdateManyWithoutUserNestedInput
     whatsapp_messages?: whatsapp_messagesUpdateManyWithoutUserNestedInput
-    admin_activities?: admin_activity_logsUpdateManyWithoutAdminNestedInput
   }
 
   export type usersUncheckedUpdateWithoutSubscriptionsInput = {
@@ -12019,10 +12019,10 @@ export namespace Prisma {
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    admin_activities?: admin_activity_logsUncheckedUpdateManyWithoutAdminNestedInput
     credit_purchases?: credit_purchasesUncheckedUpdateManyWithoutUserNestedInput
     tasks_log?: tasks_logUncheckedUpdateManyWithoutUserNestedInput
     whatsapp_messages?: whatsapp_messagesUncheckedUpdateManyWithoutUserNestedInput
-    admin_activities?: admin_activity_logsUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type usersCreateWithoutCredit_purchasesInput = {
@@ -12033,10 +12033,10 @@ export namespace Prisma {
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
+    admin_activities?: admin_activity_logsCreateNestedManyWithoutAdminInput
     subscriptions?: subscriptionsCreateNestedManyWithoutUserInput
     tasks_log?: tasks_logCreateNestedManyWithoutUserInput
     whatsapp_messages?: whatsapp_messagesCreateNestedManyWithoutUserInput
-    admin_activities?: admin_activity_logsCreateNestedManyWithoutAdminInput
   }
 
   export type usersUncheckedCreateWithoutCredit_purchasesInput = {
@@ -12047,10 +12047,10 @@ export namespace Prisma {
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
+    admin_activities?: admin_activity_logsUncheckedCreateNestedManyWithoutAdminInput
     subscriptions?: subscriptionsUncheckedCreateNestedManyWithoutUserInput
     tasks_log?: tasks_logUncheckedCreateNestedManyWithoutUserInput
     whatsapp_messages?: whatsapp_messagesUncheckedCreateNestedManyWithoutUserInput
-    admin_activities?: admin_activity_logsUncheckedCreateNestedManyWithoutAdminInput
   }
 
   export type usersCreateOrConnectWithoutCredit_purchasesInput = {
@@ -12077,10 +12077,10 @@ export namespace Prisma {
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    admin_activities?: admin_activity_logsUpdateManyWithoutAdminNestedInput
     subscriptions?: subscriptionsUpdateManyWithoutUserNestedInput
     tasks_log?: tasks_logUpdateManyWithoutUserNestedInput
     whatsapp_messages?: whatsapp_messagesUpdateManyWithoutUserNestedInput
-    admin_activities?: admin_activity_logsUpdateManyWithoutAdminNestedInput
   }
 
   export type usersUncheckedUpdateWithoutCredit_purchasesInput = {
@@ -12091,43 +12091,10 @@ export namespace Prisma {
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    admin_activities?: admin_activity_logsUncheckedUpdateManyWithoutAdminNestedInput
     subscriptions?: subscriptionsUncheckedUpdateManyWithoutUserNestedInput
     tasks_log?: tasks_logUncheckedUpdateManyWithoutUserNestedInput
     whatsapp_messages?: whatsapp_messagesUncheckedUpdateManyWithoutUserNestedInput
-    admin_activities?: admin_activity_logsUncheckedUpdateManyWithoutAdminNestedInput
-  }
-
-  export type usersCreateWithoutTasks_logInput = {
-    id: string
-    email: string
-    name: string
-    role?: $Enums.UserRole
-    subscription_plan?: string | null
-    credits_balance?: number
-    created_at?: Date | string
-    subscriptions?: subscriptionsCreateNestedManyWithoutUserInput
-    credit_purchases?: credit_purchasesCreateNestedManyWithoutUserInput
-    whatsapp_messages?: whatsapp_messagesCreateNestedManyWithoutUserInput
-    admin_activities?: admin_activity_logsCreateNestedManyWithoutAdminInput
-  }
-
-  export type usersUncheckedCreateWithoutTasks_logInput = {
-    id: string
-    email: string
-    name: string
-    role?: $Enums.UserRole
-    subscription_plan?: string | null
-    credits_balance?: number
-    created_at?: Date | string
-    subscriptions?: subscriptionsUncheckedCreateNestedManyWithoutUserInput
-    credit_purchases?: credit_purchasesUncheckedCreateNestedManyWithoutUserInput
-    whatsapp_messages?: whatsapp_messagesUncheckedCreateNestedManyWithoutUserInput
-    admin_activities?: admin_activity_logsUncheckedCreateNestedManyWithoutAdminInput
-  }
-
-  export type usersCreateOrConnectWithoutTasks_logInput = {
-    where: usersWhereUniqueInput
-    create: XOR<usersCreateWithoutTasks_logInput, usersUncheckedCreateWithoutTasks_logInput>
   }
 
   export type agent_resultsCreateWithoutTaskInput = {
@@ -12149,43 +12116,37 @@ export namespace Prisma {
     create: XOR<agent_resultsCreateWithoutTaskInput, agent_resultsUncheckedCreateWithoutTaskInput>
   }
 
-  export type usersUpsertWithoutTasks_logInput = {
-    update: XOR<usersUpdateWithoutTasks_logInput, usersUncheckedUpdateWithoutTasks_logInput>
+  export type usersCreateWithoutTasks_logInput = {
+    id: string
+    email: string
+    name: string
+    role?: $Enums.UserRole
+    subscription_plan?: string | null
+    credits_balance?: number
+    created_at?: Date | string
+    admin_activities?: admin_activity_logsCreateNestedManyWithoutAdminInput
+    credit_purchases?: credit_purchasesCreateNestedManyWithoutUserInput
+    subscriptions?: subscriptionsCreateNestedManyWithoutUserInput
+    whatsapp_messages?: whatsapp_messagesCreateNestedManyWithoutUserInput
+  }
+
+  export type usersUncheckedCreateWithoutTasks_logInput = {
+    id: string
+    email: string
+    name: string
+    role?: $Enums.UserRole
+    subscription_plan?: string | null
+    credits_balance?: number
+    created_at?: Date | string
+    admin_activities?: admin_activity_logsUncheckedCreateNestedManyWithoutAdminInput
+    credit_purchases?: credit_purchasesUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: subscriptionsUncheckedCreateNestedManyWithoutUserInput
+    whatsapp_messages?: whatsapp_messagesUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type usersCreateOrConnectWithoutTasks_logInput = {
+    where: usersWhereUniqueInput
     create: XOR<usersCreateWithoutTasks_logInput, usersUncheckedCreateWithoutTasks_logInput>
-    where?: usersWhereInput
-  }
-
-  export type usersUpdateToOneWithWhereWithoutTasks_logInput = {
-    where?: usersWhereInput
-    data: XOR<usersUpdateWithoutTasks_logInput, usersUncheckedUpdateWithoutTasks_logInput>
-  }
-
-  export type usersUpdateWithoutTasks_logInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-    subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
-    credits_balance?: IntFieldUpdateOperationsInput | number
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    subscriptions?: subscriptionsUpdateManyWithoutUserNestedInput
-    credit_purchases?: credit_purchasesUpdateManyWithoutUserNestedInput
-    whatsapp_messages?: whatsapp_messagesUpdateManyWithoutUserNestedInput
-    admin_activities?: admin_activity_logsUpdateManyWithoutAdminNestedInput
-  }
-
-  export type usersUncheckedUpdateWithoutTasks_logInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-    subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
-    credits_balance?: IntFieldUpdateOperationsInput | number
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    subscriptions?: subscriptionsUncheckedUpdateManyWithoutUserNestedInput
-    credit_purchases?: credit_purchasesUncheckedUpdateManyWithoutUserNestedInput
-    whatsapp_messages?: whatsapp_messagesUncheckedUpdateManyWithoutUserNestedInput
-    admin_activities?: admin_activity_logsUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type agent_resultsUpsertWithoutTaskInput = {
@@ -12211,6 +12172,45 @@ export namespace Prisma {
     file_url?: NullableStringFieldUpdateOperationsInput | string | null
     image_url?: NullableStringFieldUpdateOperationsInput | string | null
     whatsapp_sent?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type usersUpsertWithoutTasks_logInput = {
+    update: XOR<usersUpdateWithoutTasks_logInput, usersUncheckedUpdateWithoutTasks_logInput>
+    create: XOR<usersCreateWithoutTasks_logInput, usersUncheckedCreateWithoutTasks_logInput>
+    where?: usersWhereInput
+  }
+
+  export type usersUpdateToOneWithWhereWithoutTasks_logInput = {
+    where?: usersWhereInput
+    data: XOR<usersUpdateWithoutTasks_logInput, usersUncheckedUpdateWithoutTasks_logInput>
+  }
+
+  export type usersUpdateWithoutTasks_logInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
+    credits_balance?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    admin_activities?: admin_activity_logsUpdateManyWithoutAdminNestedInput
+    credit_purchases?: credit_purchasesUpdateManyWithoutUserNestedInput
+    subscriptions?: subscriptionsUpdateManyWithoutUserNestedInput
+    whatsapp_messages?: whatsapp_messagesUpdateManyWithoutUserNestedInput
+  }
+
+  export type usersUncheckedUpdateWithoutTasks_logInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
+    credits_balance?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    admin_activities?: admin_activity_logsUncheckedUpdateManyWithoutAdminNestedInput
+    credit_purchases?: credit_purchasesUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: subscriptionsUncheckedUpdateManyWithoutUserNestedInput
+    whatsapp_messages?: whatsapp_messagesUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type tasks_logCreateWithoutAgent_resultsInput = {
@@ -12277,10 +12277,10 @@ export namespace Prisma {
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
-    subscriptions?: subscriptionsCreateNestedManyWithoutUserInput
-    credit_purchases?: credit_purchasesCreateNestedManyWithoutUserInput
-    tasks_log?: tasks_logCreateNestedManyWithoutUserInput
     admin_activities?: admin_activity_logsCreateNestedManyWithoutAdminInput
+    credit_purchases?: credit_purchasesCreateNestedManyWithoutUserInput
+    subscriptions?: subscriptionsCreateNestedManyWithoutUserInput
+    tasks_log?: tasks_logCreateNestedManyWithoutUserInput
   }
 
   export type usersUncheckedCreateWithoutWhatsapp_messagesInput = {
@@ -12291,10 +12291,10 @@ export namespace Prisma {
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
-    subscriptions?: subscriptionsUncheckedCreateNestedManyWithoutUserInput
-    credit_purchases?: credit_purchasesUncheckedCreateNestedManyWithoutUserInput
-    tasks_log?: tasks_logUncheckedCreateNestedManyWithoutUserInput
     admin_activities?: admin_activity_logsUncheckedCreateNestedManyWithoutAdminInput
+    credit_purchases?: credit_purchasesUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: subscriptionsUncheckedCreateNestedManyWithoutUserInput
+    tasks_log?: tasks_logUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type usersCreateOrConnectWithoutWhatsapp_messagesInput = {
@@ -12321,10 +12321,10 @@ export namespace Prisma {
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    subscriptions?: subscriptionsUpdateManyWithoutUserNestedInput
-    credit_purchases?: credit_purchasesUpdateManyWithoutUserNestedInput
-    tasks_log?: tasks_logUpdateManyWithoutUserNestedInput
     admin_activities?: admin_activity_logsUpdateManyWithoutAdminNestedInput
+    credit_purchases?: credit_purchasesUpdateManyWithoutUserNestedInput
+    subscriptions?: subscriptionsUpdateManyWithoutUserNestedInput
+    tasks_log?: tasks_logUpdateManyWithoutUserNestedInput
   }
 
   export type usersUncheckedUpdateWithoutWhatsapp_messagesInput = {
@@ -12335,10 +12335,10 @@ export namespace Prisma {
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    subscriptions?: subscriptionsUncheckedUpdateManyWithoutUserNestedInput
-    credit_purchases?: credit_purchasesUncheckedUpdateManyWithoutUserNestedInput
-    tasks_log?: tasks_logUncheckedUpdateManyWithoutUserNestedInput
     admin_activities?: admin_activity_logsUncheckedUpdateManyWithoutAdminNestedInput
+    credit_purchases?: credit_purchasesUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: subscriptionsUncheckedUpdateManyWithoutUserNestedInput
+    tasks_log?: tasks_logUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type usersCreateWithoutAdmin_activitiesInput = {
@@ -12349,8 +12349,8 @@ export namespace Prisma {
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
-    subscriptions?: subscriptionsCreateNestedManyWithoutUserInput
     credit_purchases?: credit_purchasesCreateNestedManyWithoutUserInput
+    subscriptions?: subscriptionsCreateNestedManyWithoutUserInput
     tasks_log?: tasks_logCreateNestedManyWithoutUserInput
     whatsapp_messages?: whatsapp_messagesCreateNestedManyWithoutUserInput
   }
@@ -12363,8 +12363,8 @@ export namespace Prisma {
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
-    subscriptions?: subscriptionsUncheckedCreateNestedManyWithoutUserInput
     credit_purchases?: credit_purchasesUncheckedCreateNestedManyWithoutUserInput
+    subscriptions?: subscriptionsUncheckedCreateNestedManyWithoutUserInput
     tasks_log?: tasks_logUncheckedCreateNestedManyWithoutUserInput
     whatsapp_messages?: whatsapp_messagesUncheckedCreateNestedManyWithoutUserInput
   }
@@ -12393,8 +12393,8 @@ export namespace Prisma {
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    subscriptions?: subscriptionsUpdateManyWithoutUserNestedInput
     credit_purchases?: credit_purchasesUpdateManyWithoutUserNestedInput
+    subscriptions?: subscriptionsUpdateManyWithoutUserNestedInput
     tasks_log?: tasks_logUpdateManyWithoutUserNestedInput
     whatsapp_messages?: whatsapp_messagesUpdateManyWithoutUserNestedInput
   }
@@ -12407,10 +12407,25 @@ export namespace Prisma {
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    subscriptions?: subscriptionsUncheckedUpdateManyWithoutUserNestedInput
     credit_purchases?: credit_purchasesUncheckedUpdateManyWithoutUserNestedInput
+    subscriptions?: subscriptionsUncheckedUpdateManyWithoutUserNestedInput
     tasks_log?: tasks_logUncheckedUpdateManyWithoutUserNestedInput
     whatsapp_messages?: whatsapp_messagesUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type admin_activity_logsCreateManyAdminInput = {
+    id?: string
+    action_type: string
+    target_id: string
+    timestamp?: Date | string
+  }
+
+  export type credit_purchasesCreateManyUserInput = {
+    id?: string
+    pack_type: $Enums.PackType
+    credits: number
+    price: number
+    purchased_at?: Date | string
   }
 
   export type subscriptionsCreateManyUserInput = {
@@ -12421,14 +12436,6 @@ export namespace Prisma {
     end_date: Date | string
     method: string
     amount?: number
-  }
-
-  export type credit_purchasesCreateManyUserInput = {
-    id?: string
-    pack_type: $Enums.PackType
-    credits: number
-    price: number
-    purchased_at?: Date | string
   }
 
   export type tasks_logCreateManyUserInput = {
@@ -12447,11 +12454,49 @@ export namespace Prisma {
     timestamp?: Date | string
   }
 
-  export type admin_activity_logsCreateManyAdminInput = {
-    id?: string
-    action_type: string
-    target_id: string
-    timestamp?: Date | string
+  export type admin_activity_logsUpdateWithoutAdminInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action_type?: StringFieldUpdateOperationsInput | string
+    target_id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type admin_activity_logsUncheckedUpdateWithoutAdminInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action_type?: StringFieldUpdateOperationsInput | string
+    target_id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type admin_activity_logsUncheckedUpdateManyWithoutAdminInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action_type?: StringFieldUpdateOperationsInput | string
+    target_id?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type credit_purchasesUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pack_type?: EnumPackTypeFieldUpdateOperationsInput | $Enums.PackType
+    credits?: IntFieldUpdateOperationsInput | number
+    price?: FloatFieldUpdateOperationsInput | number
+    purchased_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type credit_purchasesUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pack_type?: EnumPackTypeFieldUpdateOperationsInput | $Enums.PackType
+    credits?: IntFieldUpdateOperationsInput | number
+    price?: FloatFieldUpdateOperationsInput | number
+    purchased_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type credit_purchasesUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pack_type?: EnumPackTypeFieldUpdateOperationsInput | $Enums.PackType
+    credits?: IntFieldUpdateOperationsInput | number
+    price?: FloatFieldUpdateOperationsInput | number
+    purchased_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type subscriptionsUpdateWithoutUserInput = {
@@ -12482,30 +12527,6 @@ export namespace Prisma {
     end_date?: DateTimeFieldUpdateOperationsInput | Date | string
     method?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type credit_purchasesUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    pack_type?: EnumPackTypeFieldUpdateOperationsInput | $Enums.PackType
-    credits?: IntFieldUpdateOperationsInput | number
-    price?: FloatFieldUpdateOperationsInput | number
-    purchased_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type credit_purchasesUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    pack_type?: EnumPackTypeFieldUpdateOperationsInput | $Enums.PackType
-    credits?: IntFieldUpdateOperationsInput | number
-    price?: FloatFieldUpdateOperationsInput | number
-    purchased_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type credit_purchasesUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    pack_type?: EnumPackTypeFieldUpdateOperationsInput | $Enums.PackType
-    credits?: IntFieldUpdateOperationsInput | number
-    price?: FloatFieldUpdateOperationsInput | number
-    purchased_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type tasks_logUpdateWithoutUserInput = {
@@ -12555,27 +12576,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     direction?: EnumMessageDirectionFieldUpdateOperationsInput | $Enums.MessageDirection
     message_text?: StringFieldUpdateOperationsInput | string
-    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type admin_activity_logsUpdateWithoutAdminInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    action_type?: StringFieldUpdateOperationsInput | string
-    target_id?: StringFieldUpdateOperationsInput | string
-    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type admin_activity_logsUncheckedUpdateWithoutAdminInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    action_type?: StringFieldUpdateOperationsInput | string
-    target_id?: StringFieldUpdateOperationsInput | string
-    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type admin_activity_logsUncheckedUpdateManyWithoutAdminInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    action_type?: StringFieldUpdateOperationsInput | string
-    target_id?: StringFieldUpdateOperationsInput | string
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
