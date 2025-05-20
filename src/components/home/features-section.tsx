@@ -4,8 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { MessageCircle, Sparkles, CreditCard, ShieldCheck } from 'lucide-react';
-import { HeroBackground } from './hero-background';
+import { features } from '@/lib/constants/navigation';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
@@ -81,49 +80,6 @@ export function FeaturesSection() {
     }
   };
 
-  const features = [
-  {
-      icon: <Sparkles className="h-5 w-5 text-[#2B6CB0]" />,
-      title: "AI Agent",
-      description: "Execute predefined business tasks using GPT and DALL·E",
-      items: [
-        { title: "Marketing", description: "Create compelling marketing content and automate your WhatsApp marketing campaigns with AI-powered suggestions." },
-        { title: "Organization", description: "Streamline your business processes with intelligent task management and automated workflow optimization." },
-        { title: "Strategy", description: "Get data-driven insights and strategic recommendations to grow your business and improve customer engagement." }
-      ]
-    },
-    {
-      icon: <MessageCircle className="h-5 w-5 text-[#2B6CB0]" />,
-      title: "WhatsApp Integration",
-      description: "Trigger and manage tasks via a WhatsApp-based interface",
-      items: [
-        { title: "Agent menu system", description: "Choose AI agents directly from WhatsApp chat" },
-        { title: "Message automation", description: "Auto-reply and execute tasks based on user input" },
-        { title: "Real-time content delivery", description: "Receive texts, PDFs, and images instantly in chat" }
-      ]
-    },
-    {
-      icon: <CreditCard className="h-5 w-5 text-[#2B6CB0]" />,
-      title: "Flexible Credit System",
-      description: "Track and control resource usage per task",
-      items: [
-        { title: "Subscription & credits", description: "Pay monthly or top-up as needed" },
-        { title: "Credit-based billing", description: "Each action consumes credits based on type" },
-        { title: "Dashboard insights", description: "Monitor your usage, remaining credits, and history" }
-      ]
-    },
-    {
-      icon: <ShieldCheck className="h-5 w-5 text-[#2B6CB0]" />,
-      title: "Admin & Analytics",
-      description: "Full control and visibility over user activity",
-      items: [
-        { title: "User management", description: "View, filter, and manage customer accounts" },
-        { title: "Usage tracking management", description: "Analyze task trends and credit consumption" },
-        { title: "Real-time reporting", description: "Export insights and monitor platform activity" }
-      ]
-    }
-  ];
-
   return (
     <section className="px-4 py-24 sm:px-6 lg:px-8 relative" id='features'>
       {/* Eliminados los elementos de fondo para usar el Background global */}
@@ -136,7 +92,7 @@ export function FeaturesSection() {
       >
         <motion.div variants={slideUp} className="flex flex-col lg:flex-row gap-12 mb-16 items-start">
           <div className="lg:w-1/3">
-            <Badge variant="secondary" className="mb-4 px-4 py-1.5 text-sm border border-[#2B6CB0]/30 bg-[#2B6CB0]/5">
+            <Badge variant="success" className="mb-4 px-4 py-1.5 text-sm border border-[#2B6CB0]/30 bg-[#2B6CB0]/5">
               Key Capabilities
             </Badge>
             <h2 className="text-3xl md:text-3xl font-bold mb-4 leading-tight">
@@ -148,7 +104,7 @@ export function FeaturesSection() {
           </div>
           
           <div className="lg:w-2/3">
-            <Tabs defaultValue="ai-tools" className="w-full">
+            <Tabs defaultValue="ai-agent" className="w-full">
               <TabsList className="grid grid-cols-2 md:grid-cols-4 mb-8">
                 {features.map((feature, index) => (
                   <TabsTrigger 

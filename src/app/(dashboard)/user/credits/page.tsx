@@ -143,7 +143,7 @@ const CreditsPage = () => {
             <div className="flex flex-col gap-4 md:flex-row md:gap-8">
               <div className="flex-1">
                 <h3 className="mb-2 font-medium">Plan Details</h3>
-                <div className="space-y-1 text-sm">
+                <div className="space-y-1 text-md">
                   <div className="flex justify-between">
                     <span>Plan:</span>
                     <span className="font-semibold">{user.plan}</span>
@@ -161,7 +161,7 @@ const CreditsPage = () => {
 
               <div className="flex-1">
                 <h3 className="mb-2 font-medium">Credit Details</h3>
-                <div className="space-y-1 text-sm">
+                <div className="space-y-1 text-md">
                   <div className="flex justify-between">
                     <span>Monthly Credits:</span>
                     <span className="font-semibold">150</span>
