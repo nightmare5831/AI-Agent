@@ -120,7 +120,7 @@ export default function UserDashboard() {
               </div>
             </CardContent>
             <CardFooter className="border-t border-[#8b5cf6]/10 p-4">
-              <Link href="/user/upgrade">
+              <Link href="/user/credits">
                 <Button 
                   variant="outline" 
                   size="sm" 
