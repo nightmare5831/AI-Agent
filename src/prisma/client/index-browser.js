@@ -127,7 +127,8 @@ exports.Prisma.UsersScalarFieldEnum = {
   role: 'role',
   subscription_plan: 'subscription_plan',
   credits_balance: 'credits_balance',
-  created_at: 'created_at'
+  created_at: 'created_at',
+  stripeSubscriptionId: 'stripeSubscriptionId'
 };
 
 exports.Prisma.SubscriptionsScalarFieldEnum = {
@@ -206,7 +207,7 @@ exports.UserRole = exports.$Enums.UserRole = {
 exports.PlanType = exports.$Enums.PlanType = {
   essential: 'essential',
   professional: 'professional',
-  completo: 'completo'
+  complete: 'complete'
 };
 
 exports.PackType = exports.$Enums.PackType = {

@@ -12,92 +12,73 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { CreditCard, CheckCircle, Gift } from 'lucide-react';
 import { AlertTriangle } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { creditPacks, plans } from '@/lib/constants/usermock';
+import { useAuth } from '@/core/auth/AuthProvider';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import Request from '@/lib/request';
+import { getSubscription } from '@/core/subscription';
 
 const CreditsPage = () => {
-  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
-  const [selectedCreditPack, setSelectedCreditPack] = useState<string | null>(
-    null
-  );
+  const router = useRouter();
+  const [{ profile }] = useAuth();
+  const [reset, setReset] = useState(0);
+  const [currentCredit, setCurrentCredit] = useState({
+    plan:'Free', balance:0, price:'', credits:0, nextBilling: '', resetDate:''
+  });
 
-  const user = {
-    name: 'John Doe',
-    email: 'john@example.com',
-    plan: 'Professional',
-    credits: 85,
+  const selectedPlan = async (plan: string) => {
+    try {
+      const url = await Request.Post('/api/stripe/create-subscription', 
+                          {planType:plan, userId:profile.id, subscriptionId: profile.stripeSubscriptionId});
+      if(url?.url) {
+        router.push(url.url)
+      } else { 
+        router.push('/user')
+        setTimeout(() => {setReset(reset + 1);}, 2000)
+      };
+      toast.success('Subscripion created successfully!');
+    } catch (error : any) {
+      toast.error(
+        error?.response?.data?.message ||
+          'Failed to create Subscription. Please try again.'
+      );      
+    }
   };
 
-  const plans = [
-    {
-      id: 'essential',
-      name: 'Essential',
-      price: 'R$29.90',
-      interval: 'month',
-      credits: 100,
-      features: [
-        '100 AI Credits',
-        'Basic AI Agents',
-        'Email Support',
-        '3-day History',
-      ],
-      recommended: false,
-    },
-    {
-      id: 'professional',
-      name: 'Professional',
-      price: 'R$49.90',
-      interval: 'month',
-      credits: 150,
-      features: [
-        '150 AI Credits',
-        'All AI Agents',
-        'WhatsApp Bot Automation',
-        'Priority Support',
-        '14-day History',
-      ],
-      recommended: true,
-    },
-    {
-      id: 'complete',
-      name: 'Complete',
-      price: 'R$59.90',
-      interval: 'month',
-      credits: 200,
-      features: [
-        '200 AI Credits',
-        'All AI Agents',
-        'WhatsApp Bot Automation',
-        'AI Scheduling Bot',
-        'Priority Support',
-        '30-day History',
-      ],
-      recommended: false,
-    },
-  ];
+  const selecteCreditPack = async (credit: string) => {
+    try {
+      const url = await Request.Post('/api/stripe/buy-credits', {packType:credit, userId:profile.id});
+      if(url?.url) {
+        router.push(url.url)
+      }
+      toast.success('Credit purchased successfully!')
+    } catch (error) {
+      
+    }
+  };
 
-  const creditPacks = [
-    {
-      id: 'small',
-      name: 'Small Pack',
-      credits: 100,
-      price: 'R$19.90',
-      recommended: false,
-    },
-    {
-      id: 'medium',
-      name: 'Medium Pack',
-      credits: 500,
-      price: 'R$49.90',
-      recommended: true,
-    },
-    {
-      id: 'large',
-      name: 'Large Pack',
-      credits: 1000,
-      price: 'R$89.90',
-      recommended: false,
-    },
-  ];
+  const setSubscription = async () => {
+    const subscription = await getSubscription(profile.id)
+    const matchedPlan = plans.find(
+      (tplan) => tplan.id === profile.subscription_plan.toLowerCase()
+    );
+    const price = matchedPlan?.price ?? '';
+    setCurrentCredit(prev => ({
+      ...prev,
+      plan: subscription?.plan_type,
+      balance: profile.credits_balance,
+      nextBilling: subscription?.end_date.toLocaleString(),
+      resetDate: subscription?.start_date.toLocaleString(),
+      price: price,
+      credits: subscription?.amount,
+    }))
+  }
+
+  useEffect(() => {
+    setSubscription();
+  },[reset])
 
   return (
     <div className="relative overflow-hidden">
@@ -135,44 +116,46 @@ const CreditsPage = () => {
           <CardHeader>
             <CardTitle>Your Current Plan</CardTitle>
             <CardDescription>
-              You are currently on the {user.plan} plan with {user.credits}{' '}
-              credits remaining.
+              You are currently on the {profile.subscription_plan} plan with{' '}
+              {profile.credits_balance} credits remaining.
             </CardDescription>
           </CardHeader>
           <CardContent className="pb-0">
             <div className="flex flex-col gap-4 md:flex-row md:gap-8">
               <div className="flex-1">
                 <h3 className="mb-2 font-medium">Plan Details</h3>
-                <div className="space-y-1 text-md">
+                <div className="text-md space-y-1">
                   <div className="flex justify-between">
                     <span>Plan:</span>
-                    <span className="font-semibold">{user.plan}</span>
+                    <span className="font-semibold">{currentCredit.plan}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Price:</span>
-                    <span className="font-semibold">R$49.90/month</span>
+                    <span className="font-semibold">{currentCredit.price}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Next Billing:</span>
-                    <span className="font-semibold">26 May 2025</span>
+                    <span className="font-semibold">{currentCredit.nextBilling}</span>
                   </div>
                 </div>
               </div>
 
               <div className="flex-1">
                 <h3 className="mb-2 font-medium">Credit Details</h3>
-                <div className="space-y-1 text-md">
+                <div className="text-md space-y-1">
                   <div className="flex justify-between">
                     <span>Monthly Credits:</span>
-                    <span className="font-semibold">150</span>
+                    <span className="font-semibold">
+                      {currentCredit.credits}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span>Current Balance:</span>
-                    <span className="font-semibold">{user.credits}</span>
+                    <span className="font-semibold">{currentCredit.balance}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Reset Date:</span>
-                    <span className="font-semibold">26 May 2025</span>
+                    <span className="font-semibold">{currentCredit.resetDate}</span>
                   </div>
                 </div>
               </div>
@@ -187,7 +170,7 @@ const CreditsPage = () => {
               <Card
                 key={plan.id}
                 className={`relative overflow-hidden ${
-                  plan.recommended
+                  plan.id ===  currentCredit.plan?.toLocaleLowerCase()
                     ? 'border-2 border-[#2B6CB0]'
                     : 'border border-border'
                 }`}
@@ -223,9 +206,10 @@ const CreditsPage = () => {
                   <Button
                     className="mt-3 bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6] hover:from-[#8b5cf6] hover:to-[#2B6CB0]"
                     size="sm"
-                    onClick={() => setSelectedPlan(plan.id)}
+                    onClick={() => selectedPlan(plan.id)}
+                    disabled={plan.id === currentCredit.plan?.toLocaleLowerCase() ? true : false}
                   >
-                    {plan.id === user.plan.toLowerCase()
+                    {plan.id === currentCredit.plan?.toLocaleLowerCase()
                       ? 'Current Plan'
                       : 'Select Plan'}
                   </Button>
@@ -257,7 +241,7 @@ const CreditsPage = () => {
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle>{pack.name}</CardTitle>
-                    <div className="rounded-full bg-text p-2">
+                    <div className="bg-text rounded-full p-2">
                       <CreditCard className="h-6 w-6 text-[#2B6CB0]" />
                     </div>
                   </div>
@@ -285,7 +269,7 @@ const CreditsPage = () => {
                   <Button
                     className="mt-3 bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6] hover:from-[#8b5cf6] hover:to-[#2B6CB0]"
                     size="sm"
-                    onClick={() => setSelectedCreditPack(pack.id)}
+                    onClick={() => selecteCreditPack(pack.id)}
                   >
                     Purchase Now
                   </Button>

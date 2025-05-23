@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { GraduationCap } from 'lucide-react';
 
 // ----------------------------------------------------------------------
 
@@ -31,7 +30,7 @@ export default function LoadingScreen() {
       >
         <Image
           alt="Logo"
-          src="/assets/images/logo/logo.svg"
+          src="/assets/images/logo/logo.png"
           width={80}
           height={80}
         />

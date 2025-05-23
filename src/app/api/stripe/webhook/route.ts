@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { stripe, PLANS, CREDIT_PACKS } from '@/lib/stripe';
+import { stripe, PLANS } from '@/lib/stripe';
 import { prisma } from '@/lib/db';
 import { Stripe } from 'stripe';
 import { PlanType, PackType } from '@/prisma/client';
@@ -32,7 +32,8 @@ export async function POST(req: Request) {
       if (session.mode === 'subscription' && session.metadata) {
         const planType = session.metadata.planType as PlanType;
         const userId = session.metadata.userId;
-        
+        const subscriptionId = session.subscription;
+
         await prisma.subscriptions.create({
           data: {
             user_id: userId,
@@ -49,6 +50,7 @@ export async function POST(req: Request) {
           where: { id: userId },
           data: {
             subscription_plan: planType,
+            stripeSubscriptionId: subscriptionId as string,
             credits_balance: {
               increment: PLANS[planType].credits,
             },
@@ -78,7 +80,34 @@ export async function POST(req: Request) {
         });
       }
       break;
+   
+    case 'customer.subscription.updated':
+      const planType = session.metadata.planType as PlanType;
+      const userId = session.metadata.userId;
+      const subscription_id = (await prisma.subscriptions.findFirst({where:{user_id:userId}})).id;
       
+      await prisma.subscriptions.update({
+        where: {id: subscription_id},
+        data: {
+          plan_type: planType,
+          start_date: new Date(),
+          end_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+          method: 'stripe',
+          amount: PLANS[planType].credits,
+        },
+      });
+      
+      await prisma.users.update({
+        where: { id: userId },
+        data: {
+          subscription_plan: planType,
+          credits_balance: {
+            increment: PLANS[planType].credits,
+          },
+        },
+      });
+      break;
+
     case 'invoice.paid':
       break;
       

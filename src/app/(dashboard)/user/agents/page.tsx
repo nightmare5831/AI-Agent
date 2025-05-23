@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  MessageSquare,
-  BotIcon,
-  Sparkles,
-  Search,
-  Calendar,
-} from 'lucide-react';
+import { Search } from 'lucide-react';
 import {
   Card,
   CardContent,

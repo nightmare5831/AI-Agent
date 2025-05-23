@@ -6,20 +6,35 @@ import { PlanType } from '@/prisma/client';
 interface SubscriptionRequest {
   planType: PlanType;
   userId: string;
+  subscriptionId: string;
 }
 
 export async function POST(req: Request) {
   try {
-    const { planType, userId } = await req.json() as SubscriptionRequest;
-    
+    const { planType, userId, subscriptionId} = await req.json() as SubscriptionRequest;
     // Get user
     const user = await prisma.users.findUnique({
       where: { id: userId },
     });
-    
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
+    
+    if(subscriptionId) {
+      const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+      if(subscription && subscription.status === 'active') {
+        await stripe.subscriptions.update(subscription.id, {
+          items: [{ id: subscription.items.data[0].id, price: PLANS[planType].priceId }],
+          proration_behavior: "create_prorations", // immediately attempt charge to user 
+          payment_behavior: "error_if_incomplete", // ensure subscription is only update if payment is successful
+          metadata: {
+            userId: user.id,
+            planType,
+          },
+        });
+        return NextResponse.json({plan: planType}, {status:200})
+      }
+    } 
     
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
@@ -33,14 +48,13 @@ export async function POST(req: Request) {
         },
       ],
       mode: 'subscription',
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?success=true`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing?canceled=true`,
+      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}`,
+      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}`,
       metadata: {
         userId: user.id,
         planType,
       },
     });
-    
     return NextResponse.json({ url: session.url });
   } catch (error) {
     console.error('Error creating subscription:', error);

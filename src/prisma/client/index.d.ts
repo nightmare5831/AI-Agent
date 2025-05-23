@@ -64,7 +64,7 @@ export type UserRole = (typeof UserRole)[keyof typeof UserRole]
 export const PlanType: {
   essential: 'essential',
   professional: 'professional',
-  completo: 'completo'
+  complete: 'complete'
 };
 
 export type PlanType = (typeof PlanType)[keyof typeof PlanType]
@@ -1564,6 +1564,7 @@ export namespace Prisma {
     subscription_plan: string | null
     credits_balance: number | null
     created_at: Date | null
+    stripeSubscriptionId: string | null
   }
 
   export type UsersMaxAggregateOutputType = {
@@ -1574,6 +1575,7 @@ export namespace Prisma {
     subscription_plan: string | null
     credits_balance: number | null
     created_at: Date | null
+    stripeSubscriptionId: string | null
   }
 
   export type UsersCountAggregateOutputType = {
@@ -1584,6 +1586,7 @@ export namespace Prisma {
     subscription_plan: number
     credits_balance: number
     created_at: number
+    stripeSubscriptionId: number
     _all: number
   }
 
@@ -1604,6 +1607,7 @@ export namespace Prisma {
     subscription_plan?: true
     credits_balance?: true
     created_at?: true
+    stripeSubscriptionId?: true
   }
 
   export type UsersMaxAggregateInputType = {
@@ -1614,6 +1618,7 @@ export namespace Prisma {
     subscription_plan?: true
     credits_balance?: true
     created_at?: true
+    stripeSubscriptionId?: true
   }
 
   export type UsersCountAggregateInputType = {
@@ -1624,6 +1629,7 @@ export namespace Prisma {
     subscription_plan?: true
     credits_balance?: true
     created_at?: true
+    stripeSubscriptionId?: true
     _all?: true
   }
 
@@ -1721,6 +1727,7 @@ export namespace Prisma {
     subscription_plan: string | null
     credits_balance: number
     created_at: Date
+    stripeSubscriptionId: string | null
     _count: UsersCountAggregateOutputType | null
     _avg: UsersAvgAggregateOutputType | null
     _sum: UsersSumAggregateOutputType | null
@@ -1750,6 +1757,7 @@ export namespace Prisma {
     subscription_plan?: boolean
     credits_balance?: boolean
     created_at?: boolean
+    stripeSubscriptionId?: boolean
     admin_activities?: boolean | users$admin_activitiesArgs<ExtArgs>
     credit_purchases?: boolean | users$credit_purchasesArgs<ExtArgs>
     subscriptions?: boolean | users$subscriptionsArgs<ExtArgs>
@@ -1766,6 +1774,7 @@ export namespace Prisma {
     subscription_plan?: boolean
     credits_balance?: boolean
     created_at?: boolean
+    stripeSubscriptionId?: boolean
   }, ExtArgs["result"]["users"]>
 
   export type usersSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1776,6 +1785,7 @@ export namespace Prisma {
     subscription_plan?: boolean
     credits_balance?: boolean
     created_at?: boolean
+    stripeSubscriptionId?: boolean
   }, ExtArgs["result"]["users"]>
 
   export type usersSelectScalar = {
@@ -1786,9 +1796,10 @@ export namespace Prisma {
     subscription_plan?: boolean
     credits_balance?: boolean
     created_at?: boolean
+    stripeSubscriptionId?: boolean
   }
 
-  export type usersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "role" | "subscription_plan" | "credits_balance" | "created_at", ExtArgs["result"]["users"]>
+  export type usersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "role" | "subscription_plan" | "credits_balance" | "created_at" | "stripeSubscriptionId", ExtArgs["result"]["users"]>
   export type usersInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     admin_activities?: boolean | users$admin_activitiesArgs<ExtArgs>
     credit_purchases?: boolean | users$credit_purchasesArgs<ExtArgs>
@@ -1817,6 +1828,7 @@ export namespace Prisma {
       subscription_plan: string | null
       credits_balance: number
       created_at: Date
+      stripeSubscriptionId: string | null
     }, ExtArgs["result"]["users"]>
     composites: {}
   }
@@ -2252,6 +2264,7 @@ export namespace Prisma {
     readonly subscription_plan: FieldRef<"users", 'String'>
     readonly credits_balance: FieldRef<"users", 'Int'>
     readonly created_at: FieldRef<"users", 'DateTime'>
+    readonly stripeSubscriptionId: FieldRef<"users", 'String'>
   }
     
 
@@ -9354,7 +9367,8 @@ export namespace Prisma {
     role: 'role',
     subscription_plan: 'subscription_plan',
     credits_balance: 'credits_balance',
-    created_at: 'created_at'
+    created_at: 'created_at',
+    stripeSubscriptionId: 'stripeSubscriptionId'
   };
 
   export type UsersScalarFieldEnum = (typeof UsersScalarFieldEnum)[keyof typeof UsersScalarFieldEnum]
@@ -9594,6 +9608,7 @@ export namespace Prisma {
     subscription_plan?: StringNullableFilter<"users"> | string | null
     credits_balance?: IntFilter<"users"> | number
     created_at?: DateTimeFilter<"users"> | Date | string
+    stripeSubscriptionId?: StringNullableFilter<"users"> | string | null
     admin_activities?: Admin_activity_logsListRelationFilter
     credit_purchases?: Credit_purchasesListRelationFilter
     subscriptions?: SubscriptionsListRelationFilter
@@ -9609,6 +9624,7 @@ export namespace Prisma {
     subscription_plan?: SortOrderInput | SortOrder
     credits_balance?: SortOrder
     created_at?: SortOrder
+    stripeSubscriptionId?: SortOrderInput | SortOrder
     admin_activities?: admin_activity_logsOrderByRelationAggregateInput
     credit_purchases?: credit_purchasesOrderByRelationAggregateInput
     subscriptions?: subscriptionsOrderByRelationAggregateInput
@@ -9627,6 +9643,7 @@ export namespace Prisma {
     subscription_plan?: StringNullableFilter<"users"> | string | null
     credits_balance?: IntFilter<"users"> | number
     created_at?: DateTimeFilter<"users"> | Date | string
+    stripeSubscriptionId?: StringNullableFilter<"users"> | string | null
     admin_activities?: Admin_activity_logsListRelationFilter
     credit_purchases?: Credit_purchasesListRelationFilter
     subscriptions?: SubscriptionsListRelationFilter
@@ -9642,6 +9659,7 @@ export namespace Prisma {
     subscription_plan?: SortOrderInput | SortOrder
     credits_balance?: SortOrder
     created_at?: SortOrder
+    stripeSubscriptionId?: SortOrderInput | SortOrder
     _count?: usersCountOrderByAggregateInput
     _avg?: usersAvgOrderByAggregateInput
     _max?: usersMaxOrderByAggregateInput
@@ -9660,6 +9678,7 @@ export namespace Prisma {
     subscription_plan?: StringNullableWithAggregatesFilter<"users"> | string | null
     credits_balance?: IntWithAggregatesFilter<"users"> | number
     created_at?: DateTimeWithAggregatesFilter<"users"> | Date | string
+    stripeSubscriptionId?: StringNullableWithAggregatesFilter<"users"> | string | null
   }
 
   export type subscriptionsWhereInput = {
@@ -10039,6 +10058,7 @@ export namespace Prisma {
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
+    stripeSubscriptionId?: string | null
     admin_activities?: admin_activity_logsCreateNestedManyWithoutAdminInput
     credit_purchases?: credit_purchasesCreateNestedManyWithoutUserInput
     subscriptions?: subscriptionsCreateNestedManyWithoutUserInput
@@ -10054,6 +10074,7 @@ export namespace Prisma {
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
+    stripeSubscriptionId?: string | null
     admin_activities?: admin_activity_logsUncheckedCreateNestedManyWithoutAdminInput
     credit_purchases?: credit_purchasesUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: subscriptionsUncheckedCreateNestedManyWithoutUserInput
@@ -10069,6 +10090,7 @@ export namespace Prisma {
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     admin_activities?: admin_activity_logsUpdateManyWithoutAdminNestedInput
     credit_purchases?: credit_purchasesUpdateManyWithoutUserNestedInput
     subscriptions?: subscriptionsUpdateManyWithoutUserNestedInput
@@ -10084,6 +10106,7 @@ export namespace Prisma {
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     admin_activities?: admin_activity_logsUncheckedUpdateManyWithoutAdminNestedInput
     credit_purchases?: credit_purchasesUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: subscriptionsUncheckedUpdateManyWithoutUserNestedInput
@@ -10099,6 +10122,7 @@ export namespace Prisma {
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
+    stripeSubscriptionId?: string | null
   }
 
   export type usersUpdateManyMutationInput = {
@@ -10109,6 +10133,7 @@ export namespace Prisma {
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type usersUncheckedUpdateManyInput = {
@@ -10119,6 +10144,7 @@ export namespace Prisma {
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type subscriptionsCreateInput = {
@@ -10631,6 +10657,7 @@ export namespace Prisma {
     subscription_plan?: SortOrder
     credits_balance?: SortOrder
     created_at?: SortOrder
+    stripeSubscriptionId?: SortOrder
   }
 
   export type usersAvgOrderByAggregateInput = {
@@ -10645,6 +10672,7 @@ export namespace Prisma {
     subscription_plan?: SortOrder
     credits_balance?: SortOrder
     created_at?: SortOrder
+    stripeSubscriptionId?: SortOrder
   }
 
   export type usersMinOrderByAggregateInput = {
@@ -10655,6 +10683,7 @@ export namespace Prisma {
     subscription_plan?: SortOrder
     credits_balance?: SortOrder
     created_at?: SortOrder
+    stripeSubscriptionId?: SortOrder
   }
 
   export type usersSumOrderByAggregateInput = {
@@ -11961,6 +11990,7 @@ export namespace Prisma {
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
+    stripeSubscriptionId?: string | null
     admin_activities?: admin_activity_logsCreateNestedManyWithoutAdminInput
     credit_purchases?: credit_purchasesCreateNestedManyWithoutUserInput
     tasks_log?: tasks_logCreateNestedManyWithoutUserInput
@@ -11975,6 +12005,7 @@ export namespace Prisma {
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
+    stripeSubscriptionId?: string | null
     admin_activities?: admin_activity_logsUncheckedCreateNestedManyWithoutAdminInput
     credit_purchases?: credit_purchasesUncheckedCreateNestedManyWithoutUserInput
     tasks_log?: tasks_logUncheckedCreateNestedManyWithoutUserInput
@@ -12005,6 +12036,7 @@ export namespace Prisma {
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     admin_activities?: admin_activity_logsUpdateManyWithoutAdminNestedInput
     credit_purchases?: credit_purchasesUpdateManyWithoutUserNestedInput
     tasks_log?: tasks_logUpdateManyWithoutUserNestedInput
@@ -12019,6 +12051,7 @@ export namespace Prisma {
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     admin_activities?: admin_activity_logsUncheckedUpdateManyWithoutAdminNestedInput
     credit_purchases?: credit_purchasesUncheckedUpdateManyWithoutUserNestedInput
     tasks_log?: tasks_logUncheckedUpdateManyWithoutUserNestedInput
@@ -12033,6 +12066,7 @@ export namespace Prisma {
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
+    stripeSubscriptionId?: string | null
     admin_activities?: admin_activity_logsCreateNestedManyWithoutAdminInput
     subscriptions?: subscriptionsCreateNestedManyWithoutUserInput
     tasks_log?: tasks_logCreateNestedManyWithoutUserInput
@@ -12047,6 +12081,7 @@ export namespace Prisma {
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
+    stripeSubscriptionId?: string | null
     admin_activities?: admin_activity_logsUncheckedCreateNestedManyWithoutAdminInput
     subscriptions?: subscriptionsUncheckedCreateNestedManyWithoutUserInput
     tasks_log?: tasks_logUncheckedCreateNestedManyWithoutUserInput
@@ -12077,6 +12112,7 @@ export namespace Prisma {
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     admin_activities?: admin_activity_logsUpdateManyWithoutAdminNestedInput
     subscriptions?: subscriptionsUpdateManyWithoutUserNestedInput
     tasks_log?: tasks_logUpdateManyWithoutUserNestedInput
@@ -12091,6 +12127,7 @@ export namespace Prisma {
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     admin_activities?: admin_activity_logsUncheckedUpdateManyWithoutAdminNestedInput
     subscriptions?: subscriptionsUncheckedUpdateManyWithoutUserNestedInput
     tasks_log?: tasks_logUncheckedUpdateManyWithoutUserNestedInput
@@ -12124,6 +12161,7 @@ export namespace Prisma {
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
+    stripeSubscriptionId?: string | null
     admin_activities?: admin_activity_logsCreateNestedManyWithoutAdminInput
     credit_purchases?: credit_purchasesCreateNestedManyWithoutUserInput
     subscriptions?: subscriptionsCreateNestedManyWithoutUserInput
@@ -12138,6 +12176,7 @@ export namespace Prisma {
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
+    stripeSubscriptionId?: string | null
     admin_activities?: admin_activity_logsUncheckedCreateNestedManyWithoutAdminInput
     credit_purchases?: credit_purchasesUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: subscriptionsUncheckedCreateNestedManyWithoutUserInput
@@ -12193,6 +12232,7 @@ export namespace Prisma {
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     admin_activities?: admin_activity_logsUpdateManyWithoutAdminNestedInput
     credit_purchases?: credit_purchasesUpdateManyWithoutUserNestedInput
     subscriptions?: subscriptionsUpdateManyWithoutUserNestedInput
@@ -12207,6 +12247,7 @@ export namespace Prisma {
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     admin_activities?: admin_activity_logsUncheckedUpdateManyWithoutAdminNestedInput
     credit_purchases?: credit_purchasesUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: subscriptionsUncheckedUpdateManyWithoutUserNestedInput
@@ -12277,6 +12318,7 @@ export namespace Prisma {
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
+    stripeSubscriptionId?: string | null
     admin_activities?: admin_activity_logsCreateNestedManyWithoutAdminInput
     credit_purchases?: credit_purchasesCreateNestedManyWithoutUserInput
     subscriptions?: subscriptionsCreateNestedManyWithoutUserInput
@@ -12291,6 +12333,7 @@ export namespace Prisma {
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
+    stripeSubscriptionId?: string | null
     admin_activities?: admin_activity_logsUncheckedCreateNestedManyWithoutAdminInput
     credit_purchases?: credit_purchasesUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: subscriptionsUncheckedCreateNestedManyWithoutUserInput
@@ -12321,6 +12364,7 @@ export namespace Prisma {
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     admin_activities?: admin_activity_logsUpdateManyWithoutAdminNestedInput
     credit_purchases?: credit_purchasesUpdateManyWithoutUserNestedInput
     subscriptions?: subscriptionsUpdateManyWithoutUserNestedInput
@@ -12335,6 +12379,7 @@ export namespace Prisma {
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     admin_activities?: admin_activity_logsUncheckedUpdateManyWithoutAdminNestedInput
     credit_purchases?: credit_purchasesUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: subscriptionsUncheckedUpdateManyWithoutUserNestedInput
@@ -12349,6 +12394,7 @@ export namespace Prisma {
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
+    stripeSubscriptionId?: string | null
     credit_purchases?: credit_purchasesCreateNestedManyWithoutUserInput
     subscriptions?: subscriptionsCreateNestedManyWithoutUserInput
     tasks_log?: tasks_logCreateNestedManyWithoutUserInput
@@ -12363,6 +12409,7 @@ export namespace Prisma {
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
+    stripeSubscriptionId?: string | null
     credit_purchases?: credit_purchasesUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: subscriptionsUncheckedCreateNestedManyWithoutUserInput
     tasks_log?: tasks_logUncheckedCreateNestedManyWithoutUserInput
@@ -12393,6 +12440,7 @@ export namespace Prisma {
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     credit_purchases?: credit_purchasesUpdateManyWithoutUserNestedInput
     subscriptions?: subscriptionsUpdateManyWithoutUserNestedInput
     tasks_log?: tasks_logUpdateManyWithoutUserNestedInput
@@ -12407,6 +12455,7 @@ export namespace Prisma {
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     credit_purchases?: credit_purchasesUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: subscriptionsUncheckedUpdateManyWithoutUserNestedInput
     tasks_log?: tasks_logUncheckedUpdateManyWithoutUserNestedInput

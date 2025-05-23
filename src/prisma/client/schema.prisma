@@ -12,18 +12,19 @@ datasource db {
 }
 
 model users {
-  id                String                @id @db.Uuid
-  email             String                @unique
-  name              String
-  role              UserRole              @default(user)
-  subscription_plan String?
-  credits_balance   Int                   @default(0)
-  created_at        DateTime              @default(now())
-  admin_activities  admin_activity_logs[] @relation("AdminActivities")
-  credit_purchases  credit_purchases[]
-  subscriptions     subscriptions[]
-  tasks_log         tasks_log[]
-  whatsapp_messages whatsapp_messages[]
+  id                   String                @id @db.Uuid
+  email                String                @unique
+  name                 String
+  role                 UserRole              @default(user)
+  subscription_plan    String?               @default("free")
+  credits_balance      Int                   @default(0)
+  created_at           DateTime              @default(now())
+  stripeSubscriptionId String?
+  admin_activities     admin_activity_logs[] @relation("AdminActivities")
+  credit_purchases     credit_purchases[]
+  subscriptions        subscriptions[]
+  tasks_log            tasks_log[]
+  whatsapp_messages    whatsapp_messages[]
 
   @@schema("public")
 }
@@ -111,7 +112,7 @@ enum UserRole {
 enum PlanType {
   essential
   professional
-  completo
+  complete
 
   @@schema("public")
 }
