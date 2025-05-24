@@ -6,15 +6,30 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { AlertTriangle } from "lucide-react";
-import { recentActivity, planFeatures } from "@/lib/constants/usermock";
+import { recentActivity } from "@/lib/constants/usermock";
+import { useAuth } from "@/core/auth/AuthProvider";
+import { plans, freePlan } from '@/lib/constants/usermock';
+import { useEffect, useState } from "react";
+import { getCurrentProfile } from "@/core/auth/server";
+import { usePathname } from "next/navigation";
 
 export default function UserDashboard() {
-  const user = {
-    name: "John Doe",
-    email: "john@example.com",
-    plan: "Professional",
-    credits: 85,
-  };
+  const [{profile}] = useAuth();
+  const pathname = usePathname();
+  const [currentPlan, setCurrentPlan] = useState(freePlan); 
+  const [currentUser, setCurrentUser] = useState(profile)
+
+  const setSubscription = async () => {
+    const user = await getCurrentProfile();
+    setCurrentUser(user);
+    plans.map((plan)=> {
+      if(plan.id === user.subscription_plan?.toLocaleLowerCase()) setCurrentPlan(plan);
+    })
+  }
+
+  useEffect(()=> {
+    setSubscription()
+  },[pathname])
 
   return (
     <div className="relative overflow-hidden">
@@ -22,7 +37,7 @@ export default function UserDashboard() {
         {/* Header section */}
         <div className="bg-background/70 backdrop-blur-md p-8 rounded-lg shadow-xl border border-[#8b5cf6]/20">
           <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6] bg-clip-text text-transparent">
-            Welcome back, {user.name.split(" ")[0]}!
+            Welcome back, {currentUser.name.split(" ")[0]}!
           </h1>
           <p className="text-muted-foreground">
             Here's an overview of your account and recent activity.
@@ -53,7 +68,7 @@ export default function UserDashboard() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <Users className="h-5 w-5 text-[#2B6CB0]" />
-                  <span className="text-2xl font-bold">{user.plan}</span>
+                  <span className="text-2xl font-bold">{currentUser.subscription_plan.toLocaleUpperCase()}</span>
                 </div>
               </div>
               <p className="mt-1 text-xs text-muted-foreground">Professional plan with monthly billing</p>
@@ -68,7 +83,7 @@ export default function UserDashboard() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <CreditCard className="h-5 w-5 text-[#8b5cf6]" />
-                  <span className="text-2xl font-bold">{user.credits}</span>
+                  <span className="text-2xl font-bold">{currentUser.credits_balance}</span>
                 </div>
                 <span className="text-xs text-red-500">-15%</span>
               </div>
@@ -102,15 +117,18 @@ export default function UserDashboard() {
             <CardContent>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-lg font-medium">{user.plan}</p>
-                  <p className="text-sm text-muted-foreground">R$49.90/month</p>
+                  <p className="text-lg font-medium">{currentPlan.name}</p>
+                  <span className="text-2xl font-bold">{currentPlan.price}</span>
+                  <span className="ml-1 text-sm text-muted-foreground">
+                    /{currentPlan.interval}
+                  </span>
                 </div>
                 <Badge className="bg-[#2B6CB0]/10 text-[#2B6CB0] hover:bg-[#2B6CB0]/20">Active</Badge>
               </div>
               <div className="mt-4">
                 <p className="text-sm font-medium">Plan Features:</p>
                 <ul className="mt-2 space-y-2 text-sm">
-                  {planFeatures.Professional.map((feature, index) => (
+                  {currentPlan.features.map((feature, index) => (
                     <li key={index} className="flex items-center">
                       <CheckCircle className="mr-2 h-4 w-4 text-green-500" />
                       {feature}

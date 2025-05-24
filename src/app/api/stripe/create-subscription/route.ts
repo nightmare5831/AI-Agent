@@ -20,6 +20,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
     
+    //one user can have multiful active customer records, so need to subscription Id in user table to keep only one active subscription per user.
     if(subscriptionId) {
       const subscription = await stripe.subscriptions.retrieve(subscriptionId);
       if(subscription && subscription.status === 'active') {

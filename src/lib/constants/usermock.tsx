@@ -51,14 +51,6 @@ export const recentActivity = [
   },
 ];
 
-export const planFeatures = {
-  Professional: [
-    '150 AI Credits',
-    'WhatsApp Bot Automation',
-    'Priority Support',
-  ],
-};
-
 export const agentCards = [
   {
     id: 1,
@@ -214,6 +206,21 @@ export const activityLogs = [
     status: 'completed',
   },
 ];
+
+export const freePlan = {
+  id: 'free',
+  name: 'Free',
+  price: 'R$00.00',
+  interval: 'month',
+  credits: 10,
+  features: [
+    '5 AI Credits',
+    'Basic AI Agents',
+    'Email Support',
+    '1-day History',
+  ],
+  recommended: false,
+} 
 
 export const plans = [
   {

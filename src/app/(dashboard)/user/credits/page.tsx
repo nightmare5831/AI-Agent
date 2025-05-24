@@ -19,6 +19,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import Request from '@/lib/request';
 import { getSubscription } from '@/core/subscription';
+import { getCurrentProfile } from '@/core/auth/server';
 
 const CreditsPage = () => {
   const router = useRouter();
@@ -35,8 +36,8 @@ const CreditsPage = () => {
       if(url?.url) {
         router.push(url.url)
       } else { 
-        router.push('/user')
-        setTimeout(() => {setReset(reset + 1);}, 2000)
+        router.replace('/user')
+        setTimeout(() => {setReset(reset + 1);}, 500)
       };
       toast.success('Subscripion created successfully!');
     } catch (error : any) {
@@ -61,14 +62,15 @@ const CreditsPage = () => {
 
   const setSubscription = async () => {
     const subscription = await getSubscription(profile.id)
-    const matchedPlan = plans.find(
-      (tplan) => tplan.id === profile.subscription_plan.toLowerCase()
+    const user = await getCurrentProfile();
+    let price = '';
+    plans.map(
+      (tplan) => {if(tplan.id === subscription.plan_type.toLowerCase()) price = tplan.price}
     );
-    const price = matchedPlan?.price ?? '';
     setCurrentCredit(prev => ({
       ...prev,
       plan: subscription?.plan_type,
-      balance: profile.credits_balance,
+      balance: user.credits_balance,
       nextBilling: subscription?.end_date.toLocaleString(),
       resetDate: subscription?.start_date.toLocaleString(),
       price: price,
@@ -116,8 +118,8 @@ const CreditsPage = () => {
           <CardHeader>
             <CardTitle>Your Current Plan</CardTitle>
             <CardDescription>
-              You are currently on the {profile.subscription_plan} plan with{' '}
-              {profile.credits_balance} credits remaining.
+              You are currently on the {profile?.subscription_plan} plan with{' '}
+              {profile?.credits_balance} credits remaining.
             </CardDescription>
           </CardHeader>
           <CardContent className="pb-0">
