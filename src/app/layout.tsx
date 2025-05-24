@@ -12,7 +12,10 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'SmartAgent',
-  description: 'A modern platform for personalized learning',
+  description: 'A modern SASS AI Agent Platform Integrated WhatsAPP ',
+  icons: {
+    icon:'/favicon.ico',
+  },
 };
 
 export default async function RootLayout({

@@ -51,14 +51,6 @@ export const recentActivity = [
   },
 ];
 
-export const planFeatures = {
-  Professional: [
-    '150 AI Credits',
-    'WhatsApp Bot Automation',
-    'Priority Support',
-  ],
-};
-
 export const agentCards = [
   {
     id: 1,
@@ -212,5 +204,92 @@ export const activityLogs = [
     activity: 'Market Research',
     creditsUsed: 12,
     status: 'completed',
+  },
+];
+
+export const freePlan = {
+  id: 'free',
+  name: 'Free',
+  price: 'R$00.00',
+  interval: 'month',
+  credits: 10,
+  features: [
+    '5 AI Credits',
+    'Basic AI Agents',
+    'Email Support',
+    '1-day History',
+  ],
+  recommended: false,
+} 
+
+export const plans = [
+  {
+    id: 'essential',
+    name: 'Essential',
+    price: 'R$29.90',
+    interval: 'month',
+    credits: 100,
+    features: [
+      '100 AI Credits',
+      'Basic AI Agents',
+      'Email Support',
+      '3-day History',
+    ],
+    recommended: false,
+  },
+  {
+    id: 'professional',
+    name: 'Professional',
+    price: 'R$49.90',
+    interval: 'month',
+    credits: 150,
+    features: [
+      '150 AI Credits',
+      'All AI Agents',
+      'WhatsApp Bot Automation',
+      'Priority Support',
+      '14-day History',
+    ],
+    recommended: true,
+  },
+  {
+    id: 'complete',
+    name: 'Complete',
+    price: 'R$59.90',
+    interval: 'month',
+    credits: 200,
+    features: [
+      '200 AI Credits',
+      'All AI Agents',
+      'WhatsApp Bot Automation',
+      'AI Scheduling Bot',
+      'Priority Support',
+      '30-day History',
+    ],
+    recommended: false,
+  },
+];
+
+export const creditPacks = [
+  {
+    id: 'PACK_100',
+    name: 'Small Pack',
+    credits: 100,
+    price: 'R$19.90',
+    recommended: false,
+  },
+  {
+    id: 'PACK_500',
+    name: 'Medium Pack',
+    credits: 500,
+    price: 'R$49.90',
+    recommended: true,
+  },
+  {
+    id: 'PACK_1000',
+    name: 'Large Pack',
+    credits: 1000,
+    price: 'R$89.90',
+    recommended: false,
   },
 ];

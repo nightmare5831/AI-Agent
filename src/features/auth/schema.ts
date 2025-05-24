@@ -1,5 +1,4 @@
 import { z } from 'zod';
-
 export const signInSchema = z.object({
   email: z
     .string()
@@ -27,9 +26,15 @@ export const profileInputSchema = z.object({
     .string()
     .min(1, { message: 'Password cannot be empty' })
     .min(6, { message: 'Password must be at least 6 characters' }),
-  phone_number: z.string().optional(),
   role: z.string().optional(),
-  address: z.string().optional(),
+  subscription_plan: z
+    .string()
+    .min(1, {message: 'Subscription not be null'}),
+  stripeSubscriptionId: z
+    .string(),
+  credits_balance: z
+    .number()
+    .min(0, {message: 'Credit Balance cannot be negative'})
 });
 
 export type ProfileInput = z.infer<typeof profileInputSchema>;

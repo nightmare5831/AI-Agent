@@ -11,7 +11,7 @@ import { Check } from 'lucide-react';
 import Image from 'next/image';
 import { useState, createContext, useContext, useEffect } from 'react';
 import { translations } from '@/lib/i18n/translations';
-import { TranslationType, TranslationsType } from '@/types/translations';
+import { TranslationsType } from '@/types/translations';
 
 interface LanguageContextType {
   selectedLanguage: string;
