@@ -11,7 +11,6 @@ import {
 } from '@/components/ui/form';
 import { Icons } from '@/components/ui/icons';
 import { Input } from '@/components/ui/input';
-import { getCurrentProfile } from '@/core/auth/server';
 import supabase from '@/lib/supabase/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2, KeyRound, Lock, Mail, Star } from 'lucide-react';
@@ -23,7 +22,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 import Loading from '../loading';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion} from 'framer-motion';
 import { useTheme } from 'next-themes';
 
 const formSchema = z.object({
