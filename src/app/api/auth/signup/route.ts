@@ -30,7 +30,6 @@ export const POST = async (request: Request) => {
 
   if (error) {
     console.log(error.message);
-
     switch (error.message) {
       case 'Email rate limit exceeded':
         return HTTP.BAD_REQUEST({
@@ -41,17 +40,14 @@ export const POST = async (request: Request) => {
     return HTTP.BAD_REQUEST({ message: 'User registration failed' });
   }
 
-  const profile = await prisma.users.findFirst({ where: { id: user.id } });
-  if (!profile) {
-    await prisma.users.create({
-      data: {
-        id: user.id,
-        name: formData.full_name,
-        email: formData.email,
-        role: formData.role,
-      },
-    });
-  }
+  await prisma.users.create({
+    data: {
+      id: user.id,
+      name: formData.full_name,
+      email: formData.email,
+      role: formData.role,
+    },
+  });
 
   return HTTP.SUCCESS({ message: 'User registered successfully' });
 };

@@ -33,7 +33,7 @@ export async function POST(req: Request) {
             planType,
           },
         });
-        return NextResponse.json({plan: planType}, {status:200})
+        return NextResponse.json({url: `${process.env.NEXT_PUBLIC_SITE_URL}`}, {status:200})
       }
     } 
     
