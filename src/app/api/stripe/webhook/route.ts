@@ -11,7 +11,6 @@ export async function POST(req: Request) {
   if (!signature) {
     return NextResponse.json({ error: 'Missing stripe signature' }, { status: 400 });
   }
-  
   let event: Stripe.Event;
   
   try {
@@ -85,7 +84,7 @@ export async function POST(req: Request) {
       const planType = session.metadata.planType as PlanType;
       const userId = session.metadata.userId;
       const subscription_id = (await prisma.subscriptions.findFirst({where:{user_id:userId}})).id;
-      
+
       await prisma.subscriptions.update({
         where: {id: subscription_id},
         data: {

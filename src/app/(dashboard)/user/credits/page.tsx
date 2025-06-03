@@ -33,12 +33,7 @@ const CreditsPage = () => {
     try {
       const url = await Request.Post('/api/stripe/create-subscription', 
                           {planType:plan, userId:profile.id, subscriptionId: profile.stripeSubscriptionId});
-      if(url?.url) {
-        router.push(url.url)
-      } else { 
-        router.replace('/user')
-        setTimeout(() => {setReset(reset + 1);}, 500)
-      };
+      router.push(url.url)
       toast.success('Subscripion created successfully!');
     } catch (error : any) {
       toast.error(
@@ -62,10 +57,11 @@ const CreditsPage = () => {
 
   const setSubscription = async () => {
     const subscription = await getSubscription(profile.id)
+    console.log('subscription', subscription)
     const user = await getCurrentProfile();
     let price = '';
     plans.map(
-      (tplan) => {if(tplan.id === subscription.plan_type.toLowerCase()) price = tplan.price}
+      (tplan) => {if(tplan.id === subscription?.plan_type.toLowerCase()) price = tplan.price}
     );
     setCurrentCredit(prev => ({
       ...prev,
@@ -80,7 +76,7 @@ const CreditsPage = () => {
 
   useEffect(() => {
     setSubscription();
-  },[reset])
+  },[])
 
   return (
     <div className="relative overflow-hidden">
