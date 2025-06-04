@@ -8,7 +8,6 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useState,
 } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import type {
@@ -40,12 +39,6 @@ type Actions = {
 export const AuthContext = createContext<[State, Actions]>([null, null]);
 AuthContext.displayName = 'AuthContext';
 
-interface AuthProviderProps {
-  defaultUser: User;
-  defaultProfile: ProfileInput;
-  children: ReactNode;
-}
-
 function reducer(
   state: State,
   { type, payload }: { type: string; payload: any }
@@ -56,19 +49,15 @@ function reducer(
   };
 }
 
-export const AuthProvider = ({
-  defaultUser,
-  defaultProfile,
-  children,
-}: AuthProviderProps) => {
+export const AuthProvider = ({ children } : {children: ReactNode}) => {
   const router = useRouter();
   const pathName = usePathname();
 
   const [state, dispatch] = useReducer(reducer, {
     loading: true,
-    authenticated: Boolean(defaultUser?.id),
-    user: defaultUser,
-    profile: defaultProfile,
+    authenticated: false,
+    user: null,
+    profile: null,
     error: '',
     view: '',
   });
