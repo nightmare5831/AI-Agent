@@ -5,7 +5,6 @@ import { ThemeProvider } from '@/components/providers/theme-provider';
 import { LanguageProvider } from '@/components/language-selector';
 
 import { AuthProvider } from '@/core/auth/AuthProvider';
-import { getCurrentProfile, getCurrentUser } from '@/core/auth/server';
 import { Toaster } from 'sonner';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -23,16 +22,11 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getCurrentUser();
-  const profile = await getCurrentProfile();
   
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <AuthProvider
-          defaultUser={user}
-          defaultProfile={profile}
-        >
+        <AuthProvider>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"

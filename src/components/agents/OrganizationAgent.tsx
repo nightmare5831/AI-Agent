@@ -1,271 +1,351 @@
 'use client';
-import React, { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Loader, Download, Share, Plus, X } from 'lucide-react';
-import { toast } from 'sonner';
+import { Calendar } from '../ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { CalendarIcon, Loader2, Plus, X } from 'lucide-react';
+import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
 
-interface OrganizationAgentProps {
-  credits: number;
-  setCredits: (credits: number) => void;
-}
+type Functionality = 'daily-checklist' | 'weekly-planner' | 'task-delegation' | 'support-workflow' | 'sop-template' | '';
 
-export const OrganizationAgent = ({
-  credits,
-  setCredits,
-}: OrganizationAgentProps) => {
-  const [documentType, setDocumentType] = useState('');
-  const [title, setTitle] = useState('');
-  const [targetTeam, setTargetTeam] = useState('');
-  const [outputFormat, setOutputFormat] = useState('');
-  const [tasks, setTasks] = useState(['']);
+export const OrganizationAgent = () => {
+  const [selectedFunctionality, setSelectedFunctionality] = useState<Functionality>('daily-checklist');
   const [isGenerating, setIsGenerating] = useState(false);
-  const [generatedDocument, setGeneratedDocument] = useState<any>(null);
-
-  const addTask = () => {
-    setTasks([...tasks, '']);
-  };
-
-  const removeTask = (index: number) => {
-    setTasks(tasks.filter((_, i) => i !== index));
-  };
-
-  const updateTask = (index: number, value: string) => {
-    const newTasks = [...tasks];
-    newTasks[index] = value;
-    setTasks(newTasks);
-  };
+  const [result, setResult] = useState('');
+  const [deadline, setDeadline] = useState<Date>();
+  const [formData, setFormData] = useState({
+    role: '',
+    workingHours: { start: '', end: '' },
+    responsibilities: '',
+    teamMembers: [] as string[],
+    tasks: [] as string[],
+    weeklyGoals: '',
+    recurringTasks: [] as string[],
+    customerChannels: [] as string[],
+    commonIssues: ''
+  });
 
   const handleGenerate = async () => {
-    if (!documentType || !title || !targetTeam) {
-      toast.error('Please fill in all required fields');
-      return;
-    }
-
-    if (credits < 1) {
-      toast.error('You need at least 1 credit to generate documents');
-      return;
-    }
-
     setIsGenerating(true);
 
-    // Simulate AI generation
-    setTimeout(() => {
-      const mockDocument = {
-        title: title,
-        type: documentType,
-        team: targetTeam,
-        content: `# ${title}\n\n## Overview\nThis ${documentType.toLowerCase()} has been generated for the ${targetTeam} team.\n\n## Key Points:\n${tasks
-          .filter((t) => t.trim())
-          .map((task, i) => `${i + 1}. ${task}`)
-          .join(
-            '\n'
-          )}\n\n## Next Steps\n- Review this document with your team\n- Assign responsibilities\n- Set deadlines for completion\n- Monitor progress regularly`,
-        generatedAt: new Date().toLocaleString(),
-      };
+    const mockResults : any = {}
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    mockResults[selectedFunctionality] = {
+      'daily-checklist': `📋 Daily Checklist for ${formData.role}:\n\n🌅 Morning (${formData.workingHours.start}):\n• Check emails and prioritize urgent items\n• Review today's scheduled tasks\n• Team standup meeting\n• Update project status\n\n☀️ Midday:\n• ${formData.tasks.slice(0, 2).join('\n• ')}\n• Client check-ins\n• Progress review\n\n🌆 End of Day:\n• Complete pending tasks\n• Plan tomorrow's priorities\n• Update team on progress\n• Log work hours\n\nRecurring: ${formData.recurringTasks.join(', ')}`,
+      
+      'weekly-planner': `📅 Weekly Planner:\n\nMONDAY - Planning Day\n• Week kickoff meeting\n• Priority setting\n• Resource allocation\n\nTUESDAY-THURSDAY - Execution Days\n• Core project work\n• ${formData.tasks.slice(0, 3).join('\n• ')}\n• Client communications\n\nFRIDAY - Review & Planning\n• Week wrap-up\n• Next week preparation\n• Team feedback session\n\nWeekly Goals: ${formData.weeklyGoals}\nTeam: ${formData.teamMembers.join(', ')}`,
+      
+      'task-delegation': `👥 Task Delegation Plan:\n\n${formData.teamMembers.map((member, index) => `${member}:\n• ${formData.tasks[index] || 'Strategic planning'}\n• Progress reviews\n• Quality assurance`).join('\n\n')}\n\nDelegation Principles:\n✅ Clear expectations\n✅ Defined deadlines\n✅ Regular check-ins\n✅ Resource allocation\n\nTrack progress via weekly 1:1s and project updates.`,
+      
+      'support-workflow': `🛠️ Support Workflow:\n\nChannels: ${formData.customerChannels.join(', ')}\n\nTier 1 - Initial Response (30 min)\n• Acknowledge issue\n• Gather basic information\n• Apply known solutions\n\nTier 2 - Investigation (2 hours)\n• Deep dive analysis\n• Escalate if needed\n• Provide updates\n\nTier 3 - Resolution (24 hours)\n• Implement solution\n• Test and verify\n• Follow up with customer\n\nCommon Issues:\n${formData.commonIssues}`,
+      
+      'sop-template': `📋 Standard Operating Procedure\n\nRole: ${formData.role}\nDepartment: Operations\n\n1. PURPOSE\nTo standardize ${formData.responsibilities}\n\n2. SCOPE\nApplies to all ${formData.teamMembers.join(', ')}\n\n3. PROCEDURE\nStep 1: ${formData.tasks[0] || 'Initial assessment'}\nStep 2: ${formData.tasks[1] || 'Execute main process'}\nStep 3: ${formData.tasks[2] || 'Quality check'}\nStep 4: Documentation and handoff\n\n4. RESPONSIBILITIES\n${formData.responsibilities}\n\n5. QUALITY STANDARDS\n• Accuracy: 99.5%\n• Response time: < 24 hours\n• Customer satisfaction: > 4.5/5`
+    };
 
-      setGeneratedDocument(mockDocument);
-      setCredits(credits - 1);
-      setIsGenerating(false);
+    setResult(mockResults[selectedFunctionality] || 'Generated plan will appear here...');
+    setIsGenerating(false);
+  };
 
-      toast.success('Your organizational document is ready');
-    }, 2000);
+  const addTeamMember = (member: string) => {
+    if (member.trim() && !formData.teamMembers.includes(member.trim())) {
+      setFormData(prev => ({
+        ...prev,
+        teamMembers: [...prev.teamMembers, member.trim()]
+      }));
+    }
+  };
+
+  const removeTeamMember = (member: string) => {
+    setFormData(prev => ({
+      ...prev,
+      teamMembers: prev.teamMembers.filter(m => m !== member)
+    }));
+  };
+
+  const addTask = (task: string) => {
+    if (task.trim() && !formData.tasks.includes(task.trim())) {
+      setFormData(prev => ({
+        ...prev,
+        tasks: [...prev.tasks, task.trim()]
+      }));
+    }
+  };
+
+  const removeTask = (task: string) => {
+    setFormData(prev => ({
+      ...prev,
+      tasks: prev.tasks.filter(t => t !== task)
+    }));
+  };
+
+  const toggleRecurringTask = (task: string) => {
+    setFormData(prev => ({
+      ...prev,
+      recurringTasks: prev.recurringTasks.includes(task)
+        ? prev.recurringTasks.filter(t => t !== task)
+        : [...prev.recurringTasks, task]
+    }));
+  };
+
+  const toggleChannel = (channel: string) => {
+    setFormData(prev => ({
+      ...prev,
+      customerChannels: prev.customerChannels.includes(channel)
+        ? prev.customerChannels.filter(c => c !== channel)
+        : [...prev.customerChannels, channel]
+    }));
   };
 
   return (
-    <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-      <Card className="border-2 border-green-100 bg-gradient-to-br from-green-50 to-emerald-50">
-        <CardHeader className="rounded-t-lg bg-gradient-to-r from-green-500 to-emerald-600 text-white">
-          <CardTitle className="flex items-center justify-between">
-            <span>Document Generator</span>
-            <Badge variant="default" className="bg-white text-green-600">
-              1 Credit
-            </Badge>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6 p-6">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <div>
-              <label className="mb-2 block text-sm font-medium text-slate-700">
-                Document Type *
-              </label>
-              <Select value={documentType} onValueChange={setDocumentType}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="checklist">Checklist</SelectItem>
-                  <SelectItem value="sop">
-                    Customer service workflow 
-                  </SelectItem>
-                  <SelectItem value="briefing">Briefing Document</SelectItem>
-                  <SelectItem value="weekly-plan">Weekly Plan</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+    <div className="space-y-6">
+      {/* Functionality Selection */}
+      <div className="space-y-2">
+        <Label htmlFor="functionality" className="text-lg font-semibold">Select Functionality</Label>
+        <Select value={selectedFunctionality} onValueChange={(value: Functionality) => setSelectedFunctionality(value)}>
+          <SelectTrigger className="h-12 text-base">
+            <SelectValue placeholder="Choose an organization function..." />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="daily-checklist">📋 Daily Checklist</SelectItem>
+            <SelectItem value="weekly-planner">📅 Weekly Planner</SelectItem>
+            <SelectItem value="task-delegation">👥 Task Delegation</SelectItem>
+            <SelectItem value="support-workflow">🛠️ Support Workflow</SelectItem>
+            <SelectItem value="sop-template">📋 SOP Template</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
 
-            <div>
-              <label className="mb-2 block text-sm font-medium text-slate-700">
-                Target Team *
-              </label>
-              <Select value={targetTeam} onValueChange={setTargetTeam} >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select team" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="sales">Sales Team</SelectItem>
-                  <SelectItem value="support">Support Team</SelectItem>
-                  <SelectItem value="ops">Operations Team</SelectItem>
-                  <SelectItem value="marketing">Marketing Team</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
+      {/* Dynamic Form Fields */}
+      <div className="space-y-6 animate-fade-in">
+        {/* Common Fields */}
+        <div className="space-y-2">
+          <Label htmlFor="role">Role/Department</Label>
+          <Input
+            id="role"
+            value={formData.role}
+            onChange={(e) => setFormData(prev => ({ ...prev, role: e.target.value }))}
+            placeholder="e.g., Project Manager, Sales Team"
+            className="h-11"
+          />
+        </div>
 
-          <div>
-            <label className="mb-2 block text-sm font-medium text-slate-700">
-              Document Title *
-            </label>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="startTime">Working Hours - Start</Label>
             <Input
-              placeholder="e.g., Customer Onboarding Checklist"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              id="startTime"
+              type="time"
+              value={formData.workingHours.start}
+              onChange={(e) => setFormData(prev => ({ 
+                ...prev, 
+                workingHours: { ...prev.workingHours, start: e.target.value }
+              }))}
+              className="h-11"
             />
           </div>
-
-          <div>
-            <label className="mb-2 block text-sm font-medium text-slate-700">
-              Tasks or Key Points
-            </label>
-            <div className="space-y-3">
-              {tasks.map((task, index) => (
-                <div key={index} className="flex items-center space-x-2">
-                  <Input
-                    placeholder={`Task ${index + 1}`}
-                    value={task}
-                    onChange={(e) => updateTask(index, e.target.value)}
-                    className="flex-1"
-                  />
-                  {tasks.length > 1 && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => removeTask(index)}
-                      className="px-2"
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
-                  )}
-                </div>
-              ))}
-              <Button variant="outline" onClick={addTask} className="w-full">
-                <Plus className="mr-2 h-4 w-4" />
-                Add Task
-              </Button>
-            </div>
+          <div className="space-y-2">
+            <Label htmlFor="endTime">Working Hours - End</Label>
+            <Input
+              id="endTime"
+              type="time"
+              value={formData.workingHours.end}
+              onChange={(e) => setFormData(prev => ({ 
+                ...prev, 
+                workingHours: { ...prev.workingHours, end: e.target.value }
+              }))}
+              className="h-11"
+            />
           </div>
+        </div>
 
-          <div>
-            <label className="mb-2 block text-sm font-medium text-slate-700">
-              Output Format
-            </label>
-            <Select value={outputFormat} onValueChange={setOutputFormat}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select format" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="text">Text (.txt)</SelectItem>
-                <SelectItem value="pdf">PDF Document</SelectItem>
-                <SelectItem value="excel">Excel Spreadsheet</SelectItem>
-              </SelectContent>
-            </Select>
+        <div className="space-y-2">
+          <Label htmlFor="responsibilities">Responsibilities</Label>
+          <Textarea
+            id="responsibilities"
+            value={formData.responsibilities}
+            onChange={(e) => setFormData(prev => ({ ...prev, responsibilities: e.target.value }))}
+            placeholder="Describe key responsibilities and duties..."
+            className="min-h-[100px]"
+          />
+        </div>
+
+        {/* Team Members */}
+        <div className="space-y-3">
+          <Label>Team Members</Label>
+          <div className="flex flex-wrap gap-2 mb-2">
+            {formData.teamMembers.map(member => (
+              <Badge key={member} variant="success" className="cursor-pointer" onClick={() => removeTeamMember(member)}>
+                {member} <X className="ml-1 h-3 w-3" />
+              </Badge>
+            ))}
           </div>
+          <Input
+            placeholder="Add team member and press Enter"
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') {
+                addTeamMember(e.currentTarget.value);
+                e.currentTarget.value = '';
+              }
+            }}
+            className="h-11"
+          />
+        </div>
 
-          <Button
-            onClick={handleGenerate}
-            disabled={isGenerating || credits < 1}
-            className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700"
-          >
-            {isGenerating ? (
-              <>
-                <Loader className="mr-2 h-4 w-4 animate-spin" />
-                Generating Document...
-              </>
-            ) : (
-              <>Generate Document</>
+        {/* Tasks */}
+        <div className="space-y-3">
+          <Label>Tasks</Label>
+          <div className="space-y-2">
+            {formData.tasks.map((task, index) => (
+              <div key={index} className="flex items-center gap-2 p-2 bg-gray-50 rounded">
+                <span className="flex-1">{task}</span>
+                <Button variant="ghost" size="sm" onClick={() => removeTask(task)}>
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            ))}
+          </div>
+          <Input
+            placeholder="Add task and press Enter"
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') {
+                addTask(e.currentTarget.value);
+                e.currentTarget.value = '';
+              }
+            }}
+            className="h-11"
+          />
+        </div>
+
+        {/* Functionality-specific fields */}
+        {(selectedFunctionality === 'task-delegation' || selectedFunctionality === 'weekly-planner') && (
+          <>
+            {selectedFunctionality === 'weekly-planner' && (
+              <div className="space-y-2">
+                <Label htmlFor="weeklyGoals">Weekly Goals</Label>
+                <Textarea
+                  id="weeklyGoals"
+                  value={formData.weeklyGoals}
+                  onChange={(e) => setFormData(prev => ({ ...prev, weeklyGoals: e.target.value }))}
+                  placeholder="Define key objectives for the week..."
+                  className="min-h-[80px]"
+                />
+              </div>
             )}
-          </Button>
-        </CardContent>
-      </Card>
 
-      <Card className="border-2 border-slate-200">
-        <CardHeader>
-          <CardTitle>Generated Document</CardTitle>
-        </CardHeader>
-        <CardContent className="p-6">
-          {!generatedDocument && !isGenerating && (
-            <div className="py-12 text-center text-slate-500">
-              <p>Generated document will appear here</p>
-              <p className="mt-2 text-sm">
-                Fill in the form and click generate to get started
-              </p>
+            <div className="space-y-2">
+              <Label>Deadline</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal h-11",
+                      !deadline && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {deadline ? format(deadline, "PPP") : <span>Pick a deadline</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={deadline}
+                    onSelect={setDeadline}
+                    initialFocus
+                    className="p-3 pointer-events-auto"
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
-          )}
+          </>
+        )}
 
-          {isGenerating && (
-            <div className="py-12 text-center">
-              <Loader className="mx-auto mb-4 h-8 w-8 animate-spin text-green-500" />
-              <p className="text-slate-600">
-                AI is generating your document...
-              </p>
+        {(selectedFunctionality === 'daily-checklist' || selectedFunctionality === 'weekly-planner') && (
+          <div className="space-y-3">
+            <Label>Recurring Tasks</Label>
+            <div className="flex flex-wrap gap-2">
+              {['Daily standup', 'Email check', 'Progress update', 'Planning session', 'Team sync', 'Report review'].map(task => (
+                <Badge
+                  key={task}
+                  variant={formData.recurringTasks.includes(task) ? "default" : "warning"}
+                  className="cursor-pointer hover:scale-105 transition-transform"
+                  onClick={() => toggleRecurringTask(task)}
+                >
+                  {task}
+                </Badge>
+              ))}
             </div>
-          )}
+          </div>
+        )}
 
-          {generatedDocument && (
-            <div className="space-y-6">
-              <div className="rounded-lg border bg-slate-50 p-6">
-                <div className="mb-4">
-                  <h3 className="text-lg font-semibold text-slate-900">
-                    {generatedDocument.title}
-                  </h3>
-                  <div className="mt-2 flex items-center space-x-4 text-sm text-slate-600">
-                    <span>Type: {generatedDocument.type}</span>
-                    <span>Team: {generatedDocument.team}</span>
-                    <span>Generated: {generatedDocument.generatedAt}</span>
-                  </div>
-                </div>
-                <div className="prose prose-sm max-w-none">
-                  <pre className="whitespace-pre-wrap font-sans text-sm text-slate-700">
-                    {generatedDocument.content}
-                  </pre>
-                </div>
+        {selectedFunctionality === 'support-workflow' && (
+          <>
+            <div className="space-y-3">
+              <Label>Customer Channels</Label>
+              <div className="flex flex-wrap gap-2">
+                {['Email', 'Live Chat', 'Phone', 'Social Media', 'Ticket System', 'Community Forum'].map(channel => (
+                  <Badge
+                    key={channel}
+                    variant={formData.customerChannels.includes(channel) ? "default" : "success"}
+                    className="cursor-pointer hover:scale-105 transition-transform"
+                    onClick={() => toggleChannel(channel)}
+                  >
+                    {channel}
+                  </Badge>
+                ))}
               </div>
-
-              <div className="flex flex-wrap gap-3">
-                <Button variant="outline">
-                  <Download className="mr-2 h-4 w-4" />
-                  Download as {outputFormat || 'Text'}
-                </Button>
-                <Button variant="outline">
-                  <Share className="mr-2 h-4 w-4" />
-                  Share via WhatsApp
-                </Button>
-              </div>
-
-              <Badge className="bg-white text-purple-600">1 credit used</Badge>
             </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="commonIssues">Common Issues</Label>
+              <Textarea
+                id="commonIssues"
+                value={formData.commonIssues}
+                onChange={(e) => setFormData(prev => ({ ...prev, commonIssues: e.target.value }))}
+                placeholder="List frequent customer issues and their solutions..."
+                className="min-h-[100px]"
+              />
+            </div>
+          </>
+        )}
+
+        {/* Generate Button */}
+        <Button 
+          onClick={handleGenerate} 
+          className="w-full h-12 text-lg font-semibold bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 transition-all duration-200"
+          disabled={isGenerating}
+        >
+          {isGenerating ? (
+            <>
+              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+              Organizing...
+            </>
+          ) : (
+            'Generate Organization Plan'
           )}
-        </CardContent>
-      </Card>
+        </Button>
+
+        {/* Result Box */}
+        {result && (
+          <Card className="mt-6 bg-gradient-to-r from-blue-50 to-cyan-50 border-blue-200 animate-fade-in">
+            <div className="p-6">
+              <h3 className="text-lg font-semibold text-blue-800 mb-3">AI Generated Plan</h3>
+              <div className="whitespace-pre-line text-gray-700 leading-relaxed">
+                {result}
+              </div>
+            </div>
+          </Card>
+        )}
+      </div>
     </div>
   );
 };

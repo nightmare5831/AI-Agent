@@ -25,7 +25,7 @@ export function Sidebar({ open, onOpenChange, type }: SidebarProps) {
   
   // Animation variants
   const sidebarVariants = {
-    open: { width: '17rem', transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1.0] } },
+    open: { width: '16rem', transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1.0] } },
     closed: { width: '4rem', transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1.0] } }
   };
   
@@ -129,7 +129,7 @@ export function Sidebar({ open, onOpenChange, type }: SidebarProps) {
       <div 
         className="fixed z-40 transition-all duration-500" 
         style={{ 
-          left: open ? 'calc(17rem - 1.25rem)' : 'calc(4rem - 1.25rem)', 
+          left: open ? 'calc(16rem - 1.25rem)' : 'calc(4rem - 1.25rem)', 
           top: '5rem', 
           transition: 'left 0.5s cubic-bezier(0.25, 0.1, 0.25, 1.0)' 
         }}
