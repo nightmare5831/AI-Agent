@@ -394,7 +394,7 @@ export const StrategyAgent = () => {
         {/* Generate Button */}
         <Button 
           onClick={handleGenerate} 
-          className="w-full h-12 text-lg font-semibold bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 transition-all duration-200"
+          className="w-full h-12 text-lg font-semibold bg-gradient-to-r from-green-500 to-[#3ff48e] hover:from-green-500 hover:to-green-500 transition-all duration-200"
           disabled={isGenerating}
         >
           {isGenerating ? (
