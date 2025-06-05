@@ -19,7 +19,6 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import Request from '@/lib/request';
 import { getSubscription } from '@/core/subscription';
-import { getCurrentProfile } from '@/core/auth/server';
 
 const CreditsPage = () => {
   const router = useRouter();
