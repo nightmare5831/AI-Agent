@@ -1,64 +1,75 @@
 'use client';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { CalendarIcon, Loader2, X } from 'lucide-react';
+import { getRequiredFieldsOrganization } from '@/lib/agent';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import Request from '@/lib/request';
+import { useAuth } from '@/core/auth/AuthProvider';
 
-type Functionality = 'daily-checklist' | 'weekly-planner' | 'task-delegation' | 'support-workflow' | 'sop-template' | '';
+type Functionality =
+  | 'daily-checklist'
+  | 'weekly-planner'
+  | 'task-delegation'
+  | 'support-workflow'
+  | 'sop-template'
+  | '';
 
-export const OrganizationAgent = () => {
-  const [selectedFunctionality, setSelectedFunctionality] = useState<Functionality>('daily-checklist');
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [result, setResult] = useState('');
+type AgentProps = {
+  isGenerating: boolean;
+  setResult: Function;
+  setIsGenerating: Function;
+};
+
+const initialInput = {
+  role: '',
+  workingHours: { start: '', end: '' },
+  responsibilities: '',
+  teamMembers: [] as string[],
+  tasks: [] as string[],
+  weeklyGoals: '',
+  recurringTasks: [] as string[],
+  customerChannels: [] as string[],
+  commonIssues: '',
+};
+
+export const OrganizationAgent = ({
+  isGenerating,
+  setResult,
+  setIsGenerating,
+}: AgentProps) => {
+  const [selectedFunctionality, setSelectedFunctionality] =
+    useState<Functionality>('daily-checklist');
   const [deadline, setDeadline] = useState<Date>();
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [formData, setFormData] = useState({
-    role: '',
-    workingHours: { start: '', end: '' },
-    responsibilities: '',
-    teamMembers: [] as string[],
-    tasks: [] as string[],
-    weeklyGoals: '',
-    recurringTasks: [] as string[],
-    customerChannels: [] as string[],
-    commonIssues: ''
-  });
+
+  const [formData, setFormData] = useState(initialInput);
+  const [{ profile }] = useAuth();
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
+    const requiredFields = getRequiredFieldsOrganization(selectedFunctionality);
 
-    // Get required fields based on functionality
-    const getRequiredFields = () => {
-      switch (selectedFunctionality) {
-        case 'daily-checklist':
-          return ['role', 'workingHours', 'responsibilities', 'teamMembers', 'tasks', 'recurringTasks'];
-        case 'weekly-planner':
-          return ['role', 'workingHours', 'responsibilities', 'teamMembers', 'weeklyGoals', 'recurringTasks'];
-        case 'task-delegation':
-          return ['role', 'teamMembers', 'tasks', 'responsibilities', 'deadline'];
-        case 'support-workflow':
-          return ['role', 'teamMembers', 'customerChannels', 'commonIssues'];
-        case 'sop-template':
-          return ['role', 'responsibilities', 'recurringTasks', 'customerChannels'];
-        default:
-          return [];
-      }
-    };
-
-    const requiredFields = getRequiredFields();
-
-    requiredFields.forEach(field => {
+    requiredFields.forEach((field) => {
       if (field === 'workingHours') {
         if (!formData.workingHours.start) {
           newErrors.workingHoursStart = 'Start time is required';
@@ -66,7 +77,12 @@ export const OrganizationAgent = () => {
         if (!formData.workingHours.end) {
           newErrors.workingHoursEnd = 'End time is required';
         }
-      } else if (field === 'teamMembers' || field === 'tasks' || field === 'recurringTasks' || field === 'customerChannels') {
+      } else if (
+        field === 'teamMembers' ||
+        field === 'tasks' ||
+        field === 'recurringTasks' ||
+        field === 'customerChannels'
+      ) {
         if (formData[field].length === 0) {
           newErrors[field] = `${field} is required`;
         }
@@ -74,7 +90,10 @@ export const OrganizationAgent = () => {
         if (!deadline) {
           newErrors.deadline = 'Deadline is required';
         }
-      } else if (!formData[field as keyof typeof formData] || String(formData[field as keyof typeof formData]).trim() === '') {
+      } else if (
+        !formData[field as keyof typeof formData] ||
+        String(formData[field as keyof typeof formData]).trim() === ''
+      ) {
         newErrors[field] = `${field} is required`;
       }
     });
@@ -90,88 +109,112 @@ export const OrganizationAgent = () => {
     }
 
     setIsGenerating(true);
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    const mockResults : any = {}
-    const inputData = {
-      agent:'organization',
-      function: selectedFunctionality,
-      inputs: formData
-    }
-    mockResults[selectedFunctionality] = await Request.Post('/api/agents', inputData);
-    console.log('mockResult', mockResults[selectedFunctionality])
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    // setResult(mockResults[selectedFunctionality] || 'Generated plan will appear here...');
-    setIsGenerating(false);
-    
-    toast.success("Organization plan generated successfully");
+    const inputData = {
+      agent: 'organization',
+      function: selectedFunctionality,
+      inputs: { ...formData, deadline: deadline },
+    };
+
+    let resultData = {
+      user_id: profile.id,
+      agent_type: 'organization',
+      task_type: selectedFunctionality,
+      credits_spent: 1,
+      output_type: '',
+    };
+
+    await Request.Post('/api/agents', inputData)
+      .then((res) => {
+        if (res.type === 'text') {
+          setResult({ script: res.script, url: '' });
+        } else {
+          setResult({ script: res.script, url: res.imageUrl });
+        }
+        setIsGenerating(false);
+        resultData.output_type = res.type;
+        toast.success('Organization plan generated successfully');
+      })
+      .catch((err) => {
+        console.log('error', err);
+        setIsGenerating(false);
+        resultData.output_type = '';
+        toast.error('Organization plan generated Error!');
+      });
+
+    await Request.Post('/api/stripe/discount', resultData)
+      .then((res) => console.log('loged result successfully!'))
+      .catch((err) => console.log('error to log result!'));
+
+    setFormData(initialInput);
   };
 
   const addTeamMember = (member: string) => {
     if (member.trim() && !formData.teamMembers.includes(member.trim())) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        teamMembers: [...prev.teamMembers, member.trim()]
+        teamMembers: [...prev.teamMembers, member.trim()],
       }));
       if (errors.teamMembers) {
-        setErrors(prev => ({ ...prev, teamMembers: '' }));
+        setErrors((prev) => ({ ...prev, teamMembers: '' }));
       }
     }
   };
 
   const removeTeamMember = (member: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      teamMembers: prev.teamMembers.filter(m => m !== member)
+      teamMembers: prev.teamMembers.filter((m) => m !== member),
     }));
   };
 
   const addTask = (task: string) => {
     if (task.trim() && !formData.tasks.includes(task.trim())) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        tasks: [...prev.tasks, task.trim()]
+        tasks: [...prev.tasks, task.trim()],
       }));
       if (errors.tasks) {
-        setErrors(prev => ({ ...prev, tasks: '' }));
+        setErrors((prev) => ({ ...prev, tasks: '' }));
       }
     }
   };
 
   const removeTask = (task: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      tasks: prev.tasks.filter(t => t !== task)
+      tasks: prev.tasks.filter((t) => t !== task),
     }));
   };
 
   const toggleRecurringTask = (task: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       recurringTasks: prev.recurringTasks.includes(task)
-        ? prev.recurringTasks.filter(t => t !== task)
-        : [...prev.recurringTasks, task]
+        ? prev.recurringTasks.filter((t) => t !== task)
+        : [...prev.recurringTasks, task],
     }));
     if (errors.recurringTasks) {
-      setErrors(prev => ({ ...prev, recurringTasks: '' }));
+      setErrors((prev) => ({ ...prev, recurringTasks: '' }));
     }
   };
 
   const toggleChannel = (channel: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       customerChannels: prev.customerChannels.includes(channel)
-        ? prev.customerChannels.filter(c => c !== channel)
-        : [...prev.customerChannels, channel]
+        ? prev.customerChannels.filter((c) => c !== channel)
+        : [...prev.customerChannels, channel],
     }));
     if (errors.customerChannels) {
-      setErrors(prev => ({ ...prev, customerChannels: '' }));
+      setErrors((prev) => ({ ...prev, customerChannels: '' }));
     }
   };
 
   const clearFieldError = (fieldName: string) => {
     if (errors[fieldName]) {
-      setErrors(prev => ({ ...prev, [fieldName]: '' }));
+      setErrors((prev) => ({ ...prev, [fieldName]: '' }));
     }
   };
 
@@ -186,7 +229,7 @@ export const OrganizationAgent = () => {
           id="role"
           value={formData.role}
           onChange={(e) => {
-            setFormData(prev => ({ ...prev, role: e.target.value }));
+            setFormData((prev) => ({ ...prev, role: e.target.value }));
             clearFieldError('role');
           }}
           placeholder="e.g., Project Manager, Sales Team"
@@ -199,7 +242,10 @@ export const OrganizationAgent = () => {
     // Working Hours (for daily-checklist, weekly-planner)
     if (['daily-checklist', 'weekly-planner'].includes(selectedFunctionality)) {
       fields.push(
-        <div key="workingHours" className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div
+          key="workingHours"
+          className="grid grid-cols-1 gap-4 md:grid-cols-2"
+        >
           <div className="space-y-2">
             <Label htmlFor="startTime">Working Hours - Start *</Label>
             <Input
@@ -207,15 +253,17 @@ export const OrganizationAgent = () => {
               type="time"
               value={formData.workingHours.start}
               onChange={(e) => {
-                setFormData(prev => ({ 
-                  ...prev, 
-                  workingHours: { ...prev.workingHours, start: e.target.value }
+                setFormData((prev) => ({
+                  ...prev,
+                  workingHours: { ...prev.workingHours, start: e.target.value },
                 }));
                 clearFieldError('workingHoursStart');
               }}
               className={`h-11 ${errors.workingHoursStart ? 'border-red-500' : ''}`}
             />
-            {errors.workingHoursStart && <p className="text-sm text-red-500">{errors.workingHoursStart}</p>}
+            {errors.workingHoursStart && (
+              <p className="text-sm text-red-500">{errors.workingHoursStart}</p>
+            )}
           </div>
           <div className="space-y-2">
             <Label htmlFor="endTime">Working Hours - End *</Label>
@@ -224,22 +272,31 @@ export const OrganizationAgent = () => {
               type="time"
               value={formData.workingHours.end}
               onChange={(e) => {
-                setFormData(prev => ({ 
-                  ...prev, 
-                  workingHours: { ...prev.workingHours, end: e.target.value }
+                setFormData((prev) => ({
+                  ...prev,
+                  workingHours: { ...prev.workingHours, end: e.target.value },
                 }));
                 clearFieldError('workingHoursEnd');
               }}
               className={`h-11 ${errors.workingHoursEnd ? 'border-red-500' : ''}`}
             />
-            {errors.workingHoursEnd && <p className="text-sm text-red-500">{errors.workingHoursEnd}</p>}
+            {errors.workingHoursEnd && (
+              <p className="text-sm text-red-500">{errors.workingHoursEnd}</p>
+            )}
           </div>
         </div>
       );
     }
 
     // Responsibilities (for daily-checklist, weekly-planner, task-delegation, sop-template)
-    if (['daily-checklist', 'weekly-planner', 'task-delegation', 'sop-template'].includes(selectedFunctionality)) {
+    if (
+      [
+        'daily-checklist',
+        'weekly-planner',
+        'task-delegation',
+        'sop-template',
+      ].includes(selectedFunctionality)
+    ) {
       fields.push(
         <div key="responsibilities" className="space-y-2">
           <Label htmlFor="responsibilities">Responsibilities *</Label>
@@ -247,13 +304,18 @@ export const OrganizationAgent = () => {
             id="responsibilities"
             value={formData.responsibilities}
             onChange={(e) => {
-              setFormData(prev => ({ ...prev, responsibilities: e.target.value }));
+              setFormData((prev) => ({
+                ...prev,
+                responsibilities: e.target.value,
+              }));
               clearFieldError('responsibilities');
             }}
             placeholder="Describe key responsibilities and duties..."
             className={`min-h-[100px] ${errors.responsibilities ? 'border-red-500' : ''}`}
           />
-          {errors.responsibilities && <p className="text-sm text-red-500">{errors.responsibilities}</p>}
+          {errors.responsibilities && (
+            <p className="text-sm text-red-500">{errors.responsibilities}</p>
+          )}
         </div>
       );
     }
@@ -262,9 +324,14 @@ export const OrganizationAgent = () => {
     fields.push(
       <div key="teamMembers" className="space-y-3">
         <Label>Team Members *</Label>
-        <div className="flex flex-wrap gap-2 mb-2">
-          {formData.teamMembers.map(member => (
-            <Badge key={member} variant="warning" className="cursor-pointer" onClick={() => removeTeamMember(member)}>
+        <div className="mb-2 flex flex-wrap gap-2">
+          {formData.teamMembers.map((member) => (
+            <Badge
+              key={member}
+              variant="warning"
+              className="cursor-pointer"
+              onClick={() => removeTeamMember(member)}
+            >
               {member} <X className="ml-1 h-3 w-3" />
             </Badge>
           ))}
@@ -279,20 +346,31 @@ export const OrganizationAgent = () => {
           }}
           className={`h-11 ${errors.teamMembers ? 'border-red-500' : ''}`}
         />
-        {errors.teamMembers && <p className="text-sm text-red-500">{errors.teamMembers}</p>}
+        {errors.teamMembers && (
+          <p className="text-sm text-red-500">{errors.teamMembers}</p>
+        )}
       </div>
     );
 
     // Tasks (for daily-checklist, task-delegation)
-    if (['daily-checklist', 'task-delegation'].includes(selectedFunctionality)) {
+    if (
+      ['daily-checklist', 'task-delegation'].includes(selectedFunctionality)
+    ) {
       fields.push(
         <div key="tasks" className="space-y-3">
           <Label>Tasks *</Label>
           <div className="space-y-2">
             {formData.tasks.map((task, index) => (
-              <div key={index} className="flex items-center gap-2 p-2 bg-gray-50 rounded">
+              <div
+                key={index}
+                className="flex items-center gap-2 rounded bg-gray-50 p-2"
+              >
                 <span className="flex-1">{task}</span>
-                <Button variant="ghost" size="sm" onClick={() => removeTask(task)}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => removeTask(task)}
+                >
                   <X className="h-4 w-4" />
                 </Button>
               </div>
@@ -308,7 +386,9 @@ export const OrganizationAgent = () => {
             }}
             className={`h-11 ${errors.tasks ? 'border-red-500' : ''}`}
           />
-          {errors.tasks && <p className="text-sm text-red-500">{errors.tasks}</p>}
+          {errors.tasks && (
+            <p className="text-sm text-red-500">{errors.tasks}</p>
+          )}
         </div>
       );
     }
@@ -322,13 +402,15 @@ export const OrganizationAgent = () => {
             id="weeklyGoals"
             value={formData.weeklyGoals}
             onChange={(e) => {
-              setFormData(prev => ({ ...prev, weeklyGoals: e.target.value }));
+              setFormData((prev) => ({ ...prev, weeklyGoals: e.target.value }));
               clearFieldError('weeklyGoals');
             }}
             placeholder="Define key objectives for the week..."
             className={`min-h-[80px] ${errors.weeklyGoals ? 'border-red-500' : ''}`}
           />
-          {errors.weeklyGoals && <p className="text-sm text-red-500">{errors.weeklyGoals}</p>}
+          {errors.weeklyGoals && (
+            <p className="text-sm text-red-500">{errors.weeklyGoals}</p>
+          )}
         </div>
       );
     }
@@ -343,13 +425,17 @@ export const OrganizationAgent = () => {
               <Button
                 variant="outline"
                 className={cn(
-                  "w-full justify-start text-left font-normal h-11",
-                  !deadline && "text-muted-foreground",
-                  errors.deadline && "border-red-500"
+                  'h-11 w-full justify-start text-left font-normal',
+                  !deadline && 'text-muted-foreground',
+                  errors.deadline && 'border-red-500'
                 )}
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
-                {deadline ? format(deadline, "PPP") : <span>Pick a deadline</span>}
+                {deadline ? (
+                  format(deadline, 'PPP')
+                ) : (
+                  <span>Pick a deadline</span>
+                )}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
@@ -361,33 +447,50 @@ export const OrganizationAgent = () => {
                   clearFieldError('deadline');
                 }}
                 initialFocus
-                className="p-3 pointer-events-auto"
+                className="pointer-events-auto p-3"
               />
             </PopoverContent>
           </Popover>
-          {errors.deadline && <p className="text-sm text-red-500">{errors.deadline}</p>}
+          {errors.deadline && (
+            <p className="text-sm text-red-500">{errors.deadline}</p>
+          )}
         </div>
       );
     }
 
     // Recurring Tasks (for daily-checklist, weekly-planner, sop-template)
-    if (['daily-checklist', 'weekly-planner', 'sop-template'].includes(selectedFunctionality)) {
+    if (
+      ['daily-checklist', 'weekly-planner', 'sop-template'].includes(
+        selectedFunctionality
+      )
+    ) {
       fields.push(
         <div key="recurringTasks" className="space-y-3">
           <Label>Recurring Tasks *</Label>
           <div className="flex flex-wrap gap-2">
-            {['Daily standup', 'Email check', 'Progress update', 'Planning session', 'Team sync', 'Report review'].map(task => (
+            {[
+              'Daily standup',
+              'Email check',
+              'Progress update',
+              'Planning session',
+              'Team sync',
+              'Report review',
+            ].map((task) => (
               <Badge
                 key={task}
-                variant={formData.recurringTasks.includes(task) ? "default" : "warning"}
-                className="cursor-pointer hover:scale-105 transition-transform"
+                variant={
+                  formData.recurringTasks.includes(task) ? 'success' : 'default'
+                }
+                className="cursor-pointer transition-transform hover:scale-105"
                 onClick={() => toggleRecurringTask(task)}
               >
                 {task}
               </Badge>
             ))}
           </div>
-          {errors.recurringTasks && <p className="text-sm text-red-500">{errors.recurringTasks}</p>}
+          {errors.recurringTasks && (
+            <p className="text-sm text-red-500">{errors.recurringTasks}</p>
+          )}
         </div>
       );
     }
@@ -398,18 +501,31 @@ export const OrganizationAgent = () => {
         <div key="customerChannels" className="space-y-3">
           <Label>Customer Channels *</Label>
           <div className="flex flex-wrap gap-2">
-            {['Email', 'Live Chat', 'Phone', 'Social Media', 'Ticket System', 'Community Forum'].map(channel => (
+            {[
+              'Email',
+              'Live Chat',
+              'Phone',
+              'Social Media',
+              'Ticket System',
+              'Community Forum',
+            ].map((channel) => (
               <Badge
                 key={channel}
-                variant={formData.customerChannels.includes(channel) ? "default" : "warning"}
-                className="cursor-pointer hover:scale-105 transition-transform"
+                variant={
+                  formData.customerChannels.includes(channel)
+                    ? 'success'
+                    : 'default'
+                }
+                className="cursor-pointer transition-transform hover:scale-105"
                 onClick={() => toggleChannel(channel)}
               >
                 {channel}
               </Badge>
             ))}
           </div>
-          {errors.customerChannels && <p className="text-sm text-red-500">{errors.customerChannels}</p>}
+          {errors.customerChannels && (
+            <p className="text-sm text-red-500">{errors.customerChannels}</p>
+          )}
         </div>
       );
     }
@@ -423,13 +539,18 @@ export const OrganizationAgent = () => {
             id="commonIssues"
             value={formData.commonIssues}
             onChange={(e) => {
-              setFormData(prev => ({ ...prev, commonIssues: e.target.value }));
+              setFormData((prev) => ({
+                ...prev,
+                commonIssues: e.target.value,
+              }));
               clearFieldError('commonIssues');
             }}
             placeholder="List frequent customer issues and their solutions..."
             className={`min-h-[100px] ${errors.commonIssues ? 'border-red-500' : ''}`}
           />
-          {errors.commonIssues && <p className="text-sm text-red-500">{errors.commonIssues}</p>}
+          {errors.commonIssues && (
+            <p className="text-sm text-red-500">{errors.commonIssues}</p>
+          )}
         </div>
       );
     }
@@ -441,8 +562,15 @@ export const OrganizationAgent = () => {
     <div className="space-y-6">
       {/* Functionality Selection */}
       <div className="space-y-2">
-        <Label htmlFor="functionality" className="text-lg font-semibold">Select Functionality</Label>
-        <Select value={selectedFunctionality} onValueChange={(value: Functionality) => setSelectedFunctionality(value)}>
+        <Label htmlFor="functionality" className="text-lg font-semibold">
+          Select Functionality
+        </Label>
+        <Select
+          value={selectedFunctionality}
+          onValueChange={(value: Functionality) =>
+            setSelectedFunctionality(value)
+          }
+        >
           <SelectTrigger className="h-12 text-base">
             <SelectValue placeholder="Choose an organization function..." />
           </SelectTrigger>
@@ -450,22 +578,22 @@ export const OrganizationAgent = () => {
             <SelectItem value="daily-checklist">📋 Daily Checklist</SelectItem>
             <SelectItem value="weekly-planner">📅 Weekly Planner</SelectItem>
             <SelectItem value="task-delegation">👥 Task Delegation</SelectItem>
-            <SelectItem value="support-workflow">🛠️ Support Workflow</SelectItem>
+            <SelectItem value="support-workflow">
+              🛠️ Support Workflow
+            </SelectItem>
             <SelectItem value="sop-template">📋 SOP Template</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
       {/* Dynamic Form Fields */}
-      <div className="space-y-6 animate-fade-in">
-        <div className="grid grid-cols-1 gap-4">
-          {renderFields()}
-        </div>
+      <div className="animate-fade-in space-y-6">
+        <div className="grid grid-cols-1 gap-4">{renderFields()}</div>
 
         {/* Generate Button */}
-        <Button 
-          onClick={handleGenerate} 
-          className="w-full h-12 text-lg font-semibold bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 transition-all duration-200"
+        <Button
+          onClick={handleGenerate}
+          className="h-12 w-full bg-gradient-to-r from-purple-500 to-indigo-500 text-lg font-semibold transition-all duration-200 hover:from-purple-600 hover:to-indigo-600"
           disabled={isGenerating}
         >
           {isGenerating ? (
@@ -477,18 +605,6 @@ export const OrganizationAgent = () => {
             'Generate Organization Plan'
           )}
         </Button>
-
-        {/* Result Box */}
-        {result && (
-          <Card className="mt-6 bg-gradient-to-r from-blue-50 to-cyan-50 border-blue-200 animate-fade-in">
-            <div className="p-6">
-              <h3 className="text-lg font-semibold text-blue-800 mb-3">AI Generated Plan</h3>
-              <div className="whitespace-pre-line text-gray-700 leading-relaxed">
-                {result}
-              </div>
-            </div>
-          </Card>
-        )}
       </div>
     </div>
   );

@@ -6,29 +6,32 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { AlertTriangle } from "lucide-react";
-import { recentActivity } from "@/lib/constants/usermock";
 import { useAuth } from "@/core/auth/AuthProvider";
 import { plans, freePlan } from '@/lib/constants/usermock';
 import { useEffect, useState } from "react";
 import { getCurrentProfile } from "@/core/auth/server";
 import { usePathname } from "next/navigation";
+import { getTransactionHistory } from "@/core/transaction";
 
 export default function UserDashboard() {
   const [{profile}] = useAuth();
   const pathname = usePathname();
   const [currentPlan, setCurrentPlan] = useState(freePlan); 
   const [currentUser, setCurrentUser] = useState(profile)
+  const [recentActivity, setRecentActivity] = useState([])
 
-  const setSubscription = async () => {
+  const setSubscriptionAndTransactionLogs = async () => {
     const user = await getCurrentProfile();
     setCurrentUser(user);
     plans.map((plan)=> {
       if(plan.id === user.subscription_plan?.toLocaleLowerCase()) setCurrentPlan(plan);
     })
+    const log = await getTransactionHistory(user.id)
+    setRecentActivity(log)
   }
 
   useEffect(()=> {
-    setSubscription()
+    setSubscriptionAndTransactionLogs()
   },[pathname])
 
   return (
@@ -169,10 +172,10 @@ export default function UserDashboard() {
                   <tbody>
                     {recentActivity.map((activity) => (
                       <tr key={activity.id} className="border-b border-[#8b5cf6]/10 hover:bg-[#8b5cf6]/5">
-                        <td className="p-3">{activity.date}</td>
-                        <td className="p-3">{activity.agent}</td>
-                        <td className="p-3">{activity.activity}</td>
-                        <td className="p-3">{activity.creditsUsed}</td>
+                        <td className="p-3">time</td>
+                        <td className="p-3">{activity.agent_type}</td>
+                        <td className="p-3">{activity.task_type}</td>
+                        <td className="p-3">{activity.credits_spent}</td>
                       </tr>
                     ))}
                   </tbody>

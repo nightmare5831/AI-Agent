@@ -27,27 +27,34 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import { usageData, activityLogs } from '@/lib/constants/usermock';
+import { usageData } from '@/lib/constants/usermock';
 import Loading from '@/components/loading';
 import { useAuth } from '@/core/auth/AuthProvider';
+import { getTransactionHistory } from '@/core/transaction';
 
 export default function UsagePage() {
   const [dateRange, setDateRange] = useState('30-days');
   const [filterOpen, setFilterOpen] = useState(false);
   const [{ profile }] = useAuth();
   const [isLoading, setIsLoading] = useState(true);
+  const [recentActivity, setRecentActivity] = useState([]);
 
-  const totalCredits = activityLogs.reduce(
+  const totalCredits = recentActivity.reduce(
     (sum, log) => sum + log.creditsUsed,
     0
   );
 
+  const getHistory = async () => {
+    const log = await getTransactionHistory(profile.id);
+    setRecentActivity(log);
+  };
   useEffect(() => {
     if (profile === null) {
-      setIsLoading(true)
+      setIsLoading(true);
     } else {
       setIsLoading(false);
     }
+    getHistory();
   }, [profile]);
 
   if (isLoading) {
@@ -99,7 +106,7 @@ export default function UsagePage() {
                   Remaining Balance
                 </p>
                 <p className="text-2xl font-semibold">
-                  {profile.credits_balance} Credits
+                  {profile?.credits_balance} Credits
                 </p>
                 <p className="text-sm text-muted-foreground">
                   Will expire if not used
@@ -293,19 +300,18 @@ export default function UsagePage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {activityLogs.map((log) => (
+                  {recentActivity.map((log) => (
                     <tr
                       key={log.id}
                       className="border-b border-[#8b5cf6]/10 hover:bg-[#8b5cf6]/5"
                     >
-                      <td className="p-3">{log.date}</td>
-                      <td className="p-3">{log.agent}</td>
-                      <td className="p-3">{log.activity}</td>
-                      <td className="p-3">{log.creditsUsed}</td>
+                      <td className="p-3">date</td>
+                      <td className="p-3">{log.agent_type}</td>
+                      <td className="p-3">{log.task_type}</td>
+                      <td className="p-3">{log.credits_spent}</td>
                       <td className="p-3">
                         <span className="inline-flex items-center rounded-full bg-green-500/10 px-2 py-0.5 text-xs font-medium text-green-600">
-                          {log.status.charAt(0).toUpperCase() +
-                            log.status.slice(1)}
+                          {log.output_type === 'text' ? 'success' : 'false'}
                         </span>
                       </td>
                     </tr>

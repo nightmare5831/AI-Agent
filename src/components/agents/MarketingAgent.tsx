@@ -1,68 +1,78 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
-import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import Request from '@/lib/request';
+import { getRequiredFieldsMarketing } from '@/lib/agent';
+import { useAuth } from '@/core/auth/AuthProvider';
 
-type Functionality = 'content-calendar' | 'social-post' | 'story-creation' | 'ad-copy' | 'seo-optimization' | '';
+type Functionality =
+  | 'content-calendar'
+  | 'social-post'
+  | 'story-creation'
+  | 'ad-copy'
+  | 'seo-optimization'
+  | '';
 
-export const MarketingAgent = () => {
-  const [selectedFunctionality, setSelectedFunctionality] = useState<Functionality>('content-calendar');
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [result, setResult] = useState('');
+type AgentProps = {
+  isGenerating: boolean;
+  setResult: Function;
+  setIsGenerating: Function;
+};
+
+const initialInput = {
+  brandName: '',
+  businessGoals: '',
+  industry: '',
+  platforms: [] as string[],
+  postFrequency: '',
+  targetAudience: '',
+  tone: '',
+  productDescription: '',
+  includeImage: false,
+  keywords: [] as string[],
+  adObjective: '',
+};
+
+export const MarketingAgent = ({
+  isGenerating,
+  setResult,
+  setIsGenerating,
+}: AgentProps) => {
+  const [selectedFunctionality, setSelectedFunctionality] =
+    useState<Functionality>('content-calendar');
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const [formData, setFormData] = useState({
-    brandName: '',
-    businessGoals: '',
-    industry: '',
-    platforms: [] as string[],
-    postFrequency: '',
-    targetAudience: '',
-    tone: '',
-    productDescription: '',
-    includeImage: false,
-    keywords: [] as string[],
-    adObjective: ''
-  });
+  const [formData, setFormData] = useState(initialInput);
+  const [{ profile }] = useAuth();
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
+    const requiredFields = getRequiredFieldsMarketing(selectedFunctionality);
 
-    const getRequiredFields = () => {
-      switch (selectedFunctionality) {
-        case 'content-calendar':
-          return ['brandName', 'industry', 'businessGoals', 'platforms', 'postFrequency'];
-        case 'social-post':
-          return ['brandName', 'industry', 'businessGoals', 'platforms', 'targetAudience', 'tone', 'productDescription'];
-        case 'story-creation':
-          return ['brandName', 'industry', 'businessGoals', 'productDescription', 'targetAudience', 'tone', 'keywords', 'adObjective'];
-        case 'ad-copy':
-          return ['brandName', 'industry', 'productDescription', 'targetAudience', 'tone', 'keywords', 'adObjective', 'platforms'];
-        case 'seo-optimization':
-          return ['brandName', 'industry', 'productDescription', 'targetAudience', 'platforms', 'tone'];
-        default:
-          return [];
-      }
-    };
-
-    const requiredFields = getRequiredFields();
-
-    requiredFields.forEach(field => {
+    requiredFields.forEach((field) => {
       if (field === 'platforms' || field === 'keywords') {
         if (formData[field].length === 0) {
           newErrors[field] = `${field} is required`;
         }
-      } else if (!formData[field as keyof typeof formData] || String(formData[field as keyof typeof formData]).trim() === '') {
+      } else if (
+        !formData[field as keyof typeof formData] ||
+        String(formData[field as keyof typeof formData]).trim() === ''
+      ) {
         newErrors[field] = `${field} is required`;
       }
     });
@@ -73,59 +83,85 @@ export const MarketingAgent = () => {
 
   const handleGenerate = async () => {
     if (!validateForm()) {
-      toast.error("Validation Error!");
+      toast.error('Validation Error!');
       return;
     }
 
     setIsGenerating(true);
-    const mockResults : any = {}
+
     const inputData = {
-      agent:'marketing',
+      agent: 'marketing',
       function: selectedFunctionality,
-      inputs: formData
-    }
-    mockResults[selectedFunctionality] = await Request.Post('/api/agents', inputData);
-    console.log('mockResult', mockResults[selectedFunctionality])
-    setIsGenerating(false);
-    // setResult(mockResults[selectedFunctionality] || 'Generated content will appear here...');
-    
-    toast.success("Marketing content generated successfully");
+      inputs: formData,
+    };
+
+    let resultData = {
+      user_id: profile.id,
+      agent_type: 'marketing',
+      task_type: selectedFunctionality,
+      credits_spent: 1,
+      output_type: '',
+    };
+
+    await Request.Post('/api/agents', inputData)
+      .then((res) => {
+        if (res.type === 'text') {
+          setResult({ script: res.script, url: '' });
+        } else {
+          setResult({ script: res.script, url: res.imageUrl });
+        }
+        setIsGenerating(false);
+        resultData.output_type = res.type;
+        toast.success('Marketing content generated successfully');
+      })
+      .catch((err) => {
+        console.log('error', err);
+        setIsGenerating(false);
+        resultData.output_type = '';
+        toast.error('Marketing content generating Error');
+      });
+
+    await Request.Post('/api/stripe/discount', resultData)
+      .then((res) => console.log('loged result successfully!'))
+      .catch((err) => console.log('error to log result!'));
+
+    setFormData(initialInput);
   };
 
   const addKeyword = (keyword: string) => {
     if (keyword.trim() && !formData.keywords.includes(keyword.trim())) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        keywords: [...prev.keywords, keyword.trim()]
+        keywords: [...prev.keywords, keyword.trim()],
       }));
       if (errors.keywords) {
-        setErrors(prev => ({ ...prev, keywords: '' }));
+        setErrors((prev) => ({ ...prev, keywords: '' }));
       }
     }
   };
 
   const removeKeyword = (keyword: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      keywords: prev.keywords.filter(k => k !== keyword)
+      keywords: prev.keywords.filter((k) => k !== keyword),
     }));
   };
 
   const togglePlatform = (platform: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       platforms: prev.platforms.includes(platform)
-        ? prev.platforms.filter(p => p !== platform)
-        : [...prev.platforms, platform]
+        ? prev.platforms.filter((p) => p !== platform)
+        : [...prev.platforms, platform],
     }));
     if (errors.platforms) {
-      setErrors(prev => ({ ...prev, platforms: '' }));
+      setErrors((prev) => ({ ...prev, platforms: '' }));
     }
   };
 
   const clearFieldError = (fieldName: string) => {
     if (errors[fieldName]) {
-      setErrors(prev => ({ ...prev, [fieldName]: '' }));
+      setErrors((prev) => ({ ...prev, [fieldName]: '' }));
     }
   };
 
@@ -133,7 +169,15 @@ export const MarketingAgent = () => {
     const fields = [];
 
     // Common fields for all functionalities
-    if (['content-calendar', 'social-post', 'story-creation', 'ad-copy', 'seo-optimization'].includes(selectedFunctionality)) {
+    if (
+      [
+        'content-calendar',
+        'social-post',
+        'story-creation',
+        'ad-copy',
+        'seo-optimization',
+      ].includes(selectedFunctionality)
+    ) {
       fields.push(
         <div key="brandName" className="space-y-2">
           <Label htmlFor="brandName">Brand Name *</Label>
@@ -141,24 +185,31 @@ export const MarketingAgent = () => {
             id="brandName"
             value={formData.brandName}
             onChange={(e) => {
-              setFormData(prev => ({ ...prev, brandName: e.target.value }));
+              setFormData((prev) => ({ ...prev, brandName: e.target.value }));
               clearFieldError('brandName');
             }}
             placeholder="Enter your brand name"
             className={`h-11 ${errors.brandName ? 'border-red-500' : ''}`}
           />
-          {errors.brandName && <p className="text-sm text-red-500">{errors.brandName}</p>}
+          {errors.brandName && (
+            <p className="text-sm text-red-500">{errors.brandName}</p>
+          )}
         </div>
       );
 
       fields.push(
         <div key="industry" className="space-y-2">
           <Label htmlFor="industry">Industry *</Label>
-          <Select value={formData.industry} onValueChange={(value) => {
-            setFormData(prev => ({ ...prev, industry: value }));
-            clearFieldError('industry');
-          }}>
-            <SelectTrigger className={`h-11 ${errors.industry ? 'border-red-500' : ''}`}>
+          <Select
+            value={formData.industry}
+            onValueChange={(value) => {
+              setFormData((prev) => ({ ...prev, industry: value }));
+              clearFieldError('industry');
+            }}
+          >
+            <SelectTrigger
+              className={`h-11 ${errors.industry ? 'border-red-500' : ''}`}
+            >
               <SelectValue placeholder="Select industry" />
             </SelectTrigger>
             <SelectContent>
@@ -170,13 +221,19 @@ export const MarketingAgent = () => {
               <SelectItem value="food">Food & Beverage</SelectItem>
             </SelectContent>
           </Select>
-          {errors.industry && <p className="text-sm text-red-500">{errors.industry}</p>}
+          {errors.industry && (
+            <p className="text-sm text-red-500">{errors.industry}</p>
+          )}
         </div>
       );
     }
 
     // Business Goals (for content-calendar, social-post, story-creation)
-    if (['content-calendar', 'social-post', 'story-creation'].includes(selectedFunctionality)) {
+    if (
+      ['content-calendar', 'social-post', 'story-creation'].includes(
+        selectedFunctionality
+      )
+    ) {
       fields.push(
         <div key="businessGoals" className="space-y-2">
           <Label htmlFor="businessGoals">Business Goals *</Label>
@@ -184,35 +241,58 @@ export const MarketingAgent = () => {
             id="businessGoals"
             value={formData.businessGoals}
             onChange={(e) => {
-              setFormData(prev => ({ ...prev, businessGoals: e.target.value }));
+              setFormData((prev) => ({
+                ...prev,
+                businessGoals: e.target.value,
+              }));
               clearFieldError('businessGoals');
             }}
             placeholder="Describe your main business objectives..."
             className={`min-h-[100px] ${errors.businessGoals ? 'border-red-500' : ''}`}
           />
-          {errors.businessGoals && <p className="text-sm text-red-500">{errors.businessGoals}</p>}
+          {errors.businessGoals && (
+            <p className="text-sm text-red-500">{errors.businessGoals}</p>
+          )}
         </div>
       );
     }
 
     // Platforms (for content-calendar, social-post, ad-copy, seo-optimization)
-    if (['content-calendar', 'social-post', 'ad-copy', 'seo-optimization'].includes(selectedFunctionality)) {
+    if (
+      [
+        'content-calendar',
+        'social-post',
+        'ad-copy',
+        'seo-optimization',
+      ].includes(selectedFunctionality)
+    ) {
       fields.push(
         <div key="platforms" className="space-y-3">
           <Label>Platforms *</Label>
           <div className="flex flex-wrap gap-2">
-            {['Instagram', 'Facebook', 'Twitter', 'LinkedIn', 'TikTok', 'YouTube'].map(platform => (
+            {[
+              'Instagram',
+              'Facebook',
+              'Twitter',
+              'LinkedIn',
+              'TikTok',
+              'YouTube',
+            ].map((platform) => (
               <Badge
                 key={platform}
-                variant={formData.platforms.includes(platform) ? "default" : "warning"}
-                className="cursor-pointer hover:scale-105 transition-transform"
+                variant={
+                  formData.platforms.includes(platform) ? 'success' : 'default'
+                }
+                className="cursor-pointer transition-transform hover:scale-105"
                 onClick={() => togglePlatform(platform)}
               >
                 {platform}
               </Badge>
             ))}
           </div>
-          {errors.platforms && <p className="text-sm text-red-500">{errors.platforms}</p>}
+          {errors.platforms && (
+            <p className="text-sm text-red-500">{errors.platforms}</p>
+          )}
         </div>
       );
     }
@@ -222,11 +302,16 @@ export const MarketingAgent = () => {
       fields.push(
         <div key="postFrequency" className="space-y-2">
           <Label htmlFor="postFrequency">Post Frequency *</Label>
-          <Select value={formData.postFrequency} onValueChange={(value) => {
-            setFormData(prev => ({ ...prev, postFrequency: value }));
-            clearFieldError('postFrequency');
-          }}>
-            <SelectTrigger className={`h-11 ${errors.postFrequency ? 'border-red-500' : ''}`}>
+          <Select
+            value={formData.postFrequency}
+            onValueChange={(value) => {
+              setFormData((prev) => ({ ...prev, postFrequency: value }));
+              clearFieldError('postFrequency');
+            }}
+          >
+            <SelectTrigger
+              className={`h-11 ${errors.postFrequency ? 'border-red-500' : ''}`}
+            >
               <SelectValue placeholder="How often to post?" />
             </SelectTrigger>
             <SelectContent>
@@ -236,13 +321,19 @@ export const MarketingAgent = () => {
               <SelectItem value="bi-weekly">Bi-weekly</SelectItem>
             </SelectContent>
           </Select>
-          {errors.postFrequency && <p className="text-sm text-red-500">{errors.postFrequency}</p>}
+          {errors.postFrequency && (
+            <p className="text-sm text-red-500">{errors.postFrequency}</p>
+          )}
         </div>
       );
     }
 
     // Target Audience (for social-post, story-creation, ad-copy, seo-optimization)
-    if (['social-post', 'story-creation', 'ad-copy', 'seo-optimization'].includes(selectedFunctionality)) {
+    if (
+      ['social-post', 'story-creation', 'ad-copy', 'seo-optimization'].includes(
+        selectedFunctionality
+      )
+    ) {
       fields.push(
         <div key="targetAudience" className="space-y-2">
           <Label htmlFor="targetAudience">Target Audience *</Label>
@@ -250,27 +341,41 @@ export const MarketingAgent = () => {
             id="targetAudience"
             value={formData.targetAudience}
             onChange={(e) => {
-              setFormData(prev => ({ ...prev, targetAudience: e.target.value }));
+              setFormData((prev) => ({
+                ...prev,
+                targetAudience: e.target.value,
+              }));
               clearFieldError('targetAudience');
             }}
             placeholder="e.g., Small business owners"
             className={`h-11 ${errors.targetAudience ? 'border-red-500' : ''}`}
           />
-          {errors.targetAudience && <p className="text-sm text-red-500">{errors.targetAudience}</p>}
+          {errors.targetAudience && (
+            <p className="text-sm text-red-500">{errors.targetAudience}</p>
+          )}
         </div>
       );
     }
 
     // Tone (for social-post, story-creation, ad-copy, seo-optimization)
-    if (['social-post', 'story-creation', 'ad-copy', 'seo-optimization'].includes(selectedFunctionality)) {
+    if (
+      ['social-post', 'story-creation', 'ad-copy', 'seo-optimization'].includes(
+        selectedFunctionality
+      )
+    ) {
       fields.push(
         <div key="tone" className="space-y-2">
           <Label htmlFor="tone">Tone *</Label>
-          <Select value={formData.tone} onValueChange={(value) => {
-            setFormData(prev => ({ ...prev, tone: value }));
-            clearFieldError('tone');
-          }}>
-            <SelectTrigger className={`h-11 ${errors.tone ? 'border-red-500' : ''}`}>
+          <Select
+            value={formData.tone}
+            onValueChange={(value) => {
+              setFormData((prev) => ({ ...prev, tone: value }));
+              clearFieldError('tone');
+            }}
+          >
+            <SelectTrigger
+              className={`h-11 ${errors.tone ? 'border-red-500' : ''}`}
+            >
               <SelectValue placeholder="Select tone" />
             </SelectTrigger>
             <SelectContent>
@@ -287,21 +392,32 @@ export const MarketingAgent = () => {
     }
 
     // Product Description (for social-post, story-creation, ad-copy, seo-optimization)
-    if (['social-post', 'story-creation', 'ad-copy', 'seo-optimization'].includes(selectedFunctionality)) {
+    if (
+      ['social-post', 'story-creation', 'ad-copy', 'seo-optimization'].includes(
+        selectedFunctionality
+      )
+    ) {
       fields.push(
         <div key="productDescription" className="space-y-2">
-          <Label htmlFor="productDescription">Product/Service Description *</Label>
+          <Label htmlFor="productDescription">
+            Product/Service Description *
+          </Label>
           <Textarea
             id="productDescription"
             value={formData.productDescription}
             onChange={(e) => {
-              setFormData(prev => ({ ...prev, productDescription: e.target.value }));
+              setFormData((prev) => ({
+                ...prev,
+                productDescription: e.target.value,
+              }));
               clearFieldError('productDescription');
             }}
             placeholder="Describe what you offer..."
             className={`min-h-[80px] ${errors.productDescription ? 'border-red-500' : ''}`}
           />
-          {errors.productDescription && <p className="text-sm text-red-500">{errors.productDescription}</p>}
+          {errors.productDescription && (
+            <p className="text-sm text-red-500">{errors.productDescription}</p>
+          )}
         </div>
       );
     }
@@ -313,7 +429,9 @@ export const MarketingAgent = () => {
           <Switch
             id="includeImage"
             checked={formData.includeImage}
-            onCheckedChange={(checked) => setFormData(prev => ({ ...prev, includeImage: checked }))}
+            onCheckedChange={(checked) =>
+              setFormData((prev) => ({ ...prev, includeImage: checked }))
+            }
           />
           <Label htmlFor="includeImage">Include Image</Label>
         </div>
@@ -325,9 +443,14 @@ export const MarketingAgent = () => {
       fields.push(
         <div key="keywords" className="space-y-3">
           <Label>Keywords *</Label>
-          <div className="flex flex-wrap gap-2 mb-2">
-            {formData.keywords.map(keyword => (
-              <Badge key={keyword} variant="success" className="cursor-pointer" onClick={() => removeKeyword(keyword)}>
+          <div className="mb-2 flex flex-wrap gap-2">
+            {formData.keywords.map((keyword) => (
+              <Badge
+                key={keyword}
+                variant="success"
+                className="cursor-pointer"
+                onClick={() => removeKeyword(keyword)}
+              >
                 {keyword} ×
               </Badge>
             ))}
@@ -342,7 +465,9 @@ export const MarketingAgent = () => {
             }}
             className={`h-11 ${errors.keywords ? 'border-red-500' : ''}`}
           />
-          {errors.keywords && <p className="text-sm text-red-500">{errors.keywords}</p>}
+          {errors.keywords && (
+            <p className="text-sm text-red-500">{errors.keywords}</p>
+          )}
         </div>
       );
     }
@@ -352,11 +477,16 @@ export const MarketingAgent = () => {
       fields.push(
         <div key="adObjective" className="space-y-2">
           <Label htmlFor="adObjective">Ad Objective *</Label>
-          <Select value={formData.adObjective} onValueChange={(value) => {
-            setFormData(prev => ({ ...prev, adObjective: value }));
-            clearFieldError('adObjective');
-          }}>
-            <SelectTrigger className={`h-11 ${errors.adObjective ? 'border-red-500' : ''}`}>
+          <Select
+            value={formData.adObjective}
+            onValueChange={(value) => {
+              setFormData((prev) => ({ ...prev, adObjective: value }));
+              clearFieldError('adObjective');
+            }}
+          >
+            <SelectTrigger
+              className={`h-11 ${errors.adObjective ? 'border-red-500' : ''}`}
+            >
               <SelectValue placeholder="What's your goal?" />
             </SelectTrigger>
             <SelectContent>
@@ -367,7 +497,9 @@ export const MarketingAgent = () => {
               <SelectItem value="engagement">Engagement</SelectItem>
             </SelectContent>
           </Select>
-          {errors.adObjective && <p className="text-sm text-red-500">{errors.adObjective}</p>}
+          {errors.adObjective && (
+            <p className="text-sm text-red-500">{errors.adObjective}</p>
+          )}
         </div>
       );
     }
@@ -379,32 +511,41 @@ export const MarketingAgent = () => {
     <div className="space-y-6">
       {/* Functionality Selection */}
       <div className="space-y-2">
-        <Label htmlFor="functionality" className="text-lg font-semibold">Select Functionality</Label>
-        <Select value={selectedFunctionality} onValueChange={(value: Functionality) => setSelectedFunctionality(value)}>
+        <Label htmlFor="functionality" className="text-lg font-semibold">
+          Select Functionality
+        </Label>
+        <Select
+          value={selectedFunctionality}
+          onValueChange={(value: Functionality) =>
+            setSelectedFunctionality(value)
+          }
+        >
           <SelectTrigger className="h-12 text-base">
             <SelectValue placeholder="Choose a marketing function..." />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="content-calendar">📅 Content Calendar</SelectItem>
+            <SelectItem value="content-calendar">
+              📅 Content Calendar
+            </SelectItem>
             <SelectItem value="social-post">📱 Social Post</SelectItem>
             <SelectItem value="story-creation">📖 Story Creation</SelectItem>
             <SelectItem value="ad-copy">🎯 Ad Copy</SelectItem>
-            <SelectItem value="seo-optimization">🔍 SEO Optimization</SelectItem>
+            <SelectItem value="seo-optimization">
+              🔍 SEO Optimization
+            </SelectItem>
           </SelectContent>
         </Select>
       </div>
 
       {/* Dynamic Form Fields */}
       {selectedFunctionality && (
-        <div className="space-y-6 animate-fade-in">
-          <div className="grid grid-cols-1 gap-4">
-            {renderFields()}
-          </div>
+        <div className="animate-fade-in space-y-6">
+          <div className="grid grid-cols-1 gap-4">{renderFields()}</div>
 
           {/* Generate Button */}
-          <Button 
-            onClick={handleGenerate} 
-            className="w-full h-12 text-lg font-semibold bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 transition-all duration-200"
+          <Button
+            onClick={() => handleGenerate()}
+            className="h-12 w-full bg-gradient-to-r from-blue-500 to-cyan-500 text-lg font-semibold transition-all duration-200 hover:from-blue-600 hover:to-cyan-600"
             disabled={isGenerating}
           >
             {isGenerating ? (
@@ -416,25 +557,7 @@ export const MarketingAgent = () => {
               'Generate Marketing Content'
             )}
           </Button>
-
-          {/* Result Box */}
-          {result && (
-            <Card className="mt-6 bg-gradient-to-r from-pink-50 to-rose-50 border-pink-200 animate-fade-in">
-              <div className="p-6">
-                <h3 className="text-lg font-semibold text-pink-800 mb-3">AI Generated Result</h3>
-                <div className="whitespace-pre-line text-gray-700 leading-relaxed">
-                  {result}
-                </div>
-              </div>
-            </Card>
-          )}
         </div>
-      )}
-
-      {!selectedFunctionality && (
-        <Card className="p-8 text-center bg-gradient-to-r from-pink-50 to-rose-50 border-pink-200">
-          <p className="text-gray-600 text-lg">Select a functionality to get started with your marketing agent</p>
-        </Card>
       )}
     </div>
   );
