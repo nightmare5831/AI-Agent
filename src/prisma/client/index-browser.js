@@ -212,8 +212,8 @@ exports.PlanType = exports.$Enums.PlanType = {
 
 exports.PackType = exports.$Enums.PackType = {
   PACK_100: 'PACK_100',
-  PACK_500: 'PACK_500',
-  PACK_1000: 'PACK_1000'
+  PACK_200: 'PACK_200',
+  PACK_400: 'PACK_400'
 };
 
 exports.MessageDirection = exports.$Enums.MessageDirection = {

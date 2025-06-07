@@ -131,6 +131,7 @@ export const OrganizationAgent = ({
           setResult({ script: res.script, url: '' });
         } else {
           setResult({ script: res.script, url: res.imageUrl });
+          resultData.credits_spent = 2
         }
         setIsGenerating(false);
         resultData.output_type = res.type;

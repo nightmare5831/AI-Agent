@@ -27,35 +27,110 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import { usageData } from '@/lib/constants/usermock';
 import Loading from '@/components/loading';
 import { useAuth } from '@/core/auth/AuthProvider';
 import { getTransactionHistory } from '@/core/transaction';
+import { getSubscription } from '@/core/subscription';
 
 export default function UsagePage() {
-  const [dateRange, setDateRange] = useState('30-days');
+  const [dateRange, setDateRange] = useState('7-days');
   const [filterOpen, setFilterOpen] = useState(false);
-  const [{ profile }] = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [recentActivity, setRecentActivity] = useState([]);
+  const [creditLog, setCreditLog] = useState({ plan: 0, totalSpent: 0 });
+  const [chartData, setChartData] = useState([]);
+  const [totalData, setTotalData] = useState([]);
+  const [{ profile }] = useAuth();
 
-  const totalCredits = recentActivity.reduce(
-    (sum, log) => sum + log.creditsUsed,
-    0
-  );
+  const getDateRange = (range: string) => {
+    const to = new Date();
+    const from = new Date();
 
-  const getHistory = async () => {
-    const log = await getTransactionHistory(profile.id);
-    setRecentActivity(log);
-  };
-  useEffect(() => {
-    if (profile === null) {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
+    switch (range) {
+      case '7-days':
+        from.setDate(to.getDate() - 7);
+        break;
+      case '30-days':
+        from.setDate(to.getDate() - 30);
+        break;
+      case '90-days':
+        from.setDate(to.getDate() - 90);
+        break;
+      default:
+        from.setDate(to.getDate() - 30);
+        break;
     }
-    getHistory();
-  }, [profile]);
+
+    return { from, to };
+  };
+
+  const transformToChartData = (logs: any[], from: Date, to: Date) => {
+    const map = new Map<string, number>();
+
+    for (let d = new Date(from); d <= to; d.setDate(d.getDate() + 1)) {
+      const key = d.toISOString().split('T')[0];
+      map.set(key, 0);
+    }
+
+    logs.forEach((log) => {
+      const date = new Date(log.timestamp).toISOString().split('T')[0];
+      if (map.has(date)) {
+        map.set(date, map.get(date)! + log.credits_spent);
+      }
+    });
+
+    return Array.from(map.entries()).map(([date, credits]) => ({
+      date,
+      credits,
+    }));
+  };
+
+  const getHistory = async (id: string) => {
+    let tempLog = {
+      plan: 0,
+      totalSpent: 0,
+    };
+    const logs = await getTransactionHistory(id);
+    logs.forEach((log) => (tempLog.totalSpent += log.credits_spent));
+    await getSubscription(id)
+      .then((res) => (tempLog.plan = res.amount))
+      .catch((err) => console.log('get Subscription Error', err));
+
+    const { from, to } = getDateRange(dateRange);
+
+    const filteredLogs = logs.filter((log) => {
+      const logDate = new Date(log.timestamp);
+      return (!from || logDate >= from) && (!to || logDate <= to);
+    });
+
+    const transformed = transformToChartData(filteredLogs, from, to);
+    
+    setRecentActivity(logs);
+    setCreditLog(tempLog);
+    setChartData(transformed);
+    setTotalData(logs);
+    setIsLoading(false);
+  };
+
+  const setTable = () => {
+    const { from, to } = getDateRange(dateRange);
+
+    const filteredLogs = totalData.filter((log) => {
+      const logDate = new Date(log.timestamp);
+      return (!from || logDate >= from) && (!to || logDate <= to);
+    });
+
+    const transformed = transformToChartData(filteredLogs, from, to);
+    setChartData(transformed);
+  };
+
+  useEffect(() => {
+    if (profile?.id && profile?.credits_balance) getHistory(profile?.id);
+  }, [profile?.id]);
+
+  useEffect(() => {
+    setTable();
+  }, [dateRange]);
 
   if (isLoading) {
     return (
@@ -89,14 +164,16 @@ export default function UsagePage() {
                 <p className="text-sm text-muted-foreground">
                   Monthly Allocation
                 </p>
-                <p className="text-2xl font-semibold">150 Credits</p>
+                <p className="text-2xl font-semibold">{creditLog?.plan}</p>
                 <p className="text-sm text-muted-foreground">
                   Resets on May 26, 2025
                 </p>
               </div>
               <div className="flex-1 border-b border-[#8b5cf6]/10 py-4 md:border-b-0 md:border-r md:px-4 md:py-0">
                 <p className="text-sm text-muted-foreground">Used this Month</p>
-                <p className="text-2xl font-semibold">65 Credits</p>
+                <p className="text-2xl font-semibold">
+                  {creditLog?.totalSpent}
+                </p>
                 <p className="text-sm text-muted-foreground">
                   43% of your monthly limit
                 </p>
@@ -125,30 +202,19 @@ export default function UsagePage() {
                 <CardDescription>Daily credit usage over time</CardDescription>
               </div>
               <div className="flex space-x-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setDateRange('7-days')}
-                  className={`border-[#8b5cf6]/20 hover:border-[#8b5cf6]/40 hover:bg-[#8b5cf6]/5 ${dateRange === '7-days' ? 'bg-[#8b5cf6]/10 text-[#8b5cf6]' : ''}`}
-                >
-                  7D
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setDateRange('30-days')}
-                  className={`border-[#8b5cf6]/20 hover:border-[#8b5cf6]/40 hover:bg-[#8b5cf6]/5 ${dateRange === '30-days' ? 'bg-[#8b5cf6]/10 text-[#8b5cf6]' : ''}`}
-                >
-                  30D
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setDateRange('90-days')}
-                  className={`border-[#8b5cf6]/20 hover:border-[#8b5cf6]/40 hover:bg-[#8b5cf6]/5 ${dateRange === '90-days' ? 'bg-[#8b5cf6]/10 text-[#8b5cf6]' : ''}`}
-                >
-                  90D
-                </Button>
+                {['7-days', '30-days', '90-days'].map((range) => (
+                  <Button
+                    key={range}
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setDateRange(range)}
+                    className={`border-[#8b5cf6]/20 hover:border-[#8b5cf6]/40 hover:bg-[#8b5cf6]/5 ${
+                      dateRange === range ? 'bg-[#8b5cf6] text-white' : ''
+                    }`}
+                  >
+                    {range.replace('-days', 'D')}
+                  </Button>
+                ))}
               </div>
             </div>
           </CardHeader>
@@ -156,7 +222,7 @@ export default function UsagePage() {
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
-                  data={usageData}
+                  data={chartData}
                   margin={{ top: 10, right: 10, left: 0, bottom: 20 }}
                 >
                   <CartesianGrid
@@ -165,7 +231,7 @@ export default function UsagePage() {
                     stroke="#EDF2F7"
                   />
                   <XAxis
-                    dataKey="day"
+                    dataKey="date"
                     tick={{ fontSize: 12 }}
                     tickLine={false}
                     axisLine={{ stroke: '#EDF2F7' }}
@@ -177,15 +243,10 @@ export default function UsagePage() {
                     tickFormatter={(value) => `${value}`}
                   />
                   <Tooltip
-                    formatter={(value, name) => [`${value} credits`, 'Usage']}
-                    labelFormatter={(label) => `May ${label}`}
+                    formatter={(value: number) => [`${value} credits`, 'Usage']}
+                    labelFormatter={(label: string) => `${label}`}
                   />
-                  <Bar
-                    dataKey="credits"
-                    fill="#2B6CB0"
-                    radius={[4, 4, 0, 0]}
-                    name="Credits Used"
-                  />
+                  <Bar dataKey="credits" fill="#2B6CB0" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -305,7 +366,14 @@ export default function UsagePage() {
                       key={log.id}
                       className="border-b border-[#8b5cf6]/10 hover:bg-[#8b5cf6]/5"
                     >
-                      <td className="p-3">date</td>
+                      <td className="p-3">
+                        {new Date(log.timestamp).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                          hour: '2-digit',
+                        })}
+                      </td>
                       <td className="p-3">{log.agent_type}</td>
                       <td className="p-3">{log.task_type}</td>
                       <td className="p-3">{log.credits_spent}</td>
@@ -374,7 +442,7 @@ export default function UsagePage() {
                 <span className="font-medium">Total Credits Used:</span>
               </div>
               <span className="text-lg font-semibold">
-                {totalCredits} Credits
+                {creditLog.totalSpent} Credits
               </span>
             </div>
           </CardFooter>

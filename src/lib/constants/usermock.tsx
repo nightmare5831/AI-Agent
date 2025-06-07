@@ -226,7 +226,7 @@ export const plans = [
   {
     id: 'essential',
     name: 'Essential',
-    price: 'R$29.90',
+    price: 'R$39.90',
     interval: 'month',
     credits: 100,
     features: [
@@ -275,21 +275,21 @@ export const creditPacks = [
     id: 'PACK_100',
     name: 'Small Pack',
     credits: 100,
-    price: 'R$19.90',
+    price: 'R$29.90',
     recommended: false,
   },
   {
-    id: 'PACK_500',
+    id: 'PACK_200',
     name: 'Medium Pack',
-    credits: 500,
+    credits: 200,
     price: 'R$49.90',
     recommended: true,
   },
   {
-    id: 'PACK_1000',
+    id: 'PACK_400',
     name: 'Large Pack',
-    credits: 1000,
-    price: 'R$89.90',
+    credits: 400,
+    price: 'R$69.90',
     recommended: false,
   },
 ];
