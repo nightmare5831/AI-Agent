@@ -72,8 +72,8 @@ export type PlanType = (typeof PlanType)[keyof typeof PlanType]
 
 export const PackType: {
   PACK_100: 'PACK_100',
-  PACK_500: 'PACK_500',
-  PACK_1000: 'PACK_1000'
+  PACK_200: 'PACK_200',
+  PACK_400: 'PACK_400'
 };
 
 export type PackType = (typeof PackType)[keyof typeof PackType]

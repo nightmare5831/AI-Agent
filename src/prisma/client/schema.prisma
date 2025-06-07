@@ -119,8 +119,8 @@ enum PlanType {
 
 enum PackType {
   PACK_100
-  PACK_500
-  PACK_1000
+  PACK_200
+  PACK_400
 
   @@schema("public")
 }

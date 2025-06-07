@@ -20,17 +20,17 @@ interface CreditPack {
 export const PLANS: Record<PlanType, Plan> = {
   essential: {
     name: 'Essential',
-    priceId: 'price_1RRfRbPK2rhKqgs1VPlMcx09', 
+    priceId: 'price_1RXMqqFsOXsRMDlMdaYJWJg4', 
     credits: 100,
   },
   professional: {
     name: 'Professional',
-    priceId: 'price_1RRfV4PK2rhKqgs1un7npYB3',
+    priceId: 'price_1RXMrcFsOXsRMDlMJkQmtYQ4',
     credits: 150,
   },
   complete: {
     name: 'Complete',
-    priceId: 'price_1RRfVePK2rhKqgs1k665W3Mj',
+    priceId: 'price_1RXMsTFsOXsRMDlM0P8cPd45',
     credits: 200,
   },
 };
@@ -39,17 +39,17 @@ export const PLANS: Record<PlanType, Plan> = {
 export const CREDIT_PACKS: Record<PackType, CreditPack> = {
   PACK_100: {
     name: '100 Credits',
-    priceId: 'price_1RRmV9PK2rhKqgs10ZNFzTIE',
+    priceId: 'price_1RXMtdFsOXsRMDlMyhJPKaot',
     credits: 100,
   },
-  PACK_500: {
-    name: '500 Credits',
-    priceId: 'price_1RRmVnPK2rhKqgs1otnG86fF',
-    credits: 500,
+  PACK_200: {
+    name: '200 Credits',
+    priceId: 'price_1RXMuVFsOXsRMDlMrO77CATk',
+    credits: 200,
   },
-  PACK_1000: {
-    name: '1000 Credits',
-    priceId: 'price_1RRmWWPK2rhKqgs1xMvgDX9W',
-    credits: 1000,
+  PACK_400: {
+    name: '400 Credits',
+    priceId: 'price_1RXMvHFsOXsRMDlM94PPSX1v',
+    credits: 400,
   },
 };
