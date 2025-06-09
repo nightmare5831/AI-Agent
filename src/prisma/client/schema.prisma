@@ -5,10 +5,11 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
-  schemas   = ["hubspot", "insights", "public", "setup_tables"]
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  directUrl    = env("DIRECT_URL")
+  relationMode = "prisma"
+  schemas      = ["hubspot", "insights", "public", "setup_tables"]
 }
 
 model users {

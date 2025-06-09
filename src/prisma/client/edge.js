@@ -35,12 +35,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.9.0
- * Query Engine version: 81e4af48011447c3cc503a190e86995b66d2a28e
+ * Prisma Client JS version: 6.8.0
+ * Query Engine version: 2060c79ba17c6bb9f5823312b6f6b7f4a845738e
  */
 Prisma.prismaVersion = {
-  client: "6.9.0",
-  engine: "81e4af48011447c3cc503a190e86995b66d2a28e"
+  client: "6.8.0",
+  engine: "2060c79ba17c6bb9f5823312b6f6b7f4a845738e"
 }
 
 Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
@@ -213,7 +213,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "F:\\Sass-Agent\\src\\prisma\\client",
+      "value": "F:\\NightFury\\SassAgent\\AI-Agent\\src\\prisma\\client",
       "fromEnvVar": null
     },
     "config": {
@@ -229,7 +229,7 @@ const config = {
     "previewFeatures": [
       "multiSchema"
     ],
-    "sourceFilePath": "F:\\Sass-Agent\\prisma\\schema.prisma",
+    "sourceFilePath": "F:\\NightFury\\SassAgent\\AI-Agent\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -237,8 +237,8 @@ const config = {
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma",
-  "clientVersion": "6.9.0",
-  "engineVersion": "81e4af48011447c3cc503a190e86995b66d2a28e",
+  "clientVersion": "6.8.0",
+  "engineVersion": "2060c79ba17c6bb9f5823312b6f6b7f4a845738e",
   "datasourceNames": [
     "db"
   ],
@@ -252,8 +252,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider        = \"prisma-client-js\"\n  output          = \"../src/prisma/client\"\n  previewFeatures = [\"multiSchema\"]\n}\n\ndatasource db {\n  provider  = \"postgresql\"\n  url       = env(\"DATABASE_URL\")\n  directUrl = env(\"DIRECT_URL\")\n  schemas   = [\"hubspot\", \"insights\", \"public\", \"setup_tables\"]\n}\n\nmodel users {\n  id                   String                @id @db.Uuid\n  email                String                @unique\n  name                 String\n  role                 UserRole              @default(user)\n  subscription_plan    String?               @default(\"free\")\n  credits_balance      Int                   @default(0)\n  created_at           DateTime              @default(now())\n  stripeSubscriptionId String?\n  admin_activities     admin_activity_logs[] @relation(\"AdminActivities\")\n  credit_purchases     credit_purchases[]\n  subscriptions        subscriptions[]\n  tasks_log            tasks_log[]\n  whatsapp_messages    whatsapp_messages[]\n\n  @@schema(\"public\")\n}\n\nmodel subscriptions {\n  id         String   @id @default(dbgenerated(\"uuid_generate_v4()\")) @db.Uuid\n  user_id    String   @db.Uuid\n  plan_type  PlanType\n  status     String\n  start_date DateTime\n  end_date   DateTime\n  method     String\n  amount     Int      @default(0)\n  user       users    @relation(fields: [user_id], references: [id], onDelete: Cascade)\n\n  @@schema(\"public\")\n}\n\nmodel credit_purchases {\n  id           String   @id @default(dbgenerated(\"uuid_generate_v4()\")) @db.Uuid\n  user_id      String   @db.Uuid\n  pack_type    PackType\n  credits      Int\n  price        Float\n  purchased_at DateTime @default(now())\n  user         users    @relation(fields: [user_id], references: [id], onDelete: Cascade)\n\n  @@schema(\"public\")\n}\n\nmodel tasks_log {\n  id            String         @id @default(dbgenerated(\"uuid_generate_v4()\")) @db.Uuid\n  user_id       String         @db.Uuid\n  agent_type    String\n  task_type     String\n  credits_spent Int\n  output_type   String\n  timestamp     DateTime       @default(now())\n  agent_results agent_results?\n  user          users          @relation(fields: [user_id], references: [id], onDelete: Cascade)\n\n  @@schema(\"public\")\n}\n\nmodel agent_results {\n  task_id       String    @id @db.Uuid\n  output_text   String?\n  file_url      String?\n  image_url     String?\n  whatsapp_sent Boolean   @default(false)\n  task          tasks_log @relation(fields: [task_id], references: [id], onDelete: Cascade)\n\n  @@schema(\"public\")\n}\n\nmodel whatsapp_messages {\n  id           String           @id @default(dbgenerated(\"uuid_generate_v4()\")) @db.Uuid\n  user_id      String           @db.Uuid\n  direction    MessageDirection\n  message_text String\n  timestamp    DateTime         @default(now())\n  user         users            @relation(fields: [user_id], references: [id], onDelete: Cascade)\n\n  @@schema(\"public\")\n}\n\nmodel admin_activity_logs {\n  id          String   @id @default(dbgenerated(\"uuid_generate_v4()\")) @db.Uuid\n  admin_id    String   @db.Uuid\n  action_type String\n  target_id   String\n  timestamp   DateTime @default(now())\n  admin       users    @relation(\"AdminActivities\", fields: [admin_id], references: [id], onDelete: Cascade)\n\n  @@schema(\"public\")\n}\n\nenum UserRole {\n  user\n  admin\n\n  @@schema(\"public\")\n}\n\nenum PlanType {\n  essential\n  professional\n  complete\n\n  @@schema(\"public\")\n}\n\nenum PackType {\n  PACK_100\n  PACK_200\n  PACK_400\n\n  @@schema(\"public\")\n}\n\nenum MessageDirection {\n  inbound\n  outbound\n\n  @@schema(\"public\")\n}\n",
-  "inlineSchemaHash": "e9d62a518230d03b64d060b6eddb0cef21095a2b56eb18d5ed0d1dd0efe0d251",
+  "inlineSchema": "generator client {\n  provider        = \"prisma-client-js\"\n  output          = \"../src/prisma/client\"\n  previewFeatures = [\"multiSchema\"]\n}\n\ndatasource db {\n  provider     = \"postgresql\"\n  url          = env(\"DATABASE_URL\")\n  directUrl    = env(\"DIRECT_URL\")\n  relationMode = \"prisma\"\n  schemas      = [\"hubspot\", \"insights\", \"public\", \"setup_tables\"]\n}\n\nmodel users {\n  id                   String                @id @db.Uuid\n  email                String                @unique\n  name                 String\n  role                 UserRole              @default(user)\n  subscription_plan    String?               @default(\"free\")\n  credits_balance      Int                   @default(0)\n  created_at           DateTime              @default(now())\n  stripeSubscriptionId String?\n  admin_activities     admin_activity_logs[] @relation(\"AdminActivities\")\n  credit_purchases     credit_purchases[]\n  subscriptions        subscriptions[]\n  tasks_log            tasks_log[]\n  whatsapp_messages    whatsapp_messages[]\n\n  @@schema(\"public\")\n}\n\nmodel subscriptions {\n  id         String   @id @default(dbgenerated(\"uuid_generate_v4()\")) @db.Uuid\n  user_id    String   @db.Uuid\n  plan_type  PlanType\n  status     String\n  start_date DateTime\n  end_date   DateTime\n  method     String\n  amount     Int      @default(0)\n  user       users    @relation(fields: [user_id], references: [id], onDelete: Cascade)\n\n  @@schema(\"public\")\n}\n\nmodel credit_purchases {\n  id           String   @id @default(dbgenerated(\"uuid_generate_v4()\")) @db.Uuid\n  user_id      String   @db.Uuid\n  pack_type    PackType\n  credits      Int\n  price        Float\n  purchased_at DateTime @default(now())\n  user         users    @relation(fields: [user_id], references: [id], onDelete: Cascade)\n\n  @@schema(\"public\")\n}\n\nmodel tasks_log {\n  id            String         @id @default(dbgenerated(\"uuid_generate_v4()\")) @db.Uuid\n  user_id       String         @db.Uuid\n  agent_type    String\n  task_type     String\n  credits_spent Int\n  output_type   String\n  timestamp     DateTime       @default(now())\n  agent_results agent_results?\n  user          users          @relation(fields: [user_id], references: [id], onDelete: Cascade)\n\n  @@schema(\"public\")\n}\n\nmodel agent_results {\n  task_id       String    @id @db.Uuid\n  output_text   String?\n  file_url      String?\n  image_url     String?\n  whatsapp_sent Boolean   @default(false)\n  task          tasks_log @relation(fields: [task_id], references: [id], onDelete: Cascade)\n\n  @@schema(\"public\")\n}\n\nmodel whatsapp_messages {\n  id           String           @id @default(dbgenerated(\"uuid_generate_v4()\")) @db.Uuid\n  user_id      String           @db.Uuid\n  direction    MessageDirection\n  message_text String\n  timestamp    DateTime         @default(now())\n  user         users            @relation(fields: [user_id], references: [id], onDelete: Cascade)\n\n  @@schema(\"public\")\n}\n\nmodel admin_activity_logs {\n  id          String   @id @default(dbgenerated(\"uuid_generate_v4()\")) @db.Uuid\n  admin_id    String   @db.Uuid\n  action_type String\n  target_id   String\n  timestamp   DateTime @default(now())\n  admin       users    @relation(\"AdminActivities\", fields: [admin_id], references: [id], onDelete: Cascade)\n\n  @@schema(\"public\")\n}\n\nenum UserRole {\n  user\n  admin\n\n  @@schema(\"public\")\n}\n\nenum PlanType {\n  essential\n  professional\n  complete\n\n  @@schema(\"public\")\n}\n\nenum PackType {\n  PACK_100\n  PACK_200\n  PACK_400\n\n  @@schema(\"public\")\n}\n\nenum MessageDirection {\n  inbound\n  outbound\n\n  @@schema(\"public\")\n}\n",
+  "inlineSchemaHash": "86411c6dd5187ff1ca524fc83ff129d0e3b5ca8e188c3d12300177ba55d0e242",
   "copyEngine": true
 }
 config.dirname = '/'
