@@ -1,9 +1,7 @@
 import Stripe from 'stripe';
 import { PackType, PlanType } from '@/prisma/client';
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-  apiVersion: '2025-04-30.basil', 
-});
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
 interface Plan {
   name: string;

@@ -13,7 +13,7 @@ export function DashboardLayout({ children, type }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   return (
     <div className="min-h-screen bg-background">
-      <DashboardHeader type={type} />
+      <DashboardHeader />
       <Sidebar open={sidebarOpen} onOpenChange={setSidebarOpen} type={type} />
       <main
         className={`transition-all duration-300 ${sidebarOpen ? 'pl-64' : 'pl-16'} pt-4`}

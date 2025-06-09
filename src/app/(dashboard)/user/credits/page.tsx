@@ -59,30 +59,31 @@ const CreditsPage = () => {
         router.push(url.url);
       }
       toast.success('Credit purchased successfully!');
-    } catch (error) {}
-  };
-
-  const setSubscription = async () => {
-    const subscription = await getSubscription(profile.id);
-    let price = '';
-    plans.map((tplan) => {
-      if (tplan.id === subscription?.plan_type.toLowerCase())
-        price = tplan.price;
-    });
-    setCurrentCredit((prev) => ({
-      ...prev,
-      plan: subscription?.plan_type,
-      balance: profile.credits_balance,
-      nextBilling: subscription?.end_date.toLocaleString(),
-      resetDate: subscription?.start_date.toLocaleString(),
-      price: price,
-      credits: subscription?.amount,
-    }));
+    } catch (error) {
+      console.log('Select Credit Pack error', error);
+    }
   };
 
   useEffect(() => {
+    const setSubscription = async () => {
+      const subscription = await getSubscription(profile.id);
+      let price = '';
+      plans.map((tplan) => {
+        if (tplan.id === subscription?.plan_type.toLowerCase())
+          price = tplan.price;
+      });
+      setCurrentCredit((prev) => ({
+        ...prev,
+        plan: subscription?.plan_type,
+        balance: profile.credits_balance,
+        nextBilling: subscription?.end_date.toLocaleString(),
+        resetDate: subscription?.start_date.toLocaleString(),
+        price: price,
+        credits: subscription?.amount,
+      }));
+    };
     setSubscription();
-  }, []);
+  }, [profile]);
 
   return (
     <div className="relative overflow-hidden">

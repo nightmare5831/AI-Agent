@@ -59,7 +59,7 @@ function formatWorkingHours(workingHours: any): string {
 }
 
 // Dynamically generate a GPT-friendly prompt
-export function buildPrompt(
+function buildPrompt(
   agent: Agent,
   func: string,
   inputs: Record<string, any>
@@ -293,13 +293,13 @@ function parseOutput(text: string) {
 }
 
 // Main POST handler
-export async function POST(req: Request) {
+export const POST = async (request: Request) => {
   try {
     const {
       agent,
       function: func,
       inputs,
-    } = (await req.json()) as AgentRequest;
+    } = (await request.json()) as AgentRequest;
 
     if (!agent || !func || !inputs || !systemRoles[agent]) {
       return NextResponse.json(

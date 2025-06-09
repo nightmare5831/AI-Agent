@@ -1,6 +1,4 @@
 import { SignUpForm } from '@/components/auth/signup-form';
-import { GraduationCap } from 'lucide-react';
-import Link from 'next/link';
 
 export default function SignUpPage() {
   return (

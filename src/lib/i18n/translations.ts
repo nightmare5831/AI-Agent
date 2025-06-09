@@ -1,7 +1,6 @@
 // translations.ts
-import { TranslationsType } from '@/types/translations';
 
-export const translations: TranslationsType = {
+export const translations: any = {
   'en': {
     header: {
       title: 'Smart Agentpt',

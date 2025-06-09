@@ -2,6 +2,7 @@
 
 import { prisma } from '@/lib/db';
 import createClient from '@/lib/supabase/server';
+
 export async function getCurrentUser() {
   const supabase = createClient();
 

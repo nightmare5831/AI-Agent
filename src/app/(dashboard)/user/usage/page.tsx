@@ -28,19 +28,18 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import Loading from '@/components/loading';
-import { useAuth } from '@/core/auth/AuthProvider';
 import { getTransactionHistory } from '@/core/transaction';
 import { getSubscription } from '@/core/subscription';
+import { getCurrentProfile } from '@/core/auth/server';
 
 export default function UsagePage() {
   const [dateRange, setDateRange] = useState('7-days');
   const [filterOpen, setFilterOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [recentActivity, setRecentActivity] = useState([]);
-  const [creditLog, setCreditLog] = useState({ plan: 0, totalSpent: 0 });
+  const [creditLog, setCreditLog] = useState({ plan: 0, totalSpent: 0, balance:0 });
   const [chartData, setChartData] = useState([]);
   const [totalData, setTotalData] = useState([]);
-  const [{ profile }] = useAuth();
 
   const getDateRange = (range: string) => {
     const to = new Date();
@@ -85,31 +84,37 @@ export default function UsagePage() {
     }));
   };
 
-  const getHistory = async (id: string) => {
-    let tempLog = {
-      plan: 0,
-      totalSpent: 0,
-    };
-    const logs = await getTransactionHistory(id);
-    logs.forEach((log) => (tempLog.totalSpent += log.credits_spent));
-    await getSubscription(id)
-      .then((res) => (tempLog.plan = res.amount))
-      .catch((err) => console.log('get Subscription Error', err));
+  const getHistory = async () => {
+    try {
+      const profile = await getCurrentProfile()
+      const tempLog = {
+        plan: 0,
+        totalSpent: 0,
+        balance:0
+      };
+      const logs = await getTransactionHistory(profile.id);
+      logs.forEach((log) => (tempLog.totalSpent += log.credits_spent));
+      tempLog.balance = profile.credits_balance
+      await getSubscription(profile.id)
+        .then((res) => (tempLog.plan = res?.amount ? res.amount : 0))
+        .catch((err) => console.log('get Subscription Error', err));
 
-    const { from, to } = getDateRange(dateRange);
+      const { from, to } = getDateRange(dateRange);
 
-    const filteredLogs = logs.filter((log) => {
-      const logDate = new Date(log.timestamp);
-      return (!from || logDate >= from) && (!to || logDate <= to);
-    });
+      const filteredLogs = logs.filter((log) => {
+        const logDate = new Date(log.timestamp);
+        return (!from || logDate >= from) && (!to || logDate <= to);
+      });
 
-    const transformed = transformToChartData(filteredLogs, from, to);
-    
-    setRecentActivity(logs);
-    setCreditLog(tempLog);
-    setChartData(transformed);
-    setTotalData(logs);
-    setIsLoading(false);
+      const transformed = transformToChartData(filteredLogs, from, to);
+      setRecentActivity(logs);
+      setCreditLog(tempLog);
+      setChartData(transformed);
+      setTotalData(logs);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Failed to load usage data:", error);
+    }
   };
 
   const setTable = () => {
@@ -125,9 +130,10 @@ export default function UsagePage() {
   };
 
   useEffect(() => {
-    if (profile?.id && profile?.credits_balance) getHistory(profile?.id);
-  }, [profile?.id]);
+    getHistory();
+  },[]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     setTable();
   }, [dateRange]);
@@ -183,7 +189,7 @@ export default function UsagePage() {
                   Remaining Balance
                 </p>
                 <p className="text-2xl font-semibold">
-                  {profile?.credits_balance} Credits
+                  {creditLog.balance} Credits
                 </p>
                 <p className="text-sm text-muted-foreground">
                   Will expire if not used
