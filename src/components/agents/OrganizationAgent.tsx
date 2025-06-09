@@ -108,6 +108,11 @@ export const OrganizationAgent = ({
       return;
     }
 
+    if (profile.credits_balance < 1) {
+      toast.error('Insurficiant Credit! Please Pucharse Credit.');
+      return;
+    }
+    
     setIsGenerating(true);
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
