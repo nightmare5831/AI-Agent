@@ -18,7 +18,7 @@ const AgentsPanel = () => {
 
   useEffect(() => {
     setCredits(profile?.credits_balance);
-  });
+  },[profile?.credits_balance]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">

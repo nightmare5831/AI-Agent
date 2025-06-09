@@ -1,6 +1,4 @@
 import { SignInForm } from '@/components/auth/signin-form';
-import Image from 'next/image';
-import Link from 'next/link';
 
 export default function SignInPage() {
   return (

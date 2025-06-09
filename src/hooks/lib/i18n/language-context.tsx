@@ -1,16 +1,13 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { translations } from './translations';
 
 type Language = 'en' | 'fr';
-type TranslationType = typeof translations.en;
 
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
-  t: TranslationType;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(
@@ -37,7 +34,6 @@ export function LanguageProvider({
   const value = {
     language,
     setLanguage,
-    t: translations[language],
   };
 
   return (

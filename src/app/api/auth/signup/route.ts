@@ -1,53 +1,68 @@
 'use server';
 
-import { HTTP } from '@/core/http';
+import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import createClient from '@/lib/supabase/server';
 
 export const POST = async (request: Request) => {
-  const supabase = createClient();
-  const formData = await request.json();
+  try {
+    const supabase = createClient();
+    const formData = await request.json();
 
-  const existingUsers = await prisma.users.findFirst({
-    where: { email: formData.email },
-  });
-
-  if (existingUsers) {
-    return HTTP.BAD_REQUEST({
-      message: 'Email is already registered',
+    const existingUsers = await prisma.users.findFirst({
+      where: { email: formData.email },
     });
-  }
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.signUp({
-    email: formData.email,
-    password: formData.password,
-    options: {
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
-    },
-  });
 
-  if (error) {
-    console.log(error.message);
-    switch (error.message) {
-      case 'Email rate limit exceeded':
-        return HTTP.BAD_REQUEST({
-          message: 'Please try again after some time',
-        });
+    if (existingUsers) {
+      return NextResponse.json(
+        { message: 'Email is already registered' },
+        { status: 409 }
+      );
     }
 
-    return HTTP.BAD_REQUEST({ message: 'User registration failed' });
-  }
-
-  await prisma.users.create({
-    data: {
-      id: user.id,
-      name: formData.full_name,
+    const {
+      data: { user },
+      error: signupError,
+    } = await supabase.auth.signUp({
       email: formData.email,
-      role: formData.role,
-    },
-  });
+      password: formData.password,
+      options: {
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}`,
+      },
+    });
 
-  return HTTP.SUCCESS({ message: 'User registered successfully' });
+    if (signupError) {
+      console.error('Supabase signup error:', signupError);
+      return NextResponse.json(
+        { error: 'Failed to sign up user' },
+        { status: 500 }
+      );
+    }
+
+    if (!user) {
+      console.warn(
+        'Signup succeeded, but user object is null (likely waiting for email confirmation)'
+      );
+      return NextResponse.json(
+        { message: 'Confirmation email sent. Please check your inbox.' },
+        { status: 202 }
+      );
+    }
+
+    await prisma.users.create({
+      data: {
+        id: user.id,
+        name: formData.full_name,
+        email: formData.email,
+        role: formData.role,
+      },
+    });
+    return NextResponse.json(
+      { message: 'User registered successfully' },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error('Signup Error:', error);
+    return NextResponse.json({ error: 'Signup failed' }, { status: 500 });
+  }
 };

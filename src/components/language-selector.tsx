@@ -10,8 +10,6 @@ import { languageFlags } from '@/lib/data/flags';
 import { Check } from 'lucide-react';
 import Image from 'next/image';
 import { useState, createContext, useContext, useEffect } from 'react';
-import { translations } from '@/lib/i18n/translations';
-import { TranslationsType } from '@/types/translations';
 
 interface LanguageContextType {
   selectedLanguage: string;
@@ -44,18 +42,6 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const t = (key: string): string => {
     try {
       const keys = key.split('.');
-      let value: any = translations[selectedLanguage as keyof TranslationsType];
-
-      for (const k of keys) {
-        if (value && typeof value === 'object' && k in value) {
-          value = value[k];
-        } else {
-          // console.warn(`Translation key not found: ${key}`);
-          return key; // Return key if translation not found
-        }
-      }
-
-      return typeof value === 'string' ? value : key;
     } catch (error) {
       console.warn(`Error getting translation for key: ${key}`, error);
       return key;

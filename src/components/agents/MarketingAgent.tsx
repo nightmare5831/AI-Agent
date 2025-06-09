@@ -30,8 +30,8 @@ type Functionality =
 
 type AgentProps = {
   isGenerating: boolean;
-  setResult: Function;
-  setIsGenerating: Function;
+  setResult: (value: object) => void;
+  setIsGenerating: (value: boolean) => void;
 };
 
 const initialInput = {
@@ -95,7 +95,7 @@ export const MarketingAgent = ({
       inputs: formData,
     };
 
-    let resultData = {
+    const resultData = {
       user_id: profile.id,
       agent_type: 'marketing',
       task_type: selectedFunctionality,

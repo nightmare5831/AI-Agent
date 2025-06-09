@@ -16,6 +16,7 @@
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-var-requires": "off",
     "rule-name-another-rule-name": "off",
+    "react-hooks/exhaustive-deps": "off",
     "react/display-name": "off",
     "@next/next/no-img-element": "off"
   },

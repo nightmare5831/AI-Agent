@@ -24,6 +24,7 @@ import * as z from 'zod';
 import Loading from '../loading';
 import { motion} from 'framer-motion';
 import { useTheme } from 'next-themes';
+import { getCurrentProfile } from '@/core/auth/server';
 
 const formSchema = z.object({
   email: z
@@ -55,7 +56,7 @@ export function SignInForm(): JSX.Element {
     try {
       setIsLoading(true);
 
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithPassword({
         email: values.email,
         password: values.password,
       });
@@ -63,17 +64,20 @@ export function SignInForm(): JSX.Element {
       if (error) {
         throw error;
       }
+      
+      const profile = await getCurrentProfile();
 
       toast.success('Successfully signed in!');
 
-      if (data.user?.role === 'admin') {
-        router.push('/admin');
-      } else if (data.user?.role === 'user') {
+      if (profile?.role === 'user') {
         router.push('/user');
+      } else if (profile?.role === 'admin') {
+        router.push('/admin');
       } else {
         return <Loading />;
       }
     } catch (error: unknown) {
+      console.log('SignIn error', error)
       const errorMessage =
         error instanceof Error
           ? error.message

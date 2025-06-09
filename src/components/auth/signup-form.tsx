@@ -44,7 +44,6 @@ type FormValues = z.infer<typeof formSchema>;
 export function SignUpForm(): JSX.Element {
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),

@@ -100,7 +100,7 @@ export function TestimonialsSection() {
           className="flex flex-wrap items-center justify-between gap-8 mb-16"
         >
           <div className="max-w-xl">
-            <Badge variant="secondary" className="mb-4 px-4 py-1.5 text-sm border border-[#2B6CB0]/30 bg-[#2B6CB0]/5">
+            <Badge variant="success" className="mb-4 px-4 py-1.5 text-sm border border-[#2B6CB0]/30 bg-[#2B6CB0]/5">
               Success stories
             </Badge>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">

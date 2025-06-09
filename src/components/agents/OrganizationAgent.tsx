@@ -36,8 +36,8 @@ type Functionality =
 
 type AgentProps = {
   isGenerating: boolean;
-  setResult: Function;
-  setIsGenerating: Function;
+  setResult: (value: object) => void;
+  setIsGenerating: (value: boolean) => void;
 };
 
 const initialInput = {
@@ -117,7 +117,7 @@ export const OrganizationAgent = ({
       inputs: { ...formData, deadline: deadline },
     };
 
-    let resultData = {
+    const resultData = {
       user_id: profile.id,
       agent_type: 'organization',
       task_type: selectedFunctionality,
