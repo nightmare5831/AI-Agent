@@ -87,6 +87,12 @@ export const MarketingAgent = ({
       return;
     }
 
+    const current_spent = formData.includeImage ? 2 : 1;
+    if(profile.credits_balance < current_spent) {
+      toast.error('Insurficiant Credit! Please Pucharse Credit.')
+      return;
+    }
+    
     setIsGenerating(true);
 
     const inputData = {
