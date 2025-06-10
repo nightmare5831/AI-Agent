@@ -103,7 +103,7 @@ export const StrategyAgent = ({
       toast.error('Insurficiant Credit! Please Pucharse Credit.');
       return;
     }
-    
+
     setIsGenerating(true);
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
@@ -127,7 +127,7 @@ export const StrategyAgent = ({
           setResult({ script: res.script, url: '' });
         } else {
           setResult({ script: res.script, url: res.imageUrl });
-          resultData.credits_spent = 2
+          resultData.credits_spent = 2;
         }
         setIsGenerating(false);
         resultData.output_type = res.type;

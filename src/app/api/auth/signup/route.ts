@@ -9,6 +9,17 @@ export const POST = async (request: Request) => {
     const supabase = createClient();
     const formData = await request.json();
 
+    const forwardedFor = request.headers.get('x-forwarded-for');
+    const ip = forwardedFor?.split(',')[0]?.trim() || 'Unknown';
+
+    console.log('ip', ip)
+    const existingIp = await prisma.users.findFirst({
+      where: { ip_address: ip },
+    });
+    if(existingIp) {
+      return NextResponse.json({message: 'This Ip already created account!'}, {status:409});
+    }
+
     const existingUsers = await prisma.users.findFirst({
       where: { email: formData.email },
     });
@@ -55,6 +66,7 @@ export const POST = async (request: Request) => {
         name: formData.full_name,
         email: formData.email,
         role: formData.role,
+        ip_address: ip
       },
     });
     return NextResponse.json(

@@ -24,6 +24,7 @@ import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 import { Background } from '@/components/ui/background';
 import { useTheme } from 'next-themes';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   full_name: z.string().min(1, 'Full name is required'),
@@ -42,6 +43,8 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export function SignUpForm(): JSX.Element {
+  const router = useRouter();
+
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -70,9 +73,10 @@ export function SignUpForm(): JSX.Element {
       delete values.isTeacher;
       await Request.Post('/api/auth/signup', {
         ...values,
-      });
+      })
 
-      toast.success('Account created successfully! Please sign in');
+      toast.success('Account created successfully! Please signIn');
+      router.push('/auth/signin');
     } catch (err: any) {
       toast.error(
         err?.response?.data?.message ||
@@ -470,17 +474,22 @@ export function SignUpForm(): JSX.Element {
             whileHover={{ scale: 1.03 }}
             transition={{ type: 'spring', stiffness: 400, damping: 10 }}
           >
-            <Button 
-              variant="outline" 
-              className="group w-full border-[#2B6CB0]/20 hover:border-[#2B6CB0]/40 hover:bg-[#2B6CB0]/5 transition-all duration-300" 
+            <Button
+              variant="outline"
+              className="group w-full border-[#2B6CB0]/20 transition-all duration-300 hover:border-[#2B6CB0]/40 hover:bg-[#2B6CB0]/5"
               disabled={isLoading}
             >
               <motion.div
                 animate={{ rotate: [0, 5, 0, -5, 0] }}
-                transition={{ duration: 2, repeat: Infinity, repeatDelay: 2, delay: 1 }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  repeatDelay: 2,
+                  delay: 1,
+                }}
                 className="mr-2"
               >
-                <Icons.apple className="h-4 w-4 group-hover:text-[#2B6CB0] transition-colors duration-300" />
+                <Icons.apple className="h-4 w-4 transition-colors duration-300 group-hover:text-[#2B6CB0]" />
               </motion.div>
               Apple
             </Button>
