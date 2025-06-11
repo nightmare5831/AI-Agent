@@ -12,8 +12,8 @@ type ResultContentProps = {
 };
 
 export const ResultContent = ({ result, isGenerating }: ResultContentProps) => {
-  const hasResult = result && result.script;
-
+  const hasResult = result?.script;
+  console.log('result', result?.script)
   return (
     <Card className="h-full border-2 border-slate-200">
       <CardHeader>
@@ -50,16 +50,16 @@ export const ResultContent = ({ result, isGenerating }: ResultContentProps) => {
                 <p>{result.script}</p>
               )}
             </div>
-
+        
             <div>
               <h3 className="mb-2 text-lg font-semibold">URL:</h3>
               <a
-                href={result.url}
+                href={result?.url}
                 className="text-blue-600 underline"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {result.url}
+                {result?.url}
               </a>
             </div>
           </div>

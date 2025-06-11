@@ -52,7 +52,7 @@ const initialInput = {
   commonIssues: '',
 };
 
-export const OrganizationAgent = ({
+const OrganizationAgent = ({
   isGenerating,
   setResult,
   setIsGenerating,
@@ -112,7 +112,7 @@ export const OrganizationAgent = ({
       toast.error('Insurficiant Credit! Please Pucharse Credit.');
       return;
     }
-    
+
     setIsGenerating(true);
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
@@ -136,7 +136,7 @@ export const OrganizationAgent = ({
           setResult({ script: res.script, url: '' });
         } else {
           setResult({ script: res.script, url: res.imageUrl });
-          resultData.credits_spent = 2
+          resultData.credits_spent = 2;
         }
         setIsGenerating(false);
         resultData.output_type = res.type;
@@ -577,7 +577,7 @@ export const OrganizationAgent = ({
             setSelectedFunctionality(value)
           }
         >
-          <SelectTrigger className="h-12 text-base">
+          <SelectTrigger className="h-12 text-base" id='functionality'>
             <SelectValue placeholder="Choose an organization function..." />
           </SelectTrigger>
           <SelectContent>
@@ -615,3 +615,5 @@ export const OrganizationAgent = ({
     </div>
   );
 };
+
+export default OrganizationAgent;

@@ -356,8 +356,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.8.0
-   * Query Engine version: 2060c79ba17c6bb9f5823312b6f6b7f4a845738e
+   * Prisma Client JS version: 6.9.0
+   * Query Engine version: 81e4af48011447c3cc503a190e86995b66d2a28e
    */
   export type PrismaVersion = {
     client: string
@@ -1561,6 +1561,7 @@ export namespace Prisma {
     email: string | null
     name: string | null
     role: $Enums.UserRole | null
+    ip_address: string | null
     subscription_plan: string | null
     credits_balance: number | null
     created_at: Date | null
@@ -1572,6 +1573,7 @@ export namespace Prisma {
     email: string | null
     name: string | null
     role: $Enums.UserRole | null
+    ip_address: string | null
     subscription_plan: string | null
     credits_balance: number | null
     created_at: Date | null
@@ -1583,6 +1585,7 @@ export namespace Prisma {
     email: number
     name: number
     role: number
+    ip_address: number
     subscription_plan: number
     credits_balance: number
     created_at: number
@@ -1604,6 +1607,7 @@ export namespace Prisma {
     email?: true
     name?: true
     role?: true
+    ip_address?: true
     subscription_plan?: true
     credits_balance?: true
     created_at?: true
@@ -1615,6 +1619,7 @@ export namespace Prisma {
     email?: true
     name?: true
     role?: true
+    ip_address?: true
     subscription_plan?: true
     credits_balance?: true
     created_at?: true
@@ -1626,6 +1631,7 @@ export namespace Prisma {
     email?: true
     name?: true
     role?: true
+    ip_address?: true
     subscription_plan?: true
     credits_balance?: true
     created_at?: true
@@ -1724,6 +1730,7 @@ export namespace Prisma {
     email: string
     name: string
     role: $Enums.UserRole
+    ip_address: string
     subscription_plan: string | null
     credits_balance: number
     created_at: Date
@@ -1754,6 +1761,7 @@ export namespace Prisma {
     email?: boolean
     name?: boolean
     role?: boolean
+    ip_address?: boolean
     subscription_plan?: boolean
     credits_balance?: boolean
     created_at?: boolean
@@ -1771,6 +1779,7 @@ export namespace Prisma {
     email?: boolean
     name?: boolean
     role?: boolean
+    ip_address?: boolean
     subscription_plan?: boolean
     credits_balance?: boolean
     created_at?: boolean
@@ -1782,6 +1791,7 @@ export namespace Prisma {
     email?: boolean
     name?: boolean
     role?: boolean
+    ip_address?: boolean
     subscription_plan?: boolean
     credits_balance?: boolean
     created_at?: boolean
@@ -1793,13 +1803,14 @@ export namespace Prisma {
     email?: boolean
     name?: boolean
     role?: boolean
+    ip_address?: boolean
     subscription_plan?: boolean
     credits_balance?: boolean
     created_at?: boolean
     stripeSubscriptionId?: boolean
   }
 
-  export type usersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "role" | "subscription_plan" | "credits_balance" | "created_at" | "stripeSubscriptionId", ExtArgs["result"]["users"]>
+  export type usersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "role" | "ip_address" | "subscription_plan" | "credits_balance" | "created_at" | "stripeSubscriptionId", ExtArgs["result"]["users"]>
   export type usersInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     admin_activities?: boolean | users$admin_activitiesArgs<ExtArgs>
     credit_purchases?: boolean | users$credit_purchasesArgs<ExtArgs>
@@ -1825,6 +1836,7 @@ export namespace Prisma {
       email: string
       name: string
       role: $Enums.UserRole
+      ip_address: string
       subscription_plan: string | null
       credits_balance: number
       created_at: Date
@@ -2261,6 +2273,7 @@ export namespace Prisma {
     readonly email: FieldRef<"users", 'String'>
     readonly name: FieldRef<"users", 'String'>
     readonly role: FieldRef<"users", 'UserRole'>
+    readonly ip_address: FieldRef<"users", 'String'>
     readonly subscription_plan: FieldRef<"users", 'String'>
     readonly credits_balance: FieldRef<"users", 'Int'>
     readonly created_at: FieldRef<"users", 'DateTime'>
@@ -9365,6 +9378,7 @@ export namespace Prisma {
     email: 'email',
     name: 'name',
     role: 'role',
+    ip_address: 'ip_address',
     subscription_plan: 'subscription_plan',
     credits_balance: 'credits_balance',
     created_at: 'created_at',
@@ -9605,6 +9619,7 @@ export namespace Prisma {
     email?: StringFilter<"users"> | string
     name?: StringFilter<"users"> | string
     role?: EnumUserRoleFilter<"users"> | $Enums.UserRole
+    ip_address?: StringFilter<"users"> | string
     subscription_plan?: StringNullableFilter<"users"> | string | null
     credits_balance?: IntFilter<"users"> | number
     created_at?: DateTimeFilter<"users"> | Date | string
@@ -9621,6 +9636,7 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrder
     role?: SortOrder
+    ip_address?: SortOrder
     subscription_plan?: SortOrderInput | SortOrder
     credits_balance?: SortOrder
     created_at?: SortOrder
@@ -9640,6 +9656,7 @@ export namespace Prisma {
     NOT?: usersWhereInput | usersWhereInput[]
     name?: StringFilter<"users"> | string
     role?: EnumUserRoleFilter<"users"> | $Enums.UserRole
+    ip_address?: StringFilter<"users"> | string
     subscription_plan?: StringNullableFilter<"users"> | string | null
     credits_balance?: IntFilter<"users"> | number
     created_at?: DateTimeFilter<"users"> | Date | string
@@ -9656,6 +9673,7 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrder
     role?: SortOrder
+    ip_address?: SortOrder
     subscription_plan?: SortOrderInput | SortOrder
     credits_balance?: SortOrder
     created_at?: SortOrder
@@ -9675,6 +9693,7 @@ export namespace Prisma {
     email?: StringWithAggregatesFilter<"users"> | string
     name?: StringWithAggregatesFilter<"users"> | string
     role?: EnumUserRoleWithAggregatesFilter<"users"> | $Enums.UserRole
+    ip_address?: StringWithAggregatesFilter<"users"> | string
     subscription_plan?: StringNullableWithAggregatesFilter<"users"> | string | null
     credits_balance?: IntWithAggregatesFilter<"users"> | number
     created_at?: DateTimeWithAggregatesFilter<"users"> | Date | string
@@ -10055,6 +10074,7 @@ export namespace Prisma {
     email: string
     name: string
     role?: $Enums.UserRole
+    ip_address?: string
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
@@ -10071,6 +10091,7 @@ export namespace Prisma {
     email: string
     name: string
     role?: $Enums.UserRole
+    ip_address?: string
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
@@ -10087,6 +10108,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    ip_address?: StringFieldUpdateOperationsInput | string
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10103,6 +10125,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    ip_address?: StringFieldUpdateOperationsInput | string
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10119,6 +10142,7 @@ export namespace Prisma {
     email: string
     name: string
     role?: $Enums.UserRole
+    ip_address?: string
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
@@ -10130,6 +10154,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    ip_address?: StringFieldUpdateOperationsInput | string
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10141,6 +10166,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    ip_address?: StringFieldUpdateOperationsInput | string
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10654,6 +10680,7 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrder
     role?: SortOrder
+    ip_address?: SortOrder
     subscription_plan?: SortOrder
     credits_balance?: SortOrder
     created_at?: SortOrder
@@ -10669,6 +10696,7 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrder
     role?: SortOrder
+    ip_address?: SortOrder
     subscription_plan?: SortOrder
     credits_balance?: SortOrder
     created_at?: SortOrder
@@ -10680,6 +10708,7 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrder
     role?: SortOrder
+    ip_address?: SortOrder
     subscription_plan?: SortOrder
     credits_balance?: SortOrder
     created_at?: SortOrder
@@ -11987,6 +12016,7 @@ export namespace Prisma {
     email: string
     name: string
     role?: $Enums.UserRole
+    ip_address?: string
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
@@ -12002,6 +12032,7 @@ export namespace Prisma {
     email: string
     name: string
     role?: $Enums.UserRole
+    ip_address?: string
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
@@ -12033,6 +12064,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    ip_address?: StringFieldUpdateOperationsInput | string
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12048,6 +12080,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    ip_address?: StringFieldUpdateOperationsInput | string
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12063,6 +12096,7 @@ export namespace Prisma {
     email: string
     name: string
     role?: $Enums.UserRole
+    ip_address?: string
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
@@ -12078,6 +12112,7 @@ export namespace Prisma {
     email: string
     name: string
     role?: $Enums.UserRole
+    ip_address?: string
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
@@ -12109,6 +12144,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    ip_address?: StringFieldUpdateOperationsInput | string
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12124,6 +12160,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    ip_address?: StringFieldUpdateOperationsInput | string
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12158,6 +12195,7 @@ export namespace Prisma {
     email: string
     name: string
     role?: $Enums.UserRole
+    ip_address?: string
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
@@ -12173,6 +12211,7 @@ export namespace Prisma {
     email: string
     name: string
     role?: $Enums.UserRole
+    ip_address?: string
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
@@ -12229,6 +12268,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    ip_address?: StringFieldUpdateOperationsInput | string
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12244,6 +12284,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    ip_address?: StringFieldUpdateOperationsInput | string
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12315,6 +12356,7 @@ export namespace Prisma {
     email: string
     name: string
     role?: $Enums.UserRole
+    ip_address?: string
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
@@ -12330,6 +12372,7 @@ export namespace Prisma {
     email: string
     name: string
     role?: $Enums.UserRole
+    ip_address?: string
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
@@ -12361,6 +12404,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    ip_address?: StringFieldUpdateOperationsInput | string
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12376,6 +12420,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    ip_address?: StringFieldUpdateOperationsInput | string
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12391,6 +12436,7 @@ export namespace Prisma {
     email: string
     name: string
     role?: $Enums.UserRole
+    ip_address?: string
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
@@ -12406,6 +12452,7 @@ export namespace Prisma {
     email: string
     name: string
     role?: $Enums.UserRole
+    ip_address?: string
     subscription_plan?: string | null
     credits_balance?: number
     created_at?: Date | string
@@ -12437,6 +12484,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    ip_address?: StringFieldUpdateOperationsInput | string
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12452,6 +12500,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    ip_address?: StringFieldUpdateOperationsInput | string
     subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string

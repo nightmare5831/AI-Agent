@@ -17,8 +17,9 @@ model users {
   email                String                @unique
   name                 String
   role                 UserRole              @default(user)
+  ip_address            String               @default("")
   subscription_plan    String?               @default("free")
-  credits_balance      Int                   @default(0)
+  credits_balance      Int                   @default(20)
   created_at           DateTime              @default(now())
   stripeSubscriptionId String?
   admin_activities     admin_activity_logs[] @relation("AdminActivities")
