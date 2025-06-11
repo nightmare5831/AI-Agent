@@ -51,7 +51,7 @@ const initialInput = {
   contentTypes: [] as string[],
 };
 
-export const StrategyAgent = ({
+const StrategyAgent = ({
   isGenerating,
   setResult,
   setIsGenerating,
@@ -298,7 +298,7 @@ export const StrategyAgent = ({
     if (selectedFunctionality === 'brand-positioning') {
       fields.push(
         <div key="brandValues" className="space-y-3">
-          <Label>Brand Values *</Label>
+          <Label htmlFor='brandvalues'>Brand Values *</Label>
           <div className="mb-2 flex flex-wrap gap-2">
             {formData.brandValues.map((value) => (
               <Badge
@@ -312,6 +312,7 @@ export const StrategyAgent = ({
             ))}
           </div>
           <Input
+            id='brandvalues'
             placeholder="Add brand value and press Enter"
             onKeyPress={(e) => {
               if (e.key === 'Enter') {
@@ -751,7 +752,7 @@ export const StrategyAgent = ({
             setSelectedFunctionality(value)
           }
         >
-          <SelectTrigger className="h-12 text-base">
+          <SelectTrigger className="h-12 text-base" id='functionality'>
             <SelectValue placeholder="Choose a strategy function..." />
           </SelectTrigger>
           <SelectContent>
@@ -796,3 +797,5 @@ export const StrategyAgent = ({
     </div>
   );
 };
+
+export default StrategyAgent;

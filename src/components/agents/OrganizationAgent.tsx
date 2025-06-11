@@ -52,7 +52,7 @@ const initialInput = {
   commonIssues: '',
 };
 
-export const OrganizationAgent = ({
+const OrganizationAgent = ({
   isGenerating,
   setResult,
   setIsGenerating,
@@ -577,7 +577,7 @@ export const OrganizationAgent = ({
             setSelectedFunctionality(value)
           }
         >
-          <SelectTrigger className="h-12 text-base">
+          <SelectTrigger className="h-12 text-base" id='functionality'>
             <SelectValue placeholder="Choose an organization function..." />
           </SelectTrigger>
           <SelectContent>
@@ -615,3 +615,5 @@ export const OrganizationAgent = ({
     </div>
   );
 };
+
+export default OrganizationAgent;

@@ -17,7 +17,7 @@ export const POST = async (request: Request) => {
       where: { ip_address: ip },
     });
     if(existingIp) {
-      return NextResponse.json({message: 'This Ip already created account!'}, {status:409});
+      return NextResponse.json({message: 'one account already allocated to this IP Address! '}, {status:409});
     }
 
     const existingUsers = await prisma.users.findFirst({

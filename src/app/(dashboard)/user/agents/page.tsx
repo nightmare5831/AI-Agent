@@ -4,9 +4,24 @@ import React, { useEffect, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MarketingAgent } from '@/components/agents/MarketingAgent';
-import { OrganizationAgent } from '@/components/agents/OrganizationAgent';
-import { StrategyAgent } from '@/components/agents/StrategyAgent';
+import dynamic from 'next/dynamic';
+import { Loader2 } from 'lucide-react';
+
+const MarketingAgent = dynamic(() => import('@/components/agents/MarketingAgent'), {
+  ssr: false,
+  loading: () => <Loader2/>
+})
+
+const OrganizationAgent = dynamic(() => import('@/components/agents/OrganizationAgent'), {
+  ssr: false,
+  loading: () => <Loader2/>
+})
+
+const StrategyAgent = dynamic(() => import('@/components/agents/StrategyAgent'), {
+  ssr: false,
+  loading: () => <Loader2/>
+})
+
 import { useAuth } from '@/core/auth/AuthProvider';
 import { ResultContent } from '@/components/agents/resultCotent';
 
@@ -42,10 +57,10 @@ const AgentsPanel = () => {
 
         {/* Agent Tabs */}
         <Tabs defaultValue="marketing" className="w-full">
-          <TabsList className="mb-8 grid h-14 w-full grid-cols-3">
+          <TabsList className="mb-8 flex flex-col gap-2 sm:grid sm:h-14 sm:grid-cols-3 sm:gap-0">
             <TabsTrigger
               value="marketing"
-              className="flex items-center gap-3 text-base font-medium data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-cyan-500 data-[state=active]:text-white"
+              className="w-full justify-center sm:justify-center text-base font-medium data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-cyan-500 data-[state=active]:text-white"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -70,7 +85,7 @@ const AgentsPanel = () => {
             </TabsTrigger>
             <TabsTrigger
               value="organization"
-              className="flex items-center gap-3 text-base font-medium data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-indigo-500 data-[state=active]:text-white"
+              className="w-full justify-center sm:justify-center text-base font-medium data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-indigo-500 data-[state=active]:text-white"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -87,7 +102,7 @@ const AgentsPanel = () => {
             </TabsTrigger>
             <TabsTrigger
               value="strategy"
-              className="flex items-center gap-3 text-base font-medium data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-500 data-[state=active]:to-[#3ff48e] data-[state=active]:text-white"
+              className="w-full justify-center sm:justify-center text-base font-medium data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-500 data-[state=active]:to-[#3ff48e] data-[state=active]:text-white"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

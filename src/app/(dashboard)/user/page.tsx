@@ -139,20 +139,20 @@ export default function UserDashboard() {
         </div>
 
         {/* Plan Details and Recent Activity */}
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="space-y-6 md:grid md:grid-cols-3 md:gap-6">
           {/* Plan Details */}
-          <Card className="border border-[#8b5cf6]/20 bg-background/70 shadow-md backdrop-blur-md md:col-span-1">
+          <Card className="overflow-hidden border border-[#8b5cf6]/20 bg-background/70 shadow-md backdrop-blur-md md:col-span-1">
             <CardHeader>
               <CardTitle>Current Plan</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center justify-between">
+              <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
                   <p className="text-lg font-medium">{currentPlan?.name}</p>
                   <span className="text-2xl font-bold">
                     {currentPlan?.price}
                   </span>
-                  <span className="ml-1 text-sm text-muted-foreground">
+                  <span className="text-sm text-muted-foreground">
                     /{currentPlan?.interval}
                   </span>
                 </div>
@@ -190,34 +190,30 @@ export default function UserDashboard() {
             <CardHeader>
               <CardTitle>Recent Credit Usage</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-[#8b5cf6]/10">
-                      <th className="p-3 text-left font-medium">Date</th>
-                      <th className="p-3 text-left font-medium">Agent</th>
-                      <th className="p-3 text-left font-medium">Activity</th>
-                      <th className="p-3 text-left font-medium">
-                        Credits Used
-                      </th>
+            <CardContent className="overflow-x-auto">
+              <table className="w-full min-w-[600px]">
+                <thead>
+                  <tr className="border-b border-[#8b5cf6]/10">
+                    <th className="p-3 text-left font-medium">Date</th>
+                    <th className="p-3 text-left font-medium">Agent</th>
+                    <th className="p-3 text-left font-medium">Activity</th>
+                    <th className="p-3 text-left font-medium">Credits Used</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {recentActivity.map((activity) => (
+                    <tr
+                      key={activity.id}
+                      className="border-b border-[#8b5cf6]/10 hover:bg-[#8b5cf6]/5"
+                    >
+                      <td className="p-3">time</td>
+                      <td className="p-3">{activity.agent_type}</td>
+                      <td className="p-3">{activity.task_type}</td>
+                      <td className="p-3">{activity.credits_spent}</td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {recentActivity.map((activity) => (
-                      <tr
-                        key={activity.id}
-                        className="border-b border-[#8b5cf6]/10 hover:bg-[#8b5cf6]/5"
-                      >
-                        <td className="p-3">time</td>
-                        <td className="p-3">{activity.agent_type}</td>
-                        <td className="p-3">{activity.task_type}</td>
-                        <td className="p-3">{activity.credits_spent}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                  ))}
+                </tbody>
+              </table>
             </CardContent>
             <CardFooter className="border-t border-[#8b5cf6]/10 p-4">
               <Link

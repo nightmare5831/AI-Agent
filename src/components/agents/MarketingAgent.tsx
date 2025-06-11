@@ -48,7 +48,7 @@ const initialInput = {
   adObjective: '',
 };
 
-export const MarketingAgent = ({
+const MarketingAgent = ({
   isGenerating,
   setResult,
   setIsGenerating,
@@ -88,11 +88,11 @@ export const MarketingAgent = ({
     }
 
     const current_spent = formData.includeImage ? 2 : 1;
-    if(profile.credits_balance < current_spent) {
-      toast.error('Insurficiant Credit! Please Pucharse Credit.')
+    if (profile.credits_balance < current_spent) {
+      toast.error('Insurficiant Credit! Please Pucharse Credit.');
       return;
     }
-    
+
     setIsGenerating(true);
 
     const inputData = {
@@ -115,7 +115,7 @@ export const MarketingAgent = ({
           setResult({ script: res.script, url: '' });
         } else {
           setResult({ script: res.script, url: res.imageUrl });
-          resultData.credits_spent = 2
+          resultData.credits_spent = 2;
         }
         setIsGenerating(false);
         resultData.output_type = res.type;
@@ -175,7 +175,6 @@ export const MarketingAgent = ({
   const renderFields = () => {
     const fields = [];
 
-    // Common fields for all functionalities
     if (
       [
         'content-calendar',
@@ -215,6 +214,7 @@ export const MarketingAgent = ({
             }}
           >
             <SelectTrigger
+              id='industry'
               className={`h-11 ${errors.industry ? 'border-red-500' : ''}`}
             >
               <SelectValue placeholder="Select industry" />
@@ -275,8 +275,8 @@ export const MarketingAgent = ({
     ) {
       fields.push(
         <div key="platforms" className="space-y-3">
-          <Label>Platforms *</Label>
-          <div className="flex flex-wrap gap-2">
+          <legend className="text-sm font-medium text-gray-700">Platforms *</legend>
+          <div id="platforms" className="flex flex-wrap gap-2">
             {[
               'Instagram',
               'Facebook',
@@ -317,6 +317,7 @@ export const MarketingAgent = ({
             }}
           >
             <SelectTrigger
+              id="postFrequency"
               className={`h-11 ${errors.postFrequency ? 'border-red-500' : ''}`}
             >
               <SelectValue placeholder="How often to post?" />
@@ -381,6 +382,7 @@ export const MarketingAgent = ({
             }}
           >
             <SelectTrigger
+              id='tone'
               className={`h-11 ${errors.tone ? 'border-red-500' : ''}`}
             >
               <SelectValue placeholder="Select tone" />
@@ -449,7 +451,7 @@ export const MarketingAgent = ({
     if (['story-creation', 'ad-copy'].includes(selectedFunctionality)) {
       fields.push(
         <div key="keywords" className="space-y-3">
-          <Label>Keywords *</Label>
+          <Label htmlFor='keywords'>Keywords *</Label>
           <div className="mb-2 flex flex-wrap gap-2">
             {formData.keywords.map((keyword) => (
               <Badge
@@ -463,6 +465,7 @@ export const MarketingAgent = ({
             ))}
           </div>
           <Input
+            id="keywords"
             placeholder="Type a keyword and press Enter"
             onKeyPress={(e) => {
               if (e.key === 'Enter') {
@@ -492,6 +495,7 @@ export const MarketingAgent = ({
             }}
           >
             <SelectTrigger
+              id='adObjective'
               className={`h-11 ${errors.adObjective ? 'border-red-500' : ''}`}
             >
               <SelectValue placeholder="What's your goal?" />
@@ -527,7 +531,7 @@ export const MarketingAgent = ({
             setSelectedFunctionality(value)
           }
         >
-          <SelectTrigger className="h-12 text-base">
+          <SelectTrigger className="h-12 text-base" id='functionality'>
             <SelectValue placeholder="Choose a marketing function..." />
           </SelectTrigger>
           <SelectContent>
@@ -569,3 +573,5 @@ export const MarketingAgent = ({
     </div>
   );
 };
+
+export default MarketingAgent;

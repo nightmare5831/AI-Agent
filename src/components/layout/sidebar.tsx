@@ -12,6 +12,7 @@ import { ChevronLeft, ChevronRight, Settings } from 'lucide-react';
 
 import { usePathname } from 'next/navigation';
 import { useLanguage } from '@/components/language-selector';
+import { useEffect } from 'react';
 
 interface SidebarProps {
   open: boolean;
@@ -48,6 +49,20 @@ export function Sidebar({ open, onOpenChange, type }: SidebarProps) {
 
   const items = type === 'admin' ? adminItems : userItems;
 
+  useEffect(() => {
+    const handleResize = () => {
+      const isMobileNow = window.innerWidth < 768;
+      if (isMobileNow && open) {
+        onOpenChange(false);
+      }
+    };
+
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [open, onOpenChange]);
+  
   return (
     <div className="relative">
       <motion.div
