@@ -44,17 +44,17 @@ export async function POST(req: Request) {
 
         await prisma.subscriptions.create({
           data: {
-            user_id: userId,
+            profile_id: userId,
             plan_type: planType,
             status: 'active',
-            start_date: new Date(),
-            end_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+            start_date: new Date().toISOString(),
+            end_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
             method: 'stripe',
             amount: PLANS[planType].credits,
           },
         });
 
-        await prisma.users.update({
+        await prisma.profile.update({
           where: { id: userId },
           data: {
             subscription_plan: planType,
@@ -71,14 +71,14 @@ export async function POST(req: Request) {
 
         await prisma.credit_purchases.create({
           data: {
-            user_id: userId,
+            profile_id: userId,
             pack_type: packType,
             credits: credits,
             price: (session.amount_total || 0) / 100,
           },
         });
 
-        await prisma.users.update({
+        await prisma.profile.update({
           where: { id: userId },
           data: {
             credits_balance: {
@@ -94,7 +94,7 @@ export async function POST(req: Request) {
       const planType = session.metadata.planType as PlanType;
       const userId = session.metadata.userId;
       const subscription_id = (
-        await prisma.subscriptions.findFirst({ where: { user_id: userId } })
+        await prisma.subscriptions.findFirst({ where: { profile_id: userId } })
       ).id;
 
       await prisma.subscriptions.update({
@@ -108,7 +108,7 @@ export async function POST(req: Request) {
         },
       });
 
-      await prisma.users.update({
+      await prisma.profile.update({
         where: { id: userId },
         data: {
           subscription_plan: planType,
@@ -123,3 +123,5 @@ export async function POST(req: Request) {
 
   return NextResponse.json({ received: true });
 }
+
+POST.preferredRegion = ['gru1'];

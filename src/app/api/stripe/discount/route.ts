@@ -5,24 +5,24 @@ import { NextResponse } from 'next/server';
 
 export const POST = async (request: Request) => {
   const {
-    user_id,
+    profile_id,
     agent_type,
     task_type,
     credits_spent,
     output_type,
     agent_results, // optional object: { output_text?, file_url?, image_url? }
   } = await request.json();
-  console.log('request', user_id, output_type)
+  console.log('request', profile_id, output_type)
   try {
-    const user = await prisma.users.findUnique({
-      where: { id: user_id },
+    const user = await prisma.profile.findUnique({
+      where: { id: profile_id },
     });
 
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
-    await prisma.users.update({
-      where: { id: user_id },
+    await prisma.profile.update({
+      where: { id: profile_id },
       data: {
         credits_balance: {
           decrement: credits_spent,
@@ -32,7 +32,7 @@ export const POST = async (request: Request) => {
 
     const newTask = await prisma.tasks_log.create({
       data: {
-        user_id,
+        profile_id,
         agent_type,
         task_type,
         credits_spent,
@@ -59,3 +59,5 @@ export const POST = async (request: Request) => {
     );
   }
 };
+
+POST.preferredRegion = ['gru1'];

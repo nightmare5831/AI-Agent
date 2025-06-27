@@ -298,7 +298,7 @@ export function SignInForm(): JSX.Element {
                       </FormLabel>
                       <motion.div whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}>
                         <Link
-                          href="/auth/reset-password"
+                          href="#"
                           className="text-sm text-muted-foreground hover:text-[#ec4899] transition-colors duration-300"
                         >
                           Forgot password?

@@ -2,7 +2,6 @@
 
 import { prisma } from '@/lib/db';
 import createClient from '@/lib/supabase/server';
-
 export async function getCurrentUser() {
   const supabase = createClient();
 
@@ -17,11 +16,9 @@ export async function getCurrentProfile() {
   const user = await getCurrentUser();
 
   if (!user) return null;
-  const profile = await prisma.users.findFirst({ where: { id: user.id } });
+  const profile = await prisma.profile.findFirst({ where: { id: user.id } });
   if (!profile) {
-    return await prisma.users.create({
-      data: { id: user.id, name: '', email: user.email },
-    });
+    return null
   }
 
   return profile;

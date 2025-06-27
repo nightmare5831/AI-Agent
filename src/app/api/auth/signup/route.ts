@@ -12,15 +12,14 @@ export const POST = async (request: Request) => {
     const forwardedFor = request.headers.get('x-forwarded-for');
     const ip = forwardedFor?.split(',')[0]?.trim() || 'Unknown';
 
-    console.log('ip', ip)
-    const existingIp = await prisma.users.findFirst({
+    const existingIp = await prisma.profile.findFirst({
       where: { ip_address: ip },
     });
     if(existingIp) {
       return NextResponse.json({message: 'one account already allocated to this IP Address! '}, {status:409});
     }
 
-    const existingUsers = await prisma.users.findFirst({
+    const existingUsers = await prisma.profile.findUnique({
       where: { email: formData.email },
     });
 
@@ -60,7 +59,7 @@ export const POST = async (request: Request) => {
       );
     }
 
-    await prisma.users.create({
+    await prisma.profile.create({
       data: {
         id: user.id,
         name: formData.full_name,
@@ -78,3 +77,5 @@ export const POST = async (request: Request) => {
     return NextResponse.json({ error: 'Signup failed' }, { status: 500 });
   }
 };
+
+POST.preferredRegion = ['gru1'];

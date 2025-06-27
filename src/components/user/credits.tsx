@@ -76,8 +76,12 @@ const CreditsPage = () => {
         ...prev,
         plan: subscription?.plan_type,
         balance: profile.credits_balance,
-        nextBilling: subscription?.end_date.toLocaleString(),
-        resetDate: subscription?.start_date.toLocaleString(),
+        nextBilling: subscription?.end_date
+          ? new Date(subscription.end_date).toLocaleString('pt-BR')
+          : '',
+        resetDate: subscription?.start_date
+          ? new Date(subscription.start_date).toLocaleString('pt-BR')
+          : '',
         price: price,
         credits: subscription?.amount,
       }));

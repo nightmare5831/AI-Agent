@@ -3,7 +3,7 @@
 import { prisma } from '@/lib/db';
 
 export const getProfile = async (id: string) => {
-  const profile = await prisma.users.findUnique({
+  const profile = await prisma.profile.findUnique({
     where: {
       id,
     },
