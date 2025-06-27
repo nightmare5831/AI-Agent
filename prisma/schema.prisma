@@ -8,11 +8,10 @@ datasource db {
   provider     = "postgresql"
   url          = env("DATABASE_URL")
   directUrl    = env("DIRECT_URL")
-  relationMode = "prisma"
-  schemas      = ["hubspot", "insights", "public", "setup_tables"]
+  schemas      = ["public"]
 }
 
-model users {
+model profile {
   id                   String                @id @db.Uuid
   email                String                @unique
   name                 String
@@ -33,40 +32,40 @@ model users {
 
 model subscriptions {
   id         String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  user_id    String   @db.Uuid
+  profile_id    String   @db.Uuid
   plan_type  PlanType
   status     String
   start_date DateTime
   end_date   DateTime
   method     String
   amount     Int      @default(0)
-  user       users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  profile       profile    @relation(fields: [profile_id], references: [id], onDelete: Cascade)
 
   @@schema("public")
 }
 
 model credit_purchases {
   id           String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  user_id      String   @db.Uuid
+  profile_id      String   @db.Uuid
   pack_type    PackType
   credits      Int
   price        Float
   purchased_at DateTime @default(now())
-  user         users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  profile         profile    @relation(fields: [profile_id], references: [id], onDelete: Cascade)
 
   @@schema("public")
 }
 
 model tasks_log {
   id            String         @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  user_id       String         @db.Uuid
+  profile_id       String         @db.Uuid
   agent_type    String
   task_type     String
   credits_spent Int
   output_type   String
   timestamp     DateTime       @default(now())
   agent_results agent_results?
-  user          users          @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  profile          profile          @relation(fields: [profile_id], references: [id], onDelete: Cascade)
 
   @@schema("public")
 }
@@ -84,11 +83,11 @@ model agent_results {
 
 model whatsapp_messages {
   id           String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  user_id      String           @db.Uuid
+  profile_id      String           @db.Uuid
   direction    MessageDirection
   message_text String
   timestamp    DateTime         @default(now())
-  user         users            @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  profile         profile            @relation(fields: [profile_id], references: [id], onDelete: Cascade)
 
   @@schema("public")
 }
@@ -99,7 +98,7 @@ model admin_activity_logs {
   action_type String
   target_id   String
   timestamp   DateTime @default(now())
-  admin       users    @relation("AdminActivities", fields: [admin_id], references: [id], onDelete: Cascade)
+  admin       profile    @relation("AdminActivities", fields: [admin_id], references: [id], onDelete: Cascade)
 
   @@schema("public")
 }

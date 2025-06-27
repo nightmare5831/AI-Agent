@@ -1,0 +1,337 @@
+'use client';
+
+import React, { useState } from 'react';
+import { ChevronDown, ChevronUp, Play, Loader2, Sparkles } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Agent } from '@/lib/agent';
+import { useResults } from '@/contexts/ResultsContext';
+
+interface MarketingCalendarAgentProps {
+  agent: Agent;
+  projectId: string;
+}
+
+interface ScheduleRow {
+  day: string;
+  channel: string;
+  placement: string;
+  format: string;
+  contentType: string;
+  description: string;
+}
+
+export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
+  agent,
+  projectId,
+}) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [schedule, setSchedule] = useState<ScheduleRow[]>([]);
+  const { addResult } = useResults();
+
+  const currentQuestion = agent.questions[currentQuestionIndex];
+  const isLastQuestion = currentQuestionIndex === agent.questions.length - 1;
+  const allQuestionsAnswered = agent.questions.every((q) => answers[q.id]);
+
+  const handleAnswerChange = (value: string) => {
+    setAnswers((prev) => ({
+      ...prev,
+      [currentQuestion.id]: value,
+    }));
+  };
+
+  const handleNext = () => {
+    if (currentQuestionIndex < agent.questions.length - 1) {
+      setCurrentQuestionIndex((prev) => prev + 1);
+    }
+  };
+
+  const handleRunAgent = async () => {
+    setIsLoading(true);
+    // Generate mock 7-day schedule based on answers
+    const mockSchedule: ScheduleRow[] = [
+      {
+        day: 'Monday',
+        channel: 'Instagram',
+        placement: 'Feed',
+        format: 'Carousel',
+        contentType: 'Tip',
+        description:
+          '3 common mistakes when choosing the right product for your needs',
+      },
+      {
+        day: 'Tuesday',
+        channel: 'WhatsApp',
+        placement: 'Broadcast List',
+        format: 'Text + Image',
+        contentType: 'Offer',
+        description: 'Send a discount coupon with clear call-to-action',
+      },
+      {
+        day: 'Wednesday',
+        channel: 'Instagram',
+        placement: 'Reels',
+        format: 'Short Video',
+        contentType: 'Behind-the-scenes',
+        description: 'Show the process of creating your product/service',
+      },
+      {
+        day: 'Thursday',
+        channel: 'Instagram',
+        placement: 'Story',
+        format: 'Poll',
+        contentType: 'Engagement',
+        description: 'Ask followers to choose between two product options',
+      },
+      {
+        day: 'Friday',
+        channel: 'Instagram',
+        placement: 'Feed',
+        format: 'Image',
+        contentType: 'Social Proof',
+        description: 'Customer testimonial with product photo',
+      },
+      {
+        day: 'Saturday',
+        channel: 'TikTok',
+        placement: 'Feed',
+        format: 'Video',
+        contentType: 'Entertaining',
+        description: 'Trend-based creative video related to your industry',
+      },
+      {
+        day: 'Sunday',
+        channel: 'Instagram',
+        placement: 'Story',
+        format: 'Image',
+        contentType: 'Customer Repost',
+        description: 'Repost customer content featuring your brand',
+      },
+    ];
+
+    addResult(agent.id, agent.title, agent.icon, mockSchedule);
+    setSchedule(mockSchedule);
+    setIsLoading(false);
+  };
+
+  const handleReset = () => {
+    setCurrentQuestionIndex(0);
+    setAnswers({});
+    setSchedule([]);
+  };
+
+  const renderInputField = (question: any) => {
+    const value = answers[question.id] || '';
+
+    switch (question.type) {
+      case 'text':
+        return (
+          <Input
+            value={value}
+            onChange={(e) => handleAnswerChange(e.target.value)}
+            placeholder={question.placeholder}
+            className="w-full"
+          />
+        );
+      case 'textarea':
+        return (
+          <Textarea
+            value={value}
+            onChange={(e) => handleAnswerChange(e.target.value)}
+            placeholder={question.placeholder}
+            rows={4}
+            className="w-full"
+          />
+        );
+      case 'select':
+        return (
+          <Select value={value} onValueChange={handleAnswerChange}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder={question.placeholder} />
+            </SelectTrigger>
+            <SelectContent>
+              {question.options?.map((option: string) => (
+                <SelectItem key={option} value={option}>
+                  {option}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        );
+      case 'multiselect': {
+        const selectedOptions = value ? value.split(',') : [];
+        return (
+          <div className="space-y-2">
+            {question.options?.map((option: string) => (
+              <label key={option} className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={selectedOptions.includes(option)}
+                  onChange={(e) => {
+                    const newSelection = e.target.checked
+                      ? [...selectedOptions, option]
+                      : selectedOptions.filter((item) => item !== option);
+                    handleAnswerChange(newSelection.join(','));
+                  }}
+                  className="rounded border-gray-300"
+                />
+                <span className="text-sm">{option}</span>
+              </label>
+            ))}
+          </div>
+        );
+      }
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:shadow-md">
+      <div
+        className="cursor-pointer p-6"
+        onClick={() => setIsExpanded(!isExpanded)}
+      >
+        <div className="flex items-start justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="text-2xl">{agent.icon}</div>
+            <div>
+              <h3 className="text-lg font-semibold text-slate-800">
+                {agent.title}
+              </h3>
+              <p className="mt-1 text-sm text-slate-600">{agent.description}</p>
+            </div>
+          </div>
+          <div className="text-slate-400">
+            {isExpanded ? (
+              <ChevronUp className="h-5 w-5" />
+            ) : (
+              <ChevronDown className="h-5 w-5" />
+            )}
+          </div>
+        </div>
+      </div>
+
+      {isExpanded && (
+        <div className="border-t border-slate-100 bg-slate-50 p-6">
+          {!allQuestionsAnswered ? (
+            <>
+              <div className="mb-4">
+                <div className="mb-2 flex justify-between text-sm text-slate-600">
+                  <span>
+                    Question {currentQuestionIndex + 1} of{' '}
+                    {agent.questions.length}
+                  </span>
+                </div>
+                <div className="h-2 w-full rounded-full bg-slate-200">
+                  <div
+                    className="h-2 rounded-full bg-blue-600 transition-all duration-300"
+                    style={{
+                      width: `${((currentQuestionIndex + 1) / agent.questions.length) * 100}%`,
+                    }}
+                  ></div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-slate-700">
+                    {currentQuestion.question}
+                  </label>
+                  {renderInputField(currentQuestion)}
+                </div>
+
+                <div className="flex justify-between">
+                  <Button
+                    variant="outline"
+                    onClick={() =>
+                      setCurrentQuestionIndex(
+                        Math.max(0, currentQuestionIndex - 1)
+                      )
+                    }
+                    disabled={currentQuestionIndex === 0}
+                  >
+                    Previous
+                  </Button>
+
+                  <Button
+                    onClick={handleNext}
+                    disabled={!answers[currentQuestion.id]}
+                    className="bg-blue-600 text-white hover:bg-blue-700"
+                  >
+                    {isLastQuestion ? 'Complete' : 'Next'}
+                  </Button>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              {schedule.length === 0 ? (
+                <div className="space-y-4 text-center">
+                  <div className="font-medium text-green-600">
+                    All questions completed! ✅
+                  </div>
+                  <Button
+                    onClick={handleRunAgent}
+                    disabled={isLoading}
+                    className="bg-green-600 text-white hover:bg-green-700"
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Creating Schedule...
+                      </>
+                    ) : (
+                      <>
+                        <Play className="mr-2 h-4 w-4" />
+                        Generate 7-Day Schedule
+                      </>
+                    )}
+                  </Button>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="rounded-lg border border-green-200 bg-white p-4">
+                    <h4 className="font-medium text-slate-800 mb-4 flex items-center">
+                      <Sparkles className="mr-2 h-5 w-5 text-purple-600" />
+                      Your 7-Day Content Schedule:
+                    </h4>
+                    Successfully! Generated! 🎉
+                  </div>
+
+                  <div className="flex gap-3">
+                    <Button
+                      onClick={handleReset}
+                      variant="default"
+                      className="flex-1"
+                    >
+                      Start Over
+                    </Button>
+                    <Button
+                      onClick={handleRunAgent}
+                      disabled={isLoading}
+                      className="flex-1 bg-blue-600 text-white hover:bg-blue-700"
+                    >
+                      Regenerate Schedule
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};

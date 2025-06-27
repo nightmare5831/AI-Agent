@@ -112,9 +112,9 @@ const MarketingAgent = ({
     await Request.Post('/api/agents', inputData)
       .then((res) => {
         if (res.type === 'text') {
-          setResult({ script: res.script, url: '' });
+          setResult({ script: res.script, url: '', type:{agent:'marketing', task: selectedFunctionality, user_id: profile.id}});
         } else {
-          setResult({ script: res.script, url: res.imageUrl });
+          setResult({ script: res.script, url: res.imageUrl, type:{agent:'marketing', task: selectedFunctionality, user_id: profile.id}});
           resultData.credits_spent = 2;
         }
         setIsGenerating(false);
@@ -131,8 +131,6 @@ const MarketingAgent = ({
     await Request.Post('/api/stripe/discount', resultData)
       .then((res) => console.log('loged result successfully!'))
       .catch((err) => console.log('error to log result!'));
-
-    setFormData(initialInput);
   };
 
   const addKeyword = (keyword: string) => {

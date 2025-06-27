@@ -6,13 +6,12 @@ const openai = new OpenAI({
 });
 
 type Agent = 'marketing' | 'strategy' | 'organization';
-type TaskKind = 'text' | 'image';
 
 interface AgentRequest {
   agent: Agent;
   function: string;
   inputs: Record<string, any>;
-  task?: TaskKind;
+  adjust: string;
 }
 
 // Agent-specific system prompts
@@ -299,6 +298,7 @@ export const POST = async (request: Request) => {
       agent,
       function: func,
       inputs,
+      adjust
     } = (await request.json()) as AgentRequest;
 
     if (!agent || !func || !inputs || !systemRoles[agent]) {
@@ -308,7 +308,7 @@ export const POST = async (request: Request) => {
       );
     }
     
-    const prompt = buildPrompt(agent, func, inputs);
+    const prompt = adjust ? adjust : buildPrompt(agent, func, inputs);
     const needsImage = inputs.includeImage
     // Uncomment when ready to use OpenAI
     const completion = await openai.chat.completions.create({
@@ -322,11 +322,11 @@ export const POST = async (request: Request) => {
 
     const content = completion.choices[0].message?.content || 'No response.';
     const result = parseOutput(content);
-    console.log('content', content)
     
     if (needsImage) {
       const imagePrompt = buildImagePrompt(agent, func, inputs);
       const image = await openai.images.generate({
+        model: 'dall-e-3',
         prompt: imagePrompt,
         n: 1,
         size: '1024x1024',

@@ -2,8 +2,6 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ThemeProvider } from '@/components/providers/theme-provider';
-import { LanguageProvider } from '@/components/language-selector';
-
 import { AuthProvider } from '@/core/auth/AuthProvider';
 import { Toaster } from 'sonner';
 
@@ -33,7 +31,7 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <LanguageProvider>{children}</LanguageProvider>
+            {children}
           </ThemeProvider>
         </AuthProvider>
         <Toaster

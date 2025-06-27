@@ -1,7 +1,6 @@
 'use client';
 
 import {
-  Calendar,
   ChevronLeft,
   ChevronRight,
   CreditCard,
@@ -67,7 +66,7 @@ const UsagePage = () => {
     const map = new Map<string, number>();
 
     for (let d = new Date(from); d <= to; d.setDate(d.getDate() + 1)) {
-      const key = d.toISOString().split('T')[0];
+      const key = d.toISOString().slice(0, 10);
       map.set(key, 0);
     }
 

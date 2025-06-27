@@ -13,7 +13,7 @@ export async function POST(req: Request) {
   try {
     const { planType, userId, subscriptionId} = await req.json() as SubscriptionRequest;
     // Get user
-    const user = await prisma.users.findUnique({
+    const user = await prisma.profile.findUnique({
       where: { id: userId },
     });
     if (!user) {
@@ -62,3 +62,5 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: (error as Error).message }, { status: 500 });
   }
 }
+
+POST.preferredRegion = ['gru1'];

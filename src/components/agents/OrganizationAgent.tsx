@@ -133,9 +133,10 @@ const OrganizationAgent = ({
     await Request.Post('/api/agents', inputData)
       .then((res) => {
         if (res.type === 'text') {
-          setResult({ script: res.script, url: '' });
+          console.log('script:', res.script)
+          setResult({ script: res.script, url: '', type:{agent:'organization', task: selectedFunctionality, user_id: profile.id}});
         } else {
-          setResult({ script: res.script, url: res.imageUrl });
+          setResult({ script: res.script, url: res.imageUrl, type:{agent:'organization', task: selectedFunctionality, user_id: profile.id}});
           resultData.credits_spent = 2;
         }
         setIsGenerating(false);
@@ -152,8 +153,6 @@ const OrganizationAgent = ({
     await Request.Post('/api/stripe/discount', resultData)
       .then((res) => console.log('loged result successfully!'))
       .catch((err) => console.log('error to log result!'));
-
-    setFormData(initialInput);
   };
 
   const addTeamMember = (member: string) => {

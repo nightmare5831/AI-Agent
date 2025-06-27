@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     const { packType, userId } = await req.json() as CreditPurchaseRequest;
     
     // Get user
-    const user = await prisma.users.findUnique({
+    const user = await prisma.profile.findUnique({
       where: { id: userId },
     });
     
@@ -48,3 +48,5 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: (error as Error).message }, { status: 500 });
   }
 }
+
+POST.preferredRegion = ['gru1'];
