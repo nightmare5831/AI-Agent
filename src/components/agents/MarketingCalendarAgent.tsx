@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Agent } from '@/lib/agent';
+import { Agent } from '@/lib/agentType';
 import { useResults } from '@/contexts/ResultsContext';
 
 interface MarketingCalendarAgentProps {

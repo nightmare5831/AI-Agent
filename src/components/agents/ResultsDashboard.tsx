@@ -1,7 +1,14 @@
 'use client';
 
 import React from 'react';
-import { Trash2, Clock } from 'lucide-react';
+import {
+  Trash2,
+  Clock,
+  ExternalLink,
+  FileText,
+  Image,
+  Video,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Table,
@@ -11,7 +18,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { FileText, Image, Video } from 'lucide-react';
 import { useResults } from '@/contexts/ResultsContext';
 
 export const renderGeneratedContent = ({
@@ -25,41 +31,36 @@ export const renderGeneratedContent = ({
 
   return (
     <div className="space-y-6">
-      {content.caption &&
-        selectedTypes.includes('Social Media Caption') && (
-          <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
-            <h5 className="mb-3 flex items-center font-medium text-blue-800">
-              <FileText className="mr-2 h-4 w-4" />
-              Social Media Caption
-            </h5>
-            <div className="space-y-3 text-sm">
-              <div>
-                <strong>Headline:</strong>
-                <p className="mt-1 text-blue-700">
-                  {content.caption.headline}
-                </p>
-              </div>
-              <div>
-                <strong>Copy:</strong>
-                <p className="mt-1 whitespace-pre-line text-blue-700">
-                  {content.caption.copy}
-                </p>
-              </div>
-              <div>
-                <strong>Call-to-Action:</strong>
-                <p className="mt-1 text-blue-700">
-                  {content.caption.cta}
-                </p>
-              </div>
-              <div>
-                <strong>Hashtags:</strong>
-                <p className="mt-1 text-blue-700">
-                  {content.caption.hashtags.join(' ')}
-                </p>
-              </div>
+      {content.caption && selectedTypes.includes('Social Media Caption') && (
+        <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
+          <h5 className="mb-3 flex items-center font-medium text-blue-800">
+            <FileText className="mr-2 h-4 w-4" />
+            Social Media Caption
+          </h5>
+          <div className="space-y-3 text-sm">
+            <div>
+              <strong>Headline:</strong>
+              <p className="mt-1 text-blue-700">{content.caption.headline}</p>
+            </div>
+            <div>
+              <strong>Copy:</strong>
+              <p className="mt-1 whitespace-pre-line text-blue-700">
+                {content.caption.copy}
+              </p>
+            </div>
+            <div>
+              <strong>Call-to-Action:</strong>
+              <p className="mt-1 text-blue-700">{content.caption.cta}</p>
+            </div>
+            <div>
+              <strong>Hashtags:</strong>
+              <p className="mt-1 text-blue-700">
+                {content.caption.hashtags.join(' ')}
+              </p>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
       {content.pageCopy &&
         selectedTypes.includes('Page Copy (Website/WhatsApp)') && (
@@ -71,9 +72,7 @@ export const renderGeneratedContent = ({
             <div className="space-y-3 text-sm">
               <div>
                 <strong>Title:</strong>
-                <p className="mt-1 text-green-700">
-                  {content.pageCopy.title}
-                </p>
+                <p className="mt-1 text-green-700">{content.pageCopy.title}</p>
               </div>
               <div>
                 <strong>Subtitle:</strong>
@@ -89,9 +88,7 @@ export const renderGeneratedContent = ({
               </div>
               <div>
                 <strong>CTA:</strong>
-                <p className="mt-1 text-green-700">
-                  {content.pageCopy.cta}
-                </p>
+                <p className="mt-1 text-green-700">{content.pageCopy.cta}</p>
               </div>
             </div>
           </div>
@@ -106,8 +103,7 @@ export const renderGeneratedContent = ({
             </h5>
             <div className="space-y-2 text-sm">
               <p>
-                <strong>Objective:</strong>{' '}
-                {content.imageScript.objective}
+                <strong>Objective:</strong> {content.imageScript.objective}
               </p>
               <p>
                 <strong>Format:</strong> {content.imageScript.format}
@@ -116,8 +112,7 @@ export const renderGeneratedContent = ({
                 <strong>Scene:</strong> {content.imageScript.scene}
               </p>
               <p>
-                <strong>Visual Style:</strong>{' '}
-                {content.imageScript.style}
+                <strong>Visual Style:</strong> {content.imageScript.style}
               </p>
               <div className="mt-3 rounded bg-purple-100 p-3">
                 <strong>Final AI Prompt:</strong>
@@ -138,12 +133,10 @@ export const renderGeneratedContent = ({
             </h5>
             <div className="space-y-2 text-sm">
               <p>
-                <strong>Objective:</strong>{' '}
-                {content.videoScript.objective}
+                <strong>Objective:</strong> {content.videoScript.objective}
               </p>
               <p>
-                <strong>Duration:</strong>{' '}
-                {content.videoScript.duration}
+                <strong>Duration:</strong> {content.videoScript.duration}
               </p>
               <p>
                 <strong>Style:</strong> {content.videoScript.style}
@@ -189,6 +182,20 @@ export const ResultsDashboard: React.FC = () => {
   };
 
   const renderResult = (result: any, agentId: string) => {
+    // For other agent types, display as string
+    if (agentId === 'marketing-strategy' && typeof result === 'string') {
+      return (
+        <div className="text-sm text-slate-700">
+          <div className="rounded-lg border border-green-200 bg-white p-4">
+            <h4 className="mb-2 font-medium text-slate-800">
+              Marketing Strategy Summary:
+            </h4>
+            <div className="whitespace-pre-line text-slate-700">{result}</div>
+          </div>
+        </div>
+      );
+    }
+
     if (agentId === 'marketing-calendar' && Array.isArray(result)) {
       return (
         <div className="rounded-lg border border-green-200 bg-white p-4">
@@ -280,20 +287,6 @@ export const ResultsDashboard: React.FC = () => {
       );
     }
 
-    // For other agent types, display as string
-    if (agentId === 'marketing-strategy' && typeof result === 'string') {
-      return (
-        <div className="text-sm text-slate-700">
-          <div className="rounded-lg border border-green-200 bg-white p-4">
-            <h4 className="mb-2 font-medium text-slate-800">
-              Marketing Strategy Summary:
-            </h4>
-            <div className="whitespace-pre-line text-slate-700">{result}</div>
-          </div>
-        </div>
-      );
-    }
-
     if (agentId === 'post-text' && result) {
       return (
         <div className="space-y-3">
@@ -301,6 +294,172 @@ export const ResultsDashboard: React.FC = () => {
             content: result.content,
             answers: result.answers,
           })}
+        </div>
+      );
+    }
+
+    if (agentId === 'image-generation' && result && result.image) {
+      return (
+        <div className="space-y-3">
+          <div className="flex items-center space-x-3">
+            <img
+              src={result.image.url}
+              alt="Generated image"
+              className="max-h-[150px] max-w-[150px] rounded border object-cover"
+            />
+            <div className="flex-1">
+              <div className="text-md text-slate-700">
+                CampaignName: {result.settings.campaignName || 'Generated Image'}
+              </div>
+              <div className="mt-1 text-sm text-slate-500">
+                Style: {result.settings?.style}
+              </div>
+              <div className="mt-1 text-sm text-slate-500">
+                Format: {result.settings?.format}
+              </div>
+              <button
+                onClick={() => window.open(result.image.url, '_blank')}
+                className="mt-1 flex items-center text-sm text-blue-600 hover:text-blue-800"
+              >
+                <ExternalLink className="mr-1 h-3 w-3" />
+                View Full Size
+              </button>
+            </div>
+          </div>
+          <div className="rounded bg-slate-50 p-2 text-md text-slate-600">
+            <strong>Prompt:</strong> {result.prompt.substring(0, 300)}...
+          </div>
+        </div>
+      );
+    }
+
+    if (agentId === 'seo-optimization' && result) {
+      return (
+        <div className="border-t border-slate-100 bg-slate-50 p-6">
+          <div className="space-y-4">
+            {result.type === 'content' ? (
+              <div className="space-y-4">
+                <div className="rounded-lg border bg-green-50 p-4">
+                  <h3 className="mb-2 font-semibold text-green-800">
+                    ✨ Optimized Opening
+                  </h3>
+                  <p className="text-sm text-green-700">
+                    {result.optimizedOpening}
+                  </p>
+                </div>
+
+                <div className="rounded-lg border bg-blue-50 p-4">
+                  <h3 className="mb-2 font-semibold text-blue-800">
+                    # Suggested Hashtags
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {result.suggestedHashtags.map(
+                      (tag: string, index: number) => (
+                        <span
+                          key={index}
+                          className="rounded bg-blue-200 px-2 py-1 text-xs text-blue-800"
+                        >
+                          {tag}
+                        </span>
+                      )
+                    )}
+                  </div>
+                </div>
+
+                <div className="rounded-lg border bg-purple-50 p-4">
+                  <h3 className="mb-2 font-semibold text-purple-800">
+                    🎯 Improved CTA
+                  </h3>
+                  <p className="text-sm text-purple-700">
+                    {result.improvedCTA}
+                  </p>
+                </div>
+
+                <div className="rounded-lg border bg-orange-50 p-4">
+                  <h3 className="mb-2 font-semibold text-orange-800">
+                    🌀 Alternative Caption
+                  </h3>
+                  <p className="text-sm text-orange-700">
+                    {result.alternativeCaption}
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="rounded-lg border bg-green-50 p-4">
+                  <h3 className="mb-2 font-semibold text-green-800">
+                    ✨ Suggested BIO
+                  </h3>
+                  <p className="text-sm text-green-700">
+                    {result.suggestedBio}
+                  </p>
+                </div>
+
+                <div className="rounded-lg border bg-blue-50 p-4">
+                  <h3 className="mb-2 font-semibold text-blue-800">
+                    🏷️ Suggested Username
+                  </h3>
+                  <p className="font-mono text-sm text-blue-700">
+                    {result.suggestedUsername}
+                  </p>
+                </div>
+
+                <div className="rounded-lg border bg-purple-50 p-4">
+                  <h3 className="mb-2 font-semibold text-purple-800">
+                    📝 Suggested Profile Name
+                  </h3>
+                  <p className="text-sm text-purple-700">
+                    {result.suggestedProfileName}
+                  </p>
+                </div>
+
+                <div className="rounded-lg border bg-orange-50 p-4">
+                  <h3 className="mb-2 font-semibold text-orange-800">
+                    🔘 Instagram Highlights
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {result.instagramHighlights.map(
+                      (highlight: string, index: number) => (
+                        <span
+                          key={index}
+                          className="rounded-full bg-orange-200 px-2 py-1 text-xs text-orange-800"
+                        >
+                          {highlight}
+                        </span>
+                      )
+                    )}
+                  </div>
+                </div>
+
+                <div className="rounded-lg border bg-green-50 p-4">
+                  <h3 className="mb-2 font-semibold text-green-800">
+                    🔗 Link in Bio CTA
+                  </h3>
+                  <p className="text-sm text-green-700">
+                    {result.linkInBioCTA}
+                  </p>
+                </div>
+
+                <div className="rounded-lg border bg-indigo-50 p-4">
+                  <h3 className="mb-2 font-semibold text-indigo-800">
+                    🧠 SEO Keywords
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {result.seoKeywords.map(
+                      (keyword: string, index: number) => (
+                        <span
+                          key={index}
+                          className="rounded bg-indigo-200 px-2 py-1 text-xs text-indigo-800"
+                        >
+                          {keyword}
+                        </span>
+                      )
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       );
     }
