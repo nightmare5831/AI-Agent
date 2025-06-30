@@ -8,7 +8,6 @@ import { PostIdeasAgent } from './PostIdeasAgent';
 import { PostTextAgent } from './PostTextAgent';
 import { ImageGenerationAgent } from './ImageGnerationAgent';
 import { SEOOptimizationAgent } from './SEOOptimizationAgent';
-import { GenericAgent } from './GnericAgent';
 interface AgentCardProps {
   agent: Agent;
   projectId: string;
@@ -30,6 +29,6 @@ export const AgentCard: React.FC<AgentCardProps> = ({ agent, projectId }) => {
     case 'seo-optimization':
       return <SEOOptimizationAgent agent={agent} projectId={projectId} />;
     default:
-      return <GenericAgent agent={agent} projectId={projectId} />;
+      return null;
   }
 };
