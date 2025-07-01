@@ -1,14 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import {
-  ChevronDown,
-  ChevronUp,
-  Loader2,
-  PenTool,
-  FileText,
-  Image,
-  Video,
-} from 'lucide-react';
+import { ChevronDown, ChevronUp, Loader2, PenTool } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -21,6 +13,8 @@ import {
 } from '@/components/ui/select';
 import { Agent } from '@/lib/agentType';
 import { useResults } from '@/contexts/ResultsContext';
+import { mockStrategy, mockIdea } from '@/lib/agentData';
+import Request from '@/lib/request';
 
 interface PostTextAgentProps {
   agent: Agent;
@@ -53,20 +47,6 @@ interface GeneratedContent {
     orientation: string;
     finalPrompt: string;
   };
-  videoScript?: {
-    objective: string;
-    duration: string;
-    narrative: string;
-    style: string;
-    scene: string;
-    characters: string;
-    expressions: string;
-    music: string;
-    script: string;
-    keyMoments: string;
-    logo: string;
-    finalPrompt: string;
-  };
 }
 
 export const PostTextAgent: React.FC<PostTextAgentProps> = ({
@@ -86,25 +66,31 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
   const isLastQuestion = currentQuestionIndex === agent.questions.length - 1;
   const allQuestionsAnswered = agent.questions.every((q) => answers[q.id]);
 
-  // Mock data from previous agents
-  const mockBrandStrategy = {
-    brandName: 'FitStyle Boutique',
-    product: "Premium women's activewear and fitness accessories",
-    audience: 'Women 25-40, fitness enthusiasts, value quality and style',
-    tone: 'Friendly and welcoming',
-    goal: 'Generate more sales',
-    differentiator:
-      'Sustainable materials with innovative designs for active lifestyles',
+  const getOptions = () => {
+    const options1 = Object.entries(mockIdea.option1).map(
+      ([day, content]) => `${day} - ${content.title}`
+    );
+
+    const options2 = Object.entries(mockIdea.option2).map(
+      ([day, content]) => `${day} - ${content.title}`
+    );
+
+    return [...options1, ...options2];
   };
 
-  const mockSelectedIdea = {
-    title: 'The Activewear Fitting Room Reality Check',
-    description:
-      'Create a carousel showing 3 common fit mistakes: too tight sports bras, wrong legging size, and ignoring fabric type. Use real before/after photos or illustrations.',
-    hook: 'Stop making these activewear mistakes that are sabotaging your workouts! 🏃‍♀️',
-    cta: 'Save this post and tag a friend who needs to see this!',
-    format: 'Carousel',
-    platform: 'Instagram',
+  const getIdea = (dayTitleStr: string) => {
+    const [day, title] = dayTitleStr.split(' - ');
+    const source1 = mockIdea['option1'];
+    const source2 = mockIdea['option2'];
+
+    const match1 = Object.entries(source1).find(
+      ([key, value]) => key === day && value.title === title
+    );
+    const match2 = Object.entries(source2).find(
+      ([key, value]) => key === day && value.title === title
+    );
+    if (!match1 && !match2) return null;
+    return match1 ? { [match1[0]]: match1[1] } : { [match2[0]]: match2[1] };
   };
 
   const handleAnswerChange = (value: string) => {
@@ -120,115 +106,31 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
     }
   };
 
-  const generateContent = () => {
-    const selectedTypes = answers['content-type']?.split(',') || [];
-    const content: GeneratedContent = {};
-
-    if (selectedTypes.includes('Social Media Caption')) {
-      content.caption = {
-        headline: 'The 3 Activewear Mistakes Ruining Your Workouts 🚫',
-        copy: `Did you know that 80% of women wear the wrong activewear size? 😱
-
-Here are the 3 biggest mistakes I see everywhere:
-
-1️⃣ Sports bras that are TOO TIGHT
-→ Restricts breathing and movement
-→ Causes back pain and discomfort
-
-2️⃣ Leggings in the wrong size
-→ Too small = uncomfortable compression
-→ Too big = constant adjusting mid-workout
-
-3️⃣ Ignoring fabric quality
-→ Cheap materials = no moisture wicking
-→ No stretch = limited range of motion
-
-At ${mockBrandStrategy.brandName}, we believe comfort should never be compromised. Our sustainable activewear is designed with YOUR body in mind! 💚`,
-        cta: 'Save this post and tag a friend who needs to see this! 👯‍♀️',
-        hashtags: [
-          '#ActivewearTips',
-          '#FitnessWear',
-          '#WorkoutGear',
-          '#SustainableFashion',
-          '#FitnessFashion',
-          '#WomensActivewear',
-          '#FitStyleBoutique',
-        ],
-      };
-    }
-
-    if (selectedTypes.includes('Page Copy (Website/WhatsApp)')) {
-      content.pageCopy = {
-        title: 'Finally, Activewear That Actually Fits Your Lifestyle',
-        subtitle:
-          'Sustainable, comfortable, and designed for real women who refuse to compromise on style or performance.',
-        content: `Tired of activewear that looks great but feels terrible? Or pieces that feel amazing but look like you rolled out of bed?
-
-We get it. That's why we created FitStyle Boutique.
-
-✨ **What makes us different:**
-• Sustainable materials that feel luxurious
-• Sizes that actually fit real women's bodies
-• Designs that transition from gym to coffee date
-• No more choosing between comfort and style
-
-Our customers tell us they finally found activewear that moves with them, not against them. Join thousands of women who've upgraded their workout wardrobe.`,
-        cta: 'Shop our collection and feel the difference →',
-      };
-    }
-
-    if (selectedTypes.includes('AI Image Generation Script')) {
-      content.imageScript = {
-        objective:
-          'Educate audience about proper activewear fitting while showcasing brand quality',
-        format: 'Instagram carousel post',
-        scene: 'Clean, modern fitting room with good lighting',
-        character: 'Confident woman in her 30s, athletic build',
-        expression:
-          'Helpful and approachable, demonstrating proper vs improper fit',
-        style: 'Realistic photography with clean, modern aesthetic',
-        colors: 'Soft pastels with brand colors (sage green and cream)',
-        logo: 'Subtle FitStyle Boutique logo in bottom corner',
-        elements: 'Split-screen comparison showing right vs wrong fit',
-        orientation: 'Square (1:1) for Instagram carousel',
-        finalPrompt:
-          'Instagram carousel showing a smiling 30-year-old woman in a modern fitting room demonstrating proper activewear fit vs common mistakes. Split-screen format showing correct sports bra fit on left, too-tight fit on right. Clean, professional lighting with soft pastel background. FitStyle Boutique logo discretely placed in corner. Realistic photography style with educational overlay text.',
-      };
-    }
-
-    if (selectedTypes.includes('AI Video Generation Script')) {
-      content.videoScript = {
-        objective:
-          'Build connection and educate while driving traffic to website',
-        duration: '30 seconds',
-        narrative: 'Problem-solution-action structure with relatable scenarios',
-        style: 'Natural, authentic, educational with upbeat energy',
-        scene: 'Modern fitness studio transitioning to fitting room',
-        characters:
-          'Relatable woman demonstrating common mistakes then showing proper fit',
-        expressions:
-          'Initially frustrated with ill-fitting clothes, then confident and happy with proper fit',
-        music: 'Upbeat, motivational background track',
-        script:
-          "VoiceOver: 'Raise your hand if your sports bra is doing THIS... or your leggings are doing THAT! Girl, we've all been there. But here's what proper activewear should actually feel like - supported but not suffocated, snug but not strangling. At FitStyle Boutique, we design for real bodies, real workouts, real life. Because you deserve activewear that works as hard as you do.'",
-        keyMoments:
-          '0-5s: Common problems, 5-20s: Solutions demonstration, 20-30s: Brand message and CTA',
-        logo: 'Appears at 25s with website URL',
-        finalPrompt:
-          '30-second video: Woman in fitness studio initially struggling with ill-fitting activewear (adjusting, pulling, uncomfortable), then cut to same woman in properly fitted FitStyle Boutique pieces, moving confidently through workout. Natural lighting, authentic expressions, upbeat music. Text overlays highlighting key fitting tips. Ends with confident pose and brand logo.',
-      };
-    }
-
-    return content;
-  };
-
   const handleRunAgent = async () => {
     setIsLoading(true);
-    
-    const content = generateContent();
-    setGeneratedContent(content);
+
+    const idea = getIdea(answers['selected-idea']);
+    const body = {
+      agent: 'post-text-scripts',
+      inputs: {
+        ...answers,
+        'selected-idea': idea,
+        'marketing-strategy': mockStrategy,
+      },
+    };
+    console.log('answers', answers)
+
+    const response = await Request.Post('/api/agents', body);
+    const responseString = response.script.join('\n');
+    const cleanedString = responseString
+      .replace(/^```json\s*/, '')
+      .replace(/```$/, '');
+    const parsedJson = JSON.parse(cleanedString);
+    console.log('parsedJson', parsedJson)
+
+    setGeneratedContent(parsedJson);
     addResult(agent.id, agent.title, agent.icon, {
-      content: content,
+      content: parsedJson,
       answers: answers,
     });
 
@@ -243,6 +145,23 @@ Our customers tell us they finally found activewear that moves with them, not ag
 
   const renderInputField = (question: any) => {
     const value = answers[question.id] || '';
+    const options = getOptions();
+    if (question.id === 'selected-idea') {
+      return (
+        <Select value={value} onValueChange={handleAnswerChange}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder={question.placeholder} />
+          </SelectTrigger>
+          <SelectContent>
+            {options?.map((option: string) => (
+              <SelectItem key={option} value={option}>
+                {option}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      );
+    }
 
     switch (question.type) {
       case 'text':
@@ -390,24 +309,6 @@ Our customers tell us they finally found activewear that moves with them, not ag
             <>
               {Object.keys(generatedContent).length === 0 ? (
                 <div className="space-y-4 text-center">
-                  <div className="mb-4 rounded-lg border border-blue-200 bg-blue-50 p-4">
-                    <h4 className="mb-2 font-medium text-blue-800">
-                      📋 Using Data From Previous Agents:
-                    </h4>
-                    <div className="space-y-1 text-sm text-blue-700">
-                      <p>
-                        <strong>Brand:</strong> {mockBrandStrategy.brandName}
-                      </p>
-                      <p>
-                        <strong>Selected Idea:</strong> {mockSelectedIdea.title}
-                      </p>
-                      <p>
-                        <strong>Content Types:</strong>{' '}
-                        {answers['content-type']}
-                      </p>
-                    </div>
-                  </div>
-
                   <div className="font-medium text-green-600">
                     All questions completed! ✅
                   </div>

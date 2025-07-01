@@ -34,7 +34,7 @@ interface GeneratedImage {
   url: string;
   name: string;
   prompt: string;
-  timestamp: Date;
+  timestamp: string;
   settings: {
     style: string;
     format: string;
@@ -118,7 +118,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
       url: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop&crop=center',
       name: imageName,
       prompt: answers['prompt'],
-      timestamp: new Date(),
+      timestamp: new Date().toISOString(),
       settings: {
         style: answers['visual-style'],
         format: answers['image-format'],
@@ -137,13 +137,12 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
     if (!generatedImage) return;
 
     setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
 
     const newImage: GeneratedImage = {
       ...generatedImage,
       id: `img_${Date.now()}_regen`,
       url: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop&crop=center',
-      timestamp: new Date(),
+      timestamp: new Date().toISOString(),
     };
 
     setGeneratedImage(newImage);

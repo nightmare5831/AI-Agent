@@ -59,18 +59,18 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
   const generateAnswerSummary = (question: any, answer: string) => {
     const summaries: Record<string, string> = {
       'brand-name': `Brand: ${answer}`,
-      'product-service': `Offers: ${answer.substring(0, 60)}${answer.length > 60 ? '...' : ''}`,
-      'target-audience': `Target: ${answer.substring(0, 60)}${answer.length > 60 ? '...' : ''}`,
-      differentiator: `Differentiator: ${answer.substring(0, 60)}${answer.length > 60 ? '...' : ''}`,
+      'product-service': `Offers: ${answer}`,
+      'target-audience': `Target: ${answer}`,
+      differentiator: `Differentiator: ${answer}`,
       'marketing-goals': `Goal: ${answer}`,
       'communication-tone': `Tone: ${answer}`,
       'video-appearance': `Video appearance: ${answer}`,
       'social-platforms': `Platforms: ${answer}`,
       limitations: `Limitations: ${answer || 'None specified'}`,
-      'focus-products': `Focus: ${answer.substring(0, 60)}${answer.length > 60 ? '...' : ''}`,
+      'focus-products': `Focus: ${answer}`,
       'positioning-status': `Positioning: ${answer}`,
       competitors: `Competitors: ${answer || 'None specified'}`,
-      'three-month-goals': `3-month goals: ${answer.substring(0, 60)}${answer.length > 60 ? '...' : ''}`,
+      'three-month-goals': `3-month goals: ${answer}`,
     };
 
     return (

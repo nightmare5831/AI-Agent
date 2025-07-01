@@ -21,6 +21,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { useResults } from '@/contexts/ResultsContext';
+import Request from '@/lib/request';
 
 interface SEOOptimizationAgentProps {
   agent: Agent;
@@ -235,6 +236,15 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
       };
     }
 
+    const body = {
+      agent: 'seo-optimization',
+      inputs: answers,
+    }
+    const response = await Request.Post(
+      '/api/agents',
+      body
+    );
+    console.log('response', response)
     setResults(mockResult);
     addResult('seo-optimization', 'SEO Optimization', '🔍', mockResult);
 
