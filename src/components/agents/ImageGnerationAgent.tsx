@@ -216,7 +216,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
             ))}
           </RadioGroup>
         );
-      case 'multiselect':
+      case 'multiselect': {
         const selectedValues = value ? value.split(',') : [];
         return (
           <div className="space-y-2">
@@ -244,6 +244,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
             ))}
           </div>
         );
+      }
       default:
         return null;
     }
