@@ -26,6 +26,19 @@ model profile {
   subscriptions        subscriptions[]
   tasks_log            tasks_log[]
   whatsapp_messages    whatsapp_messages[]
+  projects             projects[]
+
+  @@schema("public")
+}
+
+model projects {
+  id          String      @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  profile_id  String      @db.Uuid
+  createId    String      @unique
+  name        String
+  description String
+  tasks_log   tasks_log[]
+  profile     profile     @relation(fields: [profile_id], references: [id], onDelete: Cascade)
 
   @@schema("public")
 }
@@ -59,12 +72,13 @@ model credit_purchases {
 model tasks_log {
   id            String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   profile_id    String   @db.Uuid
-  project_id    String   @db.Uuid
+  project_id    String
   agent_type    String
   agent_results String
   credits_spent Int
   timestamp     DateTime @default(now())
   profile       profile  @relation(fields: [profile_id], references: [id], onDelete: Cascade)
+  project       projects @relation(fields: [project_id], references: [createId], onDelete: Cascade)
 
   @@schema("public")
 }

@@ -132,6 +132,14 @@ exports.Prisma.ProfileScalarFieldEnum = {
   stripeSubscriptionId: 'stripeSubscriptionId'
 };
 
+exports.Prisma.ProjectsScalarFieldEnum = {
+  id: 'id',
+  profile_id: 'profile_id',
+  createId: 'createId',
+  name: 'name',
+  description: 'description'
+};
+
 exports.Prisma.SubscriptionsScalarFieldEnum = {
   id: 'id',
   profile_id: 'profile_id',
@@ -216,6 +224,7 @@ exports.MessageDirection = exports.$Enums.MessageDirection = {
 
 exports.Prisma.ModelName = {
   profile: 'profile',
+  projects: 'projects',
   subscriptions: 'subscriptions',
   credit_purchases: 'credit_purchases',
   tasks_log: 'tasks_log',
