@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Plus, Trash2, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -7,15 +7,17 @@ import { AgentCard } from '@/components/agents/AgentCard';
 import { ResultsDashboard } from '@/components/agents/ResultsDashboard';
 import { ResultsProvider } from '@/contexts/ResultsContext';
 import { agents } from '@/lib/data/agents';
+import { getProject } from '@/core/agent';
+import { useAuth } from '@/core/auth/AuthProvider';
 
 const AgentPage = () => {
   const [projects, setProjects] = useState([
-    { id: '1', name: 'Tech Startup Campaign', description: 'AI-driven marketing for tech products' },
-    { id: '2', name: 'E-commerce Brand', description: 'Social media strategy for online retail' }
+    { id: Date.now().toString(), name: 'Tech Startup Campaign', description: 'AI-driven marketing for tech products' },
   ]);
-  const [selectedProject, setSelectedProject] = useState('1');
+  const [selectedProject, setSelectedProject] = useState(Date.now().toString());
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [{ profile }] = useAuth(); 
 
   const handleCreateProject = (name: string, description: string) => {
     const newProject = {
@@ -38,6 +40,14 @@ const AgentPage = () => {
   };
 
   const selectedProjectData = projects.find(p => p.id === selectedProject);
+
+  useEffect(()=> {
+    const setProjects = async () => {
+      const projects = await getProject(profile.id)
+      console.log('project', projects)
+    }
+    setProjects();
+  },[profile.id]);
 
   return (
     <ResultsProvider>
@@ -129,11 +139,10 @@ const AgentPage = () => {
           {/* AI Agents Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             {agents.map((agent : any) => (
-              <AgentCard key={agent.id} agent={agent} projectId={selectedProject} />
+              <AgentCard key={agent.id} agent={agent} projectId={selectedProject}/>
             ))}
           </div>
 
-          {/* Results Dashboard */}
           <ResultsDashboard />
         </div>
 

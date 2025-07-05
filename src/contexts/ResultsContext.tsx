@@ -16,7 +16,7 @@ interface ResultsContextType {
   clearResults: () => void;
 }
 
-const ResultsContext = createContext<ResultsContextType | undefined>(undefined);
+export const ResultsContext = createContext<ResultsContextType | undefined>(undefined);
 
 export const ResultsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [results, setResults] = useState<AgentResult[]>([]);

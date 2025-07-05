@@ -14,6 +14,7 @@ import {
 import { Agent } from '@/lib/agentType';
 import { useResults } from '@/contexts/ResultsContext';
 import { mockStrategy, mockIdea } from '@/lib/agentData';
+import { useAuth } from '@/core/auth/AuthProvider';
 import Request from '@/lib/request';
 
 interface PostTextAgentProps {
@@ -61,6 +62,7 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
     {}
   );
   const { addResult } = useResults();
+  const [{ profile }] = useAuth();
 
   const currentQuestion = agent.questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === agent.questions.length - 1;
@@ -118,7 +120,6 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
         'marketing-strategy': mockStrategy,
       },
     };
-    console.log('answers', answers)
 
     const response = await Request.Post('/api/agents', body);
     const responseString = response.script.join('\n');
@@ -126,13 +127,19 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
       .replace(/^```json\s*/, '')
       .replace(/```$/, '');
     const parsedJson = JSON.parse(cleanedString);
-    console.log('parsedJson', parsedJson)
 
+    const task = {
+      profile_id: profile.id,
+      project_id: projectId,
+      agent_type: agent.id,
+      agent_results: JSON.stringify({...parsedJson, type:answers['content-type']}),
+      credits_spent: 1,
+    };
+
+    await Request.Post('/api/stripe/discount', task);
+    
     setGeneratedContent(parsedJson);
-    addResult(agent.id, agent.title, agent.icon, {
-      content: parsedJson,
-      answers: answers,
-    });
+    addResult(agent.id, agent.title, agent.icon, { ...parsedJson, type:answers['content-type']});
 
     setIsLoading(false);
   };

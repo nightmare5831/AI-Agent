@@ -14,8 +14,10 @@ import {
 } from '@/components/ui/select';
 import { Agent } from '@/lib/agentType';
 import { useResults } from '@/contexts/ResultsContext';
-import Request from '@/lib/request';
 import { mockStrategy } from '@/lib/agentData';
+import { useAuth } from '@/core/auth/AuthProvider';
+import Request from '@/lib/request';
+
 interface MarketingCalendarAgentProps {
   agent: Agent;
   projectId: string;
@@ -39,7 +41,8 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
   const [schedule, setSchedule] = useState<ScheduleRow[]>([]);
-  const { addResult } = useResults();
+  const { results, addResult } = useResults();
+  const [{ profile }] = useAuth();
 
   const currentQuestion = agent.questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === agent.questions.length - 1;
@@ -60,19 +63,19 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
 
   const handleRunAgent = async () => {
     setIsLoading(true);
-    
+
     const body = {
       agent: 'marketing-calendar',
-      inputs: {...answers, 'marketing-strategy': mockStrategy},
+      inputs: { ...answers, 'marketing-strategy': mockStrategy },
     };
 
     const response = await Request.Post('/api/agents', body);
     const rawRows = response.script.slice(3, 10); // Rows 3–9
-    const schedule = rawRows.map((row : any) => {
+    const schedule = rawRows.map((row: any) => {
       const parts = row
         .split('|')
-        .map((s : any) => s.trim())
-        .filter(Boolean); 
+        .map((s: any) => s.trim())
+        .filter(Boolean);
 
       return {
         day: parts[0],
@@ -80,9 +83,20 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
         placement: parts[2],
         format: parts[3],
         contentType: parts[4],
-        description: parts[5].replace(/^"|"$/g, ''), 
+        description: parts[5].replace(/^"|"$/g, ''),
       };
     });
+
+    const task = {
+      profile_id: profile.id,
+      project_id: projectId,
+      agent_type: agent.id,
+      agent_results: JSON.stringify(schedule),
+      credits_spent: 1,
+    };
+
+    await Request.Post('/api/stripe/discount', task);
+
     addResult(agent.id, agent.title, agent.icon, schedule);
     setSchedule(schedule);
     setIsLoading(false);

@@ -155,19 +155,11 @@ exports.Prisma.Credit_purchasesScalarFieldEnum = {
 exports.Prisma.Tasks_logScalarFieldEnum = {
   id: 'id',
   profile_id: 'profile_id',
+  project_id: 'project_id',
   agent_type: 'agent_type',
-  task_type: 'task_type',
+  agent_results: 'agent_results',
   credits_spent: 'credits_spent',
-  output_type: 'output_type',
   timestamp: 'timestamp'
-};
-
-exports.Prisma.Agent_resultsScalarFieldEnum = {
-  task_id: 'task_id',
-  output_text: 'output_text',
-  file_url: 'file_url',
-  image_url: 'image_url',
-  whatsapp_sent: 'whatsapp_sent'
 };
 
 exports.Prisma.Whatsapp_messagesScalarFieldEnum = {
@@ -227,7 +219,6 @@ exports.Prisma.ModelName = {
   subscriptions: 'subscriptions',
   credit_purchases: 'credit_purchases',
   tasks_log: 'tasks_log',
-  agent_results: 'agent_results',
   whatsapp_messages: 'whatsapp_messages',
   admin_activity_logs: 'admin_activity_logs'
 };

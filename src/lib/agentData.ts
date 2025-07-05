@@ -190,3 +190,35 @@ export const mockIdea = {
     },
   },
 };
+
+export const mockScript = {
+  "headline": "🌿 Celebrate Your Natural Beauty with GreenBloom! 🌿",
+  "copy": "Join our eco-beauty revolution! Share your GreenBloom moment and inspire others with your story. Let's grow a community that celebrates sustainability and skin health together! 💚",
+  "cta": "Share your GreenBloom experience and tag us for a chance to be featured in our next post! 📸✨",
+  "hashtags": [
+    "#GreenBloomNaturals",
+    "#EcoBeauty",
+    "#SustainableSkincare",
+    "#OrganicBeauty",
+    "#VeganSkincare",
+    "#PlasticFree",
+    "#NaturalGlow",
+    "#EcoFriendlyBeauty",
+    "#CleanBeauty",
+    "#CommunityLove"
+  ]
+}
+ 
+export const mockImageScript = {
+  "character": "A diverse group of three women aged 25-45, dressed in casual, eco-friendly attire such as organic cotton t-shirts and relaxed jeans, representing inclusivity and sustainable living.",
+  "colors": "A soothing palette of greens, creams, and soft earth tones to evoke a sense of nature and tranquility.",
+  "elements": "Herbal Face Serum, Eco-Friendly Cleanser, Natural Lip Balm, potted plants, wooden elements, and personal skincare items like a soft towel or a ceramic bowl.",
+  "expression": "Joyful and relaxed expressions as they share and discuss their skincare routines, with body language indicating openness and camaraderie.",
+  "finalPrompt": "Create a Facebook carousel image featuring a cozy home setting with natural lighting. The scene includes a vanity table adorned with GreenBloom Naturals products surrounded by lush greenery. The image shows a diverse group of three women aged 25-45 in casual, eco-friendly attire, expressing joy and relaxation as they share and discuss their skincare routines. The style is bright and airy with earthy touches, using a palette of greens, creams, and soft earth tones. The GreenBloom Naturals logo is placed discreetly in the bottom right corner. Additional elements include the Herbal Face Serum, Eco-Friendly Cleanser, Natural Lip Balm, potted plants, wooden elements, and personal skincare items like a soft towel or a ceramic bowl. The orientation is landscape to fit the carousel format.",
+  "format": "carousel image format",
+  "logo": "Discreetly placed in the bottom right corner of each carousel image to ensure brand recognition without overpowering the visuals.",
+  "objective": "Highlight user engagement and community connection with GreenBloom Naturals through a visually appealing Facebook carousel.",
+  "orientation": "landscape orientation to fit the Facebook carousel format",
+  "scene": "A cozy, homey setting with natural lighting, showcasing a vanity table adorned with GreenBloom Naturals products, surrounded by lush greenery.",
+  "style": "Bright and airy with a touch of earthiness, focusing on the natural and organic aspect of the brand."
+}

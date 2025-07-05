@@ -91,12 +91,6 @@ function ensureArray(value: any): string[] {
   return [];
 }
 
-// Helper function to safely join arrays
-function safeJoin(value: any, separator: string = ', '): string {
-  const array = ensureArray(value);
-  return array.join(separator);
-}
-
 // Dynamically generate a GPT-friendly prompt
 function buildPrompt(agent: Agent, inputs: Record<string, any>): string {
   switch (agent) {
@@ -192,7 +186,10 @@ function buildPrompt(agent: Agent, inputs: Record<string, any>): string {
               "cta": "your actual call-to-action here",
               "hashtags": ["actual", "hashtag1", "hashtag2", "etc"]
             }`;
-        } else if (contentType === 'Page Copy (Website/WhatsApp)' || contentType === 'pageCopy') {
+        } else if (
+          contentType === 'Page Copy (Website/WhatsApp)' ||
+          contentType === 'pageCopy'
+        ) {
           basePrompt += `
             For Page Copy, create:
             - title: Write an actual compelling main title
@@ -248,30 +245,95 @@ function buildPrompt(agent: Agent, inputs: Record<string, any>): string {
       }
       break;
     case 'image-generation':
-      return ``;
+      return `Create ${inputs['visual-style'].toLowerCase()} style image for "${inputs['campaign-name'] || 'Untitled Campaign'}". 
+        Base concept: ${inputs['prompt']}
+        Requirements:
+        - Format: ${inputs['image-format']} with optimized composition
+        - Style: ${inputs['visual-style']} aesthetic throughout
+        ${inputs['include-logo'] === 'Yes' ? '- Include brand logo with strategic placement' : '- No logo needed'}
+        ${inputs['include-product'] === 'Yes' ? '- Feature product as focal point or key element' : '- Focus on conceptual/lifestyle imagery'}
+
+        Design: Professional, high-engagement social media visual with clear hierarchy, modern trends, mobile-optimized layout, high contrast, and emotional storytelling. Ensure originality and commercial viability.`;
       break;
+
     case 'seo-optimization':
-      return ``;
+      {
+        const contentType = inputs['optimization-type'];
+        if (contentType === 'Content Optimization') {
+          return `
+            You are a content optimization expert for social media platforms like Instagram, TikTok, Facebook, and YouTube Shorts.
+            Based on the inputs below, improve the performance of the caption by enhancing SEO, platform engagement, and CTA strategy.
+
+            Inputs:
+            - Caption: ${inputs['caption']}
+            - Main Theme: ${inputs['main-theme']}
+            - Post Objective: ${inputs['post-objective']}
+            - Target Platform: ${inputs['target-platform']}
+            - Brand Tone: ${inputs['marketingStrategy']}
+
+            IMPORTANT: Generate actual content and return ONLY a valid JSON object with the exact structure below:
+
+            For Content Optimization, create actual optimized content for:
+            - optimizedCaption: Rewrite the full caption with SEO-rich, attention-grabbing language that drives engagement
+            - strategicHashtags: Provide an array of 8-12 strategic hashtags based on the platform and topic
+            - improvedCTA: Write a persuasive and action-driven call-to-action aligned with the platform
+            - alternativeCaption: Provide a completely different version of the caption for A/B testing
+            - platformAlignment: Provide specific tips for optimizing content for the target platform
+
+            JSON structure:
+            {
+              "optimizedCaption": "your actual optimized caption here",
+              "strategicHashtags": ["#hashtag1", "#hashtag2", "#hashtag3", "#hashtag4", "#hashtag5", "#hashtag6", "#hashtag7", "#hashtag8"],
+              "improvedCTA": "your actual improved CTA here",
+              "alternativeCaption": "your actual alternative caption here",
+              "platformAlignment": "your actual platform-specific optimization tips here"
+            }
+
+            Return ONLY the JSON object with actual generated content. Do not include any explanatory text, markdown formatting, or additional fields outside the JSON structure.
+          `;
+        } else if (contentType === 'Profile Optimization') {
+          return `
+            You are a profile optimization expert for social platforms like Instagram, TikTok, and YouTube.
+            Your goal is to improve a brand's social media profile to increase clarity, searchability, and conversion — turning profile visitors into loyal followers or customers.
+
+            Inputs:
+            - Brand Name: "${inputs['brandName']}"
+            - Niche: "${inputs['niche']}"
+            - Ideal Audience: "${inputs['idealAudience']}"
+            - Tone of Voice: "${inputs['toneOfVoice']}"
+            - Differentiators: "${inputs['differentiators']}"
+            - Contact Channel: "${inputs['contactChannel']}"
+
+            IMPORTANT: Generate actual content and return ONLY a valid JSON object with the exact structure below:
+
+            For Profile Optimization, create:
+            - suggestedBio: A concise, persuasive social media bio aligned with the brand tone and niche
+            - suggestedUsername: A clear, professional, and searchable username
+            - suggestedProfileName: A profile name that improves brand recognition and discoverability
+            - instagramHighlights: 4–6 Instagram Highlight titles categorized by useful themes
+            - linkInBioCTA: A compelling call-to-action directing users to the bio link (e.g., Linktree, WhatsApp, DM)
+            - seoKeywords: 5–8 SEO-friendly keywords for TikTok or YouTube channel descriptions
+
+            JSON structure:
+            {
+              "suggestedBio": "your actual suggested bio here",
+              "suggestedUsername": "your actual suggested username here",
+              "suggestedProfileName": "your actual suggested profile name here",
+              "instagramHighlights": ["Highlight 1", "Highlight 2", "Highlight 3", "Highlight 4", "Highlight 5"],
+              "linkInBioCTA": "your actual link in bio CTA here",
+              "seoKeywords": ["keyword1", "keyword2", "keyword3", "keyword4", "keyword5"]
+            }
+
+            Return ONLY the JSON object with actual generated content. Do not include any explanatory text, markdown formatting, or additional fields outside the JSON structure.
+          `;
+        }
+      }
+      break;
+    default:
       break;
   }
 
   return `Help generate output for with inputs: ${JSON.stringify(inputs)}.`;
-}
-
-function buildImagePrompt(agent: Agent, inputs: Record<string, any>): string {
-  if (agent === 'image-generation') {
-    return `Create a visually impactful social media post for ${inputs.brandName}, a brand operating in the ${inputs.industry} industry. 
-                The design should reflect a ${inputs.tone} tone that aligns with the brand's personality and emotionally connects with the target audience: ${inputs.targetAudience}. 
-                Incorporate visual storytelling to showcase the essence of the product: "${inputs.productDescription}", using symbolic, illustrative, or lifestyle imagery that enhances its perceived value. 
-                Ensure the composition is optimized for high engagement on platforms like ${safeJoin(inputs.platforms)}, using native design patterns and visual trends specific to each. 
-                The layout should be bold, legible, and mobile-first, with enough whitespace and visual hierarchy to guide the viewer's eye naturally. 
-                Include visual elements that support the brand's current business goals: ${inputs.businessGoals}, whether it's awareness, conversions, or community building. 
-                Use modern design aesthetics from the industry - such as minimalism, vibrant gradients, or authentic photography - to improve visual appeal and relatability. 
-                Where appropriate, embed subtle branding cues like the company logo, tagline, or color palette to maintain brand consistency. 
-                Emphasize a clear focal point or action-driven message that invites engagement (e.g., clicks, shares, saves). 
-                The final image should be polished, professional, and tailored to drive maximum visibility and emotional response on social media.`;
-  }
-  return `A visual representation for ${inputs.inputs.brandName || inputs.businessName}.`;
 }
 
 function parseOutput(text: string) {
@@ -292,6 +354,16 @@ export const POST = async (request: Request) => {
     }
 
     const prompt = buildPrompt(agent, inputs);
+    if (agent === 'image-generation') {
+      const image = await openai.images.generate({
+        model: 'dall-e-3',
+        prompt: prompt,
+        n: 1,
+        size: '1024x1024',
+      });
+      return NextResponse.json({ type: 'image', image: image.data[0].url });
+    }
+
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o',
       messages: [
@@ -303,22 +375,6 @@ export const POST = async (request: Request) => {
 
     const content = completion.choices[0].message?.content || 'No response.';
     const result = parseOutput(content);
-
-    // if (needsImage) {
-    //   const imagePrompt = buildImagePrompt(agent, inputs);
-    //   const image = await openai.images.generate({
-    //     model: 'dall-e-3',
-    //     prompt: imagePrompt,
-    //     n: 1,
-    //     size: '1024x1024',
-    //   });
-
-    //   return NextResponse.json({
-    //     type: 'combined',
-    //     script: result,
-    //     imageUrl: image.data[0].url,
-    //   });
-    // }
 
     return NextResponse.json({ type: 'text', script: result });
   } catch (err: any) {

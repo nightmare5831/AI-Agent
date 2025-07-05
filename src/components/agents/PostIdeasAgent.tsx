@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/select';
 import { Agent } from '@/lib/agentType';
 import { useResults } from '@/contexts/ResultsContext';
+import { useAuth } from '@/core/auth/AuthProvider';
 import Request from '@/lib/request';
 import { mockSchedule, mockStrategy } from '@/lib/agentData';
 interface PostIdeasAgentProps {
@@ -58,6 +59,7 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
   const [contentIdeas, setContentIdeas] = useState<ContentIdea[]>([]);
   const [isCompleted, setIsCompleted] = useState(false); // Add this state
   const { addResult } = useResults();
+  const [{ profile }] = useAuth();
 
   const currentQuestion = agent.questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === agent.questions.length - 1;
@@ -97,7 +99,6 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
         'schedule': mockSchedule,
       },
     };
-    console.log('inputs', body);
     const response = await Request.Post('/api/agents', body);
 
     const jsonString = response.script
@@ -105,7 +106,6 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
       .join('\n'); 
 
     const jsonData = JSON.parse(jsonString);
-    console.log('jsonData', jsonData)
     const mockIdeas: ContentIdea[] = mockSchedule.map((item) => ({
       day: item.day,
       channel: item.channel,
@@ -115,6 +115,16 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
       idea1: generateIdea1(item, jsonData.option1),
       idea2: generateIdea2(item, jsonData.option2),
     }));
+
+    const task = {
+      profile_id: profile.id,
+      project_id: projectId,
+      agent_type: agent.id,
+      agent_results: JSON.stringify({mockIdeas}),
+      credits_spent: 1,
+    };
+
+    await Request.Post('/api/stripe/discount', task);
 
     setContentIdeas(mockIdeas);
     addResult(agent.id, agent.title, agent.icon, mockIdeas);

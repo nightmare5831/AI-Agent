@@ -34,11 +34,6 @@ export type credit_purchases = $Result.DefaultSelection<Prisma.$credit_purchases
  */
 export type tasks_log = $Result.DefaultSelection<Prisma.$tasks_logPayload>
 /**
- * Model agent_results
- * 
- */
-export type agent_results = $Result.DefaultSelection<Prisma.$agent_resultsPayload>
-/**
  * Model whatsapp_messages
  * 
  */
@@ -268,16 +263,6 @@ export class PrismaClient<
     * ```
     */
   get tasks_log(): Prisma.tasks_logDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.agent_results`: Exposes CRUD operations for the **agent_results** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Agent_results
-    * const agent_results = await prisma.agent_results.findMany()
-    * ```
-    */
-  get agent_results(): Prisma.agent_resultsDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.whatsapp_messages`: Exposes CRUD operations for the **whatsapp_messages** model.
@@ -742,7 +727,6 @@ export namespace Prisma {
     subscriptions: 'subscriptions',
     credit_purchases: 'credit_purchases',
     tasks_log: 'tasks_log',
-    agent_results: 'agent_results',
     whatsapp_messages: 'whatsapp_messages',
     admin_activity_logs: 'admin_activity_logs'
   };
@@ -763,7 +747,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "profile" | "subscriptions" | "credit_purchases" | "tasks_log" | "agent_results" | "whatsapp_messages" | "admin_activity_logs"
+      modelProps: "profile" | "subscriptions" | "credit_purchases" | "tasks_log" | "whatsapp_messages" | "admin_activity_logs"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1063,80 +1047,6 @@ export namespace Prisma {
           }
         }
       }
-      agent_results: {
-        payload: Prisma.$agent_resultsPayload<ExtArgs>
-        fields: Prisma.agent_resultsFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.agent_resultsFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$agent_resultsPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.agent_resultsFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$agent_resultsPayload>
-          }
-          findFirst: {
-            args: Prisma.agent_resultsFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$agent_resultsPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.agent_resultsFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$agent_resultsPayload>
-          }
-          findMany: {
-            args: Prisma.agent_resultsFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$agent_resultsPayload>[]
-          }
-          create: {
-            args: Prisma.agent_resultsCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$agent_resultsPayload>
-          }
-          createMany: {
-            args: Prisma.agent_resultsCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.agent_resultsCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$agent_resultsPayload>[]
-          }
-          delete: {
-            args: Prisma.agent_resultsDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$agent_resultsPayload>
-          }
-          update: {
-            args: Prisma.agent_resultsUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$agent_resultsPayload>
-          }
-          deleteMany: {
-            args: Prisma.agent_resultsDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.agent_resultsUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.agent_resultsUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$agent_resultsPayload>[]
-          }
-          upsert: {
-            args: Prisma.agent_resultsUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$agent_resultsPayload>
-          }
-          aggregate: {
-            args: Prisma.Agent_resultsAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateAgent_results>
-          }
-          groupBy: {
-            args: Prisma.agent_resultsGroupByArgs<ExtArgs>
-            result: $Utils.Optional<Agent_resultsGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.agent_resultsCountArgs<ExtArgs>
-            result: $Utils.Optional<Agent_resultsCountAggregateOutputType> | number
-          }
-        }
-      }
       whatsapp_messages: {
         payload: Prisma.$whatsapp_messagesPayload<ExtArgs>
         fields: Prisma.whatsapp_messagesFieldRefs
@@ -1373,7 +1283,6 @@ export namespace Prisma {
     subscriptions?: subscriptionsOmit
     credit_purchases?: credit_purchasesOmit
     tasks_log?: tasks_logOmit
-    agent_results?: agent_resultsOmit
     whatsapp_messages?: whatsapp_messagesOmit
     admin_activity_logs?: admin_activity_logsOmit
   }
@@ -5067,30 +4976,30 @@ export namespace Prisma {
   export type Tasks_logMinAggregateOutputType = {
     id: string | null
     profile_id: string | null
+    project_id: string | null
     agent_type: string | null
-    task_type: string | null
+    agent_results: string | null
     credits_spent: number | null
-    output_type: string | null
     timestamp: Date | null
   }
 
   export type Tasks_logMaxAggregateOutputType = {
     id: string | null
     profile_id: string | null
+    project_id: string | null
     agent_type: string | null
-    task_type: string | null
+    agent_results: string | null
     credits_spent: number | null
-    output_type: string | null
     timestamp: Date | null
   }
 
   export type Tasks_logCountAggregateOutputType = {
     id: number
     profile_id: number
+    project_id: number
     agent_type: number
-    task_type: number
+    agent_results: number
     credits_spent: number
-    output_type: number
     timestamp: number
     _all: number
   }
@@ -5107,30 +5016,30 @@ export namespace Prisma {
   export type Tasks_logMinAggregateInputType = {
     id?: true
     profile_id?: true
+    project_id?: true
     agent_type?: true
-    task_type?: true
+    agent_results?: true
     credits_spent?: true
-    output_type?: true
     timestamp?: true
   }
 
   export type Tasks_logMaxAggregateInputType = {
     id?: true
     profile_id?: true
+    project_id?: true
     agent_type?: true
-    task_type?: true
+    agent_results?: true
     credits_spent?: true
-    output_type?: true
     timestamp?: true
   }
 
   export type Tasks_logCountAggregateInputType = {
     id?: true
     profile_id?: true
+    project_id?: true
     agent_type?: true
-    task_type?: true
+    agent_results?: true
     credits_spent?: true
-    output_type?: true
     timestamp?: true
     _all?: true
   }
@@ -5224,10 +5133,10 @@ export namespace Prisma {
   export type Tasks_logGroupByOutputType = {
     id: string
     profile_id: string
+    project_id: string
     agent_type: string
-    task_type: string
+    agent_results: string
     credits_spent: number
-    output_type: string
     timestamp: Date
     _count: Tasks_logCountAggregateOutputType | null
     _avg: Tasks_logAvgAggregateOutputType | null
@@ -5253,22 +5162,21 @@ export namespace Prisma {
   export type tasks_logSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     profile_id?: boolean
+    project_id?: boolean
     agent_type?: boolean
-    task_type?: boolean
+    agent_results?: boolean
     credits_spent?: boolean
-    output_type?: boolean
     timestamp?: boolean
-    agent_results?: boolean | tasks_log$agent_resultsArgs<ExtArgs>
     profile?: boolean | profileDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tasks_log"]>
 
   export type tasks_logSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     profile_id?: boolean
+    project_id?: boolean
     agent_type?: boolean
-    task_type?: boolean
+    agent_results?: boolean
     credits_spent?: boolean
-    output_type?: boolean
     timestamp?: boolean
     profile?: boolean | profileDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tasks_log"]>
@@ -5276,10 +5184,10 @@ export namespace Prisma {
   export type tasks_logSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     profile_id?: boolean
+    project_id?: boolean
     agent_type?: boolean
-    task_type?: boolean
+    agent_results?: boolean
     credits_spent?: boolean
-    output_type?: boolean
     timestamp?: boolean
     profile?: boolean | profileDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tasks_log"]>
@@ -5287,16 +5195,15 @@ export namespace Prisma {
   export type tasks_logSelectScalar = {
     id?: boolean
     profile_id?: boolean
+    project_id?: boolean
     agent_type?: boolean
-    task_type?: boolean
+    agent_results?: boolean
     credits_spent?: boolean
-    output_type?: boolean
     timestamp?: boolean
   }
 
-  export type tasks_logOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "profile_id" | "agent_type" | "task_type" | "credits_spent" | "output_type" | "timestamp", ExtArgs["result"]["tasks_log"]>
+  export type tasks_logOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "profile_id" | "project_id" | "agent_type" | "agent_results" | "credits_spent" | "timestamp", ExtArgs["result"]["tasks_log"]>
   export type tasks_logInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    agent_results?: boolean | tasks_log$agent_resultsArgs<ExtArgs>
     profile?: boolean | profileDefaultArgs<ExtArgs>
   }
   export type tasks_logIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5309,16 +5216,15 @@ export namespace Prisma {
   export type $tasks_logPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "tasks_log"
     objects: {
-      agent_results: Prisma.$agent_resultsPayload<ExtArgs> | null
       profile: Prisma.$profilePayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       profile_id: string
+      project_id: string
       agent_type: string
-      task_type: string
+      agent_results: string
       credits_spent: number
-      output_type: string
       timestamp: Date
     }, ExtArgs["result"]["tasks_log"]>
     composites: {}
@@ -5714,7 +5620,6 @@ export namespace Prisma {
    */
   export interface Prisma__tasks_logClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    agent_results<T extends tasks_log$agent_resultsArgs<ExtArgs> = {}>(args?: Subset<T, tasks_log$agent_resultsArgs<ExtArgs>>): Prisma__agent_resultsClient<$Result.GetResult<Prisma.$agent_resultsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     profile<T extends profileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, profileDefaultArgs<ExtArgs>>): Prisma__profileClient<$Result.GetResult<Prisma.$profilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -5747,10 +5652,10 @@ export namespace Prisma {
   interface tasks_logFieldRefs {
     readonly id: FieldRef<"tasks_log", 'String'>
     readonly profile_id: FieldRef<"tasks_log", 'String'>
+    readonly project_id: FieldRef<"tasks_log", 'String'>
     readonly agent_type: FieldRef<"tasks_log", 'String'>
-    readonly task_type: FieldRef<"tasks_log", 'String'>
+    readonly agent_results: FieldRef<"tasks_log", 'String'>
     readonly credits_spent: FieldRef<"tasks_log", 'Int'>
-    readonly output_type: FieldRef<"tasks_log", 'String'>
     readonly timestamp: FieldRef<"tasks_log", 'DateTime'>
   }
     
@@ -6148,25 +6053,6 @@ export namespace Prisma {
   }
 
   /**
-   * tasks_log.agent_results
-   */
-  export type tasks_log$agent_resultsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the agent_results
-     */
-    select?: agent_resultsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the agent_results
-     */
-    omit?: agent_resultsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: agent_resultsInclude<ExtArgs> | null
-    where?: agent_resultsWhereInput
-  }
-
-  /**
    * tasks_log without action
    */
   export type tasks_logDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6182,1064 +6068,6 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: tasks_logInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model agent_results
-   */
-
-  export type AggregateAgent_results = {
-    _count: Agent_resultsCountAggregateOutputType | null
-    _min: Agent_resultsMinAggregateOutputType | null
-    _max: Agent_resultsMaxAggregateOutputType | null
-  }
-
-  export type Agent_resultsMinAggregateOutputType = {
-    task_id: string | null
-    output_text: string | null
-    file_url: string | null
-    image_url: string | null
-    whatsapp_sent: boolean | null
-  }
-
-  export type Agent_resultsMaxAggregateOutputType = {
-    task_id: string | null
-    output_text: string | null
-    file_url: string | null
-    image_url: string | null
-    whatsapp_sent: boolean | null
-  }
-
-  export type Agent_resultsCountAggregateOutputType = {
-    task_id: number
-    output_text: number
-    file_url: number
-    image_url: number
-    whatsapp_sent: number
-    _all: number
-  }
-
-
-  export type Agent_resultsMinAggregateInputType = {
-    task_id?: true
-    output_text?: true
-    file_url?: true
-    image_url?: true
-    whatsapp_sent?: true
-  }
-
-  export type Agent_resultsMaxAggregateInputType = {
-    task_id?: true
-    output_text?: true
-    file_url?: true
-    image_url?: true
-    whatsapp_sent?: true
-  }
-
-  export type Agent_resultsCountAggregateInputType = {
-    task_id?: true
-    output_text?: true
-    file_url?: true
-    image_url?: true
-    whatsapp_sent?: true
-    _all?: true
-  }
-
-  export type Agent_resultsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which agent_results to aggregate.
-     */
-    where?: agent_resultsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of agent_results to fetch.
-     */
-    orderBy?: agent_resultsOrderByWithRelationInput | agent_resultsOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: agent_resultsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` agent_results from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` agent_results.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned agent_results
-    **/
-    _count?: true | Agent_resultsCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: Agent_resultsMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: Agent_resultsMaxAggregateInputType
-  }
-
-  export type GetAgent_resultsAggregateType<T extends Agent_resultsAggregateArgs> = {
-        [P in keyof T & keyof AggregateAgent_results]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateAgent_results[P]>
-      : GetScalarType<T[P], AggregateAgent_results[P]>
-  }
-
-
-
-
-  export type agent_resultsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: agent_resultsWhereInput
-    orderBy?: agent_resultsOrderByWithAggregationInput | agent_resultsOrderByWithAggregationInput[]
-    by: Agent_resultsScalarFieldEnum[] | Agent_resultsScalarFieldEnum
-    having?: agent_resultsScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: Agent_resultsCountAggregateInputType | true
-    _min?: Agent_resultsMinAggregateInputType
-    _max?: Agent_resultsMaxAggregateInputType
-  }
-
-  export type Agent_resultsGroupByOutputType = {
-    task_id: string
-    output_text: string | null
-    file_url: string | null
-    image_url: string | null
-    whatsapp_sent: boolean
-    _count: Agent_resultsCountAggregateOutputType | null
-    _min: Agent_resultsMinAggregateOutputType | null
-    _max: Agent_resultsMaxAggregateOutputType | null
-  }
-
-  type GetAgent_resultsGroupByPayload<T extends agent_resultsGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<Agent_resultsGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof Agent_resultsGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], Agent_resultsGroupByOutputType[P]>
-            : GetScalarType<T[P], Agent_resultsGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type agent_resultsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    task_id?: boolean
-    output_text?: boolean
-    file_url?: boolean
-    image_url?: boolean
-    whatsapp_sent?: boolean
-    task?: boolean | tasks_logDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["agent_results"]>
-
-  export type agent_resultsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    task_id?: boolean
-    output_text?: boolean
-    file_url?: boolean
-    image_url?: boolean
-    whatsapp_sent?: boolean
-    task?: boolean | tasks_logDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["agent_results"]>
-
-  export type agent_resultsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    task_id?: boolean
-    output_text?: boolean
-    file_url?: boolean
-    image_url?: boolean
-    whatsapp_sent?: boolean
-    task?: boolean | tasks_logDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["agent_results"]>
-
-  export type agent_resultsSelectScalar = {
-    task_id?: boolean
-    output_text?: boolean
-    file_url?: boolean
-    image_url?: boolean
-    whatsapp_sent?: boolean
-  }
-
-  export type agent_resultsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"task_id" | "output_text" | "file_url" | "image_url" | "whatsapp_sent", ExtArgs["result"]["agent_results"]>
-  export type agent_resultsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    task?: boolean | tasks_logDefaultArgs<ExtArgs>
-  }
-  export type agent_resultsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    task?: boolean | tasks_logDefaultArgs<ExtArgs>
-  }
-  export type agent_resultsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    task?: boolean | tasks_logDefaultArgs<ExtArgs>
-  }
-
-  export type $agent_resultsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "agent_results"
-    objects: {
-      task: Prisma.$tasks_logPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      task_id: string
-      output_text: string | null
-      file_url: string | null
-      image_url: string | null
-      whatsapp_sent: boolean
-    }, ExtArgs["result"]["agent_results"]>
-    composites: {}
-  }
-
-  type agent_resultsGetPayload<S extends boolean | null | undefined | agent_resultsDefaultArgs> = $Result.GetResult<Prisma.$agent_resultsPayload, S>
-
-  type agent_resultsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<agent_resultsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: Agent_resultsCountAggregateInputType | true
-    }
-
-  export interface agent_resultsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['agent_results'], meta: { name: 'agent_results' } }
-    /**
-     * Find zero or one Agent_results that matches the filter.
-     * @param {agent_resultsFindUniqueArgs} args - Arguments to find a Agent_results
-     * @example
-     * // Get one Agent_results
-     * const agent_results = await prisma.agent_results.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends agent_resultsFindUniqueArgs>(args: SelectSubset<T, agent_resultsFindUniqueArgs<ExtArgs>>): Prisma__agent_resultsClient<$Result.GetResult<Prisma.$agent_resultsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Agent_results that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {agent_resultsFindUniqueOrThrowArgs} args - Arguments to find a Agent_results
-     * @example
-     * // Get one Agent_results
-     * const agent_results = await prisma.agent_results.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends agent_resultsFindUniqueOrThrowArgs>(args: SelectSubset<T, agent_resultsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__agent_resultsClient<$Result.GetResult<Prisma.$agent_resultsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Agent_results that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {agent_resultsFindFirstArgs} args - Arguments to find a Agent_results
-     * @example
-     * // Get one Agent_results
-     * const agent_results = await prisma.agent_results.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends agent_resultsFindFirstArgs>(args?: SelectSubset<T, agent_resultsFindFirstArgs<ExtArgs>>): Prisma__agent_resultsClient<$Result.GetResult<Prisma.$agent_resultsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Agent_results that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {agent_resultsFindFirstOrThrowArgs} args - Arguments to find a Agent_results
-     * @example
-     * // Get one Agent_results
-     * const agent_results = await prisma.agent_results.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends agent_resultsFindFirstOrThrowArgs>(args?: SelectSubset<T, agent_resultsFindFirstOrThrowArgs<ExtArgs>>): Prisma__agent_resultsClient<$Result.GetResult<Prisma.$agent_resultsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Agent_results that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {agent_resultsFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Agent_results
-     * const agent_results = await prisma.agent_results.findMany()
-     * 
-     * // Get first 10 Agent_results
-     * const agent_results = await prisma.agent_results.findMany({ take: 10 })
-     * 
-     * // Only select the `task_id`
-     * const agent_resultsWithTask_idOnly = await prisma.agent_results.findMany({ select: { task_id: true } })
-     * 
-     */
-    findMany<T extends agent_resultsFindManyArgs>(args?: SelectSubset<T, agent_resultsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$agent_resultsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Agent_results.
-     * @param {agent_resultsCreateArgs} args - Arguments to create a Agent_results.
-     * @example
-     * // Create one Agent_results
-     * const Agent_results = await prisma.agent_results.create({
-     *   data: {
-     *     // ... data to create a Agent_results
-     *   }
-     * })
-     * 
-     */
-    create<T extends agent_resultsCreateArgs>(args: SelectSubset<T, agent_resultsCreateArgs<ExtArgs>>): Prisma__agent_resultsClient<$Result.GetResult<Prisma.$agent_resultsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Agent_results.
-     * @param {agent_resultsCreateManyArgs} args - Arguments to create many Agent_results.
-     * @example
-     * // Create many Agent_results
-     * const agent_results = await prisma.agent_results.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends agent_resultsCreateManyArgs>(args?: SelectSubset<T, agent_resultsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Agent_results and returns the data saved in the database.
-     * @param {agent_resultsCreateManyAndReturnArgs} args - Arguments to create many Agent_results.
-     * @example
-     * // Create many Agent_results
-     * const agent_results = await prisma.agent_results.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Agent_results and only return the `task_id`
-     * const agent_resultsWithTask_idOnly = await prisma.agent_results.createManyAndReturn({
-     *   select: { task_id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends agent_resultsCreateManyAndReturnArgs>(args?: SelectSubset<T, agent_resultsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$agent_resultsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a Agent_results.
-     * @param {agent_resultsDeleteArgs} args - Arguments to delete one Agent_results.
-     * @example
-     * // Delete one Agent_results
-     * const Agent_results = await prisma.agent_results.delete({
-     *   where: {
-     *     // ... filter to delete one Agent_results
-     *   }
-     * })
-     * 
-     */
-    delete<T extends agent_resultsDeleteArgs>(args: SelectSubset<T, agent_resultsDeleteArgs<ExtArgs>>): Prisma__agent_resultsClient<$Result.GetResult<Prisma.$agent_resultsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Agent_results.
-     * @param {agent_resultsUpdateArgs} args - Arguments to update one Agent_results.
-     * @example
-     * // Update one Agent_results
-     * const agent_results = await prisma.agent_results.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends agent_resultsUpdateArgs>(args: SelectSubset<T, agent_resultsUpdateArgs<ExtArgs>>): Prisma__agent_resultsClient<$Result.GetResult<Prisma.$agent_resultsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Agent_results.
-     * @param {agent_resultsDeleteManyArgs} args - Arguments to filter Agent_results to delete.
-     * @example
-     * // Delete a few Agent_results
-     * const { count } = await prisma.agent_results.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends agent_resultsDeleteManyArgs>(args?: SelectSubset<T, agent_resultsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Agent_results.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {agent_resultsUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Agent_results
-     * const agent_results = await prisma.agent_results.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends agent_resultsUpdateManyArgs>(args: SelectSubset<T, agent_resultsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Agent_results and returns the data updated in the database.
-     * @param {agent_resultsUpdateManyAndReturnArgs} args - Arguments to update many Agent_results.
-     * @example
-     * // Update many Agent_results
-     * const agent_results = await prisma.agent_results.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Agent_results and only return the `task_id`
-     * const agent_resultsWithTask_idOnly = await prisma.agent_results.updateManyAndReturn({
-     *   select: { task_id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends agent_resultsUpdateManyAndReturnArgs>(args: SelectSubset<T, agent_resultsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$agent_resultsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one Agent_results.
-     * @param {agent_resultsUpsertArgs} args - Arguments to update or create a Agent_results.
-     * @example
-     * // Update or create a Agent_results
-     * const agent_results = await prisma.agent_results.upsert({
-     *   create: {
-     *     // ... data to create a Agent_results
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Agent_results we want to update
-     *   }
-     * })
-     */
-    upsert<T extends agent_resultsUpsertArgs>(args: SelectSubset<T, agent_resultsUpsertArgs<ExtArgs>>): Prisma__agent_resultsClient<$Result.GetResult<Prisma.$agent_resultsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Agent_results.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {agent_resultsCountArgs} args - Arguments to filter Agent_results to count.
-     * @example
-     * // Count the number of Agent_results
-     * const count = await prisma.agent_results.count({
-     *   where: {
-     *     // ... the filter for the Agent_results we want to count
-     *   }
-     * })
-    **/
-    count<T extends agent_resultsCountArgs>(
-      args?: Subset<T, agent_resultsCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], Agent_resultsCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Agent_results.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {Agent_resultsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends Agent_resultsAggregateArgs>(args: Subset<T, Agent_resultsAggregateArgs>): Prisma.PrismaPromise<GetAgent_resultsAggregateType<T>>
-
-    /**
-     * Group by Agent_results.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {agent_resultsGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends agent_resultsGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: agent_resultsGroupByArgs['orderBy'] }
-        : { orderBy?: agent_resultsGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, agent_resultsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAgent_resultsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the agent_results model
-   */
-  readonly fields: agent_resultsFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for agent_results.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__agent_resultsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    task<T extends tasks_logDefaultArgs<ExtArgs> = {}>(args?: Subset<T, tasks_logDefaultArgs<ExtArgs>>): Prisma__tasks_logClient<$Result.GetResult<Prisma.$tasks_logPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the agent_results model
-   */
-  interface agent_resultsFieldRefs {
-    readonly task_id: FieldRef<"agent_results", 'String'>
-    readonly output_text: FieldRef<"agent_results", 'String'>
-    readonly file_url: FieldRef<"agent_results", 'String'>
-    readonly image_url: FieldRef<"agent_results", 'String'>
-    readonly whatsapp_sent: FieldRef<"agent_results", 'Boolean'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * agent_results findUnique
-   */
-  export type agent_resultsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the agent_results
-     */
-    select?: agent_resultsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the agent_results
-     */
-    omit?: agent_resultsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: agent_resultsInclude<ExtArgs> | null
-    /**
-     * Filter, which agent_results to fetch.
-     */
-    where: agent_resultsWhereUniqueInput
-  }
-
-  /**
-   * agent_results findUniqueOrThrow
-   */
-  export type agent_resultsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the agent_results
-     */
-    select?: agent_resultsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the agent_results
-     */
-    omit?: agent_resultsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: agent_resultsInclude<ExtArgs> | null
-    /**
-     * Filter, which agent_results to fetch.
-     */
-    where: agent_resultsWhereUniqueInput
-  }
-
-  /**
-   * agent_results findFirst
-   */
-  export type agent_resultsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the agent_results
-     */
-    select?: agent_resultsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the agent_results
-     */
-    omit?: agent_resultsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: agent_resultsInclude<ExtArgs> | null
-    /**
-     * Filter, which agent_results to fetch.
-     */
-    where?: agent_resultsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of agent_results to fetch.
-     */
-    orderBy?: agent_resultsOrderByWithRelationInput | agent_resultsOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for agent_results.
-     */
-    cursor?: agent_resultsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` agent_results from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` agent_results.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of agent_results.
-     */
-    distinct?: Agent_resultsScalarFieldEnum | Agent_resultsScalarFieldEnum[]
-  }
-
-  /**
-   * agent_results findFirstOrThrow
-   */
-  export type agent_resultsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the agent_results
-     */
-    select?: agent_resultsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the agent_results
-     */
-    omit?: agent_resultsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: agent_resultsInclude<ExtArgs> | null
-    /**
-     * Filter, which agent_results to fetch.
-     */
-    where?: agent_resultsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of agent_results to fetch.
-     */
-    orderBy?: agent_resultsOrderByWithRelationInput | agent_resultsOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for agent_results.
-     */
-    cursor?: agent_resultsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` agent_results from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` agent_results.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of agent_results.
-     */
-    distinct?: Agent_resultsScalarFieldEnum | Agent_resultsScalarFieldEnum[]
-  }
-
-  /**
-   * agent_results findMany
-   */
-  export type agent_resultsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the agent_results
-     */
-    select?: agent_resultsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the agent_results
-     */
-    omit?: agent_resultsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: agent_resultsInclude<ExtArgs> | null
-    /**
-     * Filter, which agent_results to fetch.
-     */
-    where?: agent_resultsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of agent_results to fetch.
-     */
-    orderBy?: agent_resultsOrderByWithRelationInput | agent_resultsOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing agent_results.
-     */
-    cursor?: agent_resultsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` agent_results from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` agent_results.
-     */
-    skip?: number
-    distinct?: Agent_resultsScalarFieldEnum | Agent_resultsScalarFieldEnum[]
-  }
-
-  /**
-   * agent_results create
-   */
-  export type agent_resultsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the agent_results
-     */
-    select?: agent_resultsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the agent_results
-     */
-    omit?: agent_resultsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: agent_resultsInclude<ExtArgs> | null
-    /**
-     * The data needed to create a agent_results.
-     */
-    data: XOR<agent_resultsCreateInput, agent_resultsUncheckedCreateInput>
-  }
-
-  /**
-   * agent_results createMany
-   */
-  export type agent_resultsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many agent_results.
-     */
-    data: agent_resultsCreateManyInput | agent_resultsCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * agent_results createManyAndReturn
-   */
-  export type agent_resultsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the agent_results
-     */
-    select?: agent_resultsSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the agent_results
-     */
-    omit?: agent_resultsOmit<ExtArgs> | null
-    /**
-     * The data used to create many agent_results.
-     */
-    data: agent_resultsCreateManyInput | agent_resultsCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: agent_resultsIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * agent_results update
-   */
-  export type agent_resultsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the agent_results
-     */
-    select?: agent_resultsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the agent_results
-     */
-    omit?: agent_resultsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: agent_resultsInclude<ExtArgs> | null
-    /**
-     * The data needed to update a agent_results.
-     */
-    data: XOR<agent_resultsUpdateInput, agent_resultsUncheckedUpdateInput>
-    /**
-     * Choose, which agent_results to update.
-     */
-    where: agent_resultsWhereUniqueInput
-  }
-
-  /**
-   * agent_results updateMany
-   */
-  export type agent_resultsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update agent_results.
-     */
-    data: XOR<agent_resultsUpdateManyMutationInput, agent_resultsUncheckedUpdateManyInput>
-    /**
-     * Filter which agent_results to update
-     */
-    where?: agent_resultsWhereInput
-    /**
-     * Limit how many agent_results to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * agent_results updateManyAndReturn
-   */
-  export type agent_resultsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the agent_results
-     */
-    select?: agent_resultsSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the agent_results
-     */
-    omit?: agent_resultsOmit<ExtArgs> | null
-    /**
-     * The data used to update agent_results.
-     */
-    data: XOR<agent_resultsUpdateManyMutationInput, agent_resultsUncheckedUpdateManyInput>
-    /**
-     * Filter which agent_results to update
-     */
-    where?: agent_resultsWhereInput
-    /**
-     * Limit how many agent_results to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: agent_resultsIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * agent_results upsert
-   */
-  export type agent_resultsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the agent_results
-     */
-    select?: agent_resultsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the agent_results
-     */
-    omit?: agent_resultsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: agent_resultsInclude<ExtArgs> | null
-    /**
-     * The filter to search for the agent_results to update in case it exists.
-     */
-    where: agent_resultsWhereUniqueInput
-    /**
-     * In case the agent_results found by the `where` argument doesn't exist, create a new agent_results with this data.
-     */
-    create: XOR<agent_resultsCreateInput, agent_resultsUncheckedCreateInput>
-    /**
-     * In case the agent_results was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<agent_resultsUpdateInput, agent_resultsUncheckedUpdateInput>
-  }
-
-  /**
-   * agent_results delete
-   */
-  export type agent_resultsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the agent_results
-     */
-    select?: agent_resultsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the agent_results
-     */
-    omit?: agent_resultsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: agent_resultsInclude<ExtArgs> | null
-    /**
-     * Filter which agent_results to delete.
-     */
-    where: agent_resultsWhereUniqueInput
-  }
-
-  /**
-   * agent_results deleteMany
-   */
-  export type agent_resultsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which agent_results to delete
-     */
-    where?: agent_resultsWhereInput
-    /**
-     * Limit how many agent_results to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * agent_results without action
-   */
-  export type agent_resultsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the agent_results
-     */
-    select?: agent_resultsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the agent_results
-     */
-    omit?: agent_resultsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: agent_resultsInclude<ExtArgs> | null
   }
 
 
@@ -9417,25 +8245,14 @@ export namespace Prisma {
   export const Tasks_logScalarFieldEnum: {
     id: 'id',
     profile_id: 'profile_id',
+    project_id: 'project_id',
     agent_type: 'agent_type',
-    task_type: 'task_type',
+    agent_results: 'agent_results',
     credits_spent: 'credits_spent',
-    output_type: 'output_type',
     timestamp: 'timestamp'
   };
 
   export type Tasks_logScalarFieldEnum = (typeof Tasks_logScalarFieldEnum)[keyof typeof Tasks_logScalarFieldEnum]
-
-
-  export const Agent_resultsScalarFieldEnum: {
-    task_id: 'task_id',
-    output_text: 'output_text',
-    file_url: 'file_url',
-    image_url: 'image_url',
-    whatsapp_sent: 'whatsapp_sent'
-  };
-
-  export type Agent_resultsScalarFieldEnum = (typeof Agent_resultsScalarFieldEnum)[keyof typeof Agent_resultsScalarFieldEnum]
 
 
   export const Whatsapp_messagesScalarFieldEnum: {
@@ -9584,13 +8401,6 @@ export namespace Prisma {
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Boolean'
-   */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -9840,24 +8650,22 @@ export namespace Prisma {
     NOT?: tasks_logWhereInput | tasks_logWhereInput[]
     id?: UuidFilter<"tasks_log"> | string
     profile_id?: UuidFilter<"tasks_log"> | string
+    project_id?: UuidFilter<"tasks_log"> | string
     agent_type?: StringFilter<"tasks_log"> | string
-    task_type?: StringFilter<"tasks_log"> | string
+    agent_results?: StringFilter<"tasks_log"> | string
     credits_spent?: IntFilter<"tasks_log"> | number
-    output_type?: StringFilter<"tasks_log"> | string
     timestamp?: DateTimeFilter<"tasks_log"> | Date | string
-    agent_results?: XOR<Agent_resultsNullableScalarRelationFilter, agent_resultsWhereInput> | null
     profile?: XOR<ProfileScalarRelationFilter, profileWhereInput>
   }
 
   export type tasks_logOrderByWithRelationInput = {
     id?: SortOrder
     profile_id?: SortOrder
+    project_id?: SortOrder
     agent_type?: SortOrder
-    task_type?: SortOrder
+    agent_results?: SortOrder
     credits_spent?: SortOrder
-    output_type?: SortOrder
     timestamp?: SortOrder
-    agent_results?: agent_resultsOrderByWithRelationInput
     profile?: profileOrderByWithRelationInput
   }
 
@@ -9867,22 +8675,21 @@ export namespace Prisma {
     OR?: tasks_logWhereInput[]
     NOT?: tasks_logWhereInput | tasks_logWhereInput[]
     profile_id?: UuidFilter<"tasks_log"> | string
+    project_id?: UuidFilter<"tasks_log"> | string
     agent_type?: StringFilter<"tasks_log"> | string
-    task_type?: StringFilter<"tasks_log"> | string
+    agent_results?: StringFilter<"tasks_log"> | string
     credits_spent?: IntFilter<"tasks_log"> | number
-    output_type?: StringFilter<"tasks_log"> | string
     timestamp?: DateTimeFilter<"tasks_log"> | Date | string
-    agent_results?: XOR<Agent_resultsNullableScalarRelationFilter, agent_resultsWhereInput> | null
     profile?: XOR<ProfileScalarRelationFilter, profileWhereInput>
   }, "id">
 
   export type tasks_logOrderByWithAggregationInput = {
     id?: SortOrder
     profile_id?: SortOrder
+    project_id?: SortOrder
     agent_type?: SortOrder
-    task_type?: SortOrder
+    agent_results?: SortOrder
     credits_spent?: SortOrder
-    output_type?: SortOrder
     timestamp?: SortOrder
     _count?: tasks_logCountOrderByAggregateInput
     _avg?: tasks_logAvgOrderByAggregateInput
@@ -9897,66 +8704,11 @@ export namespace Prisma {
     NOT?: tasks_logScalarWhereWithAggregatesInput | tasks_logScalarWhereWithAggregatesInput[]
     id?: UuidWithAggregatesFilter<"tasks_log"> | string
     profile_id?: UuidWithAggregatesFilter<"tasks_log"> | string
+    project_id?: UuidWithAggregatesFilter<"tasks_log"> | string
     agent_type?: StringWithAggregatesFilter<"tasks_log"> | string
-    task_type?: StringWithAggregatesFilter<"tasks_log"> | string
+    agent_results?: StringWithAggregatesFilter<"tasks_log"> | string
     credits_spent?: IntWithAggregatesFilter<"tasks_log"> | number
-    output_type?: StringWithAggregatesFilter<"tasks_log"> | string
     timestamp?: DateTimeWithAggregatesFilter<"tasks_log"> | Date | string
-  }
-
-  export type agent_resultsWhereInput = {
-    AND?: agent_resultsWhereInput | agent_resultsWhereInput[]
-    OR?: agent_resultsWhereInput[]
-    NOT?: agent_resultsWhereInput | agent_resultsWhereInput[]
-    task_id?: UuidFilter<"agent_results"> | string
-    output_text?: StringNullableFilter<"agent_results"> | string | null
-    file_url?: StringNullableFilter<"agent_results"> | string | null
-    image_url?: StringNullableFilter<"agent_results"> | string | null
-    whatsapp_sent?: BoolFilter<"agent_results"> | boolean
-    task?: XOR<Tasks_logScalarRelationFilter, tasks_logWhereInput>
-  }
-
-  export type agent_resultsOrderByWithRelationInput = {
-    task_id?: SortOrder
-    output_text?: SortOrderInput | SortOrder
-    file_url?: SortOrderInput | SortOrder
-    image_url?: SortOrderInput | SortOrder
-    whatsapp_sent?: SortOrder
-    task?: tasks_logOrderByWithRelationInput
-  }
-
-  export type agent_resultsWhereUniqueInput = Prisma.AtLeast<{
-    task_id?: string
-    AND?: agent_resultsWhereInput | agent_resultsWhereInput[]
-    OR?: agent_resultsWhereInput[]
-    NOT?: agent_resultsWhereInput | agent_resultsWhereInput[]
-    output_text?: StringNullableFilter<"agent_results"> | string | null
-    file_url?: StringNullableFilter<"agent_results"> | string | null
-    image_url?: StringNullableFilter<"agent_results"> | string | null
-    whatsapp_sent?: BoolFilter<"agent_results"> | boolean
-    task?: XOR<Tasks_logScalarRelationFilter, tasks_logWhereInput>
-  }, "task_id">
-
-  export type agent_resultsOrderByWithAggregationInput = {
-    task_id?: SortOrder
-    output_text?: SortOrderInput | SortOrder
-    file_url?: SortOrderInput | SortOrder
-    image_url?: SortOrderInput | SortOrder
-    whatsapp_sent?: SortOrder
-    _count?: agent_resultsCountOrderByAggregateInput
-    _max?: agent_resultsMaxOrderByAggregateInput
-    _min?: agent_resultsMinOrderByAggregateInput
-  }
-
-  export type agent_resultsScalarWhereWithAggregatesInput = {
-    AND?: agent_resultsScalarWhereWithAggregatesInput | agent_resultsScalarWhereWithAggregatesInput[]
-    OR?: agent_resultsScalarWhereWithAggregatesInput[]
-    NOT?: agent_resultsScalarWhereWithAggregatesInput | agent_resultsScalarWhereWithAggregatesInput[]
-    task_id?: UuidWithAggregatesFilter<"agent_results"> | string
-    output_text?: StringNullableWithAggregatesFilter<"agent_results"> | string | null
-    file_url?: StringNullableWithAggregatesFilter<"agent_results"> | string | null
-    image_url?: StringNullableWithAggregatesFilter<"agent_results"> | string | null
-    whatsapp_sent?: BoolWithAggregatesFilter<"agent_results"> | boolean
   }
 
   export type whatsapp_messagesWhereInput = {
@@ -10313,130 +9065,71 @@ export namespace Prisma {
 
   export type tasks_logCreateInput = {
     id?: string
+    project_id: string
     agent_type: string
-    task_type: string
+    agent_results: string
     credits_spent: number
-    output_type: string
     timestamp?: Date | string
-    agent_results?: agent_resultsCreateNestedOneWithoutTaskInput
     profile: profileCreateNestedOneWithoutTasks_logInput
   }
 
   export type tasks_logUncheckedCreateInput = {
     id?: string
     profile_id: string
+    project_id: string
     agent_type: string
-    task_type: string
+    agent_results: string
     credits_spent: number
-    output_type: string
     timestamp?: Date | string
-    agent_results?: agent_resultsUncheckedCreateNestedOneWithoutTaskInput
   }
 
   export type tasks_logUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    project_id?: StringFieldUpdateOperationsInput | string
     agent_type?: StringFieldUpdateOperationsInput | string
-    task_type?: StringFieldUpdateOperationsInput | string
+    agent_results?: StringFieldUpdateOperationsInput | string
     credits_spent?: IntFieldUpdateOperationsInput | number
-    output_type?: StringFieldUpdateOperationsInput | string
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
-    agent_results?: agent_resultsUpdateOneWithoutTaskNestedInput
     profile?: profileUpdateOneRequiredWithoutTasks_logNestedInput
   }
 
   export type tasks_logUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     profile_id?: StringFieldUpdateOperationsInput | string
+    project_id?: StringFieldUpdateOperationsInput | string
     agent_type?: StringFieldUpdateOperationsInput | string
-    task_type?: StringFieldUpdateOperationsInput | string
+    agent_results?: StringFieldUpdateOperationsInput | string
     credits_spent?: IntFieldUpdateOperationsInput | number
-    output_type?: StringFieldUpdateOperationsInput | string
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
-    agent_results?: agent_resultsUncheckedUpdateOneWithoutTaskNestedInput
   }
 
   export type tasks_logCreateManyInput = {
     id?: string
     profile_id: string
+    project_id: string
     agent_type: string
-    task_type: string
+    agent_results: string
     credits_spent: number
-    output_type: string
     timestamp?: Date | string
   }
 
   export type tasks_logUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    project_id?: StringFieldUpdateOperationsInput | string
     agent_type?: StringFieldUpdateOperationsInput | string
-    task_type?: StringFieldUpdateOperationsInput | string
+    agent_results?: StringFieldUpdateOperationsInput | string
     credits_spent?: IntFieldUpdateOperationsInput | number
-    output_type?: StringFieldUpdateOperationsInput | string
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type tasks_logUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     profile_id?: StringFieldUpdateOperationsInput | string
+    project_id?: StringFieldUpdateOperationsInput | string
     agent_type?: StringFieldUpdateOperationsInput | string
-    task_type?: StringFieldUpdateOperationsInput | string
+    agent_results?: StringFieldUpdateOperationsInput | string
     credits_spent?: IntFieldUpdateOperationsInput | number
-    output_type?: StringFieldUpdateOperationsInput | string
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type agent_resultsCreateInput = {
-    output_text?: string | null
-    file_url?: string | null
-    image_url?: string | null
-    whatsapp_sent?: boolean
-    task: tasks_logCreateNestedOneWithoutAgent_resultsInput
-  }
-
-  export type agent_resultsUncheckedCreateInput = {
-    task_id: string
-    output_text?: string | null
-    file_url?: string | null
-    image_url?: string | null
-    whatsapp_sent?: boolean
-  }
-
-  export type agent_resultsUpdateInput = {
-    output_text?: NullableStringFieldUpdateOperationsInput | string | null
-    file_url?: NullableStringFieldUpdateOperationsInput | string | null
-    image_url?: NullableStringFieldUpdateOperationsInput | string | null
-    whatsapp_sent?: BoolFieldUpdateOperationsInput | boolean
-    task?: tasks_logUpdateOneRequiredWithoutAgent_resultsNestedInput
-  }
-
-  export type agent_resultsUncheckedUpdateInput = {
-    task_id?: StringFieldUpdateOperationsInput | string
-    output_text?: NullableStringFieldUpdateOperationsInput | string | null
-    file_url?: NullableStringFieldUpdateOperationsInput | string | null
-    image_url?: NullableStringFieldUpdateOperationsInput | string | null
-    whatsapp_sent?: BoolFieldUpdateOperationsInput | boolean
-  }
-
-  export type agent_resultsCreateManyInput = {
-    task_id: string
-    output_text?: string | null
-    file_url?: string | null
-    image_url?: string | null
-    whatsapp_sent?: boolean
-  }
-
-  export type agent_resultsUpdateManyMutationInput = {
-    output_text?: NullableStringFieldUpdateOperationsInput | string | null
-    file_url?: NullableStringFieldUpdateOperationsInput | string | null
-    image_url?: NullableStringFieldUpdateOperationsInput | string | null
-    whatsapp_sent?: BoolFieldUpdateOperationsInput | boolean
-  }
-
-  export type agent_resultsUncheckedUpdateManyInput = {
-    task_id?: StringFieldUpdateOperationsInput | string
-    output_text?: NullableStringFieldUpdateOperationsInput | string | null
-    file_url?: NullableStringFieldUpdateOperationsInput | string | null
-    image_url?: NullableStringFieldUpdateOperationsInput | string | null
-    whatsapp_sent?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type whatsapp_messagesCreateInput = {
@@ -10954,18 +9647,13 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
-  export type Agent_resultsNullableScalarRelationFilter = {
-    is?: agent_resultsWhereInput | null
-    isNot?: agent_resultsWhereInput | null
-  }
-
   export type tasks_logCountOrderByAggregateInput = {
     id?: SortOrder
     profile_id?: SortOrder
+    project_id?: SortOrder
     agent_type?: SortOrder
-    task_type?: SortOrder
+    agent_results?: SortOrder
     credits_spent?: SortOrder
-    output_type?: SortOrder
     timestamp?: SortOrder
   }
 
@@ -10976,67 +9664,25 @@ export namespace Prisma {
   export type tasks_logMaxOrderByAggregateInput = {
     id?: SortOrder
     profile_id?: SortOrder
+    project_id?: SortOrder
     agent_type?: SortOrder
-    task_type?: SortOrder
+    agent_results?: SortOrder
     credits_spent?: SortOrder
-    output_type?: SortOrder
     timestamp?: SortOrder
   }
 
   export type tasks_logMinOrderByAggregateInput = {
     id?: SortOrder
     profile_id?: SortOrder
+    project_id?: SortOrder
     agent_type?: SortOrder
-    task_type?: SortOrder
+    agent_results?: SortOrder
     credits_spent?: SortOrder
-    output_type?: SortOrder
     timestamp?: SortOrder
   }
 
   export type tasks_logSumOrderByAggregateInput = {
     credits_spent?: SortOrder
-  }
-
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type Tasks_logScalarRelationFilter = {
-    is?: tasks_logWhereInput
-    isNot?: tasks_logWhereInput
-  }
-
-  export type agent_resultsCountOrderByAggregateInput = {
-    task_id?: SortOrder
-    output_text?: SortOrder
-    file_url?: SortOrder
-    image_url?: SortOrder
-    whatsapp_sent?: SortOrder
-  }
-
-  export type agent_resultsMaxOrderByAggregateInput = {
-    task_id?: SortOrder
-    output_text?: SortOrder
-    file_url?: SortOrder
-    image_url?: SortOrder
-    whatsapp_sent?: SortOrder
-  }
-
-  export type agent_resultsMinOrderByAggregateInput = {
-    task_id?: SortOrder
-    output_text?: SortOrder
-    file_url?: SortOrder
-    image_url?: SortOrder
-    whatsapp_sent?: SortOrder
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type EnumMessageDirectionFilter<$PrismaModel = never> = {
@@ -11382,32 +10028,10 @@ export namespace Prisma {
     update?: XOR<XOR<profileUpdateToOneWithWhereWithoutCredit_purchasesInput, profileUpdateWithoutCredit_purchasesInput>, profileUncheckedUpdateWithoutCredit_purchasesInput>
   }
 
-  export type agent_resultsCreateNestedOneWithoutTaskInput = {
-    create?: XOR<agent_resultsCreateWithoutTaskInput, agent_resultsUncheckedCreateWithoutTaskInput>
-    connectOrCreate?: agent_resultsCreateOrConnectWithoutTaskInput
-    connect?: agent_resultsWhereUniqueInput
-  }
-
   export type profileCreateNestedOneWithoutTasks_logInput = {
     create?: XOR<profileCreateWithoutTasks_logInput, profileUncheckedCreateWithoutTasks_logInput>
     connectOrCreate?: profileCreateOrConnectWithoutTasks_logInput
     connect?: profileWhereUniqueInput
-  }
-
-  export type agent_resultsUncheckedCreateNestedOneWithoutTaskInput = {
-    create?: XOR<agent_resultsCreateWithoutTaskInput, agent_resultsUncheckedCreateWithoutTaskInput>
-    connectOrCreate?: agent_resultsCreateOrConnectWithoutTaskInput
-    connect?: agent_resultsWhereUniqueInput
-  }
-
-  export type agent_resultsUpdateOneWithoutTaskNestedInput = {
-    create?: XOR<agent_resultsCreateWithoutTaskInput, agent_resultsUncheckedCreateWithoutTaskInput>
-    connectOrCreate?: agent_resultsCreateOrConnectWithoutTaskInput
-    upsert?: agent_resultsUpsertWithoutTaskInput
-    disconnect?: agent_resultsWhereInput | boolean
-    delete?: agent_resultsWhereInput | boolean
-    connect?: agent_resultsWhereUniqueInput
-    update?: XOR<XOR<agent_resultsUpdateToOneWithWhereWithoutTaskInput, agent_resultsUpdateWithoutTaskInput>, agent_resultsUncheckedUpdateWithoutTaskInput>
   }
 
   export type profileUpdateOneRequiredWithoutTasks_logNestedInput = {
@@ -11416,34 +10040,6 @@ export namespace Prisma {
     upsert?: profileUpsertWithoutTasks_logInput
     connect?: profileWhereUniqueInput
     update?: XOR<XOR<profileUpdateToOneWithWhereWithoutTasks_logInput, profileUpdateWithoutTasks_logInput>, profileUncheckedUpdateWithoutTasks_logInput>
-  }
-
-  export type agent_resultsUncheckedUpdateOneWithoutTaskNestedInput = {
-    create?: XOR<agent_resultsCreateWithoutTaskInput, agent_resultsUncheckedCreateWithoutTaskInput>
-    connectOrCreate?: agent_resultsCreateOrConnectWithoutTaskInput
-    upsert?: agent_resultsUpsertWithoutTaskInput
-    disconnect?: agent_resultsWhereInput | boolean
-    delete?: agent_resultsWhereInput | boolean
-    connect?: agent_resultsWhereUniqueInput
-    update?: XOR<XOR<agent_resultsUpdateToOneWithWhereWithoutTaskInput, agent_resultsUpdateWithoutTaskInput>, agent_resultsUncheckedUpdateWithoutTaskInput>
-  }
-
-  export type tasks_logCreateNestedOneWithoutAgent_resultsInput = {
-    create?: XOR<tasks_logCreateWithoutAgent_resultsInput, tasks_logUncheckedCreateWithoutAgent_resultsInput>
-    connectOrCreate?: tasks_logCreateOrConnectWithoutAgent_resultsInput
-    connect?: tasks_logWhereUniqueInput
-  }
-
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
-  }
-
-  export type tasks_logUpdateOneRequiredWithoutAgent_resultsNestedInput = {
-    create?: XOR<tasks_logCreateWithoutAgent_resultsInput, tasks_logUncheckedCreateWithoutAgent_resultsInput>
-    connectOrCreate?: tasks_logCreateOrConnectWithoutAgent_resultsInput
-    upsert?: tasks_logUpsertWithoutAgent_resultsInput
-    connect?: tasks_logWhereUniqueInput
-    update?: XOR<XOR<tasks_logUpdateToOneWithWhereWithoutAgent_resultsInput, tasks_logUpdateWithoutAgent_resultsInput>, tasks_logUncheckedUpdateWithoutAgent_resultsInput>
   }
 
   export type profileCreateNestedOneWithoutWhatsapp_messagesInput = {
@@ -11706,19 +10302,6 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
   export type NestedEnumMessageDirectionFilter<$PrismaModel = never> = {
     equals?: $Enums.MessageDirection | EnumMessageDirectionFieldRefInput<$PrismaModel>
     in?: $Enums.MessageDirection[] | ListEnumMessageDirectionFieldRefInput<$PrismaModel>
@@ -11818,22 +10401,20 @@ export namespace Prisma {
 
   export type tasks_logCreateWithoutProfileInput = {
     id?: string
+    project_id: string
     agent_type: string
-    task_type: string
+    agent_results: string
     credits_spent: number
-    output_type: string
     timestamp?: Date | string
-    agent_results?: agent_resultsCreateNestedOneWithoutTaskInput
   }
 
   export type tasks_logUncheckedCreateWithoutProfileInput = {
     id?: string
+    project_id: string
     agent_type: string
-    task_type: string
+    agent_results: string
     credits_spent: number
-    output_type: string
     timestamp?: Date | string
-    agent_results?: agent_resultsUncheckedCreateNestedOneWithoutTaskInput
   }
 
   export type tasks_logCreateOrConnectWithoutProfileInput = {
@@ -11977,10 +10558,10 @@ export namespace Prisma {
     NOT?: tasks_logScalarWhereInput | tasks_logScalarWhereInput[]
     id?: UuidFilter<"tasks_log"> | string
     profile_id?: UuidFilter<"tasks_log"> | string
+    project_id?: UuidFilter<"tasks_log"> | string
     agent_type?: StringFilter<"tasks_log"> | string
-    task_type?: StringFilter<"tasks_log"> | string
+    agent_results?: StringFilter<"tasks_log"> | string
     credits_spent?: IntFilter<"tasks_log"> | number
-    output_type?: StringFilter<"tasks_log"> | string
     timestamp?: DateTimeFilter<"tasks_log"> | Date | string
   }
 
@@ -12171,25 +10752,6 @@ export namespace Prisma {
     whatsapp_messages?: whatsapp_messagesUncheckedUpdateManyWithoutProfileNestedInput
   }
 
-  export type agent_resultsCreateWithoutTaskInput = {
-    output_text?: string | null
-    file_url?: string | null
-    image_url?: string | null
-    whatsapp_sent?: boolean
-  }
-
-  export type agent_resultsUncheckedCreateWithoutTaskInput = {
-    output_text?: string | null
-    file_url?: string | null
-    image_url?: string | null
-    whatsapp_sent?: boolean
-  }
-
-  export type agent_resultsCreateOrConnectWithoutTaskInput = {
-    where: agent_resultsWhereUniqueInput
-    create: XOR<agent_resultsCreateWithoutTaskInput, agent_resultsUncheckedCreateWithoutTaskInput>
-  }
-
   export type profileCreateWithoutTasks_logInput = {
     id: string
     email: string
@@ -12225,31 +10787,6 @@ export namespace Prisma {
   export type profileCreateOrConnectWithoutTasks_logInput = {
     where: profileWhereUniqueInput
     create: XOR<profileCreateWithoutTasks_logInput, profileUncheckedCreateWithoutTasks_logInput>
-  }
-
-  export type agent_resultsUpsertWithoutTaskInput = {
-    update: XOR<agent_resultsUpdateWithoutTaskInput, agent_resultsUncheckedUpdateWithoutTaskInput>
-    create: XOR<agent_resultsCreateWithoutTaskInput, agent_resultsUncheckedCreateWithoutTaskInput>
-    where?: agent_resultsWhereInput
-  }
-
-  export type agent_resultsUpdateToOneWithWhereWithoutTaskInput = {
-    where?: agent_resultsWhereInput
-    data: XOR<agent_resultsUpdateWithoutTaskInput, agent_resultsUncheckedUpdateWithoutTaskInput>
-  }
-
-  export type agent_resultsUpdateWithoutTaskInput = {
-    output_text?: NullableStringFieldUpdateOperationsInput | string | null
-    file_url?: NullableStringFieldUpdateOperationsInput | string | null
-    image_url?: NullableStringFieldUpdateOperationsInput | string | null
-    whatsapp_sent?: BoolFieldUpdateOperationsInput | boolean
-  }
-
-  export type agent_resultsUncheckedUpdateWithoutTaskInput = {
-    output_text?: NullableStringFieldUpdateOperationsInput | string | null
-    file_url?: NullableStringFieldUpdateOperationsInput | string | null
-    image_url?: NullableStringFieldUpdateOperationsInput | string | null
-    whatsapp_sent?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type profileUpsertWithoutTasks_logInput = {
@@ -12293,62 +10830,6 @@ export namespace Prisma {
     credit_purchases?: credit_purchasesUncheckedUpdateManyWithoutProfileNestedInput
     subscriptions?: subscriptionsUncheckedUpdateManyWithoutProfileNestedInput
     whatsapp_messages?: whatsapp_messagesUncheckedUpdateManyWithoutProfileNestedInput
-  }
-
-  export type tasks_logCreateWithoutAgent_resultsInput = {
-    id?: string
-    agent_type: string
-    task_type: string
-    credits_spent: number
-    output_type: string
-    timestamp?: Date | string
-    profile: profileCreateNestedOneWithoutTasks_logInput
-  }
-
-  export type tasks_logUncheckedCreateWithoutAgent_resultsInput = {
-    id?: string
-    profile_id: string
-    agent_type: string
-    task_type: string
-    credits_spent: number
-    output_type: string
-    timestamp?: Date | string
-  }
-
-  export type tasks_logCreateOrConnectWithoutAgent_resultsInput = {
-    where: tasks_logWhereUniqueInput
-    create: XOR<tasks_logCreateWithoutAgent_resultsInput, tasks_logUncheckedCreateWithoutAgent_resultsInput>
-  }
-
-  export type tasks_logUpsertWithoutAgent_resultsInput = {
-    update: XOR<tasks_logUpdateWithoutAgent_resultsInput, tasks_logUncheckedUpdateWithoutAgent_resultsInput>
-    create: XOR<tasks_logCreateWithoutAgent_resultsInput, tasks_logUncheckedCreateWithoutAgent_resultsInput>
-    where?: tasks_logWhereInput
-  }
-
-  export type tasks_logUpdateToOneWithWhereWithoutAgent_resultsInput = {
-    where?: tasks_logWhereInput
-    data: XOR<tasks_logUpdateWithoutAgent_resultsInput, tasks_logUncheckedUpdateWithoutAgent_resultsInput>
-  }
-
-  export type tasks_logUpdateWithoutAgent_resultsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    agent_type?: StringFieldUpdateOperationsInput | string
-    task_type?: StringFieldUpdateOperationsInput | string
-    credits_spent?: IntFieldUpdateOperationsInput | number
-    output_type?: StringFieldUpdateOperationsInput | string
-    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
-    profile?: profileUpdateOneRequiredWithoutTasks_logNestedInput
-  }
-
-  export type tasks_logUncheckedUpdateWithoutAgent_resultsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    profile_id?: StringFieldUpdateOperationsInput | string
-    agent_type?: StringFieldUpdateOperationsInput | string
-    task_type?: StringFieldUpdateOperationsInput | string
-    credits_spent?: IntFieldUpdateOperationsInput | number
-    output_type?: StringFieldUpdateOperationsInput | string
-    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type profileCreateWithoutWhatsapp_messagesInput = {
@@ -12538,10 +11019,10 @@ export namespace Prisma {
 
   export type tasks_logCreateManyProfileInput = {
     id?: string
+    project_id: string
     agent_type: string
-    task_type: string
+    agent_results: string
     credits_spent: number
-    output_type: string
     timestamp?: Date | string
   }
 
@@ -12629,30 +11110,28 @@ export namespace Prisma {
 
   export type tasks_logUpdateWithoutProfileInput = {
     id?: StringFieldUpdateOperationsInput | string
+    project_id?: StringFieldUpdateOperationsInput | string
     agent_type?: StringFieldUpdateOperationsInput | string
-    task_type?: StringFieldUpdateOperationsInput | string
+    agent_results?: StringFieldUpdateOperationsInput | string
     credits_spent?: IntFieldUpdateOperationsInput | number
-    output_type?: StringFieldUpdateOperationsInput | string
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
-    agent_results?: agent_resultsUpdateOneWithoutTaskNestedInput
   }
 
   export type tasks_logUncheckedUpdateWithoutProfileInput = {
     id?: StringFieldUpdateOperationsInput | string
+    project_id?: StringFieldUpdateOperationsInput | string
     agent_type?: StringFieldUpdateOperationsInput | string
-    task_type?: StringFieldUpdateOperationsInput | string
+    agent_results?: StringFieldUpdateOperationsInput | string
     credits_spent?: IntFieldUpdateOperationsInput | number
-    output_type?: StringFieldUpdateOperationsInput | string
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
-    agent_results?: agent_resultsUncheckedUpdateOneWithoutTaskNestedInput
   }
 
   export type tasks_logUncheckedUpdateManyWithoutProfileInput = {
     id?: StringFieldUpdateOperationsInput | string
+    project_id?: StringFieldUpdateOperationsInput | string
     agent_type?: StringFieldUpdateOperationsInput | string
-    task_type?: StringFieldUpdateOperationsInput | string
+    agent_results?: StringFieldUpdateOperationsInput | string
     credits_spent?: IntFieldUpdateOperationsInput | number
-    output_type?: StringFieldUpdateOperationsInput | string
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

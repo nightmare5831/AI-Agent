@@ -57,26 +57,14 @@ model credit_purchases {
 }
 
 model tasks_log {
-  id            String         @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  profile_id    String         @db.Uuid
+  id            String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  profile_id    String   @db.Uuid
+  project_id    String   @db.Uuid
   agent_type    String
-  task_type     String
+  agent_results String
   credits_spent Int
-  output_type   String
-  timestamp     DateTime       @default(now())
-  agent_results agent_results?
-  profile       profile        @relation(fields: [profile_id], references: [id], onDelete: Cascade)
-
-  @@schema("public")
-}
-
-model agent_results {
-  task_id       String    @id @db.Uuid
-  output_text   String?
-  file_url      String?
-  image_url     String?
-  whatsapp_sent Boolean   @default(false)
-  task          tasks_log @relation(fields: [task_id], references: [id], onDelete: Cascade)
+  timestamp     DateTime @default(now())
+  profile       profile  @relation(fields: [profile_id], references: [id], onDelete: Cascade)
 
   @@schema("public")
 }

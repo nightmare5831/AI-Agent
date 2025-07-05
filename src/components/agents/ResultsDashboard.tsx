@@ -7,7 +7,6 @@ import {
   ExternalLink,
   FileText,
   Image,
-  Video,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -20,14 +19,8 @@ import {
 } from '@/components/ui/table';
 import { useResults } from '@/contexts/ResultsContext';
 
-export const renderGeneratedContent = ({
-  content,
-  answers,
-}: {
-  content: any;
-  answers: any;
-}) => {
-  const selectedTypes = answers['content-type']?.split(',') || [];
+export const renderGeneratedContent = (content : any) => {
+  const selectedTypes = content.type;
 
   return (
     <div className="space-y-6">
@@ -111,6 +104,24 @@ export const renderGeneratedContent = ({
               </p>
               <p>
                 <strong>Visual Style:</strong> {content.style}
+              </p>
+              <p>
+                <strong>Character:</strong> {content.character}
+              </p>
+              <p>
+                <strong>Expression:</strong> {content.expression}
+              </p>
+              <p>
+                <strong>Colors:</strong> {content.colors}
+              </p>
+              <p>
+                <strong>Logo:</strong> {content.logo}
+              </p>
+              <p>
+                <strong>Elements:</strong> {content.elements}
+              </p>
+              <p>
+                <strong>Orientation:</strong> {content.orientation}
               </p>
               <div className="mt-3 rounded bg-purple-100 p-3">
                 <strong>Final AI Prompt:</strong>
@@ -260,20 +271,17 @@ export const ResultsDashboard: React.FC = () => {
     if (agentId === 'post-text' && result) {
       return (
         <div className="space-y-3">
-          {renderGeneratedContent({
-            content: result.content,
-            answers: result.answers,
-          })}
+          {renderGeneratedContent(result)}
         </div>
       );
     }
 
-    if (agentId === 'image-generation' && result && result.image) {
+    if (agentId === 'image-generation' && result) {
       return (
         <div className="space-y-3">
           <div className="flex items-center space-x-3">
             <img
-              src={result.image.url}
+              src={result.url}
               alt="Generated image"
               className="max-h-[150px] max-w-[150px] rounded border object-cover"
             />
@@ -308,7 +316,7 @@ export const ResultsDashboard: React.FC = () => {
       return (
         <div className="border-t border-slate-100 bg-slate-50 p-6">
           <div className="space-y-4">
-            {result.type === 'content' ? (
+            {result.type === 'Content Optimization' ? (
               <div className="space-y-4">
                 <div className="rounded-lg border bg-green-50 p-4">
                   <h3 className="mb-2 font-semibold text-green-800">
@@ -324,7 +332,7 @@ export const ResultsDashboard: React.FC = () => {
                     # Suggested Hashtags
                   </h3>
                   <div className="flex flex-wrap gap-2">
-                    {result.suggestedHashtags.map(
+                    {result.strategicHashtags.map(
                       (tag: string, index: number) => (
                         <span
                           key={index}
