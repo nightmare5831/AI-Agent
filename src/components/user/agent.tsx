@@ -59,7 +59,7 @@ const AgentPage = () => {
     const getProjects = async () => {
       const projects = await getProject(profile.id);
       if (projects.length > 0) {
-        const tempProjects : Object [] =  []
+        const tempProjects : any =  []
         projects.map((pro) => {
           tempProjects.push({
             id: pro.createId, name: pro.name, description: pro.description
