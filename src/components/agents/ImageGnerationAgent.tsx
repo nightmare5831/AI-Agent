@@ -8,7 +8,7 @@ import {
   RefreshCw,
   Upload,
   Eye,
-  Sparkles
+  Sparkles,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -23,7 +23,10 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Agent, Question } from '@/lib/agentType';
-
+import { useResults } from '@/contexts/ResultsContext';
+import { mockImageScript } from '@/lib/agentData';
+import { useAuth } from '@/core/auth/AuthProvider';
+import Request from '@/lib/request';
 interface ImageGenerationAgentProps {
   agent: Agent;
   projectId: string;
@@ -34,7 +37,7 @@ interface GeneratedImage {
   url: string;
   name: string;
   prompt: string;
-  timestamp: Date;
+  timestamp: string;
   settings: {
     style: string;
     format: string;
@@ -59,6 +62,8 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
     null
   );
   const [questionsCompleted, setQuestionsCompleted] = useState(false);
+  const { addResult } = useResults();
+  const [{ profile }] = useAuth();
 
   const filteredQuestions = agent.questions.filter((q: Question) => {
     if (!q.condition) return true;
@@ -68,7 +73,8 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
   const currentQuestion = filteredQuestions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === filteredQuestions.length - 1;
   const allQuestionsAnswered =
-    questionsCompleted && filteredQuestions.every((q: Question) => answers[q.id]);
+    questionsCompleted &&
+    filteredQuestions.every((q: Question) => answers[q.id]);
 
   const handleAnswerChange = (value: string) => {
     setAnswers((prev) => ({
@@ -76,6 +82,14 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
       [currentQuestion.id]: value,
     }));
   };
+
+  const handleInit = () => {
+    setAnswers((prev) => ({
+      ...prev,
+      [currentQuestion.id]: JSON.stringify(mockImageScript),
+    }));
+    setCurrentQuestionIndex((prev) => prev + 1);
+  }
 
   const handleNext = () => {
     if (currentQuestionIndex < filteredQuestions.length - 1) {
@@ -112,13 +126,19 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
   const handleGenerateImage = async () => {
     setIsLoading(true);
 
+    const body = {
+      agent: 'image-generation',
+      inputs: answers,
+    };
+    const response = await Request.Post('/api/agents', body);
+
     const imageName = generateImageName(answers['campaign-name']);
     const newImage: GeneratedImage = {
       id: `img_${Date.now()}`,
-      url: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop&crop=center',
+      url: response.image,
       name: imageName,
       prompt: answers['prompt'],
-      timestamp: new Date(),
+      timestamp: new Date().toISOString(),
       settings: {
         style: answers['visual-style'],
         format: answers['image-format'],
@@ -128,22 +148,30 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
         campaignName: answers['campaign-name'],
       },
     };
+    
+    const task = {
+      profile_id: profile.id,
+      project_id: projectId,
+      agent_type: agent.id,
+      agent_results: JSON.stringify(newImage),
+      credits_spent: 1,
+    };
 
+    await Request.Post('/api/stripe/discount', task);
     setGeneratedImage(newImage);
+    addResult(agent.id,agent.title,agent.icon,newImage)
     setIsLoading(false);
   };
 
   const handleRegenerateImage = async () => {
     if (!generatedImage) return;
-
     setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
 
     const newImage: GeneratedImage = {
       ...generatedImage,
       id: `img_${Date.now()}_regen`,
       url: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop&crop=center',
-      timestamp: new Date(),
+      timestamp: new Date().toISOString(),
     };
 
     setGeneratedImage(newImage);
@@ -231,7 +259,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
                     if (e.target.checked) {
                       newValues.push(option);
                     } else {
-                      newValues = newValues.filter(v => v !== option);
+                      newValues = newValues.filter((v) => v !== option);
                     }
                     handleAnswerChange(newValues.join(','));
                   }}
@@ -374,9 +402,19 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
                     Previous
                   </Button>
 
+                  {currentQuestionIndex === 0 && (<Button
+                    onClick={handleInit}
+                    className="bg-pink-600 text-white hover:bg-pink-700"
+                  >
+                    Use Agent4
+                  </Button>)}
+                  
                   <Button
                     onClick={isLastQuestion ? handleComplete : handleNext}
-                    disabled={!answers[currentQuestion.id] && currentQuestion.required !== false}
+                    disabled={
+                      !answers[currentQuestion.id] &&
+                      currentQuestion.required !== false
+                    }
                     className="bg-pink-600 text-white hover:bg-pink-700"
                   >
                     {isLastQuestion ? 'Complete' : 'Next'}

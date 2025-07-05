@@ -70,19 +70,6 @@ export const agents: Agent[] = [
         required: true,
       },
       {
-        id: 'video-appearance',
-        question:
-          'Are you or someone from your team willing to appear in videos and photos?',
-        type: 'select',
-        placeholder: 'Select your comfort level with appearing in content',
-        options: [
-          'Yes, I can appear frequently',
-          'Yes, but I prefer to appear occasionally',
-          "I don't want to appear",
-        ],
-        required: true,
-      },
-      {
         id: 'social-platforms',
         question:
           'Do you already sell on social media? Which platforms do you use or plan to use?',
@@ -162,11 +149,10 @@ export const agents: Agent[] = [
         type: 'multiselect',
         placeholder: 'Select content formats',
         options: [
-          'Video',
           'Image',
           'Carousel',
           'Plain Text',
-          'Mixed (text + image or video)',
+          'Mixed (text + image)',
         ],
         required: true,
       },
@@ -235,7 +221,6 @@ export const agents: Agent[] = [
         type: 'select',
         placeholder: 'Select your comfort level',
         options: [
-          'Love being on camera - bring on the videos!',
           'Prefer behind-the-scenes and product shots',
           'Better with graphics and text-based content',
           'Mix of everything but keep it simple',
@@ -247,19 +232,18 @@ export const agents: Agent[] = [
   {
     id: 'post-text',
     title: 'Post Text & Scripts',
-    description: 'Write compelling copy and video scripts for your content.',
+    description: 'Write compelling copy scripts for your content.',
     icon: '✍️',
     questions: [
       {
         id: 'content-type',
         question: 'What type of content do you want to create?',
-        type: 'multiselect',
-        placeholder: 'Select content types (you can choose multiple)',
+        type: 'select',
+        placeholder: 'Select content types',
         options: [
           'Social Media Caption',
           'Page Copy (Website/WhatsApp)',
           'AI Image Generation Script',
-          'AI Video Generation Script',
         ],
         required: true,
       },
@@ -269,11 +253,6 @@ export const agents: Agent[] = [
           'Which content idea from the previous step do you want to develop?',
         type: 'select',
         placeholder: 'Select a content idea to develop',
-        options: [
-          'Monday - The Activewear Fitting Room Reality Check',
-          'Tuesday - Flash Sale Alert with Personal Touch',
-          'Wednesday - Unboxing New Collection with Excitement',
-        ],
         required: true,
       },
       {

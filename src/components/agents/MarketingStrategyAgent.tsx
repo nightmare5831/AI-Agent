@@ -21,6 +21,8 @@ import {
 } from '@/components/ui/select';
 import { Agent } from '@/lib/agentType';
 import { useResults } from '@/contexts/ResultsContext';
+import { useAuth } from '@/core/auth/AuthProvider';
+import Request from '@/lib/request';
 
 interface MarketingStrategyAgentProps {
   agent: Agent;
@@ -43,12 +45,7 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
   const currentQuestion = agent.questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === agent.questions.length - 1;
   const { addResult } = useResults();
-
-  if (!agent)
-    return <div style={{ color: 'red' }}>Error: Agent data not loaded.</div>;
-  if (!projectId)
-    return <div style={{ color: 'red' }}>Error: Project not selected.</div>;
-
+  const [{ profile }] = useAuth();
   const handleAnswerChange = (value: string) => {
     setAnswers((prev) => ({
       ...prev,
@@ -59,24 +56,21 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
   const generateAnswerSummary = (question: any, answer: string) => {
     const summaries: Record<string, string> = {
       'brand-name': `Brand: ${answer}`,
-      'product-service': `Offers: ${answer.substring(0, 60)}${answer.length > 60 ? '...' : ''}`,
-      'target-audience': `Target: ${answer.substring(0, 60)}${answer.length > 60 ? '...' : ''}`,
-      differentiator: `Differentiator: ${answer.substring(0, 60)}${answer.length > 60 ? '...' : ''}`,
+      'product-service': `Offers: ${answer}`,
+      'target-audience': `Target: ${answer}`,
+      differentiator: `Differentiator: ${answer}`,
       'marketing-goals': `Goal: ${answer}`,
       'communication-tone': `Tone: ${answer}`,
       'video-appearance': `Video appearance: ${answer}`,
       'social-platforms': `Platforms: ${answer}`,
       limitations: `Limitations: ${answer || 'None specified'}`,
-      'focus-products': `Focus: ${answer.substring(0, 60)}${answer.length > 60 ? '...' : ''}`,
+      'focus-products': `Focus: ${answer}`,
       'positioning-status': `Positioning: ${answer}`,
       competitors: `Competitors: ${answer || 'None specified'}`,
-      'three-month-goals': `3-month goals: ${answer.substring(0, 60)}${answer.length > 60 ? '...' : ''}`,
+      'three-month-goals': `3-month goals: ${answer}`,
     };
 
-    return (
-      summaries[question.id] ||
-      `${question.question}: ${answer.substring(0, 40)}${answer.length > 40 ? '...' : ''}`
-    );
+    return summaries[question.id] || `${question.question}: ${answer}`;
   };
 
   const handleNext = () => {
@@ -107,26 +101,36 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
     setIsLoading(true);
 
     const strategicSummary = `
-📄 STRATEGIC BUSINESS SUMMARY
+      📄 STRATEGIC BUSINESS SUMMARY
 
-• Brand Name: ${answers['brand-name'] || 'Your Business'}
-• Product/Service: ${answers['product-service'] || 'Your offerings'}
-• Target Audience: ${answers['target-audience'] || 'Your ideal customers'}
-• Differentiators: ${answers['differentiator'] || 'Your unique value proposition'}
-• Marketing Goals: ${answers['marketing-goals'] || 'Your objectives'}
-• Communication Tone: ${answers['communication-tone'] || 'Your preferred tone'}
-• Appears in Videos: ${answers['video-appearance'] || 'Not specified'}
-• Channels Used: ${answers['social-platforms'] || 'Your platforms'}
-• Limitations: ${answers['limitations'] || 'None specified'}
-• Focus Products: ${answers['focus-products'] || 'Your priority offerings'}
-• Positioning Status: ${answers['positioning-status'] || 'To be defined'}
-• Competitors: ${answers['competitors'] || 'To be researched'}
-• 3-Month Goals: ${answers['three-month-goals'] || 'Your targets'}
+      • Brand Name: ${answers['brand-name'] || 'Your Business'}
+      • Product/Service: ${answers['product-service'] || 'Your offerings'}
+      • Target Audience: ${answers['target-audience'] || 'Your ideal customers'}
+      • Differentiators: ${answers['differentiator'] || 'Your unique value proposition'}
+      • Marketing Goals: ${answers['marketing-goals'] || 'Your objectives'}
+      • Communication Tone: ${answers['communication-tone'] || 'Your preferred tone'}
+      • Appears in Videos: ${answers['video-appearance'] || 'Not specified'}
+      • Channels Used: ${answers['social-platforms'] || 'Your platforms'}
+      • Limitations: ${answers['limitations'] || 'None specified'}
+      • Focus Products: ${answers['focus-products'] || 'Your priority offerings'}
+      • Positioning Status: ${answers['positioning-status'] || 'To be defined'}
+      • Competitors: ${answers['competitors'] || 'To be researched'}
+      • 3-Month Goals: ${answers['three-month-goals'] || 'Your targets'}
 
-🎯 This strategic foundation will be used by all other AI agents to create personalized content that aligns with your business goals and brand identity.
+      🎯 This strategic foundation will be used by all other AI agents to create personalized content that aligns with your business goals and brand identity.
     `;
+    const task = {
+      profile_id: profile.id,
+      project_id: projectId,
+      agent_type: agent.id,
+      agent_results: JSON.stringify(strategicSummary),
+      credits_spent: 1,
+    };
+
+    await Request.Post('/api/stripe/discount', task);
     setResult(strategicSummary);
     addResult(agent.id, agent.title, agent.icon, strategicSummary);
+
     setIsLoading(false);
   };
 
@@ -136,7 +140,7 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
     setResult('');
     setIsConfirmingAnswer(false);
     setCurrentSummary('');
-    setIsCompleted(false); // Reset completion state
+    setIsCompleted(false);
   };
 
   const renderInputField = (question: any) => {
@@ -279,6 +283,13 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
                     disabled={currentQuestionIndex === 0 && !isConfirmingAnswer}
                   >
                     {isConfirmingAnswer ? 'Edit Answer' : 'Previous'}
+                  </Button>
+
+                  <Button
+                    onClick={handleRunAgent}
+                    className="bg-blue-600 text-white hover:bg-blue-700"
+                  >
+                    Test
                   </Button>
 
                   <Button

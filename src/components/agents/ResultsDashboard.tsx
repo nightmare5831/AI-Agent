@@ -7,7 +7,6 @@ import {
   ExternalLink,
   FileText,
   Image,
-  Video,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -20,18 +19,12 @@ import {
 } from '@/components/ui/table';
 import { useResults } from '@/contexts/ResultsContext';
 
-export const renderGeneratedContent = ({
-  content,
-  answers,
-}: {
-  content: any;
-  answers: any;
-}) => {
-  const selectedTypes = answers['content-type']?.split(',') || [];
+export const renderGeneratedContent = (content : any) => {
+  const selectedTypes = content.type;
 
   return (
     <div className="space-y-6">
-      {content.caption && selectedTypes.includes('Social Media Caption') && (
+      {content && selectedTypes.includes('Social Media Caption') && (
         <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
           <h5 className="mb-3 flex items-center font-medium text-blue-800">
             <FileText className="mr-2 h-4 w-4" />
@@ -40,30 +33,29 @@ export const renderGeneratedContent = ({
           <div className="space-y-3 text-sm">
             <div>
               <strong>Headline:</strong>
-              <p className="mt-1 text-blue-700">{content.caption.headline}</p>
+              <p className="mt-1 text-blue-700">{content.headline}</p>
             </div>
             <div>
               <strong>Copy:</strong>
               <p className="mt-1 whitespace-pre-line text-blue-700">
-                {content.caption.copy}
+                {content.copy}
               </p>
             </div>
             <div>
               <strong>Call-to-Action:</strong>
-              <p className="mt-1 text-blue-700">{content.caption.cta}</p>
+              <p className="mt-1 text-blue-700">{content.cta}</p>
             </div>
             <div>
               <strong>Hashtags:</strong>
               <p className="mt-1 text-blue-700">
-                {content.caption.hashtags.join(' ')}
+                {content.hashtags.join(' ')}
               </p>
             </div>
           </div>
         </div>
       )}
 
-      {content.pageCopy &&
-        selectedTypes.includes('Page Copy (Website/WhatsApp)') && (
+      {content && selectedTypes.includes('Page Copy (Website/WhatsApp)') && (
           <div className="rounded-lg border border-green-200 bg-green-50 p-4">
             <h5 className="mb-3 flex items-center font-medium text-green-800">
               <FileText className="mr-2 h-4 w-4" />
@@ -72,30 +64,29 @@ export const renderGeneratedContent = ({
             <div className="space-y-3 text-sm">
               <div>
                 <strong>Title:</strong>
-                <p className="mt-1 text-green-700">{content.pageCopy.title}</p>
+                <p className="mt-1 text-green-700">{content.title}</p>
               </div>
               <div>
                 <strong>Subtitle:</strong>
                 <p className="mt-1 text-green-700">
-                  {content.pageCopy.subtitle}
+                  {content.subtitle}
                 </p>
               </div>
               <div>
                 <strong>Content:</strong>
                 <p className="mt-1 whitespace-pre-line text-green-700">
-                  {content.pageCopy.content}
+                  {content.content}
                 </p>
               </div>
               <div>
                 <strong>CTA:</strong>
-                <p className="mt-1 text-green-700">{content.pageCopy.cta}</p>
+                <p className="mt-1 text-green-700">{content.cta}</p>
               </div>
             </div>
           </div>
         )}
 
-      {content.imageScript &&
-        selectedTypes.includes('AI Image Generation Script') && (
+      {content && selectedTypes.includes('AI Image Generation Script') && (
           <div className="rounded-lg border border-purple-200 bg-purple-50 p-4">
             <h5 className="mb-3 flex items-center font-medium text-purple-800">
               <Image className="mr-2 h-4 w-4" />
@@ -103,51 +94,39 @@ export const renderGeneratedContent = ({
             </h5>
             <div className="space-y-2 text-sm">
               <p>
-                <strong>Objective:</strong> {content.imageScript.objective}
+                <strong>Objective:</strong> {content.objective}
               </p>
               <p>
-                <strong>Format:</strong> {content.imageScript.format}
+                <strong>Format:</strong> {content.format}
               </p>
               <p>
-                <strong>Scene:</strong> {content.imageScript.scene}
+                <strong>Scene:</strong> {content.scene}
               </p>
               <p>
-                <strong>Visual Style:</strong> {content.imageScript.style}
+                <strong>Visual Style:</strong> {content.style}
+              </p>
+              <p>
+                <strong>Character:</strong> {content.character}
+              </p>
+              <p>
+                <strong>Expression:</strong> {content.expression}
+              </p>
+              <p>
+                <strong>Colors:</strong> {content.colors}
+              </p>
+              <p>
+                <strong>Logo:</strong> {content.logo}
+              </p>
+              <p>
+                <strong>Elements:</strong> {content.elements}
+              </p>
+              <p>
+                <strong>Orientation:</strong> {content.orientation}
               </p>
               <div className="mt-3 rounded bg-purple-100 p-3">
                 <strong>Final AI Prompt:</strong>
                 <p className="mt-1 italic text-purple-800">
-                  "{content.imageScript.finalPrompt}"
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
-      {content.videoScript &&
-        selectedTypes.includes('AI Video Generation Script') && (
-          <div className="rounded-lg border border-orange-200 bg-orange-50 p-4">
-            <h5 className="mb-3 flex items-center font-medium text-orange-800">
-              <Video className="mr-2 h-4 w-4" />
-              AI Video Generation Script
-            </h5>
-            <div className="space-y-2 text-sm">
-              <p>
-                <strong>Objective:</strong> {content.videoScript.objective}
-              </p>
-              <p>
-                <strong>Duration:</strong> {content.videoScript.duration}
-              </p>
-              <p>
-                <strong>Style:</strong> {content.videoScript.style}
-              </p>
-              <p>
-                <strong>Script:</strong> {content.videoScript.script}
-              </p>
-              <div className="mt-3 rounded bg-orange-100 p-3">
-                <strong>Final AI Prompt:</strong>
-                <p className="mt-1 italic text-orange-800">
-                  "{content.videoScript.finalPrompt}"
+                  "{content.finalPrompt}"
                 </p>
               </div>
             </div>
@@ -209,6 +188,7 @@ export const ResultsDashboard: React.FC = () => {
                   <TableHead className="text-xs">Day</TableHead>
                   <TableHead className="text-xs">Channel</TableHead>
                   <TableHead className="text-xs">Format</TableHead>
+                  <TableHead className="text-xs">Placement</TableHead>
                   <TableHead className="text-xs">Content Type</TableHead>
                   <TableHead className="text-xs">Description</TableHead>
                 </TableRow>
@@ -221,6 +201,7 @@ export const ResultsDashboard: React.FC = () => {
                     </TableCell>
                     <TableCell className="text-xs">{row.channel}</TableCell>
                     <TableCell className="text-xs">{row.format}</TableCell>
+                    <TableCell className="text-xs">{row.placement}</TableCell>
                     <TableCell className="text-xs">{row.contentType}</TableCell>
                     <TableCell className="text-xs">{row.description}</TableCell>
                   </TableRow>
@@ -290,26 +271,24 @@ export const ResultsDashboard: React.FC = () => {
     if (agentId === 'post-text' && result) {
       return (
         <div className="space-y-3">
-          {renderGeneratedContent({
-            content: result.content,
-            answers: result.answers,
-          })}
+          {renderGeneratedContent(result)}
         </div>
       );
     }
 
-    if (agentId === 'image-generation' && result && result.image) {
+    if (agentId === 'image-generation' && result) {
       return (
         <div className="space-y-3">
           <div className="flex items-center space-x-3">
             <img
-              src={result.image.url}
+              src={result.url}
               alt="Generated image"
               className="max-h-[150px] max-w-[150px] rounded border object-cover"
             />
             <div className="flex-1">
               <div className="text-md text-slate-700">
-                CampaignName: {result.settings.campaignName || 'Generated Image'}
+                CampaignName:{' '}
+                {result.settings.campaignName || 'Generated Image'}
               </div>
               <div className="mt-1 text-sm text-slate-500">
                 Style: {result.settings?.style}
@@ -326,7 +305,7 @@ export const ResultsDashboard: React.FC = () => {
               </button>
             </div>
           </div>
-          <div className="rounded bg-slate-50 p-2 text-md text-slate-600">
+          <div className="text-md rounded bg-slate-50 p-2 text-slate-600">
             <strong>Prompt:</strong> {result.prompt.substring(0, 300)}...
           </div>
         </div>
@@ -337,7 +316,7 @@ export const ResultsDashboard: React.FC = () => {
       return (
         <div className="border-t border-slate-100 bg-slate-50 p-6">
           <div className="space-y-4">
-            {result.type === 'content' ? (
+            {result.type === 'Content Optimization' ? (
               <div className="space-y-4">
                 <div className="rounded-lg border bg-green-50 p-4">
                   <h3 className="mb-2 font-semibold text-green-800">
@@ -353,7 +332,7 @@ export const ResultsDashboard: React.FC = () => {
                     # Suggested Hashtags
                   </h3>
                   <div className="flex flex-wrap gap-2">
-                    {result.suggestedHashtags.map(
+                    {result.strategicHashtags.map(
                       (tag: string, index: number) => (
                         <span
                           key={index}

@@ -14,6 +14,9 @@ import {
 } from '@/components/ui/select';
 import { Agent } from '@/lib/agentType';
 import { useResults } from '@/contexts/ResultsContext';
+import { mockStrategy } from '@/lib/agentData';
+import { useAuth } from '@/core/auth/AuthProvider';
+import Request from '@/lib/request';
 
 interface MarketingCalendarAgentProps {
   agent: Agent;
@@ -38,7 +41,8 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
   const [schedule, setSchedule] = useState<ScheduleRow[]>([]);
-  const { addResult } = useResults();
+  const { results, addResult } = useResults();
+  const [{ profile }] = useAuth();
 
   const currentQuestion = agent.questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === agent.questions.length - 1;
@@ -59,69 +63,42 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
 
   const handleRunAgent = async () => {
     setIsLoading(true);
-    // Generate mock 7-day schedule based on answers
-    const mockSchedule: ScheduleRow[] = [
-      {
-        day: 'Monday',
-        channel: 'Instagram',
-        placement: 'Feed',
-        format: 'Carousel',
-        contentType: 'Tip',
-        description:
-          '3 common mistakes when choosing the right product for your needs',
-      },
-      {
-        day: 'Tuesday',
-        channel: 'WhatsApp',
-        placement: 'Broadcast List',
-        format: 'Text + Image',
-        contentType: 'Offer',
-        description: 'Send a discount coupon with clear call-to-action',
-      },
-      {
-        day: 'Wednesday',
-        channel: 'Instagram',
-        placement: 'Reels',
-        format: 'Short Video',
-        contentType: 'Behind-the-scenes',
-        description: 'Show the process of creating your product/service',
-      },
-      {
-        day: 'Thursday',
-        channel: 'Instagram',
-        placement: 'Story',
-        format: 'Poll',
-        contentType: 'Engagement',
-        description: 'Ask followers to choose between two product options',
-      },
-      {
-        day: 'Friday',
-        channel: 'Instagram',
-        placement: 'Feed',
-        format: 'Image',
-        contentType: 'Social Proof',
-        description: 'Customer testimonial with product photo',
-      },
-      {
-        day: 'Saturday',
-        channel: 'TikTok',
-        placement: 'Feed',
-        format: 'Video',
-        contentType: 'Entertaining',
-        description: 'Trend-based creative video related to your industry',
-      },
-      {
-        day: 'Sunday',
-        channel: 'Instagram',
-        placement: 'Story',
-        format: 'Image',
-        contentType: 'Customer Repost',
-        description: 'Repost customer content featuring your brand',
-      },
-    ];
 
-    addResult(agent.id, agent.title, agent.icon, mockSchedule);
-    setSchedule(mockSchedule);
+    const body = {
+      agent: 'marketing-calendar',
+      inputs: { ...answers, 'marketing-strategy': mockStrategy },
+    };
+
+    const response = await Request.Post('/api/agents', body);
+    const rawRows = response.script.slice(3, 10); // Rows 3–9
+    const schedule = rawRows.map((row: any) => {
+      const parts = row
+        .split('|')
+        .map((s: any) => s.trim())
+        .filter(Boolean);
+
+      return {
+        day: parts[0],
+        channel: parts[1],
+        placement: parts[2],
+        format: parts[3],
+        contentType: parts[4],
+        description: parts[5].replace(/^"|"$/g, ''),
+      };
+    });
+
+    const task = {
+      profile_id: profile.id,
+      project_id: projectId,
+      agent_type: agent.id,
+      agent_results: JSON.stringify(schedule),
+      credits_spent: 1,
+    };
+
+    await Request.Post('/api/stripe/discount', task);
+
+    addResult(agent.id, agent.title, agent.icon, schedule);
+    setSchedule(schedule);
     setIsLoading(false);
   };
 
@@ -303,7 +280,7 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
               ) : (
                 <div className="space-y-4">
                   <div className="rounded-lg border border-green-200 bg-white p-4">
-                    <h4 className="font-medium text-slate-800 mb-4 flex items-center">
+                    <h4 className="mb-4 flex items-center font-medium text-slate-800">
                       <Sparkles className="mr-2 h-5 w-5 text-purple-600" />
                       Your 7-Day Content Schedule:
                     </h4>

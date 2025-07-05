@@ -18,10 +18,12 @@ import {
   Eye,
   ChevronDown,
   ChevronUp,
-  Sparkles
+  Sparkles,
 } from 'lucide-react';
 import { useResults } from '@/contexts/ResultsContext';
-
+import { mockStrategy } from '@/lib/agentData';
+import { useAuth } from '@/core/auth/AuthProvider';
+import Request from '@/lib/request';
 interface SEOOptimizationAgentProps {
   agent: Agent;
   projectId: string;
@@ -46,6 +48,7 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [results, setResults] = useState<any>(null);
   const { addResult } = useResults();
+  const [{ profile }] = useAuth();
 
   // First determine which optimization type they want
   const optimizationTypeQuestion: Question = {
@@ -70,13 +73,6 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
       question: 'Target Platform',
       type: 'select',
       options: ['Instagram', 'TikTok', 'Facebook', 'YouTube Shorts'],
-      required: true,
-    },
-    {
-      id: 'target-audience',
-      question: 'Target Audience',
-      type: 'text',
-      placeholder: 'e.g., busy moms, Gen Z, fitness enthusiasts',
       required: true,
     },
     {
@@ -126,13 +122,6 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
       required: true,
     },
     {
-      id: 'main-differentiators',
-      question: 'Main Differentiators',
-      type: 'textarea',
-      placeholder: 'e.g., fast delivery, vegan-only, 24/7 support...',
-      required: true,
-    },
-    {
       id: 'primary-contact',
       question: 'Primary Contact Channel',
       type: 'select',
@@ -140,6 +129,12 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
       required: true,
     },
   ];
+
+  function parseContentScript(scriptArray: ['']) {
+    const joined = scriptArray.join('\n');
+    const cleaned = joined.replace(/```json|```/g, '').trim();
+    return JSON.parse(cleaned);
+  }
 
   const getQuestions = () => {
     if (currentStep === 0) return [optimizationTypeQuestion];
@@ -186,57 +181,28 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
   const handleSubmit = async () => {
     setIsLoading(true);
 
-    const optimizationType = answers['optimization-type'];
-    let mockResult;
+    const body = {
+      agent: 'seo-optimization',
+      inputs: { ...answers, marketingStrategy: mockStrategy },
+    };
 
-    if (optimizationType === 'Content Optimization') {
-      mockResult = {
-        type: 'content',
-        optimizedOpening:
-          "🌟 Transform your mindset in just 5 minutes a day! Here's what busy professionals like you need to know about anxiety and productivity...",
-        suggestedHashtags: [
-          '#AnxietyTips',
-          '#ProductivityHacks',
-          '#MentalHealthMatters',
-          '#BusyMomsLife',
-          '#MindsetShift',
-          '#SelfCareDaily',
-          '#StressManagement',
-          '#WorkLifeBalance',
-        ],
-        improvedCTA:
-          '💬 Which tip resonates most with you? Share in the comments below! 👇 Save this post for later and follow @yourhandle for daily wellness tips ✨',
-        alternativeCaption:
-          "Feeling overwhelmed? You're not alone. 🤝 These 3 simple strategies help thousands of busy professionals manage anxiety while boosting productivity. Swipe to see the game-changing tip that took me from burnout to breakthrough! ➡️",
-      };
-    } else {
-      mockResult = {
-        type: 'profile',
-        suggestedBio:
-          '🌱 Helping busy professionals find balance | Anxiety → Productivity Coach | 10K+ lives transformed | Free guide below 👇',
-        suggestedUsername: '@balancedpro_coach',
-        suggestedProfileName: 'Sarah | Productivity Coach',
-        instagramHighlights: [
-          '✨ Success Stories',
-          '📚 Free Resources',
-          '🎯 Coaching',
-          '🧠 Tips & Tools',
-          '💬 Community',
-        ],
-        linkInBioCTA:
-          "Get your FREE 'Anxiety to Action' guide - Link in bio! 🔗",
-        seoKeywords: [
-          'productivity coach',
-          'anxiety management',
-          'work life balance',
-          'stress relief',
-          'mindset coaching',
-        ],
-      };
-    }
+    const response = await Request.Post('/api/agents', body);
+    const result = parseContentScript(response.script);
 
-    setResults(mockResult);
-    addResult('seo-optimization', 'SEO Optimization', '🔍', mockResult);
+    const task = {
+      profile_id: profile.id,
+      project_id: projectId,
+      agent_type: agent.id,
+      agent_results: JSON.stringify({...result, type: answers['optimization-type']}),
+      credits_spent: 1,
+    };
+
+    await Request.Post('/api/stripe/discount', task);
+    setResults(result);
+    addResult('seo-optimization', 'SEO Optimization', '🔍', {
+      ...result,
+      type: answers['optimization-type'],
+    });
 
     setIsLoading(false);
   };
