@@ -19,6 +19,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type profile = $Result.DefaultSelection<Prisma.$profilePayload>
 /**
+ * Model projects
+ * 
+ */
+export type projects = $Result.DefaultSelection<Prisma.$projectsPayload>
+/**
  * Model subscriptions
  * 
  */
@@ -233,6 +238,16 @@ export class PrismaClient<
     * ```
     */
   get profile(): Prisma.profileDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.projects`: Exposes CRUD operations for the **projects** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Projects
+    * const projects = await prisma.projects.findMany()
+    * ```
+    */
+  get projects(): Prisma.projectsDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.subscriptions`: Exposes CRUD operations for the **subscriptions** model.
@@ -724,6 +739,7 @@ export namespace Prisma {
 
   export const ModelName: {
     profile: 'profile',
+    projects: 'projects',
     subscriptions: 'subscriptions',
     credit_purchases: 'credit_purchases',
     tasks_log: 'tasks_log',
@@ -747,7 +763,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "profile" | "subscriptions" | "credit_purchases" | "tasks_log" | "whatsapp_messages" | "admin_activity_logs"
+      modelProps: "profile" | "projects" | "subscriptions" | "credit_purchases" | "tasks_log" | "whatsapp_messages" | "admin_activity_logs"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -822,6 +838,80 @@ export namespace Prisma {
           count: {
             args: Prisma.profileCountArgs<ExtArgs>
             result: $Utils.Optional<ProfileCountAggregateOutputType> | number
+          }
+        }
+      }
+      projects: {
+        payload: Prisma.$projectsPayload<ExtArgs>
+        fields: Prisma.projectsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.projectsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$projectsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.projectsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$projectsPayload>
+          }
+          findFirst: {
+            args: Prisma.projectsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$projectsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.projectsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$projectsPayload>
+          }
+          findMany: {
+            args: Prisma.projectsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$projectsPayload>[]
+          }
+          create: {
+            args: Prisma.projectsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$projectsPayload>
+          }
+          createMany: {
+            args: Prisma.projectsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.projectsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$projectsPayload>[]
+          }
+          delete: {
+            args: Prisma.projectsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$projectsPayload>
+          }
+          update: {
+            args: Prisma.projectsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$projectsPayload>
+          }
+          deleteMany: {
+            args: Prisma.projectsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.projectsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.projectsUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$projectsPayload>[]
+          }
+          upsert: {
+            args: Prisma.projectsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$projectsPayload>
+          }
+          aggregate: {
+            args: Prisma.ProjectsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateProjects>
+          }
+          groupBy: {
+            args: Prisma.projectsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ProjectsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.projectsCountArgs<ExtArgs>
+            result: $Utils.Optional<ProjectsCountAggregateOutputType> | number
           }
         }
       }
@@ -1280,6 +1370,7 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     profile?: profileOmit
+    projects?: projectsOmit
     subscriptions?: subscriptionsOmit
     credit_purchases?: credit_purchasesOmit
     tasks_log?: tasks_logOmit
@@ -1384,6 +1475,7 @@ export namespace Prisma {
     subscriptions: number
     tasks_log: number
     whatsapp_messages: number
+    projects: number
   }
 
   export type ProfileCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1392,6 +1484,7 @@ export namespace Prisma {
     subscriptions?: boolean | ProfileCountOutputTypeCountSubscriptionsArgs
     tasks_log?: boolean | ProfileCountOutputTypeCountTasks_logArgs
     whatsapp_messages?: boolean | ProfileCountOutputTypeCountWhatsapp_messagesArgs
+    projects?: boolean | ProfileCountOutputTypeCountProjectsArgs
   }
 
   // Custom InputTypes
@@ -1438,6 +1531,44 @@ export namespace Prisma {
    */
   export type ProfileCountOutputTypeCountWhatsapp_messagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: whatsapp_messagesWhereInput
+  }
+
+  /**
+   * ProfileCountOutputType without action
+   */
+  export type ProfileCountOutputTypeCountProjectsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: projectsWhereInput
+  }
+
+
+  /**
+   * Count Type ProjectsCountOutputType
+   */
+
+  export type ProjectsCountOutputType = {
+    tasks_log: number
+  }
+
+  export type ProjectsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tasks_log?: boolean | ProjectsCountOutputTypeCountTasks_logArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ProjectsCountOutputType without action
+   */
+  export type ProjectsCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectsCountOutputType
+     */
+    select?: ProjectsCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ProjectsCountOutputType without action
+   */
+  export type ProjectsCountOutputTypeCountTasks_logArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: tasks_logWhereInput
   }
 
 
@@ -1680,6 +1811,7 @@ export namespace Prisma {
     subscriptions?: boolean | profile$subscriptionsArgs<ExtArgs>
     tasks_log?: boolean | profile$tasks_logArgs<ExtArgs>
     whatsapp_messages?: boolean | profile$whatsapp_messagesArgs<ExtArgs>
+    projects?: boolean | profile$projectsArgs<ExtArgs>
     _count?: boolean | ProfileCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["profile"]>
 
@@ -1726,6 +1858,7 @@ export namespace Prisma {
     subscriptions?: boolean | profile$subscriptionsArgs<ExtArgs>
     tasks_log?: boolean | profile$tasks_logArgs<ExtArgs>
     whatsapp_messages?: boolean | profile$whatsapp_messagesArgs<ExtArgs>
+    projects?: boolean | profile$projectsArgs<ExtArgs>
     _count?: boolean | ProfileCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type profileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1739,6 +1872,7 @@ export namespace Prisma {
       subscriptions: Prisma.$subscriptionsPayload<ExtArgs>[]
       tasks_log: Prisma.$tasks_logPayload<ExtArgs>[]
       whatsapp_messages: Prisma.$whatsapp_messagesPayload<ExtArgs>[]
+      projects: Prisma.$projectsPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2149,6 +2283,7 @@ export namespace Prisma {
     subscriptions<T extends profile$subscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, profile$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$subscriptionsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tasks_log<T extends profile$tasks_logArgs<ExtArgs> = {}>(args?: Subset<T, profile$tasks_logArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$tasks_logPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     whatsapp_messages<T extends profile$whatsapp_messagesArgs<ExtArgs> = {}>(args?: Subset<T, profile$whatsapp_messagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$whatsapp_messagesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    projects<T extends profile$projectsArgs<ExtArgs> = {}>(args?: Subset<T, profile$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$projectsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2695,6 +2830,30 @@ export namespace Prisma {
   }
 
   /**
+   * profile.projects
+   */
+  export type profile$projectsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the projects
+     */
+    select?: projectsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the projects
+     */
+    omit?: projectsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: projectsInclude<ExtArgs> | null
+    where?: projectsWhereInput
+    orderBy?: projectsOrderByWithRelationInput | projectsOrderByWithRelationInput[]
+    cursor?: projectsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProjectsScalarFieldEnum | ProjectsScalarFieldEnum[]
+  }
+
+  /**
    * profile without action
    */
   export type profileDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2710,6 +2869,1094 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: profileInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model projects
+   */
+
+  export type AggregateProjects = {
+    _count: ProjectsCountAggregateOutputType | null
+    _min: ProjectsMinAggregateOutputType | null
+    _max: ProjectsMaxAggregateOutputType | null
+  }
+
+  export type ProjectsMinAggregateOutputType = {
+    id: string | null
+    profile_id: string | null
+    createId: string | null
+    name: string | null
+    description: string | null
+  }
+
+  export type ProjectsMaxAggregateOutputType = {
+    id: string | null
+    profile_id: string | null
+    createId: string | null
+    name: string | null
+    description: string | null
+  }
+
+  export type ProjectsCountAggregateOutputType = {
+    id: number
+    profile_id: number
+    createId: number
+    name: number
+    description: number
+    _all: number
+  }
+
+
+  export type ProjectsMinAggregateInputType = {
+    id?: true
+    profile_id?: true
+    createId?: true
+    name?: true
+    description?: true
+  }
+
+  export type ProjectsMaxAggregateInputType = {
+    id?: true
+    profile_id?: true
+    createId?: true
+    name?: true
+    description?: true
+  }
+
+  export type ProjectsCountAggregateInputType = {
+    id?: true
+    profile_id?: true
+    createId?: true
+    name?: true
+    description?: true
+    _all?: true
+  }
+
+  export type ProjectsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which projects to aggregate.
+     */
+    where?: projectsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of projects to fetch.
+     */
+    orderBy?: projectsOrderByWithRelationInput | projectsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: projectsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` projects from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` projects.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned projects
+    **/
+    _count?: true | ProjectsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ProjectsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ProjectsMaxAggregateInputType
+  }
+
+  export type GetProjectsAggregateType<T extends ProjectsAggregateArgs> = {
+        [P in keyof T & keyof AggregateProjects]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateProjects[P]>
+      : GetScalarType<T[P], AggregateProjects[P]>
+  }
+
+
+
+
+  export type projectsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: projectsWhereInput
+    orderBy?: projectsOrderByWithAggregationInput | projectsOrderByWithAggregationInput[]
+    by: ProjectsScalarFieldEnum[] | ProjectsScalarFieldEnum
+    having?: projectsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ProjectsCountAggregateInputType | true
+    _min?: ProjectsMinAggregateInputType
+    _max?: ProjectsMaxAggregateInputType
+  }
+
+  export type ProjectsGroupByOutputType = {
+    id: string
+    profile_id: string
+    createId: string
+    name: string
+    description: string
+    _count: ProjectsCountAggregateOutputType | null
+    _min: ProjectsMinAggregateOutputType | null
+    _max: ProjectsMaxAggregateOutputType | null
+  }
+
+  type GetProjectsGroupByPayload<T extends projectsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ProjectsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ProjectsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ProjectsGroupByOutputType[P]>
+            : GetScalarType<T[P], ProjectsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type projectsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    profile_id?: boolean
+    createId?: boolean
+    name?: boolean
+    description?: boolean
+    tasks_log?: boolean | projects$tasks_logArgs<ExtArgs>
+    profile?: boolean | profileDefaultArgs<ExtArgs>
+    _count?: boolean | ProjectsCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["projects"]>
+
+  export type projectsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    profile_id?: boolean
+    createId?: boolean
+    name?: boolean
+    description?: boolean
+    profile?: boolean | profileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["projects"]>
+
+  export type projectsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    profile_id?: boolean
+    createId?: boolean
+    name?: boolean
+    description?: boolean
+    profile?: boolean | profileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["projects"]>
+
+  export type projectsSelectScalar = {
+    id?: boolean
+    profile_id?: boolean
+    createId?: boolean
+    name?: boolean
+    description?: boolean
+  }
+
+  export type projectsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "profile_id" | "createId" | "name" | "description", ExtArgs["result"]["projects"]>
+  export type projectsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tasks_log?: boolean | projects$tasks_logArgs<ExtArgs>
+    profile?: boolean | profileDefaultArgs<ExtArgs>
+    _count?: boolean | ProjectsCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type projectsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    profile?: boolean | profileDefaultArgs<ExtArgs>
+  }
+  export type projectsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    profile?: boolean | profileDefaultArgs<ExtArgs>
+  }
+
+  export type $projectsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "projects"
+    objects: {
+      tasks_log: Prisma.$tasks_logPayload<ExtArgs>[]
+      profile: Prisma.$profilePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      profile_id: string
+      createId: string
+      name: string
+      description: string
+    }, ExtArgs["result"]["projects"]>
+    composites: {}
+  }
+
+  type projectsGetPayload<S extends boolean | null | undefined | projectsDefaultArgs> = $Result.GetResult<Prisma.$projectsPayload, S>
+
+  type projectsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<projectsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ProjectsCountAggregateInputType | true
+    }
+
+  export interface projectsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['projects'], meta: { name: 'projects' } }
+    /**
+     * Find zero or one Projects that matches the filter.
+     * @param {projectsFindUniqueArgs} args - Arguments to find a Projects
+     * @example
+     * // Get one Projects
+     * const projects = await prisma.projects.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends projectsFindUniqueArgs>(args: SelectSubset<T, projectsFindUniqueArgs<ExtArgs>>): Prisma__projectsClient<$Result.GetResult<Prisma.$projectsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Projects that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {projectsFindUniqueOrThrowArgs} args - Arguments to find a Projects
+     * @example
+     * // Get one Projects
+     * const projects = await prisma.projects.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends projectsFindUniqueOrThrowArgs>(args: SelectSubset<T, projectsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__projectsClient<$Result.GetResult<Prisma.$projectsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Projects that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {projectsFindFirstArgs} args - Arguments to find a Projects
+     * @example
+     * // Get one Projects
+     * const projects = await prisma.projects.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends projectsFindFirstArgs>(args?: SelectSubset<T, projectsFindFirstArgs<ExtArgs>>): Prisma__projectsClient<$Result.GetResult<Prisma.$projectsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Projects that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {projectsFindFirstOrThrowArgs} args - Arguments to find a Projects
+     * @example
+     * // Get one Projects
+     * const projects = await prisma.projects.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends projectsFindFirstOrThrowArgs>(args?: SelectSubset<T, projectsFindFirstOrThrowArgs<ExtArgs>>): Prisma__projectsClient<$Result.GetResult<Prisma.$projectsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Projects that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {projectsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Projects
+     * const projects = await prisma.projects.findMany()
+     * 
+     * // Get first 10 Projects
+     * const projects = await prisma.projects.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const projectsWithIdOnly = await prisma.projects.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends projectsFindManyArgs>(args?: SelectSubset<T, projectsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$projectsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Projects.
+     * @param {projectsCreateArgs} args - Arguments to create a Projects.
+     * @example
+     * // Create one Projects
+     * const Projects = await prisma.projects.create({
+     *   data: {
+     *     // ... data to create a Projects
+     *   }
+     * })
+     * 
+     */
+    create<T extends projectsCreateArgs>(args: SelectSubset<T, projectsCreateArgs<ExtArgs>>): Prisma__projectsClient<$Result.GetResult<Prisma.$projectsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Projects.
+     * @param {projectsCreateManyArgs} args - Arguments to create many Projects.
+     * @example
+     * // Create many Projects
+     * const projects = await prisma.projects.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends projectsCreateManyArgs>(args?: SelectSubset<T, projectsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Projects and returns the data saved in the database.
+     * @param {projectsCreateManyAndReturnArgs} args - Arguments to create many Projects.
+     * @example
+     * // Create many Projects
+     * const projects = await prisma.projects.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Projects and only return the `id`
+     * const projectsWithIdOnly = await prisma.projects.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends projectsCreateManyAndReturnArgs>(args?: SelectSubset<T, projectsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$projectsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Projects.
+     * @param {projectsDeleteArgs} args - Arguments to delete one Projects.
+     * @example
+     * // Delete one Projects
+     * const Projects = await prisma.projects.delete({
+     *   where: {
+     *     // ... filter to delete one Projects
+     *   }
+     * })
+     * 
+     */
+    delete<T extends projectsDeleteArgs>(args: SelectSubset<T, projectsDeleteArgs<ExtArgs>>): Prisma__projectsClient<$Result.GetResult<Prisma.$projectsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Projects.
+     * @param {projectsUpdateArgs} args - Arguments to update one Projects.
+     * @example
+     * // Update one Projects
+     * const projects = await prisma.projects.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends projectsUpdateArgs>(args: SelectSubset<T, projectsUpdateArgs<ExtArgs>>): Prisma__projectsClient<$Result.GetResult<Prisma.$projectsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Projects.
+     * @param {projectsDeleteManyArgs} args - Arguments to filter Projects to delete.
+     * @example
+     * // Delete a few Projects
+     * const { count } = await prisma.projects.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends projectsDeleteManyArgs>(args?: SelectSubset<T, projectsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Projects.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {projectsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Projects
+     * const projects = await prisma.projects.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends projectsUpdateManyArgs>(args: SelectSubset<T, projectsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Projects and returns the data updated in the database.
+     * @param {projectsUpdateManyAndReturnArgs} args - Arguments to update many Projects.
+     * @example
+     * // Update many Projects
+     * const projects = await prisma.projects.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Projects and only return the `id`
+     * const projectsWithIdOnly = await prisma.projects.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends projectsUpdateManyAndReturnArgs>(args: SelectSubset<T, projectsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$projectsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Projects.
+     * @param {projectsUpsertArgs} args - Arguments to update or create a Projects.
+     * @example
+     * // Update or create a Projects
+     * const projects = await prisma.projects.upsert({
+     *   create: {
+     *     // ... data to create a Projects
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Projects we want to update
+     *   }
+     * })
+     */
+    upsert<T extends projectsUpsertArgs>(args: SelectSubset<T, projectsUpsertArgs<ExtArgs>>): Prisma__projectsClient<$Result.GetResult<Prisma.$projectsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Projects.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {projectsCountArgs} args - Arguments to filter Projects to count.
+     * @example
+     * // Count the number of Projects
+     * const count = await prisma.projects.count({
+     *   where: {
+     *     // ... the filter for the Projects we want to count
+     *   }
+     * })
+    **/
+    count<T extends projectsCountArgs>(
+      args?: Subset<T, projectsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ProjectsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Projects.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ProjectsAggregateArgs>(args: Subset<T, ProjectsAggregateArgs>): Prisma.PrismaPromise<GetProjectsAggregateType<T>>
+
+    /**
+     * Group by Projects.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {projectsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends projectsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: projectsGroupByArgs['orderBy'] }
+        : { orderBy?: projectsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, projectsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProjectsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the projects model
+   */
+  readonly fields: projectsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for projects.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__projectsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    tasks_log<T extends projects$tasks_logArgs<ExtArgs> = {}>(args?: Subset<T, projects$tasks_logArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$tasks_logPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    profile<T extends profileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, profileDefaultArgs<ExtArgs>>): Prisma__profileClient<$Result.GetResult<Prisma.$profilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the projects model
+   */
+  interface projectsFieldRefs {
+    readonly id: FieldRef<"projects", 'String'>
+    readonly profile_id: FieldRef<"projects", 'String'>
+    readonly createId: FieldRef<"projects", 'String'>
+    readonly name: FieldRef<"projects", 'String'>
+    readonly description: FieldRef<"projects", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * projects findUnique
+   */
+  export type projectsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the projects
+     */
+    select?: projectsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the projects
+     */
+    omit?: projectsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: projectsInclude<ExtArgs> | null
+    /**
+     * Filter, which projects to fetch.
+     */
+    where: projectsWhereUniqueInput
+  }
+
+  /**
+   * projects findUniqueOrThrow
+   */
+  export type projectsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the projects
+     */
+    select?: projectsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the projects
+     */
+    omit?: projectsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: projectsInclude<ExtArgs> | null
+    /**
+     * Filter, which projects to fetch.
+     */
+    where: projectsWhereUniqueInput
+  }
+
+  /**
+   * projects findFirst
+   */
+  export type projectsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the projects
+     */
+    select?: projectsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the projects
+     */
+    omit?: projectsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: projectsInclude<ExtArgs> | null
+    /**
+     * Filter, which projects to fetch.
+     */
+    where?: projectsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of projects to fetch.
+     */
+    orderBy?: projectsOrderByWithRelationInput | projectsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for projects.
+     */
+    cursor?: projectsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` projects from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` projects.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of projects.
+     */
+    distinct?: ProjectsScalarFieldEnum | ProjectsScalarFieldEnum[]
+  }
+
+  /**
+   * projects findFirstOrThrow
+   */
+  export type projectsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the projects
+     */
+    select?: projectsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the projects
+     */
+    omit?: projectsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: projectsInclude<ExtArgs> | null
+    /**
+     * Filter, which projects to fetch.
+     */
+    where?: projectsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of projects to fetch.
+     */
+    orderBy?: projectsOrderByWithRelationInput | projectsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for projects.
+     */
+    cursor?: projectsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` projects from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` projects.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of projects.
+     */
+    distinct?: ProjectsScalarFieldEnum | ProjectsScalarFieldEnum[]
+  }
+
+  /**
+   * projects findMany
+   */
+  export type projectsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the projects
+     */
+    select?: projectsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the projects
+     */
+    omit?: projectsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: projectsInclude<ExtArgs> | null
+    /**
+     * Filter, which projects to fetch.
+     */
+    where?: projectsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of projects to fetch.
+     */
+    orderBy?: projectsOrderByWithRelationInput | projectsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing projects.
+     */
+    cursor?: projectsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` projects from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` projects.
+     */
+    skip?: number
+    distinct?: ProjectsScalarFieldEnum | ProjectsScalarFieldEnum[]
+  }
+
+  /**
+   * projects create
+   */
+  export type projectsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the projects
+     */
+    select?: projectsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the projects
+     */
+    omit?: projectsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: projectsInclude<ExtArgs> | null
+    /**
+     * The data needed to create a projects.
+     */
+    data: XOR<projectsCreateInput, projectsUncheckedCreateInput>
+  }
+
+  /**
+   * projects createMany
+   */
+  export type projectsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many projects.
+     */
+    data: projectsCreateManyInput | projectsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * projects createManyAndReturn
+   */
+  export type projectsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the projects
+     */
+    select?: projectsSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the projects
+     */
+    omit?: projectsOmit<ExtArgs> | null
+    /**
+     * The data used to create many projects.
+     */
+    data: projectsCreateManyInput | projectsCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: projectsIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * projects update
+   */
+  export type projectsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the projects
+     */
+    select?: projectsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the projects
+     */
+    omit?: projectsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: projectsInclude<ExtArgs> | null
+    /**
+     * The data needed to update a projects.
+     */
+    data: XOR<projectsUpdateInput, projectsUncheckedUpdateInput>
+    /**
+     * Choose, which projects to update.
+     */
+    where: projectsWhereUniqueInput
+  }
+
+  /**
+   * projects updateMany
+   */
+  export type projectsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update projects.
+     */
+    data: XOR<projectsUpdateManyMutationInput, projectsUncheckedUpdateManyInput>
+    /**
+     * Filter which projects to update
+     */
+    where?: projectsWhereInput
+    /**
+     * Limit how many projects to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * projects updateManyAndReturn
+   */
+  export type projectsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the projects
+     */
+    select?: projectsSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the projects
+     */
+    omit?: projectsOmit<ExtArgs> | null
+    /**
+     * The data used to update projects.
+     */
+    data: XOR<projectsUpdateManyMutationInput, projectsUncheckedUpdateManyInput>
+    /**
+     * Filter which projects to update
+     */
+    where?: projectsWhereInput
+    /**
+     * Limit how many projects to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: projectsIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * projects upsert
+   */
+  export type projectsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the projects
+     */
+    select?: projectsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the projects
+     */
+    omit?: projectsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: projectsInclude<ExtArgs> | null
+    /**
+     * The filter to search for the projects to update in case it exists.
+     */
+    where: projectsWhereUniqueInput
+    /**
+     * In case the projects found by the `where` argument doesn't exist, create a new projects with this data.
+     */
+    create: XOR<projectsCreateInput, projectsUncheckedCreateInput>
+    /**
+     * In case the projects was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<projectsUpdateInput, projectsUncheckedUpdateInput>
+  }
+
+  /**
+   * projects delete
+   */
+  export type projectsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the projects
+     */
+    select?: projectsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the projects
+     */
+    omit?: projectsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: projectsInclude<ExtArgs> | null
+    /**
+     * Filter which projects to delete.
+     */
+    where: projectsWhereUniqueInput
+  }
+
+  /**
+   * projects deleteMany
+   */
+  export type projectsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which projects to delete
+     */
+    where?: projectsWhereInput
+    /**
+     * Limit how many projects to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * projects.tasks_log
+   */
+  export type projects$tasks_logArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the tasks_log
+     */
+    select?: tasks_logSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the tasks_log
+     */
+    omit?: tasks_logOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: tasks_logInclude<ExtArgs> | null
+    where?: tasks_logWhereInput
+    orderBy?: tasks_logOrderByWithRelationInput | tasks_logOrderByWithRelationInput[]
+    cursor?: tasks_logWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Tasks_logScalarFieldEnum | Tasks_logScalarFieldEnum[]
+  }
+
+  /**
+   * projects without action
+   */
+  export type projectsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the projects
+     */
+    select?: projectsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the projects
+     */
+    omit?: projectsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: projectsInclude<ExtArgs> | null
   }
 
 
@@ -5168,6 +6415,7 @@ export namespace Prisma {
     credits_spent?: boolean
     timestamp?: boolean
     profile?: boolean | profileDefaultArgs<ExtArgs>
+    project?: boolean | projectsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tasks_log"]>
 
   export type tasks_logSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5179,6 +6427,7 @@ export namespace Prisma {
     credits_spent?: boolean
     timestamp?: boolean
     profile?: boolean | profileDefaultArgs<ExtArgs>
+    project?: boolean | projectsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tasks_log"]>
 
   export type tasks_logSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5190,6 +6439,7 @@ export namespace Prisma {
     credits_spent?: boolean
     timestamp?: boolean
     profile?: boolean | profileDefaultArgs<ExtArgs>
+    project?: boolean | projectsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tasks_log"]>
 
   export type tasks_logSelectScalar = {
@@ -5205,18 +6455,22 @@ export namespace Prisma {
   export type tasks_logOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "profile_id" | "project_id" | "agent_type" | "agent_results" | "credits_spent" | "timestamp", ExtArgs["result"]["tasks_log"]>
   export type tasks_logInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     profile?: boolean | profileDefaultArgs<ExtArgs>
+    project?: boolean | projectsDefaultArgs<ExtArgs>
   }
   export type tasks_logIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     profile?: boolean | profileDefaultArgs<ExtArgs>
+    project?: boolean | projectsDefaultArgs<ExtArgs>
   }
   export type tasks_logIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     profile?: boolean | profileDefaultArgs<ExtArgs>
+    project?: boolean | projectsDefaultArgs<ExtArgs>
   }
 
   export type $tasks_logPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "tasks_log"
     objects: {
       profile: Prisma.$profilePayload<ExtArgs>
+      project: Prisma.$projectsPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5621,6 +6875,7 @@ export namespace Prisma {
   export interface Prisma__tasks_logClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     profile<T extends profileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, profileDefaultArgs<ExtArgs>>): Prisma__profileClient<$Result.GetResult<Prisma.$profilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    project<T extends projectsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, projectsDefaultArgs<ExtArgs>>): Prisma__projectsClient<$Result.GetResult<Prisma.$projectsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8216,6 +9471,17 @@ export namespace Prisma {
   export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
 
 
+  export const ProjectsScalarFieldEnum: {
+    id: 'id',
+    profile_id: 'profile_id',
+    createId: 'createId',
+    name: 'name',
+    description: 'description'
+  };
+
+  export type ProjectsScalarFieldEnum = (typeof ProjectsScalarFieldEnum)[keyof typeof ProjectsScalarFieldEnum]
+
+
   export const SubscriptionsScalarFieldEnum: {
     id: 'id',
     profile_id: 'profile_id',
@@ -8439,6 +9705,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionsListRelationFilter
     tasks_log?: Tasks_logListRelationFilter
     whatsapp_messages?: Whatsapp_messagesListRelationFilter
+    projects?: ProjectsListRelationFilter
   }
 
   export type profileOrderByWithRelationInput = {
@@ -8456,6 +9723,7 @@ export namespace Prisma {
     subscriptions?: subscriptionsOrderByRelationAggregateInput
     tasks_log?: tasks_logOrderByRelationAggregateInput
     whatsapp_messages?: whatsapp_messagesOrderByRelationAggregateInput
+    projects?: projectsOrderByRelationAggregateInput
   }
 
   export type profileWhereUniqueInput = Prisma.AtLeast<{
@@ -8476,6 +9744,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionsListRelationFilter
     tasks_log?: Tasks_logListRelationFilter
     whatsapp_messages?: Whatsapp_messagesListRelationFilter
+    projects?: ProjectsListRelationFilter
   }, "id" | "email">
 
   export type profileOrderByWithAggregationInput = {
@@ -8508,6 +9777,64 @@ export namespace Prisma {
     credits_balance?: IntWithAggregatesFilter<"profile"> | number
     created_at?: DateTimeWithAggregatesFilter<"profile"> | Date | string
     stripeSubscriptionId?: StringNullableWithAggregatesFilter<"profile"> | string | null
+  }
+
+  export type projectsWhereInput = {
+    AND?: projectsWhereInput | projectsWhereInput[]
+    OR?: projectsWhereInput[]
+    NOT?: projectsWhereInput | projectsWhereInput[]
+    id?: UuidFilter<"projects"> | string
+    profile_id?: UuidFilter<"projects"> | string
+    createId?: StringFilter<"projects"> | string
+    name?: StringFilter<"projects"> | string
+    description?: StringFilter<"projects"> | string
+    tasks_log?: Tasks_logListRelationFilter
+    profile?: XOR<ProfileScalarRelationFilter, profileWhereInput>
+  }
+
+  export type projectsOrderByWithRelationInput = {
+    id?: SortOrder
+    profile_id?: SortOrder
+    createId?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    tasks_log?: tasks_logOrderByRelationAggregateInput
+    profile?: profileOrderByWithRelationInput
+  }
+
+  export type projectsWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    createId?: string
+    AND?: projectsWhereInput | projectsWhereInput[]
+    OR?: projectsWhereInput[]
+    NOT?: projectsWhereInput | projectsWhereInput[]
+    profile_id?: UuidFilter<"projects"> | string
+    name?: StringFilter<"projects"> | string
+    description?: StringFilter<"projects"> | string
+    tasks_log?: Tasks_logListRelationFilter
+    profile?: XOR<ProfileScalarRelationFilter, profileWhereInput>
+  }, "id" | "createId">
+
+  export type projectsOrderByWithAggregationInput = {
+    id?: SortOrder
+    profile_id?: SortOrder
+    createId?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    _count?: projectsCountOrderByAggregateInput
+    _max?: projectsMaxOrderByAggregateInput
+    _min?: projectsMinOrderByAggregateInput
+  }
+
+  export type projectsScalarWhereWithAggregatesInput = {
+    AND?: projectsScalarWhereWithAggregatesInput | projectsScalarWhereWithAggregatesInput[]
+    OR?: projectsScalarWhereWithAggregatesInput[]
+    NOT?: projectsScalarWhereWithAggregatesInput | projectsScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"projects"> | string
+    profile_id?: UuidWithAggregatesFilter<"projects"> | string
+    createId?: StringWithAggregatesFilter<"projects"> | string
+    name?: StringWithAggregatesFilter<"projects"> | string
+    description?: StringWithAggregatesFilter<"projects"> | string
   }
 
   export type subscriptionsWhereInput = {
@@ -8650,12 +9977,13 @@ export namespace Prisma {
     NOT?: tasks_logWhereInput | tasks_logWhereInput[]
     id?: UuidFilter<"tasks_log"> | string
     profile_id?: UuidFilter<"tasks_log"> | string
-    project_id?: UuidFilter<"tasks_log"> | string
+    project_id?: StringFilter<"tasks_log"> | string
     agent_type?: StringFilter<"tasks_log"> | string
     agent_results?: StringFilter<"tasks_log"> | string
     credits_spent?: IntFilter<"tasks_log"> | number
     timestamp?: DateTimeFilter<"tasks_log"> | Date | string
     profile?: XOR<ProfileScalarRelationFilter, profileWhereInput>
+    project?: XOR<ProjectsScalarRelationFilter, projectsWhereInput>
   }
 
   export type tasks_logOrderByWithRelationInput = {
@@ -8667,6 +9995,7 @@ export namespace Prisma {
     credits_spent?: SortOrder
     timestamp?: SortOrder
     profile?: profileOrderByWithRelationInput
+    project?: projectsOrderByWithRelationInput
   }
 
   export type tasks_logWhereUniqueInput = Prisma.AtLeast<{
@@ -8675,12 +10004,13 @@ export namespace Prisma {
     OR?: tasks_logWhereInput[]
     NOT?: tasks_logWhereInput | tasks_logWhereInput[]
     profile_id?: UuidFilter<"tasks_log"> | string
-    project_id?: UuidFilter<"tasks_log"> | string
+    project_id?: StringFilter<"tasks_log"> | string
     agent_type?: StringFilter<"tasks_log"> | string
     agent_results?: StringFilter<"tasks_log"> | string
     credits_spent?: IntFilter<"tasks_log"> | number
     timestamp?: DateTimeFilter<"tasks_log"> | Date | string
     profile?: XOR<ProfileScalarRelationFilter, profileWhereInput>
+    project?: XOR<ProjectsScalarRelationFilter, projectsWhereInput>
   }, "id">
 
   export type tasks_logOrderByWithAggregationInput = {
@@ -8704,7 +10034,7 @@ export namespace Prisma {
     NOT?: tasks_logScalarWhereWithAggregatesInput | tasks_logScalarWhereWithAggregatesInput[]
     id?: UuidWithAggregatesFilter<"tasks_log"> | string
     profile_id?: UuidWithAggregatesFilter<"tasks_log"> | string
-    project_id?: UuidWithAggregatesFilter<"tasks_log"> | string
+    project_id?: StringWithAggregatesFilter<"tasks_log"> | string
     agent_type?: StringWithAggregatesFilter<"tasks_log"> | string
     agent_results?: StringWithAggregatesFilter<"tasks_log"> | string
     credits_spent?: IntWithAggregatesFilter<"tasks_log"> | number
@@ -8836,6 +10166,7 @@ export namespace Prisma {
     subscriptions?: subscriptionsCreateNestedManyWithoutProfileInput
     tasks_log?: tasks_logCreateNestedManyWithoutProfileInput
     whatsapp_messages?: whatsapp_messagesCreateNestedManyWithoutProfileInput
+    projects?: projectsCreateNestedManyWithoutProfileInput
   }
 
   export type profileUncheckedCreateInput = {
@@ -8853,6 +10184,7 @@ export namespace Prisma {
     subscriptions?: subscriptionsUncheckedCreateNestedManyWithoutProfileInput
     tasks_log?: tasks_logUncheckedCreateNestedManyWithoutProfileInput
     whatsapp_messages?: whatsapp_messagesUncheckedCreateNestedManyWithoutProfileInput
+    projects?: projectsUncheckedCreateNestedManyWithoutProfileInput
   }
 
   export type profileUpdateInput = {
@@ -8870,6 +10202,7 @@ export namespace Prisma {
     subscriptions?: subscriptionsUpdateManyWithoutProfileNestedInput
     tasks_log?: tasks_logUpdateManyWithoutProfileNestedInput
     whatsapp_messages?: whatsapp_messagesUpdateManyWithoutProfileNestedInput
+    projects?: projectsUpdateManyWithoutProfileNestedInput
   }
 
   export type profileUncheckedUpdateInput = {
@@ -8887,6 +10220,7 @@ export namespace Prisma {
     subscriptions?: subscriptionsUncheckedUpdateManyWithoutProfileNestedInput
     tasks_log?: tasks_logUncheckedUpdateManyWithoutProfileNestedInput
     whatsapp_messages?: whatsapp_messagesUncheckedUpdateManyWithoutProfileNestedInput
+    projects?: projectsUncheckedUpdateManyWithoutProfileNestedInput
   }
 
   export type profileCreateManyInput = {
@@ -8923,6 +10257,65 @@ export namespace Prisma {
     credits_balance?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type projectsCreateInput = {
+    id?: string
+    createId: string
+    name: string
+    description: string
+    tasks_log?: tasks_logCreateNestedManyWithoutProjectInput
+    profile: profileCreateNestedOneWithoutProjectsInput
+  }
+
+  export type projectsUncheckedCreateInput = {
+    id?: string
+    profile_id: string
+    createId: string
+    name: string
+    description: string
+    tasks_log?: tasks_logUncheckedCreateNestedManyWithoutProjectInput
+  }
+
+  export type projectsUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    tasks_log?: tasks_logUpdateManyWithoutProjectNestedInput
+    profile?: profileUpdateOneRequiredWithoutProjectsNestedInput
+  }
+
+  export type projectsUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    profile_id?: StringFieldUpdateOperationsInput | string
+    createId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    tasks_log?: tasks_logUncheckedUpdateManyWithoutProjectNestedInput
+  }
+
+  export type projectsCreateManyInput = {
+    id?: string
+    profile_id: string
+    createId: string
+    name: string
+    description: string
+  }
+
+  export type projectsUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type projectsUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    profile_id?: StringFieldUpdateOperationsInput | string
+    createId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
   }
 
   export type subscriptionsCreateInput = {
@@ -9065,12 +10458,12 @@ export namespace Prisma {
 
   export type tasks_logCreateInput = {
     id?: string
-    project_id: string
     agent_type: string
     agent_results: string
     credits_spent: number
     timestamp?: Date | string
     profile: profileCreateNestedOneWithoutTasks_logInput
+    project: projectsCreateNestedOneWithoutTasks_logInput
   }
 
   export type tasks_logUncheckedCreateInput = {
@@ -9085,12 +10478,12 @@ export namespace Prisma {
 
   export type tasks_logUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    project_id?: StringFieldUpdateOperationsInput | string
     agent_type?: StringFieldUpdateOperationsInput | string
     agent_results?: StringFieldUpdateOperationsInput | string
     credits_spent?: IntFieldUpdateOperationsInput | number
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
     profile?: profileUpdateOneRequiredWithoutTasks_logNestedInput
+    project?: projectsUpdateOneRequiredWithoutTasks_logNestedInput
   }
 
   export type tasks_logUncheckedUpdateInput = {
@@ -9115,7 +10508,6 @@ export namespace Prisma {
 
   export type tasks_logUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    project_id?: StringFieldUpdateOperationsInput | string
     agent_type?: StringFieldUpdateOperationsInput | string
     agent_results?: StringFieldUpdateOperationsInput | string
     credits_spent?: IntFieldUpdateOperationsInput | number
@@ -9343,6 +10735,12 @@ export namespace Prisma {
     none?: whatsapp_messagesWhereInput
   }
 
+  export type ProjectsListRelationFilter = {
+    every?: projectsWhereInput
+    some?: projectsWhereInput
+    none?: projectsWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -9365,6 +10763,10 @@ export namespace Prisma {
   }
 
   export type whatsapp_messagesOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type projectsOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -9503,16 +10905,40 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type ProfileScalarRelationFilter = {
+    is?: profileWhereInput
+    isNot?: profileWhereInput
+  }
+
+  export type projectsCountOrderByAggregateInput = {
+    id?: SortOrder
+    profile_id?: SortOrder
+    createId?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+  }
+
+  export type projectsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    profile_id?: SortOrder
+    createId?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+  }
+
+  export type projectsMinOrderByAggregateInput = {
+    id?: SortOrder
+    profile_id?: SortOrder
+    createId?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+  }
+
   export type EnumPlanTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.PlanType | EnumPlanTypeFieldRefInput<$PrismaModel>
     in?: $Enums.PlanType[] | ListEnumPlanTypeFieldRefInput<$PrismaModel>
     notIn?: $Enums.PlanType[] | ListEnumPlanTypeFieldRefInput<$PrismaModel>
     not?: NestedEnumPlanTypeFilter<$PrismaModel> | $Enums.PlanType
-  }
-
-  export type ProfileScalarRelationFilter = {
-    is?: profileWhereInput
-    isNot?: profileWhereInput
   }
 
   export type subscriptionsCountOrderByAggregateInput = {
@@ -9645,6 +11071,11 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type ProjectsScalarRelationFilter = {
+    is?: projectsWhereInput
+    isNot?: projectsWhereInput
   }
 
   export type tasks_logCountOrderByAggregateInput = {
@@ -9785,6 +11216,13 @@ export namespace Prisma {
     connect?: whatsapp_messagesWhereUniqueInput | whatsapp_messagesWhereUniqueInput[]
   }
 
+  export type projectsCreateNestedManyWithoutProfileInput = {
+    create?: XOR<projectsCreateWithoutProfileInput, projectsUncheckedCreateWithoutProfileInput> | projectsCreateWithoutProfileInput[] | projectsUncheckedCreateWithoutProfileInput[]
+    connectOrCreate?: projectsCreateOrConnectWithoutProfileInput | projectsCreateOrConnectWithoutProfileInput[]
+    createMany?: projectsCreateManyProfileInputEnvelope
+    connect?: projectsWhereUniqueInput | projectsWhereUniqueInput[]
+  }
+
   export type admin_activity_logsUncheckedCreateNestedManyWithoutAdminInput = {
     create?: XOR<admin_activity_logsCreateWithoutAdminInput, admin_activity_logsUncheckedCreateWithoutAdminInput> | admin_activity_logsCreateWithoutAdminInput[] | admin_activity_logsUncheckedCreateWithoutAdminInput[]
     connectOrCreate?: admin_activity_logsCreateOrConnectWithoutAdminInput | admin_activity_logsCreateOrConnectWithoutAdminInput[]
@@ -9818,6 +11256,13 @@ export namespace Prisma {
     connectOrCreate?: whatsapp_messagesCreateOrConnectWithoutProfileInput | whatsapp_messagesCreateOrConnectWithoutProfileInput[]
     createMany?: whatsapp_messagesCreateManyProfileInputEnvelope
     connect?: whatsapp_messagesWhereUniqueInput | whatsapp_messagesWhereUniqueInput[]
+  }
+
+  export type projectsUncheckedCreateNestedManyWithoutProfileInput = {
+    create?: XOR<projectsCreateWithoutProfileInput, projectsUncheckedCreateWithoutProfileInput> | projectsCreateWithoutProfileInput[] | projectsUncheckedCreateWithoutProfileInput[]
+    connectOrCreate?: projectsCreateOrConnectWithoutProfileInput | projectsCreateOrConnectWithoutProfileInput[]
+    createMany?: projectsCreateManyProfileInputEnvelope
+    connect?: projectsWhereUniqueInput | projectsWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -9914,6 +11359,20 @@ export namespace Prisma {
     deleteMany?: whatsapp_messagesScalarWhereInput | whatsapp_messagesScalarWhereInput[]
   }
 
+  export type projectsUpdateManyWithoutProfileNestedInput = {
+    create?: XOR<projectsCreateWithoutProfileInput, projectsUncheckedCreateWithoutProfileInput> | projectsCreateWithoutProfileInput[] | projectsUncheckedCreateWithoutProfileInput[]
+    connectOrCreate?: projectsCreateOrConnectWithoutProfileInput | projectsCreateOrConnectWithoutProfileInput[]
+    upsert?: projectsUpsertWithWhereUniqueWithoutProfileInput | projectsUpsertWithWhereUniqueWithoutProfileInput[]
+    createMany?: projectsCreateManyProfileInputEnvelope
+    set?: projectsWhereUniqueInput | projectsWhereUniqueInput[]
+    disconnect?: projectsWhereUniqueInput | projectsWhereUniqueInput[]
+    delete?: projectsWhereUniqueInput | projectsWhereUniqueInput[]
+    connect?: projectsWhereUniqueInput | projectsWhereUniqueInput[]
+    update?: projectsUpdateWithWhereUniqueWithoutProfileInput | projectsUpdateWithWhereUniqueWithoutProfileInput[]
+    updateMany?: projectsUpdateManyWithWhereWithoutProfileInput | projectsUpdateManyWithWhereWithoutProfileInput[]
+    deleteMany?: projectsScalarWhereInput | projectsScalarWhereInput[]
+  }
+
   export type admin_activity_logsUncheckedUpdateManyWithoutAdminNestedInput = {
     create?: XOR<admin_activity_logsCreateWithoutAdminInput, admin_activity_logsUncheckedCreateWithoutAdminInput> | admin_activity_logsCreateWithoutAdminInput[] | admin_activity_logsUncheckedCreateWithoutAdminInput[]
     connectOrCreate?: admin_activity_logsCreateOrConnectWithoutAdminInput | admin_activity_logsCreateOrConnectWithoutAdminInput[]
@@ -9984,6 +11443,76 @@ export namespace Prisma {
     deleteMany?: whatsapp_messagesScalarWhereInput | whatsapp_messagesScalarWhereInput[]
   }
 
+  export type projectsUncheckedUpdateManyWithoutProfileNestedInput = {
+    create?: XOR<projectsCreateWithoutProfileInput, projectsUncheckedCreateWithoutProfileInput> | projectsCreateWithoutProfileInput[] | projectsUncheckedCreateWithoutProfileInput[]
+    connectOrCreate?: projectsCreateOrConnectWithoutProfileInput | projectsCreateOrConnectWithoutProfileInput[]
+    upsert?: projectsUpsertWithWhereUniqueWithoutProfileInput | projectsUpsertWithWhereUniqueWithoutProfileInput[]
+    createMany?: projectsCreateManyProfileInputEnvelope
+    set?: projectsWhereUniqueInput | projectsWhereUniqueInput[]
+    disconnect?: projectsWhereUniqueInput | projectsWhereUniqueInput[]
+    delete?: projectsWhereUniqueInput | projectsWhereUniqueInput[]
+    connect?: projectsWhereUniqueInput | projectsWhereUniqueInput[]
+    update?: projectsUpdateWithWhereUniqueWithoutProfileInput | projectsUpdateWithWhereUniqueWithoutProfileInput[]
+    updateMany?: projectsUpdateManyWithWhereWithoutProfileInput | projectsUpdateManyWithWhereWithoutProfileInput[]
+    deleteMany?: projectsScalarWhereInput | projectsScalarWhereInput[]
+  }
+
+  export type tasks_logCreateNestedManyWithoutProjectInput = {
+    create?: XOR<tasks_logCreateWithoutProjectInput, tasks_logUncheckedCreateWithoutProjectInput> | tasks_logCreateWithoutProjectInput[] | tasks_logUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: tasks_logCreateOrConnectWithoutProjectInput | tasks_logCreateOrConnectWithoutProjectInput[]
+    createMany?: tasks_logCreateManyProjectInputEnvelope
+    connect?: tasks_logWhereUniqueInput | tasks_logWhereUniqueInput[]
+  }
+
+  export type profileCreateNestedOneWithoutProjectsInput = {
+    create?: XOR<profileCreateWithoutProjectsInput, profileUncheckedCreateWithoutProjectsInput>
+    connectOrCreate?: profileCreateOrConnectWithoutProjectsInput
+    connect?: profileWhereUniqueInput
+  }
+
+  export type tasks_logUncheckedCreateNestedManyWithoutProjectInput = {
+    create?: XOR<tasks_logCreateWithoutProjectInput, tasks_logUncheckedCreateWithoutProjectInput> | tasks_logCreateWithoutProjectInput[] | tasks_logUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: tasks_logCreateOrConnectWithoutProjectInput | tasks_logCreateOrConnectWithoutProjectInput[]
+    createMany?: tasks_logCreateManyProjectInputEnvelope
+    connect?: tasks_logWhereUniqueInput | tasks_logWhereUniqueInput[]
+  }
+
+  export type tasks_logUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<tasks_logCreateWithoutProjectInput, tasks_logUncheckedCreateWithoutProjectInput> | tasks_logCreateWithoutProjectInput[] | tasks_logUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: tasks_logCreateOrConnectWithoutProjectInput | tasks_logCreateOrConnectWithoutProjectInput[]
+    upsert?: tasks_logUpsertWithWhereUniqueWithoutProjectInput | tasks_logUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: tasks_logCreateManyProjectInputEnvelope
+    set?: tasks_logWhereUniqueInput | tasks_logWhereUniqueInput[]
+    disconnect?: tasks_logWhereUniqueInput | tasks_logWhereUniqueInput[]
+    delete?: tasks_logWhereUniqueInput | tasks_logWhereUniqueInput[]
+    connect?: tasks_logWhereUniqueInput | tasks_logWhereUniqueInput[]
+    update?: tasks_logUpdateWithWhereUniqueWithoutProjectInput | tasks_logUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: tasks_logUpdateManyWithWhereWithoutProjectInput | tasks_logUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: tasks_logScalarWhereInput | tasks_logScalarWhereInput[]
+  }
+
+  export type profileUpdateOneRequiredWithoutProjectsNestedInput = {
+    create?: XOR<profileCreateWithoutProjectsInput, profileUncheckedCreateWithoutProjectsInput>
+    connectOrCreate?: profileCreateOrConnectWithoutProjectsInput
+    upsert?: profileUpsertWithoutProjectsInput
+    connect?: profileWhereUniqueInput
+    update?: XOR<XOR<profileUpdateToOneWithWhereWithoutProjectsInput, profileUpdateWithoutProjectsInput>, profileUncheckedUpdateWithoutProjectsInput>
+  }
+
+  export type tasks_logUncheckedUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<tasks_logCreateWithoutProjectInput, tasks_logUncheckedCreateWithoutProjectInput> | tasks_logCreateWithoutProjectInput[] | tasks_logUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: tasks_logCreateOrConnectWithoutProjectInput | tasks_logCreateOrConnectWithoutProjectInput[]
+    upsert?: tasks_logUpsertWithWhereUniqueWithoutProjectInput | tasks_logUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: tasks_logCreateManyProjectInputEnvelope
+    set?: tasks_logWhereUniqueInput | tasks_logWhereUniqueInput[]
+    disconnect?: tasks_logWhereUniqueInput | tasks_logWhereUniqueInput[]
+    delete?: tasks_logWhereUniqueInput | tasks_logWhereUniqueInput[]
+    connect?: tasks_logWhereUniqueInput | tasks_logWhereUniqueInput[]
+    update?: tasks_logUpdateWithWhereUniqueWithoutProjectInput | tasks_logUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: tasks_logUpdateManyWithWhereWithoutProjectInput | tasks_logUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: tasks_logScalarWhereInput | tasks_logScalarWhereInput[]
+  }
+
   export type profileCreateNestedOneWithoutSubscriptionsInput = {
     create?: XOR<profileCreateWithoutSubscriptionsInput, profileUncheckedCreateWithoutSubscriptionsInput>
     connectOrCreate?: profileCreateOrConnectWithoutSubscriptionsInput
@@ -10034,12 +11563,26 @@ export namespace Prisma {
     connect?: profileWhereUniqueInput
   }
 
+  export type projectsCreateNestedOneWithoutTasks_logInput = {
+    create?: XOR<projectsCreateWithoutTasks_logInput, projectsUncheckedCreateWithoutTasks_logInput>
+    connectOrCreate?: projectsCreateOrConnectWithoutTasks_logInput
+    connect?: projectsWhereUniqueInput
+  }
+
   export type profileUpdateOneRequiredWithoutTasks_logNestedInput = {
     create?: XOR<profileCreateWithoutTasks_logInput, profileUncheckedCreateWithoutTasks_logInput>
     connectOrCreate?: profileCreateOrConnectWithoutTasks_logInput
     upsert?: profileUpsertWithoutTasks_logInput
     connect?: profileWhereUniqueInput
     update?: XOR<XOR<profileUpdateToOneWithWhereWithoutTasks_logInput, profileUpdateWithoutTasks_logInput>, profileUncheckedUpdateWithoutTasks_logInput>
+  }
+
+  export type projectsUpdateOneRequiredWithoutTasks_logNestedInput = {
+    create?: XOR<projectsCreateWithoutTasks_logInput, projectsUncheckedCreateWithoutTasks_logInput>
+    connectOrCreate?: projectsCreateOrConnectWithoutTasks_logInput
+    upsert?: projectsUpsertWithoutTasks_logInput
+    connect?: projectsWhereUniqueInput
+    update?: XOR<XOR<projectsUpdateToOneWithWhereWithoutTasks_logInput, projectsUpdateWithoutTasks_logInput>, projectsUncheckedUpdateWithoutTasks_logInput>
   }
 
   export type profileCreateNestedOneWithoutWhatsapp_messagesInput = {
@@ -10401,11 +11944,11 @@ export namespace Prisma {
 
   export type tasks_logCreateWithoutProfileInput = {
     id?: string
-    project_id: string
     agent_type: string
     agent_results: string
     credits_spent: number
     timestamp?: Date | string
+    project: projectsCreateNestedOneWithoutTasks_logInput
   }
 
   export type tasks_logUncheckedCreateWithoutProfileInput = {
@@ -10448,6 +11991,32 @@ export namespace Prisma {
 
   export type whatsapp_messagesCreateManyProfileInputEnvelope = {
     data: whatsapp_messagesCreateManyProfileInput | whatsapp_messagesCreateManyProfileInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type projectsCreateWithoutProfileInput = {
+    id?: string
+    createId: string
+    name: string
+    description: string
+    tasks_log?: tasks_logCreateNestedManyWithoutProjectInput
+  }
+
+  export type projectsUncheckedCreateWithoutProfileInput = {
+    id?: string
+    createId: string
+    name: string
+    description: string
+    tasks_log?: tasks_logUncheckedCreateNestedManyWithoutProjectInput
+  }
+
+  export type projectsCreateOrConnectWithoutProfileInput = {
+    where: projectsWhereUniqueInput
+    create: XOR<projectsCreateWithoutProfileInput, projectsUncheckedCreateWithoutProfileInput>
+  }
+
+  export type projectsCreateManyProfileInputEnvelope = {
+    data: projectsCreateManyProfileInput | projectsCreateManyProfileInput[]
     skipDuplicates?: boolean
   }
 
@@ -10558,7 +12127,7 @@ export namespace Prisma {
     NOT?: tasks_logScalarWhereInput | tasks_logScalarWhereInput[]
     id?: UuidFilter<"tasks_log"> | string
     profile_id?: UuidFilter<"tasks_log"> | string
-    project_id?: UuidFilter<"tasks_log"> | string
+    project_id?: StringFilter<"tasks_log"> | string
     agent_type?: StringFilter<"tasks_log"> | string
     agent_results?: StringFilter<"tasks_log"> | string
     credits_spent?: IntFilter<"tasks_log"> | number
@@ -10592,6 +12161,161 @@ export namespace Prisma {
     timestamp?: DateTimeFilter<"whatsapp_messages"> | Date | string
   }
 
+  export type projectsUpsertWithWhereUniqueWithoutProfileInput = {
+    where: projectsWhereUniqueInput
+    update: XOR<projectsUpdateWithoutProfileInput, projectsUncheckedUpdateWithoutProfileInput>
+    create: XOR<projectsCreateWithoutProfileInput, projectsUncheckedCreateWithoutProfileInput>
+  }
+
+  export type projectsUpdateWithWhereUniqueWithoutProfileInput = {
+    where: projectsWhereUniqueInput
+    data: XOR<projectsUpdateWithoutProfileInput, projectsUncheckedUpdateWithoutProfileInput>
+  }
+
+  export type projectsUpdateManyWithWhereWithoutProfileInput = {
+    where: projectsScalarWhereInput
+    data: XOR<projectsUpdateManyMutationInput, projectsUncheckedUpdateManyWithoutProfileInput>
+  }
+
+  export type projectsScalarWhereInput = {
+    AND?: projectsScalarWhereInput | projectsScalarWhereInput[]
+    OR?: projectsScalarWhereInput[]
+    NOT?: projectsScalarWhereInput | projectsScalarWhereInput[]
+    id?: UuidFilter<"projects"> | string
+    profile_id?: UuidFilter<"projects"> | string
+    createId?: StringFilter<"projects"> | string
+    name?: StringFilter<"projects"> | string
+    description?: StringFilter<"projects"> | string
+  }
+
+  export type tasks_logCreateWithoutProjectInput = {
+    id?: string
+    agent_type: string
+    agent_results: string
+    credits_spent: number
+    timestamp?: Date | string
+    profile: profileCreateNestedOneWithoutTasks_logInput
+  }
+
+  export type tasks_logUncheckedCreateWithoutProjectInput = {
+    id?: string
+    profile_id: string
+    agent_type: string
+    agent_results: string
+    credits_spent: number
+    timestamp?: Date | string
+  }
+
+  export type tasks_logCreateOrConnectWithoutProjectInput = {
+    where: tasks_logWhereUniqueInput
+    create: XOR<tasks_logCreateWithoutProjectInput, tasks_logUncheckedCreateWithoutProjectInput>
+  }
+
+  export type tasks_logCreateManyProjectInputEnvelope = {
+    data: tasks_logCreateManyProjectInput | tasks_logCreateManyProjectInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type profileCreateWithoutProjectsInput = {
+    id: string
+    email: string
+    name: string
+    role?: $Enums.UserRole
+    ip_address?: string
+    subscription_plan?: string | null
+    credits_balance?: number
+    created_at?: Date | string
+    stripeSubscriptionId?: string | null
+    admin_activities?: admin_activity_logsCreateNestedManyWithoutAdminInput
+    credit_purchases?: credit_purchasesCreateNestedManyWithoutProfileInput
+    subscriptions?: subscriptionsCreateNestedManyWithoutProfileInput
+    tasks_log?: tasks_logCreateNestedManyWithoutProfileInput
+    whatsapp_messages?: whatsapp_messagesCreateNestedManyWithoutProfileInput
+  }
+
+  export type profileUncheckedCreateWithoutProjectsInput = {
+    id: string
+    email: string
+    name: string
+    role?: $Enums.UserRole
+    ip_address?: string
+    subscription_plan?: string | null
+    credits_balance?: number
+    created_at?: Date | string
+    stripeSubscriptionId?: string | null
+    admin_activities?: admin_activity_logsUncheckedCreateNestedManyWithoutAdminInput
+    credit_purchases?: credit_purchasesUncheckedCreateNestedManyWithoutProfileInput
+    subscriptions?: subscriptionsUncheckedCreateNestedManyWithoutProfileInput
+    tasks_log?: tasks_logUncheckedCreateNestedManyWithoutProfileInput
+    whatsapp_messages?: whatsapp_messagesUncheckedCreateNestedManyWithoutProfileInput
+  }
+
+  export type profileCreateOrConnectWithoutProjectsInput = {
+    where: profileWhereUniqueInput
+    create: XOR<profileCreateWithoutProjectsInput, profileUncheckedCreateWithoutProjectsInput>
+  }
+
+  export type tasks_logUpsertWithWhereUniqueWithoutProjectInput = {
+    where: tasks_logWhereUniqueInput
+    update: XOR<tasks_logUpdateWithoutProjectInput, tasks_logUncheckedUpdateWithoutProjectInput>
+    create: XOR<tasks_logCreateWithoutProjectInput, tasks_logUncheckedCreateWithoutProjectInput>
+  }
+
+  export type tasks_logUpdateWithWhereUniqueWithoutProjectInput = {
+    where: tasks_logWhereUniqueInput
+    data: XOR<tasks_logUpdateWithoutProjectInput, tasks_logUncheckedUpdateWithoutProjectInput>
+  }
+
+  export type tasks_logUpdateManyWithWhereWithoutProjectInput = {
+    where: tasks_logScalarWhereInput
+    data: XOR<tasks_logUpdateManyMutationInput, tasks_logUncheckedUpdateManyWithoutProjectInput>
+  }
+
+  export type profileUpsertWithoutProjectsInput = {
+    update: XOR<profileUpdateWithoutProjectsInput, profileUncheckedUpdateWithoutProjectsInput>
+    create: XOR<profileCreateWithoutProjectsInput, profileUncheckedCreateWithoutProjectsInput>
+    where?: profileWhereInput
+  }
+
+  export type profileUpdateToOneWithWhereWithoutProjectsInput = {
+    where?: profileWhereInput
+    data: XOR<profileUpdateWithoutProjectsInput, profileUncheckedUpdateWithoutProjectsInput>
+  }
+
+  export type profileUpdateWithoutProjectsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    ip_address?: StringFieldUpdateOperationsInput | string
+    subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
+    credits_balance?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    admin_activities?: admin_activity_logsUpdateManyWithoutAdminNestedInput
+    credit_purchases?: credit_purchasesUpdateManyWithoutProfileNestedInput
+    subscriptions?: subscriptionsUpdateManyWithoutProfileNestedInput
+    tasks_log?: tasks_logUpdateManyWithoutProfileNestedInput
+    whatsapp_messages?: whatsapp_messagesUpdateManyWithoutProfileNestedInput
+  }
+
+  export type profileUncheckedUpdateWithoutProjectsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    ip_address?: StringFieldUpdateOperationsInput | string
+    subscription_plan?: NullableStringFieldUpdateOperationsInput | string | null
+    credits_balance?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    admin_activities?: admin_activity_logsUncheckedUpdateManyWithoutAdminNestedInput
+    credit_purchases?: credit_purchasesUncheckedUpdateManyWithoutProfileNestedInput
+    subscriptions?: subscriptionsUncheckedUpdateManyWithoutProfileNestedInput
+    tasks_log?: tasks_logUncheckedUpdateManyWithoutProfileNestedInput
+    whatsapp_messages?: whatsapp_messagesUncheckedUpdateManyWithoutProfileNestedInput
+  }
+
   export type profileCreateWithoutSubscriptionsInput = {
     id: string
     email: string
@@ -10606,6 +12330,7 @@ export namespace Prisma {
     credit_purchases?: credit_purchasesCreateNestedManyWithoutProfileInput
     tasks_log?: tasks_logCreateNestedManyWithoutProfileInput
     whatsapp_messages?: whatsapp_messagesCreateNestedManyWithoutProfileInput
+    projects?: projectsCreateNestedManyWithoutProfileInput
   }
 
   export type profileUncheckedCreateWithoutSubscriptionsInput = {
@@ -10622,6 +12347,7 @@ export namespace Prisma {
     credit_purchases?: credit_purchasesUncheckedCreateNestedManyWithoutProfileInput
     tasks_log?: tasks_logUncheckedCreateNestedManyWithoutProfileInput
     whatsapp_messages?: whatsapp_messagesUncheckedCreateNestedManyWithoutProfileInput
+    projects?: projectsUncheckedCreateNestedManyWithoutProfileInput
   }
 
   export type profileCreateOrConnectWithoutSubscriptionsInput = {
@@ -10654,6 +12380,7 @@ export namespace Prisma {
     credit_purchases?: credit_purchasesUpdateManyWithoutProfileNestedInput
     tasks_log?: tasks_logUpdateManyWithoutProfileNestedInput
     whatsapp_messages?: whatsapp_messagesUpdateManyWithoutProfileNestedInput
+    projects?: projectsUpdateManyWithoutProfileNestedInput
   }
 
   export type profileUncheckedUpdateWithoutSubscriptionsInput = {
@@ -10670,6 +12397,7 @@ export namespace Prisma {
     credit_purchases?: credit_purchasesUncheckedUpdateManyWithoutProfileNestedInput
     tasks_log?: tasks_logUncheckedUpdateManyWithoutProfileNestedInput
     whatsapp_messages?: whatsapp_messagesUncheckedUpdateManyWithoutProfileNestedInput
+    projects?: projectsUncheckedUpdateManyWithoutProfileNestedInput
   }
 
   export type profileCreateWithoutCredit_purchasesInput = {
@@ -10686,6 +12414,7 @@ export namespace Prisma {
     subscriptions?: subscriptionsCreateNestedManyWithoutProfileInput
     tasks_log?: tasks_logCreateNestedManyWithoutProfileInput
     whatsapp_messages?: whatsapp_messagesCreateNestedManyWithoutProfileInput
+    projects?: projectsCreateNestedManyWithoutProfileInput
   }
 
   export type profileUncheckedCreateWithoutCredit_purchasesInput = {
@@ -10702,6 +12431,7 @@ export namespace Prisma {
     subscriptions?: subscriptionsUncheckedCreateNestedManyWithoutProfileInput
     tasks_log?: tasks_logUncheckedCreateNestedManyWithoutProfileInput
     whatsapp_messages?: whatsapp_messagesUncheckedCreateNestedManyWithoutProfileInput
+    projects?: projectsUncheckedCreateNestedManyWithoutProfileInput
   }
 
   export type profileCreateOrConnectWithoutCredit_purchasesInput = {
@@ -10734,6 +12464,7 @@ export namespace Prisma {
     subscriptions?: subscriptionsUpdateManyWithoutProfileNestedInput
     tasks_log?: tasks_logUpdateManyWithoutProfileNestedInput
     whatsapp_messages?: whatsapp_messagesUpdateManyWithoutProfileNestedInput
+    projects?: projectsUpdateManyWithoutProfileNestedInput
   }
 
   export type profileUncheckedUpdateWithoutCredit_purchasesInput = {
@@ -10750,6 +12481,7 @@ export namespace Prisma {
     subscriptions?: subscriptionsUncheckedUpdateManyWithoutProfileNestedInput
     tasks_log?: tasks_logUncheckedUpdateManyWithoutProfileNestedInput
     whatsapp_messages?: whatsapp_messagesUncheckedUpdateManyWithoutProfileNestedInput
+    projects?: projectsUncheckedUpdateManyWithoutProfileNestedInput
   }
 
   export type profileCreateWithoutTasks_logInput = {
@@ -10766,6 +12498,7 @@ export namespace Prisma {
     credit_purchases?: credit_purchasesCreateNestedManyWithoutProfileInput
     subscriptions?: subscriptionsCreateNestedManyWithoutProfileInput
     whatsapp_messages?: whatsapp_messagesCreateNestedManyWithoutProfileInput
+    projects?: projectsCreateNestedManyWithoutProfileInput
   }
 
   export type profileUncheckedCreateWithoutTasks_logInput = {
@@ -10782,11 +12515,33 @@ export namespace Prisma {
     credit_purchases?: credit_purchasesUncheckedCreateNestedManyWithoutProfileInput
     subscriptions?: subscriptionsUncheckedCreateNestedManyWithoutProfileInput
     whatsapp_messages?: whatsapp_messagesUncheckedCreateNestedManyWithoutProfileInput
+    projects?: projectsUncheckedCreateNestedManyWithoutProfileInput
   }
 
   export type profileCreateOrConnectWithoutTasks_logInput = {
     where: profileWhereUniqueInput
     create: XOR<profileCreateWithoutTasks_logInput, profileUncheckedCreateWithoutTasks_logInput>
+  }
+
+  export type projectsCreateWithoutTasks_logInput = {
+    id?: string
+    createId: string
+    name: string
+    description: string
+    profile: profileCreateNestedOneWithoutProjectsInput
+  }
+
+  export type projectsUncheckedCreateWithoutTasks_logInput = {
+    id?: string
+    profile_id: string
+    createId: string
+    name: string
+    description: string
+  }
+
+  export type projectsCreateOrConnectWithoutTasks_logInput = {
+    where: projectsWhereUniqueInput
+    create: XOR<projectsCreateWithoutTasks_logInput, projectsUncheckedCreateWithoutTasks_logInput>
   }
 
   export type profileUpsertWithoutTasks_logInput = {
@@ -10814,6 +12569,7 @@ export namespace Prisma {
     credit_purchases?: credit_purchasesUpdateManyWithoutProfileNestedInput
     subscriptions?: subscriptionsUpdateManyWithoutProfileNestedInput
     whatsapp_messages?: whatsapp_messagesUpdateManyWithoutProfileNestedInput
+    projects?: projectsUpdateManyWithoutProfileNestedInput
   }
 
   export type profileUncheckedUpdateWithoutTasks_logInput = {
@@ -10830,6 +12586,34 @@ export namespace Prisma {
     credit_purchases?: credit_purchasesUncheckedUpdateManyWithoutProfileNestedInput
     subscriptions?: subscriptionsUncheckedUpdateManyWithoutProfileNestedInput
     whatsapp_messages?: whatsapp_messagesUncheckedUpdateManyWithoutProfileNestedInput
+    projects?: projectsUncheckedUpdateManyWithoutProfileNestedInput
+  }
+
+  export type projectsUpsertWithoutTasks_logInput = {
+    update: XOR<projectsUpdateWithoutTasks_logInput, projectsUncheckedUpdateWithoutTasks_logInput>
+    create: XOR<projectsCreateWithoutTasks_logInput, projectsUncheckedCreateWithoutTasks_logInput>
+    where?: projectsWhereInput
+  }
+
+  export type projectsUpdateToOneWithWhereWithoutTasks_logInput = {
+    where?: projectsWhereInput
+    data: XOR<projectsUpdateWithoutTasks_logInput, projectsUncheckedUpdateWithoutTasks_logInput>
+  }
+
+  export type projectsUpdateWithoutTasks_logInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    profile?: profileUpdateOneRequiredWithoutProjectsNestedInput
+  }
+
+  export type projectsUncheckedUpdateWithoutTasks_logInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    profile_id?: StringFieldUpdateOperationsInput | string
+    createId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
   }
 
   export type profileCreateWithoutWhatsapp_messagesInput = {
@@ -10846,6 +12630,7 @@ export namespace Prisma {
     credit_purchases?: credit_purchasesCreateNestedManyWithoutProfileInput
     subscriptions?: subscriptionsCreateNestedManyWithoutProfileInput
     tasks_log?: tasks_logCreateNestedManyWithoutProfileInput
+    projects?: projectsCreateNestedManyWithoutProfileInput
   }
 
   export type profileUncheckedCreateWithoutWhatsapp_messagesInput = {
@@ -10862,6 +12647,7 @@ export namespace Prisma {
     credit_purchases?: credit_purchasesUncheckedCreateNestedManyWithoutProfileInput
     subscriptions?: subscriptionsUncheckedCreateNestedManyWithoutProfileInput
     tasks_log?: tasks_logUncheckedCreateNestedManyWithoutProfileInput
+    projects?: projectsUncheckedCreateNestedManyWithoutProfileInput
   }
 
   export type profileCreateOrConnectWithoutWhatsapp_messagesInput = {
@@ -10894,6 +12680,7 @@ export namespace Prisma {
     credit_purchases?: credit_purchasesUpdateManyWithoutProfileNestedInput
     subscriptions?: subscriptionsUpdateManyWithoutProfileNestedInput
     tasks_log?: tasks_logUpdateManyWithoutProfileNestedInput
+    projects?: projectsUpdateManyWithoutProfileNestedInput
   }
 
   export type profileUncheckedUpdateWithoutWhatsapp_messagesInput = {
@@ -10910,6 +12697,7 @@ export namespace Prisma {
     credit_purchases?: credit_purchasesUncheckedUpdateManyWithoutProfileNestedInput
     subscriptions?: subscriptionsUncheckedUpdateManyWithoutProfileNestedInput
     tasks_log?: tasks_logUncheckedUpdateManyWithoutProfileNestedInput
+    projects?: projectsUncheckedUpdateManyWithoutProfileNestedInput
   }
 
   export type profileCreateWithoutAdmin_activitiesInput = {
@@ -10926,6 +12714,7 @@ export namespace Prisma {
     subscriptions?: subscriptionsCreateNestedManyWithoutProfileInput
     tasks_log?: tasks_logCreateNestedManyWithoutProfileInput
     whatsapp_messages?: whatsapp_messagesCreateNestedManyWithoutProfileInput
+    projects?: projectsCreateNestedManyWithoutProfileInput
   }
 
   export type profileUncheckedCreateWithoutAdmin_activitiesInput = {
@@ -10942,6 +12731,7 @@ export namespace Prisma {
     subscriptions?: subscriptionsUncheckedCreateNestedManyWithoutProfileInput
     tasks_log?: tasks_logUncheckedCreateNestedManyWithoutProfileInput
     whatsapp_messages?: whatsapp_messagesUncheckedCreateNestedManyWithoutProfileInput
+    projects?: projectsUncheckedCreateNestedManyWithoutProfileInput
   }
 
   export type profileCreateOrConnectWithoutAdmin_activitiesInput = {
@@ -10974,6 +12764,7 @@ export namespace Prisma {
     subscriptions?: subscriptionsUpdateManyWithoutProfileNestedInput
     tasks_log?: tasks_logUpdateManyWithoutProfileNestedInput
     whatsapp_messages?: whatsapp_messagesUpdateManyWithoutProfileNestedInput
+    projects?: projectsUpdateManyWithoutProfileNestedInput
   }
 
   export type profileUncheckedUpdateWithoutAdmin_activitiesInput = {
@@ -10990,6 +12781,7 @@ export namespace Prisma {
     subscriptions?: subscriptionsUncheckedUpdateManyWithoutProfileNestedInput
     tasks_log?: tasks_logUncheckedUpdateManyWithoutProfileNestedInput
     whatsapp_messages?: whatsapp_messagesUncheckedUpdateManyWithoutProfileNestedInput
+    projects?: projectsUncheckedUpdateManyWithoutProfileNestedInput
   }
 
   export type admin_activity_logsCreateManyAdminInput = {
@@ -11031,6 +12823,13 @@ export namespace Prisma {
     direction: $Enums.MessageDirection
     message_text: string
     timestamp?: Date | string
+  }
+
+  export type projectsCreateManyProfileInput = {
+    id?: string
+    createId: string
+    name: string
+    description: string
   }
 
   export type admin_activity_logsUpdateWithoutAdminInput = {
@@ -11110,11 +12909,11 @@ export namespace Prisma {
 
   export type tasks_logUpdateWithoutProfileInput = {
     id?: StringFieldUpdateOperationsInput | string
-    project_id?: StringFieldUpdateOperationsInput | string
     agent_type?: StringFieldUpdateOperationsInput | string
     agent_results?: StringFieldUpdateOperationsInput | string
     credits_spent?: IntFieldUpdateOperationsInput | number
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: projectsUpdateOneRequiredWithoutTasks_logNestedInput
   }
 
   export type tasks_logUncheckedUpdateWithoutProfileInput = {
@@ -11153,6 +12952,65 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     direction?: EnumMessageDirectionFieldUpdateOperationsInput | $Enums.MessageDirection
     message_text?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type projectsUpdateWithoutProfileInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    tasks_log?: tasks_logUpdateManyWithoutProjectNestedInput
+  }
+
+  export type projectsUncheckedUpdateWithoutProfileInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    tasks_log?: tasks_logUncheckedUpdateManyWithoutProjectNestedInput
+  }
+
+  export type projectsUncheckedUpdateManyWithoutProfileInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type tasks_logCreateManyProjectInput = {
+    id?: string
+    profile_id: string
+    agent_type: string
+    agent_results: string
+    credits_spent: number
+    timestamp?: Date | string
+  }
+
+  export type tasks_logUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    agent_type?: StringFieldUpdateOperationsInput | string
+    agent_results?: StringFieldUpdateOperationsInput | string
+    credits_spent?: IntFieldUpdateOperationsInput | number
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    profile?: profileUpdateOneRequiredWithoutTasks_logNestedInput
+  }
+
+  export type tasks_logUncheckedUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    profile_id?: StringFieldUpdateOperationsInput | string
+    agent_type?: StringFieldUpdateOperationsInput | string
+    agent_results?: StringFieldUpdateOperationsInput | string
+    credits_spent?: IntFieldUpdateOperationsInput | number
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type tasks_logUncheckedUpdateManyWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    profile_id?: StringFieldUpdateOperationsInput | string
+    agent_type?: StringFieldUpdateOperationsInput | string
+    agent_results?: StringFieldUpdateOperationsInput | string
+    credits_spent?: IntFieldUpdateOperationsInput | number
     timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
