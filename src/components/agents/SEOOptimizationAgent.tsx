@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Agent } from '@/lib/agentType';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -21,9 +21,10 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { useResults } from '@/contexts/ResultsContext';
-import { mockStrategy } from '@/lib/agentData';
 import { useAuth } from '@/core/auth/AuthProvider';
 import Request from '@/lib/request';
+import { toast } from 'sonner';
+
 interface SEOOptimizationAgentProps {
   agent: Agent;
   projectId: string;
@@ -46,8 +47,9 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
   const [currentStep, setCurrentStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [results, setResults] = useState<any>(null);
-  const { addResult } = useResults();
+  const [result, setResult] = useState<any>(null);
+  const { results, addResult } = useResults();
+  const [marketingStrategy, setMarketingStrategy] = useState('');
   const [{ profile }] = useAuth();
 
   // First determine which optimization type they want
@@ -164,11 +166,17 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
   };
 
   const handleNext = () => {
-    if (currentStep === 0) {
-      // Just moved past optimization type selection
-      setCurrentStep(1);
-    } else if (currentStep < questions.length) {
-      setCurrentStep(currentStep + 1);
+    if (profile.credits_balance <= 0) {
+      toast.error('Insufficient Credit balance, please charge this!');
+    }else if (marketingStrategy === '') {
+      toast.error('Empty marketing strategy!, please creat that!');
+    } else {
+      if (currentStep === 0) {
+        // Just moved past optimization type selection
+        setCurrentStep(1);
+      } else if (currentStep < questions.length) {
+        setCurrentStep(currentStep + 1);
+      }
     }
   };
 
@@ -183,22 +191,28 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
 
     const body = {
       agent: 'seo-optimization',
-      inputs: { ...answers, marketingStrategy: mockStrategy },
+      inputs: { ...answers, marketingStrategy: marketingStrategy },
     };
 
     const response = await Request.Post('/api/agents', body);
     const result = parseContentScript(response.script);
+    toast.success('SeoOptimization successfully created!');
 
     const task = {
       profile_id: profile.id,
       project_id: projectId,
       agent_type: agent.id,
-      agent_results: JSON.stringify({...result, type: answers['optimization-type']}),
+      agent_results: JSON.stringify({
+        ...result,
+        type: answers['optimization-type'],
+      }),
       credits_spent: 1,
     };
 
     await Request.Post('/api/stripe/discount', task);
-    setResults(result);
+    toast.success('SeoOptimization successfully saved!');
+
+    setResult(result);
     addResult('seo-optimization', 'SEO Optimization', '🔍', {
       ...result,
       type: answers['optimization-type'],
@@ -216,14 +230,27 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
   const isLastStep = currentStep > 0 && currentStep === questions.length;
 
   const handleReset = () => {
-    setResults(null);
+    setResult(null);
     setCurrentStep(0);
     setAnswers({});
     setIsExpanded(false);
   };
 
+  useEffect(() => {
+    let marketing = '';
+    if (results.length > 0) {
+      results.map((result: any) => {
+        if (result.agentId === 'marketing-strategy') {
+          marketing = JSON.stringify(result.result);
+        }
+      });
+    }
+
+    setMarketingStrategy(marketing);
+  }, [results]);
+
   // Show results in expanded section
-  if (results && isExpanded) {
+  if (result && isExpanded) {
     return (
       <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:shadow-md">
         <div

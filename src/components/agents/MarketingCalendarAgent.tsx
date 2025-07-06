@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ChevronDown, ChevronUp, Play, Loader2, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,9 +14,9 @@ import {
 } from '@/components/ui/select';
 import { Agent } from '@/lib/agentType';
 import { useResults } from '@/contexts/ResultsContext';
-import { mockStrategy } from '@/lib/agentData';
 import { useAuth } from '@/core/auth/AuthProvider';
 import Request from '@/lib/request';
+import { toast } from 'sonner';
 
 interface MarketingCalendarAgentProps {
   agent: Agent;
@@ -41,6 +41,7 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
   const [schedule, setSchedule] = useState<ScheduleRow[]>([]);
+  const [marketingStrategy, setMarketingStrategy] = useState('');
   const { results, addResult } = useResults();
   const [{ profile }] = useAuth();
 
@@ -56,21 +57,26 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
   };
 
   const handleNext = () => {
-    if (currentQuestionIndex < agent.questions.length - 1) {
-      setCurrentQuestionIndex((prev) => prev + 1);
+    if (profile.credits_balance <= 0) {
+      toast.error('Insufficient Credit balance, please charge this!');
+    } else if (marketingStrategy === '') {
+      toast.error('Empty marketing-strategy!. Please create that!');
+    } else {
+      if (currentQuestionIndex < agent.questions.length - 1) {
+        setCurrentQuestionIndex((prev) => prev + 1);
+      }
     }
   };
 
   const handleRunAgent = async () => {
     setIsLoading(true);
-
     const body = {
       agent: 'marketing-calendar',
-      inputs: { ...answers, 'marketing-strategy': mockStrategy },
+      inputs: { ...answers, 'marketing-strategy': marketingStrategy },
     };
 
     const response = await Request.Post('/api/agents', body);
-    const rawRows = response.script.slice(3, 10); // Rows 3–9
+    const rawRows = response.script.slice(3, 10);
     const schedule = rawRows.map((row: any) => {
       const parts = row
         .split('|')
@@ -86,7 +92,7 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
         description: parts[5].replace(/^"|"$/g, ''),
       };
     });
-
+    toast.success('Marketing-Calandar result successfully created!');
     const task = {
       profile_id: profile.id,
       project_id: projectId,
@@ -96,6 +102,7 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
     };
 
     await Request.Post('/api/stripe/discount', task);
+    toast.success('Marketing-Calandar result successfully saved!');
 
     addResult(agent.id, agent.title, agent.icon, schedule);
     setSchedule(schedule);
@@ -107,6 +114,16 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
     setAnswers({});
     setSchedule([]);
   };
+
+  useEffect(() => {
+    let marketing = '';
+    results.map((result) => {
+      if (result.agentId === 'marketing-strategy') {
+        marketing = JSON.stringify(result.result);
+      }
+    });
+    setMarketingStrategy(marketing);
+  }, [results]);
 
   const renderInputField = (question: any) => {
     const value = answers[question.id] || '';

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ChevronDown,
   ChevronUp,
@@ -22,7 +22,7 @@ import { Agent } from '@/lib/agentType';
 import { useResults } from '@/contexts/ResultsContext';
 import { useAuth } from '@/core/auth/AuthProvider';
 import Request from '@/lib/request';
-import { mockSchedule, mockStrategy } from '@/lib/agentData';
+import { toast } from 'sonner';
 interface PostIdeasAgentProps {
   agent: Agent;
   projectId: string;
@@ -58,8 +58,10 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [contentIdeas, setContentIdeas] = useState<ContentIdea[]>([]);
   const [isCompleted, setIsCompleted] = useState(false); // Add this state
-  const { addResult } = useResults();
+  const { results, addResult } = useResults();
   const [{ profile }] = useAuth();
+  const [schedule, setSchedule] = useState([]);
+  const [marketingStrategy, setMarketingStrategy] = useState('');
 
   const currentQuestion = agent.questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === agent.questions.length - 1;
@@ -81,32 +83,39 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
   };
 
   const handleNext = () => {
-    if (currentQuestionIndex < agent.questions.length - 1) {
-      setCurrentQuestionIndex((prev) => prev + 1);
+    if (profile.credits_balance <= 0) {
+      toast.error('Insufficient Credit balance, please charge this!');
+    } else if (schedule.length > 0) {
+      if (currentQuestionIndex < agent.questions.length - 1) {
+        setCurrentQuestionIndex((prev) => prev + 1);
+      } else {
+        setIsCompleted(true);
+      }
     } else {
-      setIsCompleted(true);
+      toast.error('Empty marketing-calendar!. Please create Schedule!');
     }
   };
 
   const handleRunAgent = async () => {
-    setIsLoading(true);   
+    setIsLoading(true);
 
     const body = {
       agent: 'post-ideas',
       inputs: {
         ...answers,
-        'marketing-strategy': mockStrategy,
-        'schedule': mockSchedule,
+        'marketing-strategy': marketingStrategy,
+        schedule: schedule,
       },
     };
     const response = await Request.Post('/api/agents', body);
 
     const jsonString = response.script
-      .filter((line: string) => !line.startsWith('```')) 
-      .join('\n'); 
+      .filter((line: string) => !line.startsWith('```'))
+      .join('\n');
 
     const jsonData = JSON.parse(jsonString);
-    const mockIdeas: ContentIdea[] = mockSchedule.map((item) => ({
+    toast.success('PostIdeas successfully created!');
+    const mockIdeas: ContentIdea[] = schedule.map((item) => ({
       day: item.day,
       channel: item.channel,
       format: item.format,
@@ -120,12 +129,12 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
       profile_id: profile.id,
       project_id: projectId,
       agent_type: agent.id,
-      agent_results: JSON.stringify({mockIdeas}),
+      agent_results: JSON.stringify(mockIdeas),
       credits_spent: 1,
     };
 
     await Request.Post('/api/stripe/discount', task);
-
+    toast.success('PostIdeas successfully saved!');
     setContentIdeas(mockIdeas);
     addResult(agent.id, agent.title, agent.icon, mockIdeas);
 
@@ -144,8 +153,26 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
     setCurrentQuestionIndex(0);
     setAnswers({});
     setContentIdeas([]);
-    setIsCompleted(false); // Reset completion state
+    setIsCompleted(false);
   };
+
+  useEffect(() => {
+    let schedules: any = [];
+    let marketing = '';
+
+    if (results.length > 0) {
+      results.map((result: any) => {
+        if (result.agentId === 'marketing-calendar') {
+          schedules = result.result;
+        }
+        if (result.agentId === 'marketing-strategy') {
+          marketing = JSON.stringify(result.result);
+        }
+      });
+    }
+    setSchedule(schedules);
+    setMarketingStrategy(marketing);
+  }, [results]);
 
   const renderInputField = (question: any) => {
     const value = answers[question.id] || '';
@@ -310,8 +337,8 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
                         <strong>Product:</strong> {mockBrandStrategy.product}
                       </p>
                       <p>
-                        <strong>Schedule:</strong> {mockSchedule.length} posts
-                        from Marketing Calendar
+                        <strong>Schedule:</strong> {schedule.length} posts from
+                        Marketing Calendar
                       </p>
                     </div>
                   </div>

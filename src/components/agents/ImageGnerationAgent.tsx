@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ChevronDown,
   ChevronUp,
@@ -24,9 +24,10 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Agent, Question } from '@/lib/agentType';
 import { useResults } from '@/contexts/ResultsContext';
-import { mockImageScript } from '@/lib/agentData';
 import { useAuth } from '@/core/auth/AuthProvider';
 import Request from '@/lib/request';
+import { toast } from 'sonner';
+
 interface ImageGenerationAgentProps {
   agent: Agent;
   projectId: string;
@@ -62,7 +63,8 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
     null
   );
   const [questionsCompleted, setQuestionsCompleted] = useState(false);
-  const { addResult } = useResults();
+  const [script, setScript] = useState('');
+  const { results, addResult } = useResults();
   const [{ profile }] = useAuth();
 
   const filteredQuestions = agent.questions.filter((q: Question) => {
@@ -84,21 +86,38 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
   };
 
   const handleInit = () => {
-    setAnswers((prev) => ({
-      ...prev,
-      [currentQuestion.id]: JSON.stringify(mockImageScript),
-    }));
-    setCurrentQuestionIndex((prev) => prev + 1);
-  }
+    if (profile.credits_balance <= 0) {
+      toast.error('Insufficient Credit balance, please charge this!');
+    }else if (script === '') {
+      toast.error('Empty ImageScript!, please create that or input!');
+    } else {
+      setAnswers((prev) => ({
+        ...prev,
+        [currentQuestion.id]: script,
+      }));
+      setCurrentQuestionIndex((prev) => prev + 1);
+    }
+  };
 
   const handleNext = () => {
-    if (currentQuestionIndex < filteredQuestions.length - 1) {
+    if (profile.credits_balance <= 0) {
+      toast.error('Insufficient Credit balance, please charge this!');
+    } else if (currentQuestionIndex < filteredQuestions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     }
   };
 
   const handleComplete = () => {
     setQuestionsCompleted(true);
+  };
+
+  const convertFileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
   };
 
   const handleLogoFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -126,12 +145,29 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
   const handleGenerateImage = async () => {
     setIsLoading(true);
 
+    let logoBase64 = null;
+    let productImageBase64 = null;
+
+    if (logoFile) {
+      logoBase64 = await convertFileToBase64(logoFile);
+    }
+
+    if (productImageFile) {
+      productImageBase64 = await convertFileToBase64(productImageFile);
+    }
+
     const body = {
       agent: 'image-generation',
-      inputs: answers,
+      inputs: {
+        ...answers,
+        logoImage: logoBase64,
+        productImage: productImageBase64,
+        logoFileName: logoFile?.name,
+        productFileName: productImageFile?.name,
+      },
     };
     const response = await Request.Post('/api/agents', body);
-
+    console.log('answer', response);
     const imageName = generateImageName(answers['campaign-name']);
     const newImage: GeneratedImage = {
       id: `img_${Date.now()}`,
@@ -148,7 +184,8 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
         campaignName: answers['campaign-name'],
       },
     };
-    
+    toast.success('Image successfully created!');
+
     const task = {
       profile_id: profile.id,
       project_id: projectId,
@@ -158,23 +195,10 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
     };
 
     await Request.Post('/api/stripe/discount', task);
-    setGeneratedImage(newImage);
-    addResult(agent.id,agent.title,agent.icon,newImage)
-    setIsLoading(false);
-  };
-
-  const handleRegenerateImage = async () => {
-    if (!generatedImage) return;
-    setIsLoading(true);
-
-    const newImage: GeneratedImage = {
-      ...generatedImage,
-      id: `img_${Date.now()}_regen`,
-      url: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop&crop=center',
-      timestamp: new Date().toISOString(),
-    };
+    toast.success('Image successfully Saved!');
 
     setGeneratedImage(newImage);
+    addResult(agent.id, agent.title, agent.icon, newImage);
     setIsLoading(false);
   };
 
@@ -192,6 +216,21 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
     setGeneratedImage(null);
     setQuestionsCompleted(false);
   };
+
+  useEffect(() => {
+    let scripts = '';
+    if (results.length > 0) {
+      results.map((result: any) => {
+        if (
+          result.agentId === 'post-text' &&
+          result.result.type === 'AI Image Generation Script'
+        ) {
+          scripts = JSON.stringify(result.result);
+        }
+      });
+    }
+    setScript(scripts);
+  }, [results]);
 
   const renderInputField = (question: Question) => {
     const value = answers[question.id] || '';
@@ -402,13 +441,15 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
                     Previous
                   </Button>
 
-                  {currentQuestionIndex === 0 && (<Button
-                    onClick={handleInit}
-                    className="bg-pink-600 text-white hover:bg-pink-700"
-                  >
-                    Use Agent4
-                  </Button>)}
-                  
+                  {currentQuestionIndex === 0 && (
+                    <Button
+                      onClick={handleInit}
+                      className="bg-pink-600 text-white hover:bg-pink-700"
+                    >
+                      Use Agent4
+                    </Button>
+                  )}
+
                   <Button
                     onClick={isLastQuestion ? handleComplete : handleNext}
                     disabled={
@@ -512,7 +553,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
 
                       <div className="flex justify-center space-x-3">
                         <Button
-                          onClick={handleRegenerateImage}
+                          onClick={handleGenerateImage}
                           disabled={isLoading}
                           variant="outline"
                           className="flex items-center"

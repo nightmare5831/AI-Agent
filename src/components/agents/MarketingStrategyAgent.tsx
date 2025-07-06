@@ -23,6 +23,7 @@ import { Agent } from '@/lib/agentType';
 import { useResults } from '@/contexts/ResultsContext';
 import { useAuth } from '@/core/auth/AuthProvider';
 import Request from '@/lib/request';
+import { toast } from 'sonner';
 
 interface MarketingStrategyAgentProps {
   agent: Agent;
@@ -74,7 +75,9 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
   };
 
   const handleNext = () => {
-    if (!isConfirmingAnswer && answers[currentQuestion.id]) {
+    if (profile.credits_balance <= 0) {
+      toast.error('Insufficient Credit balance, please charge this!');
+    } else if (!isConfirmingAnswer && answers[currentQuestion.id]) {
       const summary = generateAnswerSummary(
         currentQuestion,
         answers[currentQuestion.id]
@@ -98,40 +101,44 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
   };
 
   const handleRunAgent = async () => {
-    setIsLoading(true);
+    if (profile.credits_balance <= 0) {
+      toast.error('Insufficient Credit balance, please charge this!');
+    } else {
+      setIsLoading(true);
 
-    const strategicSummary = `
-      📄 STRATEGIC BUSINESS SUMMARY
+      const strategicSummary = `
+        📄 STRATEGIC BUSINESS SUMMARY
+  
+        • Brand Name: ${answers['brand-name'] || 'Your Business'}
+        • Product/Service: ${answers['product-service'] || 'Your offerings'}
+        • Target Audience: ${answers['target-audience'] || 'Your ideal customers'}
+        • Differentiators: ${answers['differentiator'] || 'Your unique value proposition'}
+        • Marketing Goals: ${answers['marketing-goals'] || 'Your objectives'}
+        • Communication Tone: ${answers['communication-tone'] || 'Your preferred tone'}
+        • Appears in Videos: ${answers['video-appearance'] || 'Not specified'}
+        • Channels Used: ${answers['social-platforms'] || 'Your platforms'}
+        • Limitations: ${answers['limitations'] || 'None specified'}
+        • Focus Products: ${answers['focus-products'] || 'Your priority offerings'}
+        • Positioning Status: ${answers['positioning-status'] || 'To be defined'}
+        • Competitors: ${answers['competitors'] || 'To be researched'}
+        • 3-Month Goals: ${answers['three-month-goals'] || 'Your targets'}
+  
+        🎯 This strategic foundation will be used by all other AI agents to create personalized content that aligns with your business goals and brand identity.
+      `;
+      const task = {
+        profile_id: profile.id,
+        project_id: projectId,
+        agent_type: agent.id,
+        agent_results: JSON.stringify(strategicSummary),
+        credits_spent: 1,
+      };
 
-      • Brand Name: ${answers['brand-name'] || 'Your Business'}
-      • Product/Service: ${answers['product-service'] || 'Your offerings'}
-      • Target Audience: ${answers['target-audience'] || 'Your ideal customers'}
-      • Differentiators: ${answers['differentiator'] || 'Your unique value proposition'}
-      • Marketing Goals: ${answers['marketing-goals'] || 'Your objectives'}
-      • Communication Tone: ${answers['communication-tone'] || 'Your preferred tone'}
-      • Appears in Videos: ${answers['video-appearance'] || 'Not specified'}
-      • Channels Used: ${answers['social-platforms'] || 'Your platforms'}
-      • Limitations: ${answers['limitations'] || 'None specified'}
-      • Focus Products: ${answers['focus-products'] || 'Your priority offerings'}
-      • Positioning Status: ${answers['positioning-status'] || 'To be defined'}
-      • Competitors: ${answers['competitors'] || 'To be researched'}
-      • 3-Month Goals: ${answers['three-month-goals'] || 'Your targets'}
+      await Request.Post('/api/stripe/discount', task);
+      setResult(strategicSummary);
+      addResult(agent.id, agent.title, agent.icon, strategicSummary);
 
-      🎯 This strategic foundation will be used by all other AI agents to create personalized content that aligns with your business goals and brand identity.
-    `;
-    const task = {
-      profile_id: profile.id,
-      project_id: projectId,
-      agent_type: agent.id,
-      agent_results: JSON.stringify(strategicSummary),
-      credits_spent: 1,
-    };
-
-    await Request.Post('/api/stripe/discount', task);
-    setResult(strategicSummary);
-    addResult(agent.id, agent.title, agent.icon, strategicSummary);
-
-    setIsLoading(false);
+      setIsLoading(false);
+    }
   };
 
   const handleReset = () => {
