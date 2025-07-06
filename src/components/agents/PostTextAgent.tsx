@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ChevronDown, ChevronUp, Loader2, PenTool } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,9 +13,9 @@ import {
 } from '@/components/ui/select';
 import { Agent } from '@/lib/agentType';
 import { useResults } from '@/contexts/ResultsContext';
-import { mockStrategy, mockIdea } from '@/lib/agentData';
 import { useAuth } from '@/core/auth/AuthProvider';
 import Request from '@/lib/request';
+import { toast } from 'sonner';
 
 interface PostTextAgentProps {
   agent: Agent;
@@ -50,6 +50,18 @@ interface GeneratedContent {
   };
 }
 
+interface IdeaContent {
+  title: string;
+  description: string;
+  hook: string;
+  cta: string;
+}
+
+interface Ideas {
+  option1: Record<string, IdeaContent>;
+  option2: Record<string, IdeaContent>;
+}
+
 export const PostTextAgent: React.FC<PostTextAgentProps> = ({
   agent,
   projectId,
@@ -61,29 +73,63 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
   const [generatedContent, setGeneratedContent] = useState<GeneratedContent>(
     {}
   );
-  const { addResult } = useResults();
+  const [marketingStrategy, setMarketingStrategy] = useState('');
+  const [ideas, setIdeas] = useState<Ideas | null>(null);
+  const [options, setOptions] = useState(['']); // 14 options from postIdea (2 weeks post idea)
+  const { results, addResult } = useResults();
   const [{ profile }] = useAuth();
 
   const currentQuestion = agent.questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === agent.questions.length - 1;
   const allQuestionsAnswered = agent.questions.every((q) => answers[q.id]);
 
-  const getOptions = () => {
-    const options1 = Object.entries(mockIdea.option1).map(
-      ([day, content]) => `${day} - ${content.title}`
-    );
+  function transformArrayToMockIdea(inputArray: any) {
+    const result: any = { option1: {}, option2: {} };
 
-    const options2 = Object.entries(mockIdea.option2).map(
-      ([day, content]) => `${day} - ${content.title}`
-    );
+    inputArray.forEach((item: any) => {
+      const day = item.day;
 
-    return [...options1, ...options2];
+      if (item.idea1) {
+        result.option1[day] = {
+          title: item.idea1.title,
+          description: item.idea1.description,
+          hook: item.idea1.hook,
+          cta: item.idea1.cta,
+        };
+      }
+      if (item.idea2) {
+        result.option2[day] = {
+          title: item.idea2.title,
+          description: item.idea2.description,
+          hook: item.idea2.hook,
+          cta: item.idea2.cta,
+        };
+      }
+    });
+
+    return result;
+  }
+
+  const getOptions = (tempIdea: any): any => {
+    const resultIdea: Ideas = transformArrayToMockIdea(tempIdea);
+
+    if (resultIdea !== null) {
+      const options1 = Object.entries(resultIdea.option1).map(
+        ([day, content]) => `${day} - ${content.title}`
+      );
+      const options2 = Object.entries(resultIdea.option2).map(
+        ([day, content]) => `${day} - ${content.title}`
+      );
+      return [...options1, ...options2];
+    }
+    return [];
   };
 
   const getIdea = (dayTitleStr: string) => {
     const [day, title] = dayTitleStr.split(' - ');
-    const source1 = mockIdea['option1'];
-    const source2 = mockIdea['option2'];
+    const source1 = ideas['option1'];
+    const source2 = ideas['option2'];
+    if (!source1 || !source2) return null;
 
     const match1 = Object.entries(source1).find(
       ([key, value]) => key === day && value.title === title
@@ -103,8 +149,14 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
   };
 
   const handleNext = () => {
-    if (currentQuestionIndex < agent.questions.length - 1) {
-      setCurrentQuestionIndex((prev) => prev + 1);
+    if (profile.credits_balance <= 0) {
+      toast.error('Insufficient Credit balance, please charge this!');
+    }else if (ideas === null) {
+      toast.error('Empty postIdea!, please create that!');
+    } else {
+      if (currentQuestionIndex < agent.questions.length - 1) {
+        setCurrentQuestionIndex((prev) => prev + 1);
+      }
     }
   };
 
@@ -117,7 +169,7 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
       inputs: {
         ...answers,
         'selected-idea': idea,
-        'marketing-strategy': mockStrategy,
+        'marketing-strategy': marketingStrategy,
       },
     };
 
@@ -127,19 +179,27 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
       .replace(/^```json\s*/, '')
       .replace(/```$/, '');
     const parsedJson = JSON.parse(cleanedString);
+    toast.success('PostTextScript successfully created!');
 
     const task = {
       profile_id: profile.id,
       project_id: projectId,
       agent_type: agent.id,
-      agent_results: JSON.stringify({...parsedJson, type:answers['content-type']}),
+      agent_results: JSON.stringify({
+        ...parsedJson,
+        type: answers['content-type'],
+      }),
       credits_spent: 1,
     };
 
     await Request.Post('/api/stripe/discount', task);
-    
+    toast.success('PostTextScript successfully created!');
+
     setGeneratedContent(parsedJson);
-    addResult(agent.id, agent.title, agent.icon, { ...parsedJson, type:answers['content-type']});
+    addResult(agent.id, agent.title, agent.icon, {
+      ...parsedJson,
+      type: answers['content-type'],
+    });
 
     setIsLoading(false);
   };
@@ -150,9 +210,31 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
     setGeneratedContent({});
   };
 
+  useEffect(() => {
+    let idea: any = null;
+    let marketing = '';
+    let options: any = [];
+    if (results.length > 0) {
+      results.map((result: any) => {
+        if (result.agentId === 'post-ideas') {
+          idea = result.result;
+        }
+        if (result.agentId === 'marketing-strategy') {
+          marketing = JSON.stringify(result.result);
+        }
+      });
+    }
+    if (idea !== null) {
+      options = getOptions(idea); // make 14 options from postIdea (2 weeks schedule)
+    }
+    setIdeas(idea);
+    setMarketingStrategy(marketing);
+    setOptions(options);
+  }, [results]);
+
   const renderInputField = (question: any) => {
     const value = answers[question.id] || '';
-    const options = getOptions();
+
     if (question.id === 'selected-idea') {
       return (
         <Select value={value} onValueChange={handleAnswerChange}>

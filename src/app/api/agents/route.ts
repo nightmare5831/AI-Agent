@@ -247,13 +247,39 @@ function buildPrompt(agent: Agent, inputs: Record<string, any>): string {
     case 'image-generation':
       return `Create ${inputs['visual-style'].toLowerCase()} style image for "${inputs['campaign-name'] || 'Untitled Campaign'}". 
         Base concept: ${inputs['prompt']}
+        
         Requirements:
         - Format: ${inputs['image-format']} with optimized composition
         - Style: ${inputs['visual-style']} aesthetic throughout
-        ${inputs['include-logo'] === 'Yes' ? '- Include brand logo with strategic placement' : '- No logo needed'}
-        ${inputs['include-product'] === 'Yes' ? '- Feature product as focal point or key element' : '- Focus on conceptual/lifestyle imagery'}
-
-        Design: Professional, high-engagement social media visual with clear hierarchy, modern trends, mobile-optimized layout, high contrast, and emotional storytelling. Ensure originality and commercial viability.`;
+        ${
+          inputs['include-logo'] === 'Yes'
+            ? `- Include brand logo ${inputs['logo-position'] ? `positioned at ${inputs['logo-position']}` : 'with strategic placement'}`
+            : '- No logo needed'
+        }
+        ${
+          inputs['include-product'] === 'Yes'
+            ? '- Feature product as focal point or key element'
+            : '- Focus on conceptual/lifestyle imagery'
+        }
+        
+        ${
+          inputs['logoImage']
+            ? `- Reference logo style and branding from uploaded logo image (maintain brand consistency)`
+            : ''
+        }
+        ${
+          inputs['productImage']
+            ? `- Use uploaded product image as reference for product appearance, color, and styling`
+            : ''
+        }
+        
+        Design: Professional, high-engagement social media visual with clear hierarchy, modern trends, mobile-optimized layout, high contrast, and emotional storytelling. Ensure originality and commercial viability.
+        
+        ${
+          inputs['logoImage'] || inputs['productImage']
+            ? 'Note: Incorporate visual elements and styling from the reference images while maintaining the specified aesthetic style.'
+            : ''
+        }`;
       break;
 
     case 'seo-optimization':
@@ -355,12 +381,74 @@ export const POST = async (request: Request) => {
 
     const prompt = buildPrompt(agent, inputs);
     if (agent === 'image-generation') {
+      // If reference images are provided, use them to enhance the prompt
+      let enhancedPrompt = prompt;
+
+      if (inputs['logoImage'] || inputs['productImage']) {
+        // Use vision API to analyze reference images first
+        const content: Array<{
+          type: 'text' | 'image_url';
+          text?: string;
+          image_url?: { url: string };
+        }> = [
+          {
+            type: 'text',
+            text: 'Analyze these reference images and provide a detailed description of their visual elements:',
+          },
+        ];
+
+        // Add logo image if present
+        if (inputs['logoImage']) {
+          content.push({
+            type: 'image_url',
+            image_url: { url: inputs['logoImage'] },
+          });
+        }
+
+        // Add product image if present
+        if (inputs['productImage']) {
+          content.push({
+            type: 'image_url',
+            image_url: { url: inputs['productImage'] },
+          });
+        }
+
+        const visionResponse = await openai.chat.completions.create({
+          model: 'gpt-4o',
+          messages: [
+            {
+              role: 'system',
+              content:
+                'You are a visual design expert. Analyze the provided reference images and describe their key visual elements, colors, style, and branding elements that should be incorporated into a new image generation.',
+            },
+            {
+              role: 'user',
+              content: content as any, // Type assertion to bypass strict typing
+            },
+          ],
+          max_tokens: 500,
+        });
+
+        const imageDescription =
+          visionResponse.choices[0].message?.content || '';
+
+        // Enhance the prompt with analyzed image details
+        enhancedPrompt = `${prompt}
+        REFERENCE IMAGE ANALYSIS:
+        ${imageDescription}
+        
+        IMPORTANT: Incorporate the visual elements, colors, and styling described above while maintaining the specified aesthetic and composition requirements.`;
+      }
+      
+      // Generate the image with enhanced prompt
       const image = await openai.images.generate({
         model: 'dall-e-3',
-        prompt: prompt,
+        prompt: enhancedPrompt,
         n: 1,
         size: '1024x1024',
+        quality: 'hd', // Use HD quality for better results
       });
+
       return NextResponse.json({ type: 'image', image: image.data[0].url });
     }
 
