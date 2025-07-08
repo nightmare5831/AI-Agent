@@ -276,7 +276,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
             {question.options?.map((option: string) => (
               <div key={option} className="flex items-center space-x-2">
                 <RadioGroupItem value={option} id={option} />
-                <Label htmlFor={option} className="text-sm">
+                <Label htmlFor={option} className="text-sm dark:text-slate-300">
                   {option}
                 </Label>
               </div>
@@ -302,9 +302,9 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
                     }
                     handleAnswerChange(newValues.join(','));
                   }}
-                  className="rounded border-gray-300"
+                  className="rounded border-gray-300 dark:border-gray-600"
                 />
-                <Label htmlFor={`${question.id}-${option}`} className="text-sm">
+                <Label htmlFor={`${question.id}-${option}`} className="text-sm dark:text-slate-300">
                   {option}
                 </Label>
               </div>
@@ -318,7 +318,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
   };
 
   return (
-    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:shadow-md">
+    <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm transition-all duration-300 hover:shadow-md">
       <div
         className="cursor-pointer p-6"
         onClick={() => setIsExpanded(!isExpanded)}
@@ -327,13 +327,13 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
           <div className="flex items-center space-x-3">
             <div className="text-2xl">{agent.icon}</div>
             <div>
-              <h3 className="text-lg font-semibold text-slate-800">
+              <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
                 {agent.title}
               </h3>
-              <p className="mt-1 text-sm text-slate-600">{agent.description}</p>
+              <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{agent.description}</p>
             </div>
           </div>
-          <div className="text-slate-400">
+          <div className="text-slate-400 dark:text-slate-500">
             {isExpanded ? (
               <ChevronUp className="h-5 w-5" />
             ) : (
@@ -344,18 +344,18 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
       </div>
 
       {isExpanded && (
-        <div className="border-t border-slate-100 bg-slate-50 p-6">
+        <div className="border-t border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-6">
           {!allQuestionsAnswered ? (
             <>
               <div className="mb-4">
-                <div className="mb-2 flex justify-between text-sm text-slate-600">
+                <div className="mb-2 flex justify-between text-sm text-slate-600 dark:text-slate-300">
                   <span>
                     Question {currentQuestionIndex + 1} of{' '}
                     {filteredQuestions.length}
                   </span>
                   <span className="text-pink-600">🎨 Image Generator</span>
                 </div>
-                <div className="h-2 w-full rounded-full bg-slate-200">
+                <div className="h-2 w-full rounded-full bg-slate-200 dark:bg-slate-600">
                   <div
                     className="h-2 rounded-full bg-pink-600 transition-all duration-300"
                     style={{
@@ -367,7 +367,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
 
               <div className="space-y-4">
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-700">
+                  <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
                     {currentQuestion.question}
                   </label>
                   {renderInputField(currentQuestion)}
@@ -378,7 +378,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
                       <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-4">
                         <Label
                           htmlFor="logo-upload"
-                          className="mb-2 block text-sm font-medium text-slate-700"
+                          className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300"
                         >
                           Upload Logo File
                         </Label>
@@ -390,7 +390,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
                             onChange={handleLogoFileChange}
                             className="text-sm"
                           />
-                          <Upload className="h-4 w-4 text-slate-500" />
+                          <Upload className="h-4 w-4 text-slate-500 dark:text-slate-400" />
                         </div>
                         {logoFile && (
                           <p className="mt-2 text-xs text-green-600">
@@ -405,7 +405,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
                       <div className="mt-4 rounded-lg border border-green-200 bg-green-50 p-4">
                         <Label
                           htmlFor="product-upload"
-                          className="mb-2 block text-sm font-medium text-slate-700"
+                          className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300"
                         >
                           Upload Product Image
                         </Label>
@@ -417,7 +417,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
                             onChange={handleProductImageFileChange}
                             className="text-sm"
                           />
-                          <Upload className="h-4 w-4 text-slate-500" />
+                          <Upload className="h-4 w-4 text-slate-500 dark:text-slate-400" />
                         </div>
                         {productImageFile && (
                           <p className="mt-2 text-xs text-green-600">
@@ -519,8 +519,8 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
               ) : (
                 /* Generated Image Display */
                 <div className="mx-auto max-w-4xl space-y-6">
-                  <div className="rounded-lg border border-purple-200 bg-white p-4">
-                    <h4 className="mb-4 flex items-center font-medium text-slate-800">
+                  <div className="rounded-lg border border-purple-200 dark:border-purple-700 bg-white dark:bg-slate-800 p-4">
+                    <h4 className="mb-4 flex items-center font-medium text-slate-800 dark:text-slate-100">
                       <Sparkles className="mr-2 h-5 w-5 text-purple-600" />
                       Your AI-generated image :
                     </h4>
@@ -564,7 +564,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
                         <Button
                           onClick={handleReset}
                           variant="outline"
-                          className="flex items-center text-slate-600"
+                          className="flex items-center text-slate-600 dark:text-slate-300"
                         >
                           <Image className="mr-2 h-4 w-4" />
                           Generate New Image

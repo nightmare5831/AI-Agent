@@ -51,8 +51,8 @@ const AgentPage = () => {
   const handleDeleteProject = async () => {
     if (projects.length > 1) {
       const updatedProjects = projects.filter((p) => p.id !== selectedProject);
-      const response = await deleteProject(profile.id, selectedProject)
-      toast.info(`Project ${response} was successfully removed!`)
+      const response = await deleteProject(profile.id, selectedProject);
+      toast.info(`Project ${response} was successfully removed!`);
       setProjects(updatedProjects);
       setSelectedProject(updatedProjects[0].id);
     }
@@ -128,21 +128,23 @@ const AgentPage = () => {
   }, [selectedProject]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4 md:p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4 md:p-6 dark:from-slate-900 dark:to-slate-800">
       <div className="mx-auto max-w-7xl">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="mb-2 text-4xl font-bold text-slate-800">AI Agents</h1>
-          <p className="text-lg text-slate-600">
+          <h1 className="mb-2 text-4xl font-bold text-slate-800 dark:text-slate-100">
+            AI Agents
+          </h1>
+          <p className="text-lg text-slate-600 dark:text-slate-300">
             Transform your content marketing with intelligent AI agents
           </p>
         </div>
 
         {/* Project Management Panel */}
-        <div className="mb-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="mb-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="flex-1">
-              <label className="mb-2 block text-sm font-medium text-slate-700">
+              <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
                 Active Project
               </label>
               <Select
@@ -187,11 +189,11 @@ const AgentPage = () => {
           </div>
 
           {selectedProjectData && (
-            <div className="mt-4 rounded-lg bg-slate-50 p-4">
-              <h3 className="font-semibold text-slate-800">
+            <div className="mt-4 rounded-lg bg-slate-50 p-4 dark:bg-slate-700">
+              <h3 className="font-semibold text-slate-800 dark:text-slate-100">
                 {selectedProjectData.name}
               </h3>
-              <p className="mt-1 text-sm text-slate-600">
+              <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
                 {selectedProjectData.description}
               </p>
             </div>
@@ -200,12 +202,12 @@ const AgentPage = () => {
 
         {/* Delete Confirmation */}
         {showDeleteConfirm && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
+          <div className="w-full max-w-md rounded-lg bg-white p-6 dark:bg-slate-800">
             <div className="w-full max-w-md rounded-lg bg-white p-6">
-              <h3 className="mb-2 text-lg font-semibold text-slate-800">
+              <h3 className="mb-2 text-lg font-semibold text-slate-800 dark:text-slate-100">
                 Delete Project
               </h3>
-              <p className="mb-4 text-slate-600">
+              <p className="mb-4 text-slate-600 dark:text-slate-300">
                 Are you sure you want to delete "{selectedProjectData?.name}"?
                 This action cannot be undone.
               </p>

@@ -227,9 +227,9 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
                       : selectedOptions.filter((item) => item !== option);
                     handleAnswerChange(newSelection.join(','));
                   }}
-                  className="rounded border-gray-300"
+                  className="rounded border-gray-300 dark:border-gray-600"
                 />
-                <span className="text-sm">{option}</span>
+                <span className="text-sm dark:text-slate-300">{option}</span>
               </label>
             ))}
           </div>
@@ -241,7 +241,7 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
   };
 
   return (
-    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:shadow-md">
+    <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm transition-all duration-300 hover:shadow-md">
       <div
         className="cursor-pointer p-6"
         onClick={() => setIsExpanded(!isExpanded)}
@@ -250,13 +250,13 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
           <div className="flex items-center space-x-3">
             <div className="text-2xl">{agent.icon}</div>
             <div>
-              <h3 className="text-lg font-semibold text-slate-800">
+              <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
                 {agent.title}
               </h3>
-              <p className="mt-1 text-sm text-slate-600">{agent.description}</p>
+              <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{agent.description}</p>
             </div>
           </div>
-          <div className="text-slate-400">
+          <div className="text-slate-400 dark:text-slate-500">
             {isExpanded ? (
               <ChevronUp className="h-5 w-5" />
             ) : (
@@ -267,11 +267,11 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
       </div>
 
       {isExpanded && (
-        <div className="border-t border-slate-100 bg-slate-50 p-6">
+        <div className="border-t border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-6">
           {!isCompleted ? (
             <>
               <div className="mb-4">
-                <div className="mb-2 flex justify-between text-sm text-slate-600">
+                <div className="mb-2 flex justify-between text-sm text-slate-600 dark:text-slate-300">
                   <span>
                     Question {currentQuestionIndex + 1} of{' '}
                     {agent.questions.length}
@@ -280,7 +280,7 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
                     💡 Creative Strategist
                   </span>
                 </div>
-                <div className="h-2 w-full rounded-full bg-slate-200">
+                <div className="h-2 w-full rounded-full bg-slate-200 dark:bg-slate-600">
                   <div
                     className="h-2 rounded-full bg-purple-600 transition-all duration-300"
                     style={{
@@ -292,7 +292,7 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
 
               <div className="space-y-4">
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-700">
+                  <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
                     {currentQuestion.question}
                   </label>
                   {renderInputField(currentQuestion)}
@@ -325,11 +325,11 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
             <>
               {contentIdeas.length === 0 ? (
                 <div className="space-y-4 text-center">
-                  <div className="mb-4 rounded-lg border border-blue-200 bg-blue-50 p-4">
-                    <h4 className="mb-2 font-medium text-blue-800">
+                  <div className="mb-4 rounded-lg border border-blue-200 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/50 p-4">
+                    <h4 className="mb-2 font-medium text-blue-800 dark:text-blue-200">
                       📋 Using Data From Previous Agents:
                     </h4>
-                    <div className="space-y-1 text-sm text-blue-700">
+                    <div className="space-y-1 text-sm text-blue-700 dark:text-blue-300">
                       <p>
                         <strong>Brand:</strong> {mockBrandStrategy.brandName}
                       </p>
@@ -366,8 +366,8 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
                 </div>
               ) : (
                 <div className="space-y-6">
-                  <div className="rounded-lg border border-purple-200 bg-white p-4">
-                    <h4 className="mb-4 flex items-center font-medium text-slate-800">
+                  <div className="rounded-lg border border-purple-200 dark:border-purple-700 bg-white dark:bg-slate-800 p-4">
+                    <h4 className="mb-4 flex items-center font-medium text-slate-800 dark:text-slate-100">
                       <Sparkles className="mr-2 h-5 w-5 text-purple-600" />
                       Creative Content Ideas (2 per post):
                     </h4>

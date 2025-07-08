@@ -5,18 +5,23 @@ export const languageFlags = [
     flag: '/assets/images/flags/us.svg',
   },
   {
-    code: 'fr',
-    name: 'French',
-    flag: '/assets/images/flags/fr.svg',
+    code: 'pt',
+    name: 'Portuguese',
+    flag: '/assets/images/flags/pt.svg',
   },
   {
     code: 'es',
     name: 'Spanish',
     flag: '/assets/images/flags/es.svg',
   },
-  {
-    code: 'de',
-    name: 'German',
-    flag: '/assets/images/flags/de.svg',
-  },
+  // {
+  //   code: 'fr',
+  //   name: 'French',
+  //   flag: '/assets/images/flags/fr.svg',
+  // },
+  // {
+  //   code: 'de',
+  //   name: 'German',
+  //   flag: '/assets/images/flags/de.svg',
+  // },
 ];
