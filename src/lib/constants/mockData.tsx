@@ -1,5 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-import { Download, Calendar, BarChart2, PieChart as PieChartIcon, LineChart as LineChartIcon, Users, CreditCard, RefreshCw } from "lucide-react";
+import { Calendar, BarChart2, PieChart as PieChartIcon, LineChart as LineChartIcon, Users, CreditCard} from "lucide-react";
 
 export const adminUsers = [
   {
@@ -295,8 +294,6 @@ export const subscriptions = [
   },
 ];
 
-
-///// Admin Reports
 export const userActivityData = [
   { name: "Mon", active: 65, new: 4 },
   { name: "Tue", active: 59, new: 2 },
@@ -368,7 +365,6 @@ export const availableReports = [
   },
 ];
 
-// System stats
 export const systemStats = [
   { name: "Total Users", value: "247", change: "+12%", isPositive: true },
   { name: "Active Subscriptions", value: "198", change: "+8%", isPositive: true },

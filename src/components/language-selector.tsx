@@ -18,7 +18,7 @@ interface LanguageContextType {
 }
 
 export const LanguageContext = createContext<LanguageContextType>({
-  selectedLanguage: 'de',
+  selectedLanguage: 'en',
   setSelectedLanguage: () => {},
   t: () => '',
 });
@@ -26,10 +26,9 @@ export const LanguageContext = createContext<LanguageContextType>({
 export const useLanguage = () => useContext(LanguageContext);
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [selectedLanguage, setSelectedLanguage] = useState('de');
+  const [selectedLanguage, setSelectedLanguage] = useState('en');
 
   useEffect(() => {
-    // Load saved language preference
     const savedLanguage = localStorage.getItem('preferredLanguage');
     if (
       savedLanguage &&

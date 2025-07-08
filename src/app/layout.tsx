@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { AuthProvider } from '@/core/auth/AuthProvider';
 import { Toaster } from 'sonner';
+import { LanguageProvider } from '@/components/language-selector';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
   title: 'SmartAgent',
   description: 'A modern SASS AI Agent Platform Integrated WhatsAPP ',
   icons: {
-    icon:'/favicon.ico',
+    icon: '/favicon.ico',
   },
 };
 
@@ -20,19 +21,20 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <AuthProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
+          <LanguageProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+            </ThemeProvider>
+          </LanguageProvider>
         </AuthProvider>
         <Toaster
           richColors
