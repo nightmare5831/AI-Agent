@@ -25,29 +25,29 @@ export const renderGeneratedContent = (content : any) => {
   return (
     <div className="space-y-6">
       {content && selectedTypes.includes('Social Media Caption') && (
-        <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
-          <h5 className="mb-3 flex items-center font-medium text-blue-800">
+        <div className="rounded-lg border border-blue-200 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/50 p-4">
+          <h5 className="mb-3 flex items-center font-medium text-blue-800 dark:text-blue-200">
             <FileText className="mr-2 h-4 w-4" />
             Social Media Caption
           </h5>
           <div className="space-y-3 text-sm">
             <div>
               <strong>Headline:</strong>
-              <p className="mt-1 text-blue-700">{content.headline}</p>
+              <p className="mt-1 text-blue-700 dark:text-blue-300">{content.headline}</p>
             </div>
             <div>
               <strong>Copy:</strong>
-              <p className="mt-1 whitespace-pre-line text-blue-700">
+              <p className="mt-1 whitespace-pre-line text-blue-700 dark:text-blue-300">
                 {content.copy}
               </p>
             </div>
             <div>
               <strong>Call-to-Action:</strong>
-              <p className="mt-1 text-blue-700">{content.cta}</p>
+              <p className="mt-1 text-blue-700 dark:text-blue-300">{content.cta}</p>
             </div>
             <div>
               <strong>Hashtags:</strong>
-              <p className="mt-1 text-blue-700">
+              <p className="mt-1 text-blue-700 dark:text-blue-300">
                 {content.hashtags.join(' ')}
               </p>
             </div>
@@ -56,39 +56,39 @@ export const renderGeneratedContent = (content : any) => {
       )}
 
       {content && selectedTypes.includes('Page Copy (Website/WhatsApp)') && (
-          <div className="rounded-lg border border-green-200 bg-green-50 p-4">
-            <h5 className="mb-3 flex items-center font-medium text-green-800">
+          <div className="rounded-lg border border-green-200 dark:border-green-700 bg-green-50 dark:bg-green-900/50 p-4">
+            <h5 className="mb-3 flex items-center font-medium text-green-800 dark:text-green-200">
               <FileText className="mr-2 h-4 w-4" />
               Page Copy
             </h5>
             <div className="space-y-3 text-sm">
               <div>
                 <strong>Title:</strong>
-                <p className="mt-1 text-green-700">{content.title}</p>
+                <p className="mt-1 text-green-700 dark:text-green-300">{content.title}</p>
               </div>
               <div>
                 <strong>Subtitle:</strong>
-                <p className="mt-1 text-green-700">
+                <p className="mt-1 text-green-700 dark:text-green-300">
                   {content.subtitle}
                 </p>
               </div>
               <div>
                 <strong>Content:</strong>
-                <p className="mt-1 whitespace-pre-line text-green-700">
+                <p className="mt-1 whitespace-pre-line text-green-700 dark:text-green-300">
                   {content.content}
                 </p>
               </div>
               <div>
                 <strong>CTA:</strong>
-                <p className="mt-1 text-green-700">{content.cta}</p>
+                <p className="mt-1 text-green-700 dark:text-green-300">{content.cta}</p>
               </div>
             </div>
           </div>
         )}
 
       {content && selectedTypes.includes('AI Image Generation Script') && (
-          <div className="rounded-lg border border-purple-200 bg-purple-50 p-4">
-            <h5 className="mb-3 flex items-center font-medium text-purple-800">
+          <div className="rounded-lg border border-purple-200 dark:border-purple-700 bg-purple-50 dark:bg-purple-900/50 p-4">
+            <h5 className="mb-3 flex items-center font-medium text-purple-800 dark:text-purple-200">
               <Image className="mr-2 h-4 w-4" />
               AI Image Generation Script
             </h5>
@@ -123,9 +123,9 @@ export const renderGeneratedContent = (content : any) => {
               <p>
                 <strong>Orientation:</strong> {content.orientation}
               </p>
-              <div className="mt-3 rounded bg-purple-100 p-3">
+              <div className="mt-3 rounded bg-purple-100 dark:bg-purple-800/30 p-3">
                 <strong>Final AI Prompt:</strong>
-                <p className="mt-1 italic text-purple-800">
+                <p className="mt-1 italic text-purple-800 dark:text-purple-200">
                   "{content.finalPrompt}"
                 </p>
               </div>
@@ -141,11 +141,11 @@ export const ResultsDashboard: React.FC = () => {
 
   if (results.length === 0) {
     return (
-      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h3 className="mb-2 text-lg font-semibold text-slate-800">
+      <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm">
+        <h3 className="mb-2 text-lg font-semibold text-slate-800 dark:text-slate-100">
           Agent Results
         </h3>
-        <p className="text-sm text-slate-600">
+        <p className="text-sm text-slate-600 dark:text-slate-300">
           No results yet. Run any agent to see results here.
         </p>
       </div>
@@ -164,12 +164,12 @@ export const ResultsDashboard: React.FC = () => {
     // For other agent types, display as string
     if (agentId === 'marketing-strategy' && typeof result === 'string') {
       return (
-        <div className="text-sm text-slate-700">
-          <div className="rounded-lg border border-green-200 bg-white p-4">
-            <h4 className="mb-2 font-medium text-slate-800">
+        <div className="text-sm text-slate-700 dark:text-slate-300">
+          <div className="rounded-lg border border-green-200 dark:border-green-700 bg-white dark:bg-slate-800 p-4">
+            <h4 className="mb-2 font-medium text-slate-800 dark:text-slate-100">
               Marketing Strategy Summary:
             </h4>
-            <div className="whitespace-pre-line text-slate-700">{result}</div>
+            <div className="whitespace-pre-line text-slate-700 dark:text-slate-300">{result}</div>
           </div>
         </div>
       );
@@ -177,8 +177,8 @@ export const ResultsDashboard: React.FC = () => {
 
     if (agentId === 'marketing-calendar' && Array.isArray(result)) {
       return (
-        <div className="rounded-lg border border-green-200 bg-white p-4">
-          <h4 className="mb-4 font-medium text-slate-800">
+        <div className="rounded-lg border border-green-200 dark:border-green-700 bg-white dark:bg-slate-800 p-4">
+          <h4 className="mb-4 font-medium text-slate-800 dark:text-slate-100">
             Your 7-Day Content Schedule:
           </h4>
           <div className="max-w-full overflow-x-auto">
@@ -219,20 +219,20 @@ export const ResultsDashboard: React.FC = () => {
           {result.map((item, index) => (
             <div key={index} className="border-l-4 border-purple-300 pl-4">
               <div className="mb-3">
-                <h5 className="font-semibold text-slate-800">
+                <h5 className="font-semibold text-slate-800 dark:text-slate-100">
                   {item.day} - {item.channel} ({item.format})
                 </h5>
-                <p className="text-sm text-slate-600">
+                <p className="text-sm text-slate-600 dark:text-slate-300">
                   Original: {item.originalDescription}
                 </p>
               </div>
 
               <div className="grid gap-4 md:grid-cols-2">
-                <div className="rounded-lg border border-green-200 bg-green-50 p-3">
-                  <h6 className="mb-2 font-medium text-green-800">
+                <div className="rounded-lg border border-green-200 dark:border-green-700 bg-green-50 dark:bg-green-900/50 p-3">
+                  <h6 className="mb-2 font-medium text-green-800 dark:text-green-200">
                     💡 Idea 1: {item.idea1.title}
                   </h6>
-                  <p className="mb-2 text-sm text-green-700">
+                  <p className="mb-2 text-sm text-green-700 dark:text-green-300">
                     {item.idea1.description}
                   </p>
                   <div className="space-y-1 text-xs">
@@ -245,11 +245,11 @@ export const ResultsDashboard: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="rounded-lg border border-blue-200 bg-blue-50 p-3">
-                  <h6 className="mb-2 font-medium text-blue-800">
+                <div className="rounded-lg border border-blue-200 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/50 p-3">
+                  <h6 className="mb-2 font-medium text-blue-800 dark:text-blue-200">
                     💡 Idea 2: {item.idea2.title}
                   </h6>
-                  <p className="mb-2 text-sm text-blue-700">
+                  <p className="mb-2 text-sm text-blue-700 dark:text-blue-300">
                     {item.idea2.description}
                   </p>
                   <div className="space-y-1 text-xs">
@@ -286,14 +286,14 @@ export const ResultsDashboard: React.FC = () => {
               className="max-h-[150px] max-w-[150px] rounded border object-cover"
             />
             <div className="flex-1">
-              <div className="text-md text-slate-700">
+              <div className="text-md text-slate-700 dark:text-slate-300">
                 CampaignName:{' '}
                 {result.settings.campaignName || 'Generated Image'}
               </div>
-              <div className="mt-1 text-sm text-slate-500">
+              <div className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                 Style: {result.settings?.style}
               </div>
-              <div className="mt-1 text-sm text-slate-500">
+              <div className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                 Format: {result.settings?.format}
               </div>
               <button
@@ -305,7 +305,7 @@ export const ResultsDashboard: React.FC = () => {
               </button>
             </div>
           </div>
-          <div className="text-md rounded bg-slate-50 p-2 text-slate-600">
+          <div className="text-md rounded bg-slate-50 dark:bg-slate-900 p-2 text-slate-600 dark:text-slate-300">
             <strong>Prompt:</strong> {result.prompt.substring(0, 300)}...
           </div>
         </div>
@@ -314,21 +314,21 @@ export const ResultsDashboard: React.FC = () => {
 
     if (agentId === 'seo-optimization' && result) {
       return (
-        <div className="border-t border-slate-100 bg-slate-50 p-6">
+        <div className="border-t border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-6">
           <div className="space-y-4">
             {result.type === 'Content Optimization' ? (
               <div className="space-y-4">
-                <div className="rounded-lg border bg-green-50 p-4">
-                  <h3 className="mb-2 font-semibold text-green-800">
+                <div className="rounded-lg border border-green-200 dark:border-green-700 bg-green-50 dark:bg-green-900/50 p-4">
+                  <h3 className="mb-2 font-semibold text-green-800 dark:text-green-200">
                     ✨ Optimized Opening
                   </h3>
-                  <p className="text-sm text-green-700">
+                  <p className="text-sm text-green-700 dark:text-green-300">
                     {result.optimizedOpening}
                   </p>
                 </div>
 
-                <div className="rounded-lg border bg-blue-50 p-4">
-                  <h3 className="mb-2 font-semibold text-blue-800">
+                <div className="rounded-lg border border-blue-200 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/50 p-4">
+                  <h3 className="mb-2 font-semibold text-blue-800 dark:text-blue-200">
                     # Suggested Hashtags
                   </h3>
                   <div className="flex flex-wrap gap-2">
@@ -336,7 +336,7 @@ export const ResultsDashboard: React.FC = () => {
                       (tag: string, index: number) => (
                         <span
                           key={index}
-                          className="rounded bg-blue-200 px-2 py-1 text-xs text-blue-800"
+                          className="rounded bg-blue-200 dark:bg-blue-800/50 px-2 py-1 text-xs text-blue-800 dark:text-blue-200"
                         >
                           {tag}
                         </span>
@@ -345,55 +345,55 @@ export const ResultsDashboard: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="rounded-lg border bg-purple-50 p-4">
-                  <h3 className="mb-2 font-semibold text-purple-800">
+                <div className="rounded-lg border border-purple-200 dark:border-purple-700 bg-purple-50 dark:bg-purple-900/50 p-4">
+                  <h3 className="mb-2 font-semibold text-purple-800 dark:text-purple-200">
                     🎯 Improved CTA
                   </h3>
-                  <p className="text-sm text-purple-700">
+                  <p className="text-sm text-purple-700 dark:text-purple-300">
                     {result.improvedCTA}
                   </p>
                 </div>
 
-                <div className="rounded-lg border bg-orange-50 p-4">
-                  <h3 className="mb-2 font-semibold text-orange-800">
+                <div className="rounded-lg border border-orange-200 dark:border-orange-700 bg-orange-50 dark:bg-orange-900/50 p-4">
+                  <h3 className="mb-2 font-semibold text-orange-800 dark:text-orange-200">
                     🌀 Alternative Caption
                   </h3>
-                  <p className="text-sm text-orange-700">
+                  <p className="text-sm text-orange-700 dark:text-orange-300">
                     {result.alternativeCaption}
                   </p>
                 </div>
               </div>
             ) : (
               <div className="space-y-4">
-                <div className="rounded-lg border bg-green-50 p-4">
-                  <h3 className="mb-2 font-semibold text-green-800">
+                <div className="rounded-lg border border-green-200 dark:border-green-700 bg-green-50 dark:bg-green-900/50 p-4">
+                  <h3 className="mb-2 font-semibold text-green-800 dark:text-green-200">
                     ✨ Suggested BIO
                   </h3>
-                  <p className="text-sm text-green-700">
+                  <p className="text-sm text-green-700 dark:text-green-300">
                     {result.suggestedBio}
                   </p>
                 </div>
 
-                <div className="rounded-lg border bg-blue-50 p-4">
-                  <h3 className="mb-2 font-semibold text-blue-800">
+                <div className="rounded-lg border border-blue-200 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/50 p-4">
+                  <h3 className="mb-2 font-semibold text-blue-800 dark:text-blue-200">
                     🏷️ Suggested Username
                   </h3>
-                  <p className="font-mono text-sm text-blue-700">
+                  <p className="font-mono text-sm text-blue-700 dark:text-blue-300">
                     {result.suggestedUsername}
                   </p>
                 </div>
 
-                <div className="rounded-lg border bg-purple-50 p-4">
-                  <h3 className="mb-2 font-semibold text-purple-800">
+                <div className="rounded-lg border border-purple-200 dark:border-purple-700 bg-purple-50 dark:bg-purple-900/50 p-4">
+                  <h3 className="mb-2 font-semibold text-purple-800 dark:text-purple-200">
                     📝 Suggested Profile Name
                   </h3>
-                  <p className="text-sm text-purple-700">
+                  <p className="text-sm text-purple-700 dark:text-purple-300">
                     {result.suggestedProfileName}
                   </p>
                 </div>
 
-                <div className="rounded-lg border bg-orange-50 p-4">
-                  <h3 className="mb-2 font-semibold text-orange-800">
+                <div className="rounded-lg border border-orange-200 dark:border-orange-700 bg-orange-50 dark:bg-orange-900/50 p-4">
+                  <h3 className="mb-2 font-semibold text-orange-800 dark:text-orange-200">
                     🔘 Instagram Highlights
                   </h3>
                   <div className="flex flex-wrap gap-2">
@@ -401,7 +401,7 @@ export const ResultsDashboard: React.FC = () => {
                       (highlight: string, index: number) => (
                         <span
                           key={index}
-                          className="rounded-full bg-orange-200 px-2 py-1 text-xs text-orange-800"
+                          className="rounded-full bg-orange-200 dark:bg-orange-800/50 px-2 py-1 text-xs text-orange-800 dark:text-orange-200"
                         >
                           {highlight}
                         </span>
@@ -410,17 +410,17 @@ export const ResultsDashboard: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="rounded-lg border bg-green-50 p-4">
-                  <h3 className="mb-2 font-semibold text-green-800">
+                <div className="rounded-lg border border-green-200 dark:border-green-700 bg-green-50 dark:bg-green-900/50 p-4">
+                  <h3 className="mb-2 font-semibold text-green-800 dark:text-green-200">
                     🔗 Link in Bio CTA
                   </h3>
-                  <p className="text-sm text-green-700">
+                  <p className="text-sm text-green-700 dark:text-green-300">
                     {result.linkInBioCTA}
                   </p>
                 </div>
 
-                <div className="rounded-lg border bg-indigo-50 p-4">
-                  <h3 className="mb-2 font-semibold text-indigo-800">
+                <div className="rounded-lg border border-indigo-200 dark:border-indigo-700 bg-indigo-50 dark:bg-indigo-900/50 p-4">
+                  <h3 className="mb-2 font-semibold text-indigo-800 dark:text-indigo-200">
                     🧠 SEO Keywords
                   </h3>
                   <div className="flex flex-wrap gap-2">
@@ -428,7 +428,7 @@ export const ResultsDashboard: React.FC = () => {
                       (keyword: string, index: number) => (
                         <span
                           key={index}
-                          className="rounded bg-indigo-200 px-2 py-1 text-xs text-indigo-800"
+                          className="rounded bg-indigo-200 dark:bg-indigo-800/50 px-2 py-1 text-xs text-indigo-800 dark:text-indigo-200"
                         >
                           {keyword}
                         </span>
@@ -444,16 +444,16 @@ export const ResultsDashboard: React.FC = () => {
     }
 
     return (
-      <div className="text-sm text-slate-700">
+      <div className="text-sm text-slate-700 dark:text-slate-300">
         {JSON.stringify(result).substring(0, 200)}...
       </div>
     );
   };
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm">
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-slate-800">Agent Results</h3>
+        <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">Agent Results</h3>
         <Button
           variant="outline"
           size="sm"
@@ -469,22 +469,22 @@ export const ResultsDashboard: React.FC = () => {
         {results.map((result) => (
           <div
             key={`${result.agentId}-${result.timestamp.getTime()}`}
-            className="rounded-lg border border-slate-200 p-4"
+            className="rounded-lg border border-slate-200 dark:border-slate-700 p-4"
           >
             <div className="mb-3 flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <span className="text-lg">{result.agentIcon}</span>
-                <h4 className="font-medium text-slate-800">
+                <h4 className="font-medium text-slate-800 dark:text-slate-100">
                   {result.agentTitle}
                 </h4>
               </div>
-              <div className="flex items-center text-xs text-slate-500">
+              <div className="flex items-center text-xs text-slate-500 dark:text-slate-400">
                 <Clock className="mr-1 h-3 w-3" />
                 {formatTimestamp(result.timestamp)}
               </div>
             </div>
 
-            <div className="rounded bg-slate-50 p-3">
+            <div className="rounded bg-slate-50 dark:bg-slate-900 p-3">
               {renderResult(result.result, result.agentId)}
             </div>
           </div>

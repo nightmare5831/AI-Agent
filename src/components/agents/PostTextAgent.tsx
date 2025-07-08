@@ -302,9 +302,9 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
                       : selectedOptions.filter((item) => item !== option);
                     handleAnswerChange(newSelection.join(','));
                   }}
-                  className="rounded border-gray-300"
+                  className="rounded border-gray-300 dark:border-gray-600"
                 />
-                <span className="text-sm">{option}</span>
+                <span className="text-sm dark:text-slate-300">{option}</span>
               </label>
             ))}
           </div>
@@ -316,7 +316,7 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
   };
 
   return (
-    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:shadow-md">
+    <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm transition-all duration-300 hover:shadow-md">
       <div
         className="cursor-pointer p-6"
         onClick={() => setIsExpanded(!isExpanded)}
@@ -325,13 +325,13 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
           <div className="flex items-center space-x-3">
             <div className="text-2xl">{agent.icon}</div>
             <div>
-              <h3 className="text-lg font-semibold text-slate-800">
+              <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
                 {agent.title}
               </h3>
-              <p className="mt-1 text-sm text-slate-600">{agent.description}</p>
+              <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{agent.description}</p>
             </div>
           </div>
-          <div className="text-slate-400">
+          <div className="text-slate-400 dark:text-slate-500">
             {isExpanded ? (
               <ChevronUp className="h-5 w-5" />
             ) : (
@@ -342,18 +342,18 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
       </div>
 
       {isExpanded && (
-        <div className="border-t border-slate-100 bg-slate-50 p-6">
+        <div className="border-t border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-6">
           {!allQuestionsAnswered ? (
             <>
               <div className="mb-4">
-                <div className="mb-2 flex justify-between text-sm text-slate-600">
+                <div className="mb-2 flex justify-between text-sm text-slate-600 dark:text-slate-300">
                   <span>
                     Question {currentQuestionIndex + 1} of{' '}
                     {agent.questions.length}
                   </span>
                   <span className="text-orange-600">✍️ Content Writer</span>
                 </div>
-                <div className="h-2 w-full rounded-full bg-slate-200">
+                <div className="h-2 w-full rounded-full bg-slate-200 dark:bg-slate-600">
                   <div
                     className="h-2 rounded-full bg-orange-600 transition-all duration-300"
                     style={{
@@ -365,7 +365,7 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
 
               <div className="space-y-4">
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-700">
+                  <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
                     {currentQuestion.question}
                   </label>
                   {renderInputField(currentQuestion)}
@@ -421,8 +421,8 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
                 </div>
               ) : (
                 <div className="space-y-6">
-                  <div className="rounded-lg border border-orange-200 bg-white p-4">
-                    <h4 className="mb-4 flex items-center font-medium text-slate-800">
+                  <div className="rounded-lg border border-orange-200 dark:border-orange-700 bg-white dark:bg-slate-800 p-4">
+                    <h4 className="mb-4 flex items-center font-medium text-slate-800 dark:text-slate-100">
                       <PenTool className="mr-2 h-5 w-5 text-orange-600" />
                       Generated Content & Scripts:
                     </h4>

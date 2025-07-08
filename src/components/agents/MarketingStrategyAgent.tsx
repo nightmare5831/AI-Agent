@@ -194,7 +194,7 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
   };
 
   return (
-    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:shadow-md">
+    <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm transition-all duration-300 hover:shadow-md">
       <div
         className="cursor-pointer p-6"
         onClick={() => setIsExpanded(!isExpanded)}
@@ -203,13 +203,13 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
           <div className="flex items-center space-x-3">
             <div className="text-2xl">{agent.icon}</div>
             <div>
-              <h3 className="text-lg font-semibold text-slate-800">
+              <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
                 {agent.title}
               </h3>
-              <p className="mt-1 text-sm text-slate-600">{agent.description}</p>
+              <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{agent.description}</p>
             </div>
           </div>
-          <div className="text-slate-400">
+          <div className="text-slate-400 dark:text-slate-500">
             {isExpanded ? (
               <ChevronUp className="h-5 w-5" />
             ) : (
@@ -220,11 +220,11 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
       </div>
 
       {isExpanded && (
-        <div className="border-t border-slate-100 bg-slate-50 p-6">
+        <div className="border-t border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-6">
           {!isCompleted ? (
             <>
               <div className="mb-4">
-                <div className="mb-2 flex justify-between text-sm text-slate-600">
+                <div className="mb-2 flex justify-between text-sm text-slate-600 dark:text-slate-300">
                   <span>
                     Question {currentQuestionIndex + 1} of{' '}
                     {agent.questions.length}
@@ -233,7 +233,7 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
                     🤖 AI Marketing Consultant
                   </span>
                 </div>
-                <div className="h-2 w-full rounded-full bg-slate-200">
+                <div className="h-2 w-full rounded-full bg-slate-200 dark:bg-slate-600">
                   <div
                     className="h-2 rounded-full bg-blue-600 transition-all duration-300"
                     style={{
@@ -246,11 +246,11 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
               <div className="space-y-4">
                 {!isConfirmingAnswer ? (
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-slate-700">
+                    <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
                       {currentQuestion.question}
                     </label>
                     {renderInputField(currentQuestion)}
-                    <p className="mt-1 text-xs text-slate-500">
+                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                       Please provide a complete and specific answer. I'll
                       summarize it for confirmation.
                     </p>
@@ -343,12 +343,12 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <div className="rounded-lg border border-blue-200 bg-white p-4">
-                    <h4 className="mb-4 flex items-center font-medium text-slate-800">
+                  <div className="rounded-lg border border-blue-200 dark:border-blue-700 bg-white dark:bg-slate-800 p-4">
+                    <h4 className="mb-4 flex items-center font-medium text-slate-800 dark:text-slate-100">
                       <Sparkles className="mr-2 h-5 w-5 text-purple-600" />
                       Strategic Business Summary:
                     </h4>
-                    <div className="whitespace-pre-line text-sm text-slate-700">
+                    <div className="whitespace-pre-line text-sm text-slate-700 dark:text-slate-300">
                       Successfully Generated! 🎉
                     </div>
                   </div>
