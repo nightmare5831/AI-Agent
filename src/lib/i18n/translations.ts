@@ -101,6 +101,20 @@ export const translations: any = {
         remainingBalance: 'Remaining Balance',
         usageTrend: 'Usage Trend',
         activityLog: 'Activity Log',
+        resetDate: 'Resets on May 26, 2025',
+        percentageUsed: 'of your monthly limit',
+        creditsUnit: 'Credits',
+        expireWarning: 'Will expire if not used',
+        usageTrendDescription: 'Daily credit usage over time',
+        activityLogDescription: 'Detailed record of your AI agent usage',
+        export: 'Export',
+        success: 'success',
+        failed: 'failed',
+        timeRanges: {
+          sevenDays: '7-days',
+          thirtyDays: '30-days',
+          ninetyDays: '90-days'
+        },
         tableHeaders: {
           date: 'Date',
           agent: 'Agent',
@@ -310,6 +324,20 @@ export const translations: any = {
         remainingBalance: 'Saldo Restante',
         usageTrend: 'Tendência de Uso',
         activityLog: 'Registro de Atividades',
+        resetDate: 'Reinicia em 26 de maio de 2025',
+        percentageUsed: 'do seu limite mensal',
+        creditsUnit: 'Créditos',
+        expireWarning: 'Expirará se não for usado',
+        usageTrendDescription: 'Uso diário de créditos ao longo do tempo',
+        activityLogDescription: 'Registro detalhado do uso do seu agente AI',
+        export: 'Exportar',
+        success: 'sucesso',
+        failed: 'falha',
+        timeRanges: {
+          sevenDays: '7-dias',
+          thirtyDays: '30-dias',
+          ninetyDays: '90-dias'
+        },
         tableHeaders: {
           date: 'Data',
           agent: 'Agente',
@@ -519,6 +547,20 @@ export const translations: any = {
         remainingBalance: 'Saldo Restante',
         usageTrend: 'Tendencia de Uso',
         activityLog: 'Registro de Actividades',
+        resetDate: 'Se reinicia el 26 de mayo de 2025',
+        percentageUsed: 'de tu límite mensual',
+        creditsUnit: 'Créditos',
+        expireWarning: 'Expirará si no se usa',
+        usageTrendDescription: 'Uso diario de créditos a lo largo del tiempo',
+        activityLogDescription: 'Registro detallado del uso de tu agente AI',
+        export: 'Exportar',
+        success: 'éxito',
+        failed: 'falló',
+        timeRanges: {
+          sevenDays: '7-días',
+          thirtyDays: '30-días',
+          ninetyDays: '90-días'
+        },
         tableHeaders: {
           date: 'Fecha',
           agent: 'Agente',

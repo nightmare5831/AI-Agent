@@ -30,8 +30,10 @@ import Loading from '@/components/loading';
 import { getTransactionHistory } from '@/core/transaction';
 import { getSubscription } from '@/core/subscription';
 import { getCurrentProfile } from '@/core/auth/server';
+import { useLanguage } from '@/lib/i18n/language-context';
 
 const UsagePage = () => {
+  const { t } = useLanguage();
   const [dateRange, setDateRange] = useState('7-days');
   const [filterOpen, setFilterOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -151,47 +153,47 @@ const UsagePage = () => {
         {/* Header section */}
         <div className="rounded-lg border border-[#8b5cf6]/20 bg-background/70 p-8 shadow-xl backdrop-blur-md">
           <h1 className="bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6] bg-clip-text text-3xl font-bold text-transparent md:text-4xl">
-            Credit Usage History
+            {t.user.usage.title}
           </h1>
           <p className="text-muted-foreground">
-            Track and analyze your AI credit usage
+            {t.user.usage.subtitle}
           </p>
         </div>
 
         {/* Usage Summary */}
         <Card className="border border-[#8b5cf6]/20 bg-background/70 shadow-md backdrop-blur-md">
           <CardHeader>
-            <CardTitle>Usage Summary</CardTitle>
+            <CardTitle>{t.user.usage.summary}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col justify-between gap-4 md:flex-row">
               <div className="flex-1 border-b border-[#8b5cf6]/10 pb-4 md:border-b-0 md:border-r md:pb-0 md:pr-4">
                 <p className="text-sm text-muted-foreground">
-                  Monthly Allocation
+                  {t.user.usage.monthlyAllocation}
                 </p>
                 <p className="text-2xl font-semibold">{creditLog?.plan}</p>
                 <p className="text-sm text-muted-foreground">
-                  Resets on May 26, 2025
+                  {t.user.usage.resetDate}
                 </p>
               </div>
               <div className="flex-1 border-b border-[#8b5cf6]/10 py-4 md:border-b-0 md:border-r md:px-4 md:py-0">
-                <p className="text-sm text-muted-foreground">Used this Month</p>
+                <p className="text-sm text-muted-foreground">{t.user.usage.usedThisMonth}</p>
                 <p className="text-2xl font-semibold">
                   {creditLog?.totalSpent}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  43% of your monthly limit
+                  43% {t.user.usage.percentageUsed}
                 </p>
               </div>
               <div className="flex-1 pt-4 md:pl-4 md:pt-0">
                 <p className="text-sm text-muted-foreground">
-                  Remaining Balance
+                  {t.user.usage.remainingBalance}
                 </p>
                 <p className="text-2xl font-semibold">
-                  {creditLog.balance} Credits
+                  {creditLog.balance} {t.user.usage.creditsUnit}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  Will expire if not used
+                  {t.user.usage.expireWarning}
                 </p>
               </div>
             </div>
@@ -203,21 +205,21 @@ const UsagePage = () => {
           <CardHeader className="pb-0">
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle>Usage Trend</CardTitle>
-                <CardDescription>Daily credit usage over time</CardDescription>
+                <CardTitle>{t.user.usage.usageTrend}</CardTitle>
+                <CardDescription>{t.user.usage.usageTrendDescription}</CardDescription>
               </div>
               <div className="flex space-x-2">
-                {['7-days', '30-days', '90-days'].map((range) => (
+                {[{key: '7-days', label: t.user.usage.timeRanges.sevenDays}, {key: '30-days', label: t.user.usage.timeRanges.thirtyDays}, {key: '90-days', label: t.user.usage.timeRanges.ninetyDays}].map((range) => (
                   <Button
-                    key={range}
+                    key={range.key}
                     variant="outline"
                     size="sm"
-                    onClick={() => setDateRange(range)}
+                    onClick={() => setDateRange(range.key)}
                     className={`border-[#8b5cf6]/20 hover:border-[#8b5cf6]/40 hover:bg-[#8b5cf6]/5 ${
-                      dateRange === range ? 'bg-[#8b5cf6] text-white' : ''
+                      dateRange === range.key ? 'bg-[#8b5cf6] text-white' : ''
                     }`}
                   >
-                    {range.replace('-days', 'D')}
+                    {range.label.replace('-days', 'D').replace('-días', 'D').replace('-dias', 'D')}
                   </Button>
                 ))}
               </div>
@@ -263,88 +265,24 @@ const UsagePage = () => {
           <CardHeader>
             <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
               <div>
-                <CardTitle>Activity Log</CardTitle>
+                <CardTitle>{t.user.usage.activityLog}</CardTitle>
                 <CardDescription>
-                  Detailed record of your AI agent usage
+                  {t.user.usage.activityLogDescription}
                 </CardDescription>
               </div>
               <div className="flex flex-wrap gap-2">
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setFilterOpen(!filterOpen)}
-                  className="border-[#8b5cf6]/20 hover:border-[#8b5cf6]/40 hover:bg-[#8b5cf6]/5"
-                >
-                  <Filter className="mr-2 h-4 w-4" />
-                  Filter
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
                   className="border-[#8b5cf6]/20 hover:border-[#8b5cf6]/40 hover:bg-[#8b5cf6]/5"
                 >
                   <Download className="mr-2 h-4 w-4" />
-                  Export
+                  {t.user.usage.export}
                 </Button>
               </div>
             </div>
           </CardHeader>
           <CardContent>
-            {filterOpen && (
-              <div className="mb-4 rounded-md border border-[#8b5cf6]/20 bg-[#8b5cf6]/5 p-4">
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                  <div>
-                    <label className="text-sm font-medium">Agent Type</label>
-                    <select className="mt-1 h-10 w-full rounded-md border border-[#8b5cf6]/20 bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#8b5cf6]/50">
-                      <option value="">All Agents</option>
-                      <option value="marketing">Marketing Bot</option>
-                      <option value="organization">Organization Bot</option>
-                      <option value="strategy">Strategy Bot</option>
-                      <option value="whatsapp">WhatsApp Bot</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">Activity Type</label>
-                    <select className="mt-1 h-10 w-full rounded-md border border-[#8b5cf6]/20 bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#8b5cf6]/50">
-                      <option value="">All Activities</option>
-                      <option value="campaign">Campaign</option>
-                      <option value="content">Content Generation</option>
-                      <option value="analysis">Analysis</option>
-                      <option value="response">Customer Response</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">Sort By</label>
-                    <select className="mt-1 h-10 w-full rounded-md border border-[#8b5cf6]/20 bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#8b5cf6]/50">
-                      <option value="date-desc">Date (Newest First)</option>
-                      <option value="date-asc">Date (Oldest First)</option>
-                      <option value="credits-desc">
-                        Credits (Highest First)
-                      </option>
-                      <option value="credits-asc">
-                        Credits (Lowest First)
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div className="mt-4 flex justify-end space-x-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="border-[#8b5cf6]/20 hover:border-[#8b5cf6]/40 hover:bg-[#8b5cf6]/5"
-                  >
-                    Reset
-                  </Button>
-                  <Button
-                    size="sm"
-                    className="bg-[#2B6CB0] hover:bg-[#2B6CB0]/90"
-                  >
-                    Apply Filters
-                  </Button>
-                </div>
-              </div>
-            )}
-
             {/* Activity Table */}
             <div className="overflow-x-auto">
               <table className="w-full">
@@ -358,9 +296,9 @@ const UsagePage = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {recentActivity.map((log) => (
+                  {recentActivity.map((log, index) => (
                     <tr
-                      key={log.id}
+                      key={index}
                       className="border-b border-[#8b5cf6]/10 hover:bg-[#8b5cf6]/5"
                     >
                       <td className="p-3">
@@ -376,7 +314,7 @@ const UsagePage = () => {
                       <td className="p-3">{log.credits_spent}</td>
                       <td className="p-3">
                         <span className="inline-flex items-center rounded-full bg-green-500/10 px-2 py-0.5 text-xs font-medium text-green-600">
-                          {log.output_type === 'text' ? 'success' : 'false'}
+                          {log.output_type === 'text' ? t.user.usage.success : t.user.usage.failed}
                         </span>
                       </td>
                     </tr>
