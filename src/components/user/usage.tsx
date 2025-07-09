@@ -30,8 +30,10 @@ import Loading from '@/components/loading';
 import { getTransactionHistory } from '@/core/transaction';
 import { getSubscription } from '@/core/subscription';
 import { getCurrentProfile } from '@/core/auth/server';
+import { useLanguage } from '@/lib/i18n/language-context';
 
 const UsagePage = () => {
+  const { t } = useLanguage();
   const [dateRange, setDateRange] = useState('7-days');
   const [filterOpen, setFilterOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
