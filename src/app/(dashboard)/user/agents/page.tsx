@@ -1,11 +1,15 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { Loader2 } from 'lucide-react';
+import Loading from '@/components/loading';
 import { ResultsProvider } from '@/contexts/ResultsContext';
 
 const AgentsPage = dynamic(() => import('@/components/user/agent'), {
-  loading: () => <Loader2 />,
+  loading: () => (
+    <div className="flex h-screen w-full items-center justify-center">
+      <Loading />
+    </div>
+  ),
 });
 
 export default function AgentPage() {
