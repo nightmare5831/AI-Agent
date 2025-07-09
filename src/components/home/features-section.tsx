@@ -7,8 +7,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { features } from '@/lib/constants/navigation';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useLanguage } from '@/lib/i18n/language-context';
 
 export function FeaturesSection() {
+  const { t } = useLanguage();
   // Definiendo animaciones
   const fadeIn = {
     hidden: { opacity: 0 },
@@ -93,13 +95,13 @@ export function FeaturesSection() {
         <motion.div variants={slideUp} className="flex flex-col lg:flex-row gap-12 mb-16 items-start">
           <div className="lg:w-1/3">
             <Badge variant="success" className="mb-4 px-4 py-1.5 text-sm border border-[#2B6CB0]/30 bg-[#2B6CB0]/5">
-              Key Capabilities
+              {t.home.features.badge}
             </Badge>
             <h2 className="text-3xl md:text-3xl font-bold mb-4 leading-tight">
-              <span className="gradient-text">AI-Powered Automation</span><br />for Smart Businesses
+              {t.home.features.title}
             </h2>
             <p className="text-lg text-muted-foreground">
-              Automate your business operations through WhatsApp and AI. Our platform uses intelligent agents to handle marketing, organization, and strategic planning — all powered by ChatGPT and DALL·E, tailored to your specific goals.
+              {t.home.features.subtitle}
             </p>
           </div>
           
@@ -185,9 +187,9 @@ export function FeaturesSection() {
           >
             <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
               <div className="text-center md:text-left">
-                <h3 className="text-2xl md:text-3xl font-bold mb-2">Ready to transform your business with AI?</h3>
+                <h3 className="text-2xl md:text-3xl font-bold mb-2">{t.home.features.ctaTitle}</h3>
                 <p className="text-muted-foreground max-w-xl">
-                  Discover how our platform automates marketing, planning, and customer engagement — all powered by AI and integrated with WhatsApp.
+                  {t.home.features.ctaSubtitle}
                 </p>
               </div>
               
@@ -198,7 +200,7 @@ export function FeaturesSection() {
               >
                 <Link href="/features">
                   <Button size="lg" className="group rounded-full px-8 py-6 text-lg shadow-lg bg-gradient-to-r from-[#63B3ED] to-[#2B6CB0]">
-                    Explore all features
+                    {t.home.features.exploreFeatures}
                     <motion.div
                       initial={{ x: 0 }}
                       animate={{ x: [0, 5, 0] }}

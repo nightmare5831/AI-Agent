@@ -14,8 +14,10 @@ import { useAuth } from '@/core/auth/AuthProvider';
 import { capitalizeFirst, getInitials } from '@/lib/utils';
 import { LogOut } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useLanguage } from '@/lib/i18n/language-context';
 
 export function UserNav() {
+  const { t } = useLanguage();
   const [{ profile }, { actionSignOut }] = useAuth();
   const router = useRouter();
   return (
@@ -50,7 +52,7 @@ export function UserNav() {
           }}
         >
           <LogOut className="mr-2 h-4 w-4" />
-          <span>Log out</span>
+          <span>{t.navigation.logout}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

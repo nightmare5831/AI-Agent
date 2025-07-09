@@ -25,6 +25,7 @@ import Loading from '../loading';
 import { motion} from 'framer-motion';
 import { useTheme } from 'next-themes';
 import { getCurrentProfile } from '@/core/auth/server';
+import { useLanguage } from '@/lib/i18n/language-context';
 
 const formSchema = z.object({
   email: z
@@ -41,6 +42,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 export function SignInForm(): JSX.Element {
   const router = useRouter();
+  const { t } = useLanguage();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -67,7 +69,7 @@ export function SignInForm(): JSX.Element {
       
       const profile = await getCurrentProfile();
 
-      toast.success('Successfully signed in!');
+      toast.success(t.auth.signin.successMessage);
 
       if (profile?.role === 'user') {
         router.push('/user');
@@ -227,7 +229,7 @@ export function SignInForm(): JSX.Element {
             </Link>
           </motion.div>
           <motion.div variants={formItemVariant} className="flex items-center justify-center mb-6">
-            <h2 className="text-3xl font-bold pb-3 text-center">Sign In Your Account</h2>
+            <h2 className="text-3xl font-bold pb-3 text-center">{t.auth.signin.title}</h2>
           </motion.div>
 
           <motion.form 
@@ -245,7 +247,7 @@ export function SignInForm(): JSX.Element {
                   <FormItem>
                     <FormLabel className="text-foreground/90 flex items-center">
                       <Mail className="mr-2 h-4 w-4 text-[#8b5cf6]" />
-                      Email
+                      {t.auth.signin.email}
                     </FormLabel>
                     <FormControl>
                       <motion.div
@@ -294,14 +296,14 @@ export function SignInForm(): JSX.Element {
                     <div className="flex items-center justify-between">
                       <FormLabel className="text-foreground/90 flex items-center">
                         <Lock className="mr-2 h-4 w-4 text-[#2B6CB0]" />
-                        Password
+                        {t.auth.signin.password}
                       </FormLabel>
                       <motion.div whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}>
                         <Link
                           href="#"
                           className="text-sm text-muted-foreground hover:text-[#ec4899] transition-colors duration-300"
                         >
-                          Forgot password?
+                          {t.auth.signin.forgotPassword}
                         </Link>
                       </motion.div>
                     </div>
@@ -360,7 +362,7 @@ export function SignInForm(): JSX.Element {
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    Signing in...
+                    {t.auth.signin.signingIn}
                   </>
                 ) : (
                   <motion.span 
@@ -374,7 +376,7 @@ export function SignInForm(): JSX.Element {
                     >
                       <KeyRound className="mr-2 h-5 w-5" />
                     </motion.div>
-                    Sign in
+                    {t.auth.signin.signInButton}
                   </motion.span>
                 )}
               </Button>
@@ -397,7 +399,7 @@ export function SignInForm(): JSX.Element {
               whileHover={{ y: -2 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
-              Or continue with
+              {t.auth.signin.orContinueWith}
             </motion.span>
           </div>
         </motion.div>
@@ -425,7 +427,7 @@ export function SignInForm(): JSX.Element {
               >
                 <Icons.google className="h-4 w-4 text-[#2B6CB0] group-hover:text-[#2B6CB0]/80 transition-colors duration-300" />
               </motion.div>
-              Google
+              {t.auth.signin.google}
             </Button>
           </motion.div>
           <motion.div 
@@ -445,7 +447,7 @@ export function SignInForm(): JSX.Element {
               >
                 <Icons.apple className="h-4 w-4 group-hover:text-[#2B6CB0] transition-colors duration-300" />
               </motion.div>
-              Apple
+              {t.auth.signin.apple}
             </Button>
           </motion.div>
         </motion.div>
@@ -456,7 +458,7 @@ export function SignInForm(): JSX.Element {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
         >
-          Don&apos;t have an account?{' '}
+          {t.auth.signin.dontHaveAccount}{' '}
           <motion.span
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
@@ -466,7 +468,7 @@ export function SignInForm(): JSX.Element {
               href="/auth/signup"
               className="font-medium text-[#63B3ED] hover:text-[#2B6CB0] transition-colors duration-300 hover:underline"
             >
-              Sign up
+              {t.auth.signin.signUpLink}
             </Link>
           </motion.span>
         </motion.p>

@@ -1,10 +1,9 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import React, { createContext, useContext, useState } from 'react';
 import { translations } from './translations';
 
-type Language = 'en' | 'fr';
+type Language = 'en' | 'pt' | 'es';
 type TranslationType = typeof translations.en;
 
 interface LanguageContextType {
@@ -24,14 +23,21 @@ export function LanguageProvider({
   children: React.ReactNode;
   defaultLanguage?: Language;
 }) {
-  const [language, setLanguageState] = useState<Language>(defaultLanguage);
-  const router = useRouter();
-  const pathname = usePathname();
+  const [language, setLanguageState] = useState<Language>(() => {
+    if (typeof window !== 'undefined') {
+      const savedLanguage = localStorage.getItem('preferredLanguage') as Language;
+      if (savedLanguage && ['en', 'pt', 'es'].includes(savedLanguage)) {
+        return savedLanguage;
+      }
+    }
+    return defaultLanguage;
+  });
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
-    const newPath = pathname.replace(/^\/[a-z]{2}/, `/${lang}`);
-    router.push(newPath);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('preferredLanguage', lang);
+    }
   };
 
   const value = {

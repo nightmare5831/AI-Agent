@@ -18,8 +18,10 @@ import { useEffect, useState } from 'react';
 import { getCurrentProfile } from '@/core/auth/server';
 import { usePathname } from 'next/navigation';
 import { getTransactionHistory } from '@/core/transaction';
+import { useLanguage } from '@/lib/i18n/language-context';
 
 export default function UserDashboard() {
+  const { t } = useLanguage();
   const [{ profile }] = useAuth();
   const pathname = usePathname();
   const [currentPlan, setCurrentPlan] = useState(freePlan);
@@ -47,10 +49,10 @@ export default function UserDashboard() {
         {/* Header section */}
         <div className="rounded-lg border border-[#8b5cf6]/20 bg-background/70 p-8 shadow-xl backdrop-blur-md">
           <h1 className="bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6] bg-clip-text text-3xl font-bold text-transparent md:text-4xl">
-            Welcome back, {currentUser?.name.split(' ')[0]}!
+            {t.dashboard.welcome}, {currentUser?.name.split(' ')[0]}!
           </h1>
           <p className="text-muted-foreground">
-            Here's an overview of your account and recent activity.
+            {t.dashboard.overview}
           </p>
         </div>
 
@@ -78,7 +80,7 @@ export default function UserDashboard() {
           <Card className="border border-[#8b5cf6]/20 bg-background/70 shadow-md backdrop-blur-md">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">
-                Current Plan
+                {t.dashboard.currentPlan}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -99,7 +101,7 @@ export default function UserDashboard() {
           <Card className="border border-[#8b5cf6]/20 bg-background/70 shadow-md backdrop-blur-md">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">
-                Credits Remaining
+                {t.dashboard.creditsRemaining}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -121,7 +123,7 @@ export default function UserDashboard() {
           <Card className="border border-[#8b5cf6]/20 bg-background/70 shadow-md backdrop-blur-md">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">
-                Usage This Month
+                {t.dashboard.usageThisMonth}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -143,7 +145,7 @@ export default function UserDashboard() {
           {/* Plan Details */}
           <Card className="overflow-hidden border border-[#8b5cf6]/20 bg-background/70 shadow-md backdrop-blur-md md:col-span-1">
             <CardHeader>
-              <CardTitle>Current Plan</CardTitle>
+              <CardTitle>{t.dashboard.currentPlan}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap items-center justify-between gap-2">
@@ -161,7 +163,7 @@ export default function UserDashboard() {
                 </Badge>
               </div>
               <div className="mt-4">
-                <p className="text-sm font-medium">Plan Features:</p>
+                <p className="text-sm font-medium">{t.dashboard.planDetails}:</p>
                 <ul className="mt-2 space-y-2 text-sm">
                   {currentPlan?.features.map((feature, index) => (
                     <li key={index} className="flex items-center">
@@ -179,7 +181,7 @@ export default function UserDashboard() {
                   size="sm"
                   className="w-full border-[#8b5cf6]/20 hover:border-[#8b5cf6]/40 hover:bg-[#8b5cf6]/5"
                 >
-                  Upgrade Plan
+                  {t.user.credits.upgradePlan}
                 </Button>
               </Link>
             </CardFooter>
@@ -188,7 +190,7 @@ export default function UserDashboard() {
           {/* Credit Usage Table */}
           <Card className="border border-[#8b5cf6]/20 bg-background/70 shadow-md backdrop-blur-md md:col-span-2">
             <CardHeader>
-              <CardTitle>Recent Credit Usage</CardTitle>
+              <CardTitle>{t.dashboard.recentCreditUsage}</CardTitle>
             </CardHeader>
             <CardContent className="overflow-x-auto">
               <table className="w-full min-w-[600px]">

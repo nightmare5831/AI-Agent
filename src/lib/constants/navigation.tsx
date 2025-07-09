@@ -9,6 +9,39 @@ import {
   RocketIcon,
 } from 'lucide-react';
 
+export const getAdminItems = (t: any) => [
+  {
+    title: t.navigation.dashboard,
+    shortTitle: t.navigation.dashboard,
+    icon: LayoutDashboardIcon,
+    href: '/admin',
+  },
+  {
+    title: t.navigation.users,
+    shortTitle: t.navigation.users,
+    icon: UsersIcon,
+    href: '/admin/users',
+  },
+  {
+    title: t.navigation.credits,
+    shortTitle: t.navigation.credits,
+    icon: CreditCardIcon,
+    href: '/admin/creditlogs',
+  },
+  {
+    title: 'Subscriptions',
+    shortTitle: 'Subscriptions',
+    icon: DollarSignIcon,
+    href: '/admin/subscriptions',
+  },
+  {
+    title: 'Reports',
+    shortTitle: 'Reports',
+    icon: LogsIcon,
+    href: '/admin/reports',
+  },
+];
+
 export const adminItems = [
   {
     title: 'Dashboard',
@@ -39,6 +72,33 @@ export const adminItems = [
     shortTitle: 'reports',
     icon: LogsIcon,
     href: '/admin/reports',
+  },
+];
+
+export const getUserItems = (t: any) => [
+  {
+    title: t.navigation.dashboard,
+    shortTitle: t.navigation.dashboard,
+    icon: LayoutDashboardIcon,
+    href: '/user',
+  },
+  {
+    title: t.navigation.agents,
+    shortTitle: t.navigation.agents,
+    icon: RocketIcon,
+    href: '/user/agents',
+  },
+  {
+    title: t.navigation.credits,
+    shortTitle: t.navigation.credits,
+    icon: CreditCardIcon,
+    href: '/user/credits',
+  },
+  {
+    title: t.navigation.usageHistory,
+    shortTitle: t.navigation.usageHistory,
+    icon: LogsIcon,
+    href: '/user/usage',
   },
 ];
 
