@@ -30,8 +30,10 @@ import Loading from '@/components/loading';
 import { getTransactionHistory } from '@/core/transaction';
 import { getSubscription } from '@/core/subscription';
 import { getCurrentProfile } from '@/core/auth/server';
+import { useLanguage } from '@/lib/i18n/language-context';
 
 const UsagePage = () => {
+  const { t } = useLanguage();
   const [dateRange, setDateRange] = useState('7-days');
   const [filterOpen, setFilterOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -151,23 +153,23 @@ const UsagePage = () => {
         {/* Header section */}
         <div className="rounded-lg border border-[#8b5cf6]/20 bg-background/70 p-8 shadow-xl backdrop-blur-md">
           <h1 className="bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6] bg-clip-text text-3xl font-bold text-transparent md:text-4xl">
-            Credit Usage History
+            {t.user.usage.title}
           </h1>
           <p className="text-muted-foreground">
-            Track and analyze your AI credit usage
+            {t.user.usage.subtitle}
           </p>
         </div>
 
         {/* Usage Summary */}
         <Card className="border border-[#8b5cf6]/20 bg-background/70 shadow-md backdrop-blur-md">
           <CardHeader>
-            <CardTitle>Usage Summary</CardTitle>
+            <CardTitle>{t.user.usage.summary}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col justify-between gap-4 md:flex-row">
               <div className="flex-1 border-b border-[#8b5cf6]/10 pb-4 md:border-b-0 md:border-r md:pb-0 md:pr-4">
                 <p className="text-sm text-muted-foreground">
-                  Monthly Allocation
+                  {t.user.usage.monthlyAllocation}
                 </p>
                 <p className="text-2xl font-semibold">{creditLog?.plan}</p>
                 <p className="text-sm text-muted-foreground">
@@ -175,7 +177,7 @@ const UsagePage = () => {
                 </p>
               </div>
               <div className="flex-1 border-b border-[#8b5cf6]/10 py-4 md:border-b-0 md:border-r md:px-4 md:py-0">
-                <p className="text-sm text-muted-foreground">Used this Month</p>
+                <p className="text-sm text-muted-foreground">{t.user.usage.usedThisMonth}</p>
                 <p className="text-2xl font-semibold">
                   {creditLog?.totalSpent}
                 </p>
@@ -185,7 +187,7 @@ const UsagePage = () => {
               </div>
               <div className="flex-1 pt-4 md:pl-4 md:pt-0">
                 <p className="text-sm text-muted-foreground">
-                  Remaining Balance
+                  {t.user.usage.remainingBalance}
                 </p>
                 <p className="text-2xl font-semibold">
                   {creditLog.balance} Credits
@@ -203,7 +205,7 @@ const UsagePage = () => {
           <CardHeader className="pb-0">
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle>Usage Trend</CardTitle>
+                <CardTitle>{t.user.usage.usageTrend}</CardTitle>
                 <CardDescription>Daily credit usage over time</CardDescription>
               </div>
               <div className="flex space-x-2">
@@ -263,7 +265,7 @@ const UsagePage = () => {
           <CardHeader>
             <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
               <div>
-                <CardTitle>Activity Log</CardTitle>
+                <CardTitle>{t.user.usage.activityLog}</CardTitle>
                 <CardDescription>
                   Detailed record of your AI agent usage
                 </CardDescription>
