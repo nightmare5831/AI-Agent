@@ -9,64 +9,19 @@ import {
 import { languageFlags } from '@/lib/data/flags';
 import { Check } from 'lucide-react';
 import Image from 'next/image';
-import { useState, createContext, useContext, useEffect } from 'react';
-
-interface LanguageContextType {
-  selectedLanguage: string;
-  setSelectedLanguage: (lang: string) => void;
-  t: (key: string) => string;
-}
-
-export const LanguageContext = createContext<LanguageContextType>({
-  selectedLanguage: 'en',
-  setSelectedLanguage: () => {},
-  t: () => '',
-});
-
-export const useLanguage = () => useContext(LanguageContext);
-
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [selectedLanguage, setSelectedLanguage] = useState('en');
-
-  useEffect(() => {
-    const savedLanguage = localStorage.getItem('preferredLanguage');
-    if (
-      savedLanguage &&
-      languageFlags.some((lang) => lang.code === savedLanguage)
-    ) {
-      setSelectedLanguage(savedLanguage);
-    }
-  }, []);
-
-  const t = (key: string): string => {
-    try {
-      const keys = key.split('.');
-    } catch (error) {
-      console.warn(`Error getting translation for key: ${key}`, error);
-      return key;
-    }
-  };
-
-  return (
-    <LanguageContext.Provider
-      value={{ selectedLanguage, setSelectedLanguage, t }}
-    >
-      {children}
-    </LanguageContext.Provider>
-  );
-}
+import { useState } from 'react';
+import { useLanguage } from '@/lib/i18n/language-context';
 
 export default function FlagSelector() {
-  const { selectedLanguage, setSelectedLanguage } = useLanguage();
+  const { language, setLanguage } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleLanguageSelect = (langCode: string) => {
-    setSelectedLanguage(langCode);
+    setLanguage(langCode as 'en' | 'pt' | 'es');
     setIsOpen(false);
-    localStorage.setItem('preferredLanguage', langCode);
   };
 
-  const selectedFlag = languageFlags.find((l) => l.code === selectedLanguage);
+  const selectedFlag = languageFlags.find((l) => l.code === language);
 
   return (
     <div className="absolute bottom-5 left-[10%] flex items-end gap-2">
@@ -109,7 +64,7 @@ export default function FlagSelector() {
                     />
                   </div>
                   <span className="flex-1">{lang.name}</span>
-                  {selectedLanguage === lang.code && (
+                  {language === lang.code && (
                     <Check className="h-4 w-4" />
                   )}
                 </Button>
