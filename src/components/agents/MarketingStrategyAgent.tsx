@@ -39,8 +39,6 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<string>('');
-  const [isConfirmingAnswer, setIsConfirmingAnswer] = useState(false);
-  const [currentSummary, setCurrentSummary] = useState('');
   const [isCompleted, setIsCompleted] = useState(false);
 
   const currentQuestion = agent.questions[currentQuestionIndex];
@@ -77,16 +75,7 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
   const handleNext = () => {
     if (profile.credits_balance <= 0) {
       toast.error('Insufficient Credit balance, please charge this!');
-    } else if (!isConfirmingAnswer && answers[currentQuestion.id]) {
-      const summary = generateAnswerSummary(
-        currentQuestion,
-        answers[currentQuestion.id]
-      );
-      setCurrentSummary(summary);
-      setIsConfirmingAnswer(true);
-    } else if (isConfirmingAnswer) {
-      setIsConfirmingAnswer(false);
-      setCurrentSummary('');
+    } else if (answers[currentQuestion.id]) {
       if (currentQuestionIndex < agent.questions.length - 1) {
         setCurrentQuestionIndex((prev) => prev + 1);
       } else {
@@ -95,10 +84,6 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
     }
   };
 
-  const handleEditAnswer = () => {
-    setIsConfirmingAnswer(false);
-    setCurrentSummary('');
-  };
 
   const handleRunAgent = async () => {
     if (profile.credits_balance <= 0) {
@@ -145,8 +130,6 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
     setCurrentQuestionIndex(0);
     setAnswers({});
     setResult('');
-    setIsConfirmingAnswer(false);
-    setCurrentSummary('');
     setIsCompleted(false);
   };
 
@@ -244,52 +227,27 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
               </div>
 
               <div className="space-y-4">
-                {!isConfirmingAnswer ? (
-                  <div>
-                    <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                      {currentQuestion.question}
-                    </label>
-                    {renderInputField(currentQuestion)}
-                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                      Please provide a complete and specific answer. I'll
-                      summarize it for confirmation.
-                    </p>
-                  </div>
-                ) : (
-                  <div className="rounded-lg border border-green-200 bg-green-50 p-4">
-                    <div className="flex items-start space-x-2">
-                      <CheckCircle className="mt-0.5 h-5 w-5 text-green-600" />
-                      <div>
-                        <h4 className="mb-1 font-medium text-green-800">
-                          Let me confirm your answer:
-                        </h4>
-                        <p className="mb-3 text-sm text-green-700">
-                          {currentSummary}
-                        </p>
-                        <p className="text-xs text-green-600">
-                          Is this correct? You can edit or proceed to the next
-                          question.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )}
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                    {currentQuestion.question}
+                  </label>
+                  {renderInputField(currentQuestion)}
+                  <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                    Please provide a complete and specific answer.
+                  </p>
+                </div>
 
                 <div className="flex justify-between">
                   <Button
                     variant="outline"
                     onClick={() => {
-                      if (isConfirmingAnswer) {
-                        handleEditAnswer();
-                      } else {
-                        setCurrentQuestionIndex(
-                          Math.max(0, currentQuestionIndex - 1)
-                        );
-                      }
+                      setCurrentQuestionIndex(
+                        Math.max(0, currentQuestionIndex - 1)
+                      );
                     }}
-                    disabled={currentQuestionIndex === 0 && !isConfirmingAnswer}
+                    disabled={currentQuestionIndex === 0}
                   >
-                    {isConfirmingAnswer ? 'Edit Answer' : 'Previous'}
+                    Previous
                   </Button>
 
                   <Button
@@ -304,13 +262,7 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
                     disabled={!answers[currentQuestion.id]}
                     className="bg-blue-600 text-white hover:bg-blue-700"
                   >
-                    {isConfirmingAnswer
-                      ? isLastQuestion
-                        ? 'Complete'
-                        : 'Confirm & Continue'
-                      : isLastQuestion
-                        ? 'Review'
-                        : 'Next'}
+                    {isLastQuestion ? 'Complete' : 'Next'}
                   </Button>
                 </div>
               </div>
