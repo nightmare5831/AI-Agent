@@ -352,11 +352,11 @@ const UsagePage = () => {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-[#8b5cf6]/10">
-                    <th className="p-3 text-left font-medium">Date</th>
-                    <th className="p-3 text-left font-medium">Agent</th>
-                    <th className="p-3 text-left font-medium">Activity</th>
-                    <th className="p-3 text-left font-medium">Credits Used</th>
-                    <th className="p-3 text-left font-medium">Status</th>
+                    <th className="p-3 text-left font-medium">{t.user.usage.tableHeaders.date}</th>
+                    <th className="p-3 text-left font-medium">{t.user.usage.tableHeaders.agent}</th>
+                    <th className="p-3 text-left font-medium">{t.user.usage.tableHeaders.activity}</th>
+                    <th className="p-3 text-left font-medium">{t.user.usage.tableHeaders.creditsUsed}</th>
+                    <th className="p-3 text-left font-medium">{t.user.usage.tableHeaders.status}</th>
                   </tr>
                 </thead>
                 <tbody>

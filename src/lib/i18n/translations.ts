@@ -101,7 +101,14 @@ export const translations: any = {
         usedThisMonth: 'Used this Month',
         remainingBalance: 'Remaining Balance',
         usageTrend: 'Usage Trend',
-        activityLog: 'Activity Log'
+        activityLog: 'Activity Log',
+        tableHeaders: {
+          date: 'Date',
+          agent: 'Agent',
+          activity: 'Activity',
+          creditsUsed: 'Credits Used',
+          status: 'Status'
+        }
       }
     },
 
@@ -304,7 +311,14 @@ export const translations: any = {
         usedThisMonth: 'Usado Este Mês',
         remainingBalance: 'Saldo Restante',
         usageTrend: 'Tendência de Uso',
-        activityLog: 'Registro de Atividades'
+        activityLog: 'Registro de Atividades',
+        tableHeaders: {
+          date: 'Data',
+          agent: 'Agente',
+          activity: 'Atividade',
+          creditsUsed: 'Créditos Usados',
+          status: 'Status'
+        }
       }
     },
 
@@ -507,7 +521,14 @@ export const translations: any = {
         usedThisMonth: 'Usado Este Mes',
         remainingBalance: 'Saldo Restante',
         usageTrend: 'Tendencia de Uso',
-        activityLog: 'Registro de Actividades'
+        activityLog: 'Registro de Actividades',
+        tableHeaders: {
+          date: 'Fecha',
+          agent: 'Agente',
+          activity: 'Actividad',
+          creditsUsed: 'Créditos Utilizados',
+          status: 'Estado'
+        }
       }
     },
 
