@@ -163,11 +163,11 @@ exports.Prisma.Credit_purchasesScalarFieldEnum = {
 exports.Prisma.Tasks_logScalarFieldEnum = {
   id: 'id',
   profile_id: 'profile_id',
-  project_id: 'project_id',
   agent_type: 'agent_type',
-  agent_results: 'agent_results',
   credits_spent: 'credits_spent',
-  timestamp: 'timestamp'
+  timestamp: 'timestamp',
+  agent_results: 'agent_results',
+  project_id: 'project_id'
 };
 
 exports.Prisma.Whatsapp_messagesScalarFieldEnum = {

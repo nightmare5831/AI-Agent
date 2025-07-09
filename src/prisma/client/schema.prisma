@@ -23,10 +23,10 @@ model profile {
   stripeSubscriptionId String?
   admin_activities     admin_activity_logs[] @relation("AdminActivities")
   credit_purchases     credit_purchases[]
+  projects             projects[]
   subscriptions        subscriptions[]
   tasks_log            tasks_log[]
   whatsapp_messages    whatsapp_messages[]
-  projects             projects[]
 
   @@schema("public")
 }
@@ -37,8 +37,8 @@ model projects {
   createId    String      @unique
   name        String
   description String
-  tasks_log   tasks_log[]
   profile     profile     @relation(fields: [profile_id], references: [id], onDelete: Cascade)
+  tasks_log   tasks_log[]
 
   @@schema("public")
 }
@@ -72,11 +72,11 @@ model credit_purchases {
 model tasks_log {
   id            String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   profile_id    String   @db.Uuid
-  project_id    String
   agent_type    String
-  agent_results String
   credits_spent Int
   timestamp     DateTime @default(now())
+  agent_results String
+  project_id    String
   profile       profile  @relation(fields: [profile_id], references: [id], onDelete: Cascade)
   project       projects @relation(fields: [project_id], references: [createId], onDelete: Cascade)
 
