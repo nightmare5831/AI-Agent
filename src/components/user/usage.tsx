@@ -274,15 +274,6 @@ const UsagePage = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setFilterOpen(!filterOpen)}
-                  className="border-[#8b5cf6]/20 hover:border-[#8b5cf6]/40 hover:bg-[#8b5cf6]/5"
-                >
-                  <Filter className="mr-2 h-4 w-4" />
-                  Filter
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
                   className="border-[#8b5cf6]/20 hover:border-[#8b5cf6]/40 hover:bg-[#8b5cf6]/5"
                 >
                   <Download className="mr-2 h-4 w-4" />
@@ -292,61 +283,6 @@ const UsagePage = () => {
             </div>
           </CardHeader>
           <CardContent>
-            {filterOpen && (
-              <div className="mb-4 rounded-md border border-[#8b5cf6]/20 bg-[#8b5cf6]/5 p-4">
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                  <div>
-                    <label className="text-sm font-medium">Agent Type</label>
-                    <select className="mt-1 h-10 w-full rounded-md border border-[#8b5cf6]/20 bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#8b5cf6]/50">
-                      <option value="">All Agents</option>
-                      <option value="marketing">Marketing Bot</option>
-                      <option value="organization">Organization Bot</option>
-                      <option value="strategy">Strategy Bot</option>
-                      <option value="whatsapp">WhatsApp Bot</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">Activity Type</label>
-                    <select className="mt-1 h-10 w-full rounded-md border border-[#8b5cf6]/20 bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#8b5cf6]/50">
-                      <option value="">All Activities</option>
-                      <option value="campaign">Campaign</option>
-                      <option value="content">Content Generation</option>
-                      <option value="analysis">Analysis</option>
-                      <option value="response">Customer Response</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">Sort By</label>
-                    <select className="mt-1 h-10 w-full rounded-md border border-[#8b5cf6]/20 bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#8b5cf6]/50">
-                      <option value="date-desc">Date (Newest First)</option>
-                      <option value="date-asc">Date (Oldest First)</option>
-                      <option value="credits-desc">
-                        Credits (Highest First)
-                      </option>
-                      <option value="credits-asc">
-                        Credits (Lowest First)
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div className="mt-4 flex justify-end space-x-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="border-[#8b5cf6]/20 hover:border-[#8b5cf6]/40 hover:bg-[#8b5cf6]/5"
-                  >
-                    Reset
-                  </Button>
-                  <Button
-                    size="sm"
-                    className="bg-[#2B6CB0] hover:bg-[#2B6CB0]/90"
-                  >
-                    Apply Filters
-                  </Button>
-                </div>
-              </div>
-            )}
-
             {/* Activity Table */}
             <div className="overflow-x-auto">
               <table className="w-full">
@@ -360,9 +296,9 @@ const UsagePage = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {recentActivity.map((log) => (
+                  {recentActivity.map((log, index) => (
                     <tr
-                      key={log.id}
+                      key={index}
                       className="border-b border-[#8b5cf6]/10 hover:bg-[#8b5cf6]/5"
                     >
                       <td className="p-3">
