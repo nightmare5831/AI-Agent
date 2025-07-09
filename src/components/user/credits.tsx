@@ -19,12 +19,10 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import Request from '@/lib/request';
 import { getSubscription } from '@/core/subscription';
-import { useLanguage } from '@/lib/i18n/language-context';
 
 const CreditsPage = () => {
   const router = useRouter();
   const [{ profile }] = useAuth();
-  const { t } = useLanguage();
   const [currentCredit, setCurrentCredit] = useState({
     plan: 'Free',
     balance: 0,
@@ -97,10 +95,11 @@ const CreditsPage = () => {
         {/* Header section */}
         <div className="rounded-lg border border-[#8b5cf6]/20 bg-background/70 p-8 shadow-xl backdrop-blur-md">
           <h1 className="bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6] bg-clip-text text-3xl font-bold text-transparent md:text-4xl">
-{t.user.credits.title}
+            Purchase Credits & Upgrade Plan
           </h1>
           <p className="text-muted-foreground">
-            {t.user.credits.subtitle}
+            Upgrade your plan or purchase additional credits to continue using
+            our services
           </p>
         </div>
 
@@ -126,7 +125,7 @@ const CreditsPage = () => {
 
         <Card className="mb-10">
           <CardHeader>
-            <CardTitle>{t.user.credits.currentPlan}</CardTitle>
+            <CardTitle>Your Current Plan</CardTitle>
             <CardDescription>
               You are currently on the {profile?.subscription_plan} plan with{' '}
               {profile?.credits_balance} credits remaining.
@@ -182,7 +181,7 @@ const CreditsPage = () => {
         </Card>
 
         <div className="mb-10">
-          <h3 className="mb-6 text-xl font-semibold">{t.user.credits.upgradePlan}</h3>
+          <h3 className="mb-6 text-xl font-semibold">Upgrade Your Plan</h3>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {plans.map((plan) => (
               <Card
@@ -232,8 +231,8 @@ const CreditsPage = () => {
                     }
                   >
                     {plan.id === currentCredit.plan?.toLocaleLowerCase()
-                      ? t.user.credits.currentPlan
-                      : t.user.credits.selectPlan}
+                      ? 'Current Plan'
+                      : 'Select Plan'}
                   </Button>
                 </CardFooter>
               </Card>
@@ -243,7 +242,7 @@ const CreditsPage = () => {
 
         <div>
           <h3 className="mb-6 text-xl font-semibold">
-            {t.user.credits.purchaseCredits}
+            Purchase Additional Credits
           </h3>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {creditPacks.map((pack) => (
@@ -293,7 +292,7 @@ const CreditsPage = () => {
                     size="sm"
                     onClick={() => selecteCreditPack(pack.id)}
                   >
-                    {t.user.credits.purchaseNow}
+                    Purchase Now
                   </Button>
                 </CardFooter>
               </Card>
@@ -304,7 +303,7 @@ const CreditsPage = () => {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Gift className="mr-2 h-5 w-5 text-[#2B6CB0]" />
-{t.user.credits.referralProgram}
+                Referral Program
               </CardTitle>
             </CardHeader>
             <CardContent>

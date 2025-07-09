@@ -85,7 +85,6 @@ export const translations: any = {
       },
       credits: {
         title: 'Purchase Credits & Upgrade Plan',
-        subtitle: 'Upgrade your plan or purchase additional credits to continue using our services',
         currentPlan: 'Your Current Plan',
         upgradePlan: 'Upgrade Your Plan',
         purchaseCredits: 'Purchase Additional Credits',
@@ -288,7 +287,6 @@ export const translations: any = {
       },
       credits: {
         title: 'Comprar Créditos e Atualizar Plano',
-        subtitle: 'Atualize seu plano ou compre créditos adicionais para continuar usando nossos serviços',
         currentPlan: 'Seu Plano Atual',
         upgradePlan: 'Atualizar Seu Plano',
         purchaseCredits: 'Comprar Créditos Adicionais',
@@ -491,7 +489,6 @@ export const translations: any = {
       },
       credits: {
         title: 'Comprar Créditos y Actualizar Plan',
-        subtitle: 'Actualiza tu plan o compra créditos adicionales para continuar usando nuestros servicios',
         currentPlan: 'Tu Plan Actual',
         upgradePlan: 'Actualizar Tu Plan',
         purchaseCredits: 'Comprar Créditos Adicionales',
