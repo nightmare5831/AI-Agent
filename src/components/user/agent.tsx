@@ -19,8 +19,10 @@ import { useAuth } from '@/core/auth/AuthProvider';
 import { getTask } from '@/core/task';
 import Request from '@/lib/request';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/language-context';
 
 const AgentPage = () => {
+  const { t } = useLanguage();
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState('');
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
@@ -133,10 +135,10 @@ const AgentPage = () => {
         {/* Header */}
         <div className="mb-8">
           <h1 className="mb-2 text-4xl font-bold text-slate-800 dark:text-slate-100">
-            AI Agents
+            {t.user.agents.title}
           </h1>
           <p className="text-lg text-slate-600 dark:text-slate-300">
-            Transform your content marketing with intelligent AI agents
+            {t.user.agents.subtitle}
           </p>
         </div>
 
@@ -145,7 +147,7 @@ const AgentPage = () => {
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="flex-1">
               <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                Active Project
+                {t.user.agents.activeProject}
               </label>
               <Select
                 value={selectedProject}
@@ -172,7 +174,7 @@ const AgentPage = () => {
                 className="bg-blue-600 text-white hover:bg-blue-700"
               >
                 <Plus className="mr-2 h-4 w-4" />
-                Create
+                {t.user.agents.create}
               </Button>
 
               {projects.length > 1 && (
@@ -182,7 +184,7 @@ const AgentPage = () => {
                   className="border-red-200 text-red-600 hover:bg-red-50"
                 >
                   <Trash2 className="mr-2 h-4 w-4" />
-                  Delete
+                  {t.user.agents.delete}
                 </Button>
               )}
             </div>
@@ -205,7 +207,7 @@ const AgentPage = () => {
           <div className="w-full max-w-md rounded-lg bg-white p-6 dark:bg-slate-800">
             <div className="w-full max-w-md rounded-lg bg-white p-6">
               <h3 className="mb-2 text-lg font-semibold text-slate-800 dark:text-slate-100">
-                Delete Project
+                {t.user.agents.deleteProject}
               </h3>
               <p className="mb-4 text-slate-600 dark:text-slate-300">
                 Are you sure you want to delete "{selectedProjectData?.name}"?
@@ -216,13 +218,13 @@ const AgentPage = () => {
                   variant="outline"
                   onClick={() => setShowDeleteConfirm(false)}
                 >
-                  Cancel
+                  {t.user.agents.cancel}
                 </Button>
                 <Button
                   onClick={handleDeleteProject}
                   className="bg-red-600 text-white hover:bg-red-700"
                 >
-                  Delete
+                  {t.user.agents.delete}
                 </Button>
               </div>
             </div>

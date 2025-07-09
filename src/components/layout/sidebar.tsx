@@ -7,11 +7,11 @@ import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
-import { adminItems, userItems } from '@/lib/constants/navigation';
+import { getAdminItems, getUserItems } from '@/lib/constants/navigation';
 import { ChevronLeft, ChevronRight, Settings } from 'lucide-react';
 
 import { usePathname } from 'next/navigation';
-import { useLanguage } from '@/components/language-selector';
+import { useLanguage } from '@/lib/i18n/language-context';
 import { useEffect } from 'react';
 
 interface SidebarProps {
@@ -47,7 +47,7 @@ export function Sidebar({ open, onOpenChange, type }: SidebarProps) {
     hover: { scale: 1.1, transition: { type: "spring", stiffness: 400, damping: 10 } }
   };
 
-  const items = type === 'admin' ? adminItems : userItems;
+  const items = type === 'admin' ? getAdminItems(t) : getUserItems(t);
 
   useEffect(() => {
     const handleResize = () => {
@@ -132,7 +132,7 @@ export function Sidebar({ open, onOpenChange, type }: SidebarProps) {
                 >
                   <Settings className={cn('h-5 w-5 text-[#ec4899]', open ? 'mr-2' : 'm-0')} />
                 </motion.div>
-                {open && <span className="truncate text-sm max-w-[12rem] inline-block">{t('sidebar.settings')}</span>}
+                {open && <span className="truncate text-sm max-w-[12rem] inline-block">{t.sidebar.settings}</span>}
               </Button>
             </motion.div>
           </div>

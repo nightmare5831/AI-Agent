@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useLanguage } from '@/lib/i18n/language-context';
 
 const testimonials = [
   {
@@ -35,6 +36,7 @@ const testimonials = [
 ];
 
 export function TestimonialsSection() {
+  const { t } = useLanguage();
   // Variantes para animaciones
   const fadeIn = {
     hidden: { opacity: 0 },
@@ -101,13 +103,13 @@ export function TestimonialsSection() {
         >
           <div className="max-w-xl">
             <Badge variant="success" className="mb-4 px-4 py-1.5 text-sm border border-[#2B6CB0]/30 bg-[#2B6CB0]/5">
-              Success stories
+              {t.home.testimonials.badge}
             </Badge>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              <span className="gradient-text">Trusted by Businesses</span>
+              <span className="gradient-text">{t.home.testimonials.title}</span>
             </h2>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              See how our AI automation tools are helping businesses across Brazil improve efficiency and grow revenue.
+              {t.home.testimonials.subtitle}
             </p>
           </div>
 
@@ -115,7 +117,7 @@ export function TestimonialsSection() {
             <div className="absolute -inset-1 rounded-lg bg-gradient-to-r from-[#63B3ED] via-[#2B6CB0] to-[#63B3ED] opacity-30 blur"></div>
             <Link href="#testimonials" className="relative">
               <Button variant="secondary" size="lg" className="group shadow-md hover:shadow-xl transition-all duration-300">
-                View all testimonials
+                {t.home.testimonials.viewAll}
                 <motion.svg 
                   xmlns="http://www.w3.org/2000/svg" 
                   width="24" 

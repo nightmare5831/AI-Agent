@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Github, Twitter, Linkedin, Mail, GraduationCap } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/language-context';
 
 const navigation = {
   solutions: [
@@ -30,6 +31,7 @@ const navigation = {
 };
 
 export function Footer() {
+  const { t } = useLanguage();
   return (
     <footer className="border-t border-border/30 bg-background/80 backdrop-blur-md" id='footer'>
       <div className="mx-auto max-w-7xl px-6 pb-8 pt-16 sm:pt-24 lg:px-8">
@@ -44,11 +46,10 @@ export function Footer() {
                     <GraduationCap className="h-6 w-6 text-[#2B6CB0]" />
                   </div>
                 </div>
-                <span className="font-bold text-xl tracking-tight text-[#2B6CB0]">Smart Agent</span>
+                <span className="font-bold text-xl tracking-tight text-[#2B6CB0]">{t.home.footer.brandName}</span>
               </Link>
               <p className="max-w-xs text-sm text-muted-foreground">
-                Empowering businesses with intelligent automation 
-                and AI solutions to streamline operations and boost growth.
+                {t.home.footer.description}
               </p>
             </div>
             <div className="flex space-x-6">
@@ -91,7 +92,7 @@ export function Footer() {
           <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-3 xl:mt-0 animate-fadeIn transition-all delay-300">
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
-                <h3 className="text-sm font-semibold bg-gradient-to-r from-[#2B6CB0] to-[#63B3ED] bg-clip-text text-transparent">Solutions</h3>
+                <h3 className="text-sm font-semibold bg-gradient-to-r from-[#2B6CB0] to-[#63B3ED] bg-clip-text text-transparent">{t.home.footer.solutions}</h3>
                 <ul className="mt-6 space-y-4">
                   {navigation.solutions.map((item) => (
                     <li key={item.name} className="hover:translate-x-1 transition-transform duration-300">
@@ -106,7 +107,7 @@ export function Footer() {
                 </ul>
               </div>
               <div className="mt-10 md:mt-0">
-                <h3 className="text-sm font-semibold bg-gradient-to-r from-[#2B6CB0] to-[#63B3ED] bg-clip-text text-transparent">Company</h3>
+                <h3 className="text-sm font-semibold bg-gradient-to-r from-[#2B6CB0] to-[#63B3ED] bg-clip-text text-transparent">{t.home.footer.company}</h3>
                 <ul className="mt-6 space-y-4">
                   {navigation.company.map((item) => (
                     <li key={item.name} className="hover:translate-x-1 transition-transform duration-300">
@@ -123,7 +124,7 @@ export function Footer() {
             </div>
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
-                <h3 className="text-sm font-semibold bg-gradient-to-r from-[#2B6CB0] to-[#63B3ED] bg-clip-text text-transparent">Resources</h3>
+                <h3 className="text-sm font-semibold bg-gradient-to-r from-[#2B6CB0] to-[#63B3ED] bg-clip-text text-transparent">{t.home.footer.resources}</h3>
                 <ul className="mt-6 space-y-4">
                   {navigation.resources.map((item) => (
                     <li key={item.name} className="hover:translate-x-1 transition-transform duration-300">
@@ -138,7 +139,7 @@ export function Footer() {
                 </ul>
               </div>
               <div className="mt-10 md:mt-0">
-                <h3 className="text-sm font-semibold bg-gradient-to-r from-[#2B6CB0] to-[#63B3ED] bg-clip-text text-transparent">Legal</h3>
+                <h3 className="text-sm font-semibold bg-gradient-to-r from-[#2B6CB0] to-[#63B3ED] bg-clip-text text-transparent">{t.home.footer.legal}</h3>
                 <ul className="mt-6 space-y-4">
                   {navigation.legal.map((item) => (
                     <li key={item.name} className="hover:translate-x-1 transition-transform duration-300">
@@ -160,15 +161,11 @@ export function Footer() {
         <div className="mt-16 border-t border-border/30 pt-8 animate-fadeIn transition-all delay-500">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <p className="text-sm text-muted-foreground">
-              {new Date().getFullYear()} Smart Agent. All rights reserved.
+              {new Date().getFullYear()} {t.home.footer.brandName}. {t.home.footer.allRightsReserved}.
             </p>
             <div className="flex items-center space-x-1">
               <p className="text-sm text-muted-foreground">
-                Crafted with
-              </p>
-              <span className="inline-block text-[#2B6CB0]">innovation</span>
-              <p className="text-sm text-muted-foreground">
-                to power business automation and AI-driven success.
+                {t.home.footer.bottomText}
               </p>
             </div>
           </div>

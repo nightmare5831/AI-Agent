@@ -8,8 +8,10 @@ import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/core/auth/AuthProvider';
+import { useLanguage } from '@/lib/i18n/language-context';
 
 export function Header() {
+  const { t } = useLanguage();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
 
@@ -25,9 +27,9 @@ export function Header() {
   }, []);
 
   const navigationLinks = [
-    { href: '#features', label: 'Features' },
-    { href: '#testimonilas', label: 'Testimonials' },
-    { href: '#footer', label: 'About' },
+    { href: '#features', label: t.home.header.features },
+    { href: '#testimonilas', label: t.home.header.testimonials },
+    { href: '#footer', label: t.home.header.about },
   ];
 
   return (
@@ -93,7 +95,7 @@ export function Header() {
                 <Button
                   className="bg-gradient-to-r from-[#63B3ED] to-[#2B6CB0] hover:opacity-90 text-white rounded-full px-5 py-2 text-sm font-medium border-0 hover:shadow-lg hover:shadow-purple-500/20 transition-all duration-300"
                 >
-                  Dashboard
+                  {t.home.header.dashboard}
                 </Button>
               </Link>
             ) : (
@@ -103,14 +105,14 @@ export function Header() {
                     variant="ghost"
                     className="text-sm font-medium hover:bg-gradient-to-r hover:from-[#63B3ED]/5 hover:to-[#2B6CB0]/5 hover:text-[#63B3ED] transition-colors duration-300"
                   >
-                    Sign In
+                    {t.home.header.signIn}
                   </Button>
                 </Link>
                 <Link href="/auth/signup">
                   <Button
                     className="bg-gradient-to-r from-[#63B3ED] to-[#2B6CB0] hover:opacity-90 text-white rounded-full px-5 py-2 text-sm font-medium border-0 hover:shadow-lg hover:shadow-purple-500/20 transition-all duration-300"
                   >
-                    Get Started
+                    {t.home.header.getStarted}
                   </Button>
                 </Link>
               </>

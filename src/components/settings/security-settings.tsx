@@ -8,8 +8,10 @@ import { Switch } from "@/components/ui/switch"
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { Shield, KeyRound, ShieldAlert, Trash2 } from "lucide-react"
+import { useLanguage } from '@/lib/i18n/language-context'
 
 export function SecuritySettings() {
+  const { t } = useLanguage()
   const [twoFactor, setTwoFactor] = useState(false)
 
   const containerVariants = {
@@ -44,7 +46,7 @@ export function SecuritySettings() {
             <CardTitle className="flex items-center gap-2">
               <KeyRound className="h-5 w-5 text-[#63B3ED]" />
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#63B3ED] to-[#d32f2f]">
-                Cambiar Contraseña
+                {t.auth.security.changePassword}
               </span>
             </CardTitle>
           </CardHeader>
@@ -54,7 +56,7 @@ export function SecuritySettings() {
               variants={containerVariants}
             >
               <motion.div className="grid gap-2" variants={itemVariants}>
-                <Label htmlFor="current" className="text-[#8b5cf6]">Contraseña Actual</Label>
+                <Label htmlFor="current" className="text-[#8b5cf6]">{t.auth.security.currentPassword}</Label>
                 <Input 
                   id="current" 
                   type="password" 
@@ -62,7 +64,7 @@ export function SecuritySettings() {
                 />
               </motion.div>
               <motion.div className="grid gap-2" variants={itemVariants}>
-                <Label htmlFor="new" className="text-[#8b5cf6]">Nueva Contraseña</Label>
+                <Label htmlFor="new" className="text-[#8b5cf6]">{t.auth.security.newPassword}</Label>
                 <Input 
                   id="new" 
                   type="password" 
@@ -70,7 +72,7 @@ export function SecuritySettings() {
                 />
               </motion.div>
               <motion.div className="grid gap-2" variants={itemVariants}>
-                <Label htmlFor="confirm" className="text-[#8b5cf6]">Confirmar Nueva Contraseña</Label>
+                <Label htmlFor="confirm" className="text-[#8b5cf6]">{t.auth.security.confirmNewPassword}</Label>
                 <Input 
                   id="confirm" 
                   type="password" 
@@ -89,7 +91,7 @@ export function SecuritySettings() {
                 whileTap={{ scale: 0.98 }}
               >
                 <Button className="bg-gradient-to-r from-[#63B3ED] to-[#d32f2f] hover:from-[#63B3ED]/90 hover:to-[#d32f2f]/90 transition-all duration-300">
-                  Actualizar Contraseña
+                  {t.auth.security.updatePassword}
                 </Button>
               </motion.div>
             </motion.div>
@@ -103,7 +105,7 @@ export function SecuritySettings() {
             <CardTitle className="flex items-center gap-2">
               <Shield className="h-5 w-5 text-[#63B3ED]" />
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#63B3ED] to-[#d32f2f]">
-                Autenticación de Dos Factores
+                {t.auth.security.twoFactorAuth}
               </span>
             </CardTitle>
           </CardHeader>
@@ -115,7 +117,7 @@ export function SecuritySettings() {
               <div className="flex gap-3">
                 <Shield className="h-5 w-5 text-[#63B3ED]" />
                 <div>
-                  <Label htmlFor="2fa" className="text-[#8b5cf6]">Autenticación de Dos Factores</Label>
+                  <Label htmlFor="2fa" className="text-[#8b5cf6]">{t.auth.security.twoFactorAuth}</Label>
                   <p className="text-sm text-muted-foreground">
                     Añade una capa extra de seguridad a tu cuenta
                   </p>
@@ -138,7 +140,7 @@ export function SecuritySettings() {
             <CardTitle className="flex items-center gap-2">
               <ShieldAlert className="h-5 w-5 text-red-500" />
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-500 to-red-700">
-                Zona de Peligro
+                {t.auth.security.dangerZone}
               </span>
             </CardTitle>
           </CardHeader>
@@ -150,7 +152,7 @@ export function SecuritySettings() {
               <div className="flex gap-3">
                 <Trash2 className="h-5 w-5 text-red-500" />
                 <div>
-                  <h3 className="font-medium mb-2 text-red-500">Eliminar Cuenta</h3>
+                  <h3 className="font-medium mb-2 text-red-500">{t.auth.security.deleteAccount}</h3>
                   <p className="text-sm text-muted-foreground mb-4">
                     Elimina permanentemente tu cuenta y todos los datos asociados
                   </p>
@@ -161,7 +163,7 @@ export function SecuritySettings() {
                 whileTap={{ scale: 0.95 }}
               >
                 <Button variant="destructive" className="bg-gradient-to-r from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 transition-all duration-300">
-                  Eliminar Cuenta
+                  {t.auth.security.deleteAccount}
                 </Button>
               </motion.div>
             </motion.div>

@@ -8,8 +8,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Bell, AlertTriangle, Search } from "lucide-react";
 import { adminUsers, creditUsageData } from "@/lib/constants/mockData";
+import { useLanguage } from '@/lib/i18n/language-context';
 
 export default function AdminPage() {
+  const { t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState("");
   const [filterActive, setFilterActive] = useState(true);
   const [filterPlan, setFilterPlan] = useState("all");
@@ -35,10 +37,10 @@ export default function AdminPage() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
               <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6] bg-clip-text text-transparent">
-                Admin Dashboard
+                {t.dashboard.adminTitle}
               </h1>
               <p className="text-muted-foreground">
-                Monitor and manage users, subscriptions and credit usage.
+                {t.dashboard.adminSubtitle}
               </p>
             </div>
             <div className="flex space-x-2">
@@ -49,7 +51,7 @@ export default function AdminPage() {
                 </span>
               </Button>
               <Button className="bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6] hover:from-[#8b5cf6] hover:to-[#2B6CB0]">
-                System Settings
+                {t.dashboard.systemSettings}
               </Button>
             </div>
           </div>
@@ -108,11 +110,11 @@ export default function AdminPage() {
             <CardContent>
               <div className="space-y-4">
                 <div className="flex justify-between">
-                  <span className="font-medium">Total Users</span>
+                  <span className="font-medium">{t.dashboard.totalUsers}</span>
                   <span className="font-semibold">{adminUsers.length}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="font-medium">Active Subscriptions</span>
+                  <span className="font-medium">{t.dashboard.activeSubscriptions}</span>
                   <span className="font-semibold">
                     {adminUsers.filter((u) => u.status === "active").length}
                   </span>
@@ -143,7 +145,7 @@ export default function AdminPage() {
           <CardHeader>
             <div className="flex flex-col justify-between space-y-4 md:flex-row md:items-center md:space-y-0">
               <div>
-                <CardTitle>User Management</CardTitle>
+                <CardTitle>{t.dashboard.userManagement}</CardTitle>
                 <CardDescription>
                   View and manage user accounts and their credits
                 </CardDescription>

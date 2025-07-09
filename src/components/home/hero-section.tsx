@@ -7,8 +7,10 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowRight, Users,LightbulbIcon,Sparkles } from 'lucide-react';
 import { HeroBackground } from './hero-background';
+import { useLanguage } from '@/lib/i18n/language-context';
 
 export function HeroSection() {
+  const { t } = useLanguage();
   const [hovered, setHovered] = useState(false);
 
   // Variantes para animaciones
@@ -47,17 +49,17 @@ export function HeroSection() {
 
   const features = [
     {
-      title: "AI-Powered Tools",
+      title: t.home.hero.aiPoweredTools,
       description: "Personalized learning experiences adapted to each student's needs",
       icon: <Sparkles className="h-5 w-5 text-[#2B6CB0]" />
     },
     {
-      title: "Student Engagement",
+      title: t.home.hero.studentEngagement,
       description: "Interactive features designed to increase participation",
       icon: <Users className="h-5 w-5 text-[#2B6CB0]" />
     },
     {
-      title: "Detailed Analytics",
+      title: t.home.hero.detailedAnalytics,
       description: "Track progress and identify areas for improvement",
       icon: <LightbulbIcon className="h-5 w-5 text-[#2B6CB0]" />
     }
@@ -82,14 +84,14 @@ export function HeroSection() {
               className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight leading-tight mb-6 text-center" 
               variants={slideInLeft}
             >
-              <span className="gradient-text">Transform</span> Your Business with <br></br> AI-Powered Automation 
+              {t.home.hero.title} 
             </motion.h1>
             
             <motion.p 
               className="text-lg md:text-2xl text-muted-foreground  mb-8 text-center" 
               variants={slideInLeft}
             >
-              Streamline your operations, enhance customer engagement, and boost revenue with our intelligent WhatsApp automation and AI business tools.
+              {t.home.hero.subtitle}
             </motion.p>
             
             <motion.div 
@@ -99,7 +101,7 @@ export function HeroSection() {
               <Link href="/auth/signup?role=admin">
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
                   <Button size="lg" className="px-8 py-6 text-lg font-medium shadow-md bg-gradient-to-r from-[#63B3ED] to-[#2B6CB0]">
-                    Learn More
+                    {t.home.hero.learnMore}
                     <motion.div
                       animate={{ x: hovered ? 5 : 0 }}
                       className="ml-2"
@@ -122,9 +124,9 @@ export function HeroSection() {
           className="grid grid-cols-2 md:grid-cols-3 gap-4 text-center"
         >
           {[
-            { value: "500+", label: "Business" },
-            { value: "10k+", label: "users" },
-            { value: "98%", label: "Satisfaction" },
+            { value: "500+", label: t.home.hero.business },
+            { value: "10k+", label: t.home.hero.users },
+            { value: "98%", label: t.home.hero.satisfaction },
           ].map((stat, i) => (
             <motion.div
               key={i}

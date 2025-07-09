@@ -25,6 +25,7 @@ import { motion } from 'framer-motion';
 import { Background } from '@/components/ui/background';
 import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
+import { useLanguage } from '@/lib/i18n/language-context';
 
 const formSchema = z.object({
   full_name: z.string().min(1, 'Full name is required'),
@@ -44,6 +45,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 export function SignUpForm(): JSX.Element {
   const router = useRouter();
+  const { t } = useLanguage();
 
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -75,7 +77,7 @@ export function SignUpForm(): JSX.Element {
         ...values,
       })
 
-      toast.success('Account created successfully! Please signIn');
+      toast.success(t.auth.signup.successMessage);
       router.push('/auth/signin');
     } catch (err: any) {
       toast.error(
@@ -223,7 +225,7 @@ export function SignUpForm(): JSX.Element {
             className="mb-6 flex items-center justify-center"
           >
             <h2 className="text-center text-2xl font-bold">
-              Create Your Account
+              {t.auth.signup.title}
             </h2>
           </motion.div>
           <motion.form
@@ -240,7 +242,7 @@ export function SignUpForm(): JSX.Element {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-foreground/90">
-                      Full Name
+                      {t.auth.signup.fullName}
                     </FormLabel>
                     <FormControl>
                       <motion.div
@@ -290,7 +292,7 @@ export function SignUpForm(): JSX.Element {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-foreground/90">Email</FormLabel>
+                    <FormLabel className="text-foreground/90">{t.auth.signup.email}</FormLabel>
                     <FormControl>
                       <motion.div
                         animate={{
@@ -344,7 +346,7 @@ export function SignUpForm(): JSX.Element {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-foreground/90">
-                      Password
+                      {t.auth.signup.password}
                     </FormLabel>
                     <FormControl>
                       <motion.div
@@ -409,7 +411,7 @@ export function SignUpForm(): JSX.Element {
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    Creating account...
+                    {t.auth.signup.creatingAccount}
                   </>
                 ) : (
                   <motion.span
@@ -427,7 +429,7 @@ export function SignUpForm(): JSX.Element {
                     >
                       <Sparkles className="mr-2 h-5 w-5" />
                     </motion.div>
-                    Create account
+                    {t.auth.signup.createAccountButton}
                   </motion.span>
                 )}
               </Button>
@@ -446,7 +448,7 @@ export function SignUpForm(): JSX.Element {
           </div>
           <div className="relative flex justify-center text-xs uppercase">
             <span className="bg-background px-2 text-muted-foreground">
-              Or continue with
+              {t.auth.signup.orContinueWith}
             </span>
           </div>
         </motion.div>
@@ -467,7 +469,7 @@ export function SignUpForm(): JSX.Element {
               disabled={isLoading}
             >
               <Icons.google className="mr-2 h-4 w-4 text-[#2B6CB0]" />
-              Google
+              {t.auth.signup.google}
             </Button>
           </motion.div>
           <motion.div
@@ -491,7 +493,7 @@ export function SignUpForm(): JSX.Element {
               >
                 <Icons.apple className="h-4 w-4 transition-colors duration-300 group-hover:text-[#2B6CB0]" />
               </motion.div>
-              Apple
+              {t.auth.signup.apple}
             </Button>
           </motion.div>
         </motion.div>
@@ -502,12 +504,12 @@ export function SignUpForm(): JSX.Element {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
         >
-          Already have an account?{' '}
+          {t.auth.signup.alreadyHaveAccount}{' '}
           <Link
             href="/auth/signin"
             className="font-medium text-[#63B3ED] transition-colors duration-300 hover:text-[#2B6CB0] hover:underline"
           >
-            Sign in
+            {t.auth.signup.signInLink}
           </Link>
         </motion.p>
       </motion.div>
