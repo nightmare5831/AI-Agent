@@ -181,7 +181,7 @@ const AgentPage = () => {
                 <Button
                   variant="outline"
                   onClick={() => setShowDeleteConfirm(true)}
-                  className="border-red-200 text-red-600 hover:bg-red-50"
+                  className="border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
                 >
                   <Trash2 className="mr-2 h-4 w-4" />
                   {t.user.agents.delete}
@@ -204,8 +204,8 @@ const AgentPage = () => {
 
         {/* Delete Confirmation */}
         {showDeleteConfirm && (
-          <div className="w-full max-w-md rounded-lg bg-white p-6 dark:bg-slate-800">
-            <div className="w-full max-w-md rounded-lg bg-white p-6">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="w-full max-w-md rounded-lg bg-white dark:bg-slate-800 p-6 shadow-xl">
               <h3 className="mb-2 text-lg font-semibold text-slate-800 dark:text-slate-100">
                 {t.user.agents.deleteProject}
               </h3>
@@ -217,12 +217,13 @@ const AgentPage = () => {
                 <Button
                   variant="outline"
                   onClick={() => setShowDeleteConfirm(false)}
+                  className="border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700"
                 >
                   {t.user.agents.cancel}
                 </Button>
                 <Button
                   onClick={handleDeleteProject}
-                  className="bg-red-600 text-white hover:bg-red-700"
+                  className="bg-red-600 dark:bg-red-700 text-white hover:bg-red-700 dark:hover:bg-red-800"
                 >
                   {t.user.agents.delete}
                 </Button>
