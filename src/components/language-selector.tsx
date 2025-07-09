@@ -12,6 +12,9 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { useLanguage } from '@/lib/i18n/language-context';
 
+// Re-export useLanguage for backward compatibility
+export { useLanguage };
+
 export default function FlagSelector() {
   const { language, setLanguage } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
