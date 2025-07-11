@@ -108,6 +108,7 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
         'marketing-strategy': marketingStrategy,
         schedule: schedule,
       },
+      language: language,
     };
     const response = await Request.Post('/api/agents', body);
 

@@ -75,6 +75,7 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
     const body = {
       agent: 'marketing-calendar',
       inputs: { ...answers, 'marketing-strategy': marketingStrategy },
+      language: language,
     };
 
     const response = await Request.Post('/api/agents', body);

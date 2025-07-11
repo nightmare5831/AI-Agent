@@ -173,6 +173,7 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
         'selected-idea': idea,
         'marketing-strategy': marketingStrategy,
       },
+      language: language,
     };
 
     const response = await Request.Post('/api/agents', body);

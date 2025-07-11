@@ -167,6 +167,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
         logoFileName: logoFile?.name,
         productFileName: productImageFile?.name,
       },
+      language: language,
     };
     const response = await Request.Post('/api/agents', body);
     console.log('answer', response);
