@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { useResults } from '@/contexts/ResultsContext';
 import { useAuth } from '@/core/auth/AuthProvider';
+import { useLanguage } from '@/lib/i18n/language-context';
 import Request from '@/lib/request';
 import { toast } from 'sonner';
 
@@ -51,6 +52,7 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
   const { results, addResult } = useResults();
   const [marketingStrategy, setMarketingStrategy] = useState('');
   const [{ profile }] = useAuth();
+  const { t, language } = useLanguage();
 
   // First determine which optimization type they want
   const optimizationTypeQuestion: Question = {
@@ -167,7 +169,7 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
 
   const handleNext = () => {
     if (profile.credits_balance <= 0) {
-      toast.error('Insufficient Credit balance, please charge this!');
+      toast.error(t.agents.seoOptimizationAgent.insufficientCredits);
     }else if (marketingStrategy === '') {
       toast.error('Empty marketing strategy!, please creat that!');
     } else {
@@ -196,7 +198,7 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
 
     const response = await Request.Post('/api/agents', body);
     const result = parseContentScript(response.script);
-    toast.success('SeoOptimization successfully created!');
+    toast.success(t.agents.seoOptimizationAgent.successMessage);
 
     const task = {
       profile_id: profile.id,
@@ -210,7 +212,7 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
     };
 
     await Request.Post('/api/stripe/discount', task);
-    toast.success('SeoOptimization successfully saved!');
+    toast.success(t.agents.seoOptimizationAgent.successSaved);
 
     setResult(result);
     addResult('seo-optimization', 'SEO Optimization', '🔍', {
@@ -262,10 +264,10 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
               <div className="text-2xl">{agent.icon}</div>
               <div>
                 <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
-                  {agent.title}
+                  {t.agents.seoOptimizationAgent.title}
                 </h3>
                 <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-                  {agent.description}
+                  {t.agents.seoOptimizationAgent.description}
                 </p>
               </div>
             </div>
@@ -325,9 +327,9 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
             <div className="text-2xl">{agent.icon}</div>
             <div>
               <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
-                {agent.title}
+                {t.agents.seoOptimizationAgent.title}
               </h3>
-              <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{agent.description}</p>
+              <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{t.agents.seoOptimizationAgent.description}</p>
             </div>
           </div>
           <div className="text-slate-400 dark:text-slate-500">

@@ -25,6 +25,7 @@ import { Label } from '@/components/ui/label';
 import { Agent, Question } from '@/lib/agentType';
 import { useResults } from '@/contexts/ResultsContext';
 import { useAuth } from '@/core/auth/AuthProvider';
+import { useLanguage } from '@/lib/i18n/language-context';
 import Request from '@/lib/request';
 import { toast } from 'sonner';
 
@@ -66,6 +67,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
   const [script, setScript] = useState('');
   const { results, addResult } = useResults();
   const [{ profile }] = useAuth();
+  const { t, language } = useLanguage();
 
   const filteredQuestions = agent.questions.filter((q: Question) => {
     if (!q.condition) return true;
@@ -87,7 +89,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
 
   const handleInit = () => {
     if (profile.credits_balance <= 0) {
-      toast.error('Insufficient Credit balance, please charge this!');
+      toast.error(t.agents.imageGenerationAgent.insufficientCredits);
     }else if (script === '') {
       toast.error('Empty ImageScript!, please create that or input!');
     } else {
@@ -101,7 +103,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
 
   const handleNext = () => {
     if (profile.credits_balance <= 0) {
-      toast.error('Insufficient Credit balance, please charge this!');
+      toast.error(t.agents.imageGenerationAgent.insufficientCredits);
     } else if (currentQuestionIndex < filteredQuestions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     }
@@ -184,7 +186,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
         campaignName: answers['campaign-name'],
       },
     };
-    toast.success('Image successfully created!');
+    toast.success(t.agents.imageGenerationAgent.successMessage);
 
     const task = {
       profile_id: profile.id,
@@ -195,7 +197,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
     };
 
     await Request.Post('/api/stripe/discount', task);
-    toast.success('Image successfully Saved!');
+    toast.success(t.agents.imageGenerationAgent.successSaved);
 
     setGeneratedImage(newImage);
     addResult(agent.id, agent.title, agent.icon, newImage);
@@ -217,6 +219,66 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
     setQuestionsCompleted(false);
   };
 
+  const getTranslatedQuestion = (questionId: string) => {
+    const questionKeyMap: Record<string, string> = {
+      'prompt': 'prompt',
+      'visual-style': 'visualStyle',
+      'image-format': 'imageFormat',
+      'include-logo': 'includeLogo',
+      'logo-position': 'logoPosition',
+      'include-product': 'includeProduct',
+      'campaign-name': 'campaignName'
+    };
+    
+    const key = questionKeyMap[questionId];
+    return key ? t.agents.imageGenerationAgent.questions[key] : agent.questions.find(q => q.id === questionId)?.question || questionId;
+  };
+
+  const getTranslatedPlaceholder = (questionId: string) => {
+    const questionKeyMap: Record<string, string> = {
+      'prompt': 'promptPlaceholder',
+      'visual-style': 'visualStylePlaceholder',
+      'image-format': 'imageFormatPlaceholder',
+      'include-logo': 'includeLogoPlaceholder',
+      'logo-position': 'logoPositionPlaceholder',
+      'include-product': 'includeProductPlaceholder',
+      'campaign-name': 'campaignNamePlaceholder'
+    };
+    
+    const key = questionKeyMap[questionId];
+    return key ? t.agents.imageGenerationAgent.questions[key] : agent.questions.find(q => q.id === questionId)?.placeholder || '';
+  };
+
+  const getTranslatedOption = (questionId: string, option: string) => {
+    if (questionId === 'visual-style') {
+      const englishOptions = ['Realistic', 'Illustrated', 'Minimalist', 'Commercial', 'Futuristic'];
+      const index = englishOptions.indexOf(option);
+      return index >= 0 && t.agents.imageGenerationAgent.options.visualStyle[index] 
+        ? t.agents.imageGenerationAgent.options.visualStyle[index] 
+        : option;
+    } else if (questionId === 'image-format') {
+      const englishOptions = ['Square (Feed)', 'Vertical (Story/Reel)', 'Horizontal (Cover/Banner)'];
+      const index = englishOptions.indexOf(option);
+      return index >= 0 && t.agents.imageGenerationAgent.options.imageFormat[index]
+        ? t.agents.imageGenerationAgent.options.imageFormat[index]
+        : option;
+    } else if (questionId === 'include-logo' || questionId === 'include-product') {
+      const englishOptions = ['Yes', 'No'];
+      const index = englishOptions.indexOf(option);
+      const optionKey = questionId === 'include-logo' ? 'includeLogo' : 'includeProduct';
+      return index >= 0 && t.agents.imageGenerationAgent.options[optionKey][index]
+        ? t.agents.imageGenerationAgent.options[optionKey][index]
+        : option;
+    } else if (questionId === 'logo-position') {
+      const englishOptions = ['Top Left', 'Top Right', 'Bottom Left', 'Bottom Right'];
+      const index = englishOptions.indexOf(option);
+      return index >= 0 && t.agents.imageGenerationAgent.options.logoPosition[index]
+        ? t.agents.imageGenerationAgent.options.logoPosition[index]
+        : option;
+    }
+    return option;
+  };
+
   useEffect(() => {
     let scripts = '';
     if (results.length > 0) {
@@ -234,6 +296,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
 
   const renderInputField = (question: Question) => {
     const value = answers[question.id] || '';
+    const translatedPlaceholder = getTranslatedPlaceholder(question.id);
 
     switch (question.type) {
       case 'text':
@@ -241,7 +304,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
           <Input
             value={value}
             onChange={(e) => handleAnswerChange(e.target.value)}
-            placeholder={question.placeholder}
+            placeholder={translatedPlaceholder}
             className="w-full"
           />
         );
@@ -250,7 +313,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
           <Textarea
             value={value}
             onChange={(e) => handleAnswerChange(e.target.value)}
-            placeholder={question.placeholder}
+            placeholder={translatedPlaceholder}
             rows={4}
             className="w-full"
           />
@@ -259,14 +322,17 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
         return (
           <Select value={value} onValueChange={handleAnswerChange}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder={question.placeholder} />
+              <SelectValue placeholder={translatedPlaceholder} />
             </SelectTrigger>
             <SelectContent>
-              {question.options?.map((option: string) => (
-                <SelectItem key={option} value={option}>
-                  {option}
-                </SelectItem>
-              ))}
+              {question.options?.map((option: string) => {
+                const translatedOption = getTranslatedOption(question.id, option);
+                return (
+                  <SelectItem key={option} value={option}>
+                    {translatedOption}
+                  </SelectItem>
+                );
+              })}
             </SelectContent>
           </Select>
         );
@@ -328,9 +394,9 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
             <div className="text-2xl">{agent.icon}</div>
             <div>
               <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
-                {agent.title}
+                {t.agents.imageGenerationAgent.title}
               </h3>
-              <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{agent.description}</p>
+              <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{t.agents.imageGenerationAgent.description}</p>
             </div>
           </div>
           <div className="text-slate-400 dark:text-slate-500">
@@ -350,8 +416,9 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
               <div className="mb-4">
                 <div className="mb-2 flex justify-between text-sm text-slate-600 dark:text-slate-300">
                   <span>
-                    Question {currentQuestionIndex + 1} of{' '}
-                    {filteredQuestions.length}
+                    {t.agents.imageGenerationAgent.questionCounter
+                      .replace('{current}', (currentQuestionIndex + 1).toString())
+                      .replace('{total}', filteredQuestions.length.toString())}
                   </span>
                   <span className="text-pink-600">🎨 Image Generator</span>
                 </div>
@@ -368,7 +435,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
               <div className="space-y-4">
                 <div>
                   <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                    {currentQuestion.question}
+                    {getTranslatedQuestion(currentQuestion.id)}
                   </label>
                   {renderInputField(currentQuestion)}
 
@@ -438,7 +505,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
                     }
                     disabled={currentQuestionIndex === 0}
                   >
-                    Previous
+                    {t.agents.imageGenerationAgent.previous}
                   </Button>
 
                   {currentQuestionIndex === 0 && (
@@ -458,7 +525,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
                     }
                     className="bg-pink-600 text-white hover:bg-pink-700"
                   >
-                    {isLastQuestion ? 'Complete' : 'Next'}
+                    {isLastQuestion ? t.agents.imageGenerationAgent.complete : t.agents.imageGenerationAgent.next}
                   </Button>
                 </div>
               </div>
