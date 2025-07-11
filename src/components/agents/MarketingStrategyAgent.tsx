@@ -22,6 +22,7 @@ import {
 import { Agent } from '@/lib/agentType';
 import { useResults } from '@/contexts/ResultsContext';
 import { useAuth } from '@/core/auth/AuthProvider';
+import { useLanguage } from '@/lib/i18n/language-context';
 import Request from '@/lib/request';
 import { toast } from 'sonner';
 
