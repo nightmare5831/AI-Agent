@@ -219,6 +219,43 @@ export const translations: any = {
             'I don\'t have one yet, I want help defining it'
           ]
         }
+      },
+      
+      marketingCalendarAgent: {
+        title: 'Marketing Calendar',
+        description: 'Create organized content calendars with strategic timing and themes.',
+        emptyStrategy: 'Empty marketing-strategy!. Please create that!',
+        insufficientCredits: 'Insufficient Credit balance, please charge this!',
+        successMessage: 'Marketing-Calendar result successfully created!',
+        successSaved: 'Marketing-Calendar result successfully saved!',
+        yourSchedule: 'Your 7-Day Content Schedule:',
+        successfullyGenerated: 'Successfully! Generated! 🎉',
+        startOver: 'Start Over',
+        regenerateSchedule: 'Regenerate Schedule',
+        questionCounter: 'Question {current} of {total}',
+        previous: 'Previous',
+        next: 'Next',
+        complete: 'Complete',
+        allCompleted: 'All questions completed! ✅',
+        creating: 'Creating Schedule...',
+        generateSchedule: 'Generate 7-Day Schedule',
+        
+        // Questions
+        questions: {
+          postsPerWeek: 'How many posts do you want per week?',
+          postsPerWeekPlaceholder: 'Select number of posts per week',
+          contentFormats: 'Which content formats do you want to use? (You can select more than one)',
+          contentFormatsPlaceholder: 'Select content formats',
+          priorityPlatform: 'Do you have any priority social media platform?',
+          priorityPlatformPlaceholder: 'Select your priority platform'
+        },
+        
+        // Options
+        options: {
+          posts: ['3 posts', '5 posts', '7 posts', '10 posts', '14 posts'],
+          formats: ['Image', 'Carousel', 'Plain Text', 'Mixed (text + image)'],
+          platforms: ['Instagram', 'Facebook', 'TikTok', 'WhatsApp', 'YouTube', 'LinkedIn', 'Twitter', 'No specific priority']
+        }
       }
     },
 
@@ -527,6 +564,43 @@ export const translations: any = {
             'Ainda não tenho, quero ajuda para definir'
           ]
         }
+      },
+      
+      marketingCalendarAgent: {
+        title: 'Calendário de Marketing',
+        description: 'Crie calendários de conteúdo organizados com timing e temas estratégicos.',
+        emptyStrategy: 'Estratégia de marketing vazia!. Por favor, crie uma!',
+        insufficientCredits: 'Saldo de créditos insuficiente, por favor recarregue!',
+        successMessage: 'Resultado do Calendário de Marketing criado com sucesso!',
+        successSaved: 'Resultado do Calendário de Marketing salvo com sucesso!',
+        yourSchedule: 'Sua Programação de Conteúdo de 7 Dias:',
+        successfullyGenerated: 'Gerado com Sucesso! 🎉',
+        startOver: 'Começar Novamente',
+        regenerateSchedule: 'Regenerar Programação',
+        questionCounter: 'Pergunta {current} de {total}',
+        previous: 'Anterior',
+        next: 'Próximo',
+        complete: 'Concluir',
+        allCompleted: 'Todas as perguntas concluídas! ✅',
+        creating: 'Criando Programação...',
+        generateSchedule: 'Gerar Programação de 7 Dias',
+        
+        // Questions
+        questions: {
+          postsPerWeek: 'Quantas postagens você quer por semana?',
+          postsPerWeekPlaceholder: 'Selecione o número de postagens por semana',
+          contentFormats: 'Quais formatos de conteúdo você quer usar? (Você pode selecionar mais de um)',
+          contentFormatsPlaceholder: 'Selecione formatos de conteúdo',
+          priorityPlatform: 'Você tem alguma plataforma de mídia social prioritária?',
+          priorityPlatformPlaceholder: 'Selecione sua plataforma prioritária'
+        },
+        
+        // Options
+        options: {
+          posts: ['3 postagens', '5 postagens', '7 postagens', '10 postagens', '14 postagens'],
+          formats: ['Imagem', 'Carrossel', 'Texto Simples', 'Misto (texto + imagem)'],
+          platforms: ['Instagram', 'Facebook', 'TikTok', 'WhatsApp', 'YouTube', 'LinkedIn', 'Twitter', 'Sem prioridade específica']
+        }
       }
     },
 
@@ -834,6 +908,43 @@ export const translations: any = {
             'Tengo una idea, pero necesito ayuda para refinarlo',
             'Aún no tengo, quiero ayuda para definirlo'
           ]
+        }
+      },
+      
+      marketingCalendarAgent: {
+        title: 'Calendario de Marketing',
+        description: 'Crea calendarios de contenido organizados con timing y temas estratégicos.',
+        emptyStrategy: '¡Estrategia de marketing vacía!. ¡Por favor, crea una!',
+        insufficientCredits: '¡Saldo de créditos insuficiente, por favor recarga!',
+        successMessage: '¡Resultado del Calendario de Marketing creado con éxito!',
+        successSaved: '¡Resultado del Calendario de Marketing guardado con éxito!',
+        yourSchedule: 'Tu Programación de Contenido de 7 Días:',
+        successfullyGenerated: '¡Generado con Éxito! 🎉',
+        startOver: 'Comenzar de Nuevo',
+        regenerateSchedule: 'Regenerar Programación',
+        questionCounter: 'Pregunta {current} de {total}',
+        previous: 'Anterior',
+        next: 'Siguiente',
+        complete: 'Completar',
+        allCompleted: '¡Todas las preguntas completadas! ✅',
+        creating: 'Creando Programación...',
+        generateSchedule: 'Generar Programación de 7 Días',
+        
+        // Questions
+        questions: {
+          postsPerWeek: '¿Cuántas publicaciones quieres por semana?',
+          postsPerWeekPlaceholder: 'Selecciona el número de publicaciones por semana',
+          contentFormats: '¿Qué formatos de contenido quieres usar? (Puedes seleccionar más de uno)',
+          contentFormatsPlaceholder: 'Selecciona formatos de contenido',
+          priorityPlatform: '¿Tienes alguna plataforma de redes sociales prioritaria?',
+          priorityPlatformPlaceholder: 'Selecciona tu plataforma prioritaria'
+        },
+        
+        // Options
+        options: {
+          posts: ['3 publicaciones', '5 publicaciones', '7 publicaciones', '10 publicaciones', '14 publicaciones'],
+          formats: ['Imagen', 'Carrusel', 'Texto Simple', 'Mixto (texto + imagen)'],
+          platforms: ['Instagram', 'Facebook', 'TikTok', 'WhatsApp', 'YouTube', 'LinkedIn', 'Twitter', 'Sin prioridad específica']
         }
       }
     },
