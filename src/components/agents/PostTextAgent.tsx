@@ -14,6 +14,7 @@ import {
 import { Agent } from '@/lib/agentType';
 import { useResults } from '@/contexts/ResultsContext';
 import { useAuth } from '@/core/auth/AuthProvider';
+import { useLanguage } from '@/lib/i18n/language-context';
 import Request from '@/lib/request';
 import { toast } from 'sonner';
 
@@ -78,6 +79,7 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
   const [options, setOptions] = useState(['']); // 14 options from postIdea (2 weeks post idea)
   const { results, addResult } = useResults();
   const [{ profile }] = useAuth();
+  const { t, language } = useLanguage();
 
   const currentQuestion = agent.questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === agent.questions.length - 1;
@@ -150,9 +152,9 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
 
   const handleNext = () => {
     if (profile.credits_balance <= 0) {
-      toast.error('Insufficient Credit balance, please charge this!');
+      toast.error(t.agents.postTextAgent.insufficientCredits);
     }else if (ideas === null) {
-      toast.error('Empty postIdea!, please create that!');
+      toast.error(t.agents.postTextAgent.emptyPostIdeas);
     } else {
       if (currentQuestionIndex < agent.questions.length - 1) {
         setCurrentQuestionIndex((prev) => prev + 1);
@@ -179,7 +181,7 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
       .replace(/^```json\s*/, '')
       .replace(/```$/, '');
     const parsedJson = JSON.parse(cleanedString);
-    toast.success('PostTextScript successfully created!');
+    toast.success(t.agents.postTextAgent.successMessage);
 
     const task = {
       profile_id: profile.id,
@@ -193,7 +195,7 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
     };
 
     await Request.Post('/api/stripe/discount', task);
-    toast.success('PostTextScript successfully created!');
+    toast.success(t.agents.postTextAgent.successSaved);
 
     setGeneratedContent(parsedJson);
     addResult(agent.id, agent.title, agent.icon, {
@@ -208,6 +210,53 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
     setCurrentQuestionIndex(0);
     setAnswers({});
     setGeneratedContent({});
+  };
+
+  const getTranslatedQuestion = (questionId: string) => {
+    const questionKeyMap: Record<string, string> = {
+      'content-type': 'contentType',
+      'selected-idea': 'selectedIdea',
+      'copy-focus': 'copyFocus',
+      'cta-preference': 'ctaPreference'
+    };
+    
+    const key = questionKeyMap[questionId];
+    return key ? t.agents.postTextAgent.questions[key] : agent.questions.find(q => q.id === questionId)?.question || questionId;
+  };
+
+  const getTranslatedPlaceholder = (questionId: string) => {
+    const questionKeyMap: Record<string, string> = {
+      'content-type': 'contentTypePlaceholder',
+      'selected-idea': 'selectedIdeaPlaceholder',
+      'copy-focus': 'copyFocusPlaceholder',
+      'cta-preference': 'ctaPreferencePlaceholder'
+    };
+    
+    const key = questionKeyMap[questionId];
+    return key ? t.agents.postTextAgent.questions[key] : agent.questions.find(q => q.id === questionId)?.placeholder || '';
+  };
+
+  const getTranslatedOption = (questionId: string, option: string) => {
+    if (questionId === 'content-type') {
+      const englishOptions = ['Social Media Caption', 'Page Copy (Website/WhatsApp)', 'AI Image Generation Script'];
+      const index = englishOptions.indexOf(option);
+      return index >= 0 && t.agents.postTextAgent.options.contentTypes[index] 
+        ? t.agents.postTextAgent.options.contentTypes[index] 
+        : option;
+    } else if (questionId === 'copy-focus') {
+      const englishOptions = ['Drive immediate sales', 'Build brand awareness', 'Educate audience', 'Increase engagement', 'Generate leads'];
+      const index = englishOptions.indexOf(option);
+      return index >= 0 && t.agents.postTextAgent.options.copyFocus[index]
+        ? t.agents.postTextAgent.options.copyFocus[index]
+        : option;
+    } else if (questionId === 'cta-preference') {
+      const englishOptions = ['Direct sales (Buy now, Shop today)', 'Engagement (Comment, Share, Tag)', 'Traffic (Visit website, Link in bio)', 'Lead generation (DM us, Sign up)', 'Soft approach (Save this post, Follow for more)'];
+      const index = englishOptions.indexOf(option);
+      return index >= 0 && t.agents.postTextAgent.options.ctaPreference[index]
+        ? t.agents.postTextAgent.options.ctaPreference[index]
+        : option;
+    }
+    return option;
   };
 
   useEffect(() => {
@@ -234,12 +283,13 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
 
   const renderInputField = (question: any) => {
     const value = answers[question.id] || '';
+    const translatedPlaceholder = getTranslatedPlaceholder(question.id);
 
     if (question.id === 'selected-idea') {
       return (
         <Select value={value} onValueChange={handleAnswerChange}>
           <SelectTrigger className="w-full">
-            <SelectValue placeholder={question.placeholder} />
+            <SelectValue placeholder={translatedPlaceholder} />
           </SelectTrigger>
           <SelectContent>
             {options?.map((option: string) => (
@@ -258,7 +308,7 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
           <Input
             value={value}
             onChange={(e) => handleAnswerChange(e.target.value)}
-            placeholder={question.placeholder}
+            placeholder={translatedPlaceholder}
             className="w-full"
           />
         );
@@ -267,7 +317,7 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
           <Textarea
             value={value}
             onChange={(e) => handleAnswerChange(e.target.value)}
-            placeholder={question.placeholder}
+            placeholder={translatedPlaceholder}
             rows={4}
             className="w-full"
           />
@@ -276,14 +326,17 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
         return (
           <Select value={value} onValueChange={handleAnswerChange}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder={question.placeholder} />
+              <SelectValue placeholder={translatedPlaceholder} />
             </SelectTrigger>
             <SelectContent>
-              {question.options?.map((option: string) => (
-                <SelectItem key={option} value={option}>
-                  {option}
-                </SelectItem>
-              ))}
+              {question.options?.map((option: string) => {
+                const translatedOption = getTranslatedOption(question.id, option);
+                return (
+                  <SelectItem key={option} value={option}>
+                    {translatedOption}
+                  </SelectItem>
+                );
+              })}
             </SelectContent>
           </Select>
         );
@@ -291,22 +344,25 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
         const selectedOptions = value ? value.split(',') : [];
         return (
           <div className="space-y-2">
-            {question.options?.map((option: string) => (
-              <label key={option} className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  checked={selectedOptions.includes(option)}
-                  onChange={(e) => {
-                    const newSelection = e.target.checked
-                      ? [...selectedOptions, option]
-                      : selectedOptions.filter((item) => item !== option);
-                    handleAnswerChange(newSelection.join(','));
-                  }}
-                  className="rounded border-gray-300 dark:border-gray-600"
-                />
-                <span className="text-sm dark:text-slate-300">{option}</span>
-              </label>
-            ))}
+            {question.options?.map((option: string) => {
+              const translatedOption = getTranslatedOption(question.id, option);
+              return (
+                <label key={option} className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    checked={selectedOptions.includes(option)}
+                    onChange={(e) => {
+                      const newSelection = e.target.checked
+                        ? [...selectedOptions, option]
+                        : selectedOptions.filter((item) => item !== option);
+                      handleAnswerChange(newSelection.join(','));
+                    }}
+                    className="rounded border-gray-300 dark:border-gray-600"
+                  />
+                  <span className="text-sm dark:text-slate-300">{translatedOption}</span>
+                </label>
+              );
+            })}
           </div>
         );
       }
@@ -326,9 +382,9 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
             <div className="text-2xl">{agent.icon}</div>
             <div>
               <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
-                {agent.title}
+                {t.agents.postTextAgent.title}
               </h3>
-              <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{agent.description}</p>
+              <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{t.agents.postTextAgent.description}</p>
             </div>
           </div>
           <div className="text-slate-400 dark:text-slate-500">
@@ -348,10 +404,11 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
               <div className="mb-4">
                 <div className="mb-2 flex justify-between text-sm text-slate-600 dark:text-slate-300">
                   <span>
-                    Question {currentQuestionIndex + 1} of{' '}
-                    {agent.questions.length}
+                    {t.agents.postTextAgent.questionCounter
+                      .replace('{current}', (currentQuestionIndex + 1).toString())
+                      .replace('{total}', agent.questions.length.toString())}
                   </span>
-                  <span className="text-orange-600">✍️ Content Writer</span>
+                  <span className="text-orange-600">{t.agents.postTextAgent.copywriterAI}</span>
                 </div>
                 <div className="h-2 w-full rounded-full bg-slate-200 dark:bg-slate-600">
                   <div
@@ -366,7 +423,7 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
               <div className="space-y-4">
                 <div>
                   <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                    {currentQuestion.question}
+                    {getTranslatedQuestion(currentQuestion.id)}
                   </label>
                   {renderInputField(currentQuestion)}
                 </div>
@@ -381,7 +438,7 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
                     }
                     disabled={currentQuestionIndex === 0}
                   >
-                    Previous
+                    {t.agents.postTextAgent.previous}
                   </Button>
 
                   <Button
@@ -389,7 +446,7 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
                     disabled={!answers[currentQuestion.id]}
                     className="bg-orange-600 text-white hover:bg-orange-700"
                   >
-                    {isLastQuestion ? 'Complete' : 'Next'}
+                    {isLastQuestion ? t.agents.postTextAgent.complete : t.agents.postTextAgent.next}
                   </Button>
                 </div>
               </div>
@@ -399,7 +456,7 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
               {Object.keys(generatedContent).length === 0 ? (
                 <div className="space-y-4 text-center">
                   <div className="font-medium text-green-600">
-                    All questions completed! ✅
+                    {t.agents.postTextAgent.allCompleted}
                   </div>
                   <Button
                     onClick={handleRunAgent}
@@ -409,12 +466,12 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
                     {isLoading ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Writing Content...
+                        {t.agents.postTextAgent.generating}
                       </>
                     ) : (
                       <>
                         <PenTool className="mr-2 h-4 w-4" />
-                        Generate Content & Scripts
+                        {t.agents.postTextAgent.generateScripts}
                       </>
                     )}
                   </Button>
@@ -424,9 +481,9 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
                   <div className="rounded-lg border border-orange-200 dark:border-orange-700 bg-white dark:bg-slate-800 p-4">
                     <h4 className="mb-4 flex items-center font-medium text-slate-800 dark:text-slate-100">
                       <PenTool className="mr-2 h-5 w-5 text-orange-600" />
-                      Generated Content & Scripts:
+                      {t.agents.postTextAgent.copyScripts}
                     </h4>
-                    Successfully Generated!
+                    {t.agents.postTextAgent.successfullyGenerated}
                   </div>
 
                   <div className="flex gap-3">
@@ -435,14 +492,14 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
                       variant="outline"
                       className="flex-1"
                     >
-                      Start Over
+                      {t.agents.postTextAgent.startOver}
                     </Button>
                     <Button
                       onClick={handleRunAgent}
                       disabled={isLoading}
                       className="flex-1 bg-orange-600 text-white hover:bg-orange-700"
                     >
-                      Regenerate Content
+                      {t.agents.postTextAgent.regenerateScripts}
                     </Button>
                   </div>
                 </div>
