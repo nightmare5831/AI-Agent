@@ -22,6 +22,7 @@ import {
 import { Agent } from '@/lib/agentType';
 import { useResults } from '@/contexts/ResultsContext';
 import { useAuth } from '@/core/auth/AuthProvider';
+import { useLanguage } from '@/lib/i18n/language-context';
 import Request from '@/lib/request';
 import { toast } from 'sonner';
 
@@ -39,14 +40,13 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<string>('');
-  const [isConfirmingAnswer, setIsConfirmingAnswer] = useState(false);
-  const [currentSummary, setCurrentSummary] = useState('');
   const [isCompleted, setIsCompleted] = useState(false);
 
   const currentQuestion = agent.questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === agent.questions.length - 1;
   const { addResult } = useResults();
   const [{ profile }] = useAuth();
+  const { t } = useLanguage();
   const handleAnswerChange = (value: string) => {
     setAnswers((prev) => ({
       ...prev,
@@ -76,17 +76,8 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
 
   const handleNext = () => {
     if (profile.credits_balance <= 0) {
-      toast.error('Insufficient Credit balance, please charge this!');
-    } else if (!isConfirmingAnswer && answers[currentQuestion.id]) {
-      const summary = generateAnswerSummary(
-        currentQuestion,
-        answers[currentQuestion.id]
-      );
-      setCurrentSummary(summary);
-      setIsConfirmingAnswer(true);
-    } else if (isConfirmingAnswer) {
-      setIsConfirmingAnswer(false);
-      setCurrentSummary('');
+      toast.error(t.agents.marketingStrategyAgent.insufficientCredits);
+    } else if (answers[currentQuestion.id]) {
       if (currentQuestionIndex < agent.questions.length - 1) {
         setCurrentQuestionIndex((prev) => prev + 1);
       } else {
@@ -95,14 +86,10 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
     }
   };
 
-  const handleEditAnswer = () => {
-    setIsConfirmingAnswer(false);
-    setCurrentSummary('');
-  };
 
   const handleRunAgent = async () => {
     if (profile.credits_balance <= 0) {
-      toast.error('Insufficient Credit balance, please charge this!');
+      toast.error(t.agents.marketingStrategyAgent.insufficientCredits);
     } else {
       setIsLoading(true);
 
@@ -145,8 +132,6 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
     setCurrentQuestionIndex(0);
     setAnswers({});
     setResult('');
-    setIsConfirmingAnswer(false);
-    setCurrentSummary('');
     setIsCompleted(false);
   };
 
@@ -226,11 +211,12 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
               <div className="mb-4">
                 <div className="mb-2 flex justify-between text-sm text-slate-600 dark:text-slate-300">
                   <span>
-                    Question {currentQuestionIndex + 1} of{' '}
-                    {agent.questions.length}
+                    {t.agents.marketingStrategyAgent.questionCounter
+                      .replace('{current}', (currentQuestionIndex + 1).toString())
+                      .replace('{total}', agent.questions.length.toString())}
                   </span>
                   <span className="text-blue-600">
-                    🤖 AI Marketing Consultant
+                    {t.agents.marketingStrategyAgent.aiConsultant}
                   </span>
                 </div>
                 <div className="h-2 w-full rounded-full bg-slate-200 dark:bg-slate-600">
@@ -244,59 +230,34 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
               </div>
 
               <div className="space-y-4">
-                {!isConfirmingAnswer ? (
-                  <div>
-                    <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                      {currentQuestion.question}
-                    </label>
-                    {renderInputField(currentQuestion)}
-                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                      Please provide a complete and specific answer. I'll
-                      summarize it for confirmation.
-                    </p>
-                  </div>
-                ) : (
-                  <div className="rounded-lg border border-green-200 bg-green-50 p-4">
-                    <div className="flex items-start space-x-2">
-                      <CheckCircle className="mt-0.5 h-5 w-5 text-green-600" />
-                      <div>
-                        <h4 className="mb-1 font-medium text-green-800">
-                          Let me confirm your answer:
-                        </h4>
-                        <p className="mb-3 text-sm text-green-700">
-                          {currentSummary}
-                        </p>
-                        <p className="text-xs text-green-600">
-                          Is this correct? You can edit or proceed to the next
-                          question.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )}
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                    {currentQuestion.question}
+                  </label>
+                  {renderInputField(currentQuestion)}
+                  <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                    {t.agents.marketingStrategyAgent.pleaseProvideComplete}
+                  </p>
+                </div>
 
                 <div className="flex justify-between">
                   <Button
                     variant="outline"
                     onClick={() => {
-                      if (isConfirmingAnswer) {
-                        handleEditAnswer();
-                      } else {
-                        setCurrentQuestionIndex(
-                          Math.max(0, currentQuestionIndex - 1)
-                        );
-                      }
+                      setCurrentQuestionIndex(
+                        Math.max(0, currentQuestionIndex - 1)
+                      );
                     }}
-                    disabled={currentQuestionIndex === 0 && !isConfirmingAnswer}
+                    disabled={currentQuestionIndex === 0}
                   >
-                    {isConfirmingAnswer ? 'Edit Answer' : 'Previous'}
+                    {t.agents.marketingStrategyAgent.previous}
                   </Button>
 
                   <Button
                     onClick={handleRunAgent}
                     className="bg-blue-600 text-white hover:bg-blue-700"
                   >
-                    Test
+                    {t.agents.marketingStrategyAgent.test}
                   </Button>
 
                   <Button
@@ -304,13 +265,7 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
                     disabled={!answers[currentQuestion.id]}
                     className="bg-blue-600 text-white hover:bg-blue-700"
                   >
-                    {isConfirmingAnswer
-                      ? isLastQuestion
-                        ? 'Complete'
-                        : 'Confirm & Continue'
-                      : isLastQuestion
-                        ? 'Review'
-                        : 'Next'}
+                    {isLastQuestion ? t.agents.marketingStrategyAgent.complete : t.agents.marketingStrategyAgent.next}
                   </Button>
                 </div>
               </div>
@@ -320,8 +275,7 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
               {!result ? (
                 <div className="space-y-4 text-center">
                   <div className="font-medium text-green-600">
-                    🎯 Strategic consultation completed! Ready to generate your
-                    business summary.
+                    {t.agents.marketingStrategyAgent.consultationCompleted}
                   </div>
                   <Button
                     onClick={handleRunAgent}
@@ -331,12 +285,12 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
                     {isLoading ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Analyzing & Creating Summary...
+                        {t.agents.marketingStrategyAgent.analyzingCreating}
                       </>
                     ) : (
                       <>
                         <Play className="mr-2 h-4 w-4" />
-                        Generate Strategic Summary
+                        {t.agents.marketingStrategyAgent.generateSummary}
                       </>
                     )}
                   </Button>
@@ -346,10 +300,10 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
                   <div className="rounded-lg border border-blue-200 dark:border-blue-700 bg-white dark:bg-slate-800 p-4">
                     <h4 className="mb-4 flex items-center font-medium text-slate-800 dark:text-slate-100">
                       <Sparkles className="mr-2 h-5 w-5 text-purple-600" />
-                      Strategic Business Summary:
+                      {t.agents.marketingStrategyAgent.strategicSummary}
                     </h4>
                     <div className="whitespace-pre-line text-sm text-slate-700 dark:text-slate-300">
-                      Successfully Generated! 🎉
+                      {t.agents.marketingStrategyAgent.successfullyGenerated}
                     </div>
                   </div>
 
@@ -359,7 +313,7 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
                       variant="default"
                       className="flex-1"
                     >
-                      Start Over
+                      {t.agents.marketingStrategyAgent.startOver}
                     </Button>
                   </div>
                 </div>

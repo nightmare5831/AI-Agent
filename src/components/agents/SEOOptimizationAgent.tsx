@@ -341,7 +341,7 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
       </div>
 
       {isExpanded && (
-        <div className="border-t border-slate-100 bg-slate-50 p-6">
+        <div className="border-t border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-6">
           <div className="space-y-6">
             <div className="space-y-2">
               <div className="flex justify-between text-sm text-slate-600 dark:text-slate-300">

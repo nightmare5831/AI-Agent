@@ -134,7 +134,92 @@ export const translations: any = {
       pageCopy: 'Page Copy',
       aiImageGeneration: 'AI Image Generation Script',
       marketingStrategy: 'Marketing Strategy Summary',
-      contentSchedule: 'Your 7-Day Content Schedule'
+      contentSchedule: 'Your 7-Day Content Schedule',
+      
+      // Marketing Strategy Agent
+      marketingStrategyAgent: {
+        title: 'Marketing Strategy',
+        description: 'Get personalized marketing strategy with step-by-step guidance from an AI marketing consultant.',
+        questionCounter: 'Question {current} of {total}',
+        aiConsultant: '🤖 AI Marketing Consultant',
+        pleaseProvideComplete: 'Please provide a complete and specific answer.',
+        previous: 'Previous',
+        test: 'Test',
+        next: 'Next',
+        complete: 'Complete',
+        consultationCompleted: '🎯 Strategic consultation completed! Ready to generate your business summary.',
+        analyzingCreating: 'Analyzing & Creating Summary...',
+        generateSummary: 'Generate Strategic Summary',
+        successfullyGenerated: 'Successfully Generated! 🎉',
+        strategicSummary: 'Strategic Business Summary:',
+        startOver: 'Start Over',
+        insufficientCredits: 'Insufficient Credit balance, please charge this!',
+        
+        // Questions
+        questions: {
+          brandName: 'What is the name of your brand or business?',
+          brandNamePlaceholder: 'Enter your brand or business name',
+          
+          productService: 'What exactly do you sell or offer?',
+          productServicePlaceholder: 'e.g., online baking courses, residential painting services, women\'s fitness clothing, marketing consulting for freelancers. Be specific and include examples if possible.',
+          
+          targetAudience: 'Who is your ideal audience?',
+          targetAudiencePlaceholder: 'Describe age, profession, pain points, desires, location, level of knowledge about the topic, etc. This helps make content more attractive and relevant.',
+          
+          differentiator: 'What is your main differentiator or promise?',
+          differentiatorPlaceholder: 'Why should someone buy from you and not someone else? Examples: more personal service, affordable price, faster delivery, exclusive product, differentiated support, etc.',
+          
+          marketingGoals: 'What is your main goal with marketing? (you can choose more than one)',
+          marketingGoalsPlaceholder: 'Select your primary marketing goal',
+          
+          communicationTone: 'What tone do you want to convey in your communication?',
+          communicationTonePlaceholder: 'Select your preferred communication tone',
+          
+          socialPlatforms: 'Do you already sell on social media? Which platforms do you use or plan to use?',
+          socialPlatformsPlaceholder: 'e.g., Instagram, Facebook, WhatsApp, YouTube, TikTok, LinkedIn...',
+          
+          limitations: 'Are there any important limitations we should consider?',
+          limitationsPlaceholder: 'e.g., Little time to record, no designer, don\'t like video, no website, don\'t want to appear, limited budget, etc.',
+          
+          focusProducts: 'What are your most important products or services (that you want to focus on first)?',
+          focusProductsPlaceholder: 'List your priority products/services for marketing focus',
+          
+          positioningStatus: 'Do you already have a clear positioning or do you want help defining it?',
+          positioningStatusPlaceholder: 'Select your positioning status',
+          
+          competitors: 'Do you have competitors you admire or want to differentiate from?',
+          competitorsPlaceholder: 'Share names, links, or profiles of competitors you admire or want to differentiate from',
+          
+          threeMonthGoals: 'What results do you want to achieve with marketing in the next 3 months?',
+          threeMonthGoalsPlaceholder: 'e.g., more sales, more followers, more authority, opening new channels, specific numbers...'
+        },
+        
+        // Options
+        options: {
+          marketingGoals: [
+            'Generate more sales',
+            'Grow followers and authority',
+            'Capture leads for nurturing',
+            'Position the brand as a reference',
+            'Attract customers to a physical store',
+            'Promote new releases or promotions'
+          ],
+          
+          communicationTone: [
+            'Professional and trustworthy',
+            'Fun and relaxed',
+            'Friendly and welcoming',
+            'Creative and bold',
+            'Traditional and safe'
+          ],
+          
+          positioningStatus: [
+            'I already have a clear positioning',
+            'I have an idea, but need help refining it',
+            'I don\'t have one yet, I want help defining it'
+          ]
+        }
+      }
     },
 
     // Home Section
@@ -357,7 +442,92 @@ export const translations: any = {
       pageCopy: 'Cópia da Página',
       aiImageGeneration: 'Script de Geração de Imagem AI',
       marketingStrategy: 'Resumo da Estratégia de Marketing',
-      contentSchedule: 'Sua Programação de Conteúdo de 7 Dias'
+      contentSchedule: 'Sua Programação de Conteúdo de 7 Dias',
+      
+      // Marketing Strategy Agent
+      marketingStrategyAgent: {
+        title: 'Estratégia de Marketing',
+        description: 'Obtenha uma estratégia de marketing personalizada com orientação passo a passo de um consultor de marketing AI.',
+        questionCounter: 'Pergunta {current} de {total}',
+        aiConsultant: '🤖 Consultor de Marketing AI',
+        pleaseProvideComplete: 'Por favor, forneça uma resposta completa e específica.',
+        previous: 'Anterior',
+        test: 'Testar',
+        next: 'Próximo',
+        complete: 'Concluir',
+        consultationCompleted: '🎯 Consulta estratégica concluída! Pronto para gerar seu resumo empresarial.',
+        analyzingCreating: 'Analisando e Criando Resumo...',
+        generateSummary: 'Gerar Resumo Estratégico',
+        successfullyGenerated: 'Gerado com Sucesso! 🎉',
+        strategicSummary: 'Resumo Estratégico Empresarial:',
+        startOver: 'Começar Novamente',
+        insufficientCredits: 'Saldo de créditos insuficiente, por favor recarregue!',
+        
+        // Questions
+        questions: {
+          brandName: 'Qual é o nome da sua marca ou negócio?',
+          brandNamePlaceholder: 'Digite o nome da sua marca ou negócio',
+          
+          productService: 'O que exatamente você vende ou oferece?',
+          productServicePlaceholder: 'ex: cursos online de confeitaria, serviços de pintura residencial, roupas fitness femininas, consultoria de marketing para freelancers. Seja específico e inclua exemplos se possível.',
+          
+          targetAudience: 'Quem é seu público ideal?',
+          targetAudiencePlaceholder: 'Descreva idade, profissão, dores, desejos, localização, nível de conhecimento sobre o tema, etc. Isso ajuda a tornar o conteúdo mais atraente e relevante.',
+          
+          differentiator: 'Qual é seu principal diferencial ou promessa?',
+          differentiatorPlaceholder: 'Por que alguém deveria comprar de você e não de outra pessoa? Exemplos: atendimento mais pessoal, preço acessível, entrega mais rápida, produto exclusivo, suporte diferenciado, etc.',
+          
+          marketingGoals: 'Qual é seu principal objetivo com marketing? (você pode escolher mais de um)',
+          marketingGoalsPlaceholder: 'Selecione seu objetivo principal de marketing',
+          
+          communicationTone: 'Que tom você quer transmitir na sua comunicação?',
+          communicationTonePlaceholder: 'Selecione seu tom de comunicação preferido',
+          
+          socialPlatforms: 'Você já vende nas redes sociais? Quais plataformas usa ou planeja usar?',
+          socialPlatformsPlaceholder: 'ex: Instagram, Facebook, WhatsApp, YouTube, TikTok, LinkedIn...',
+          
+          limitations: 'Existem limitações importantes que devemos considerar?',
+          limitationsPlaceholder: 'ex: Pouco tempo para gravar, sem designer, não gosta de vídeo, sem site, não quer aparecer, orçamento limitado, etc.',
+          
+          focusProducts: 'Quais são seus produtos ou serviços mais importantes (que você quer focar primeiro)?',
+          focusProductsPlaceholder: 'Liste seus produtos/serviços prioritários para foco de marketing',
+          
+          positioningStatus: 'Você já tem um posicionamento claro ou quer ajuda para definir?',
+          positioningStatusPlaceholder: 'Selecione seu status de posicionamento',
+          
+          competitors: 'Você tem concorrentes que admira ou quer se diferenciar?',
+          competitorsPlaceholder: 'Compartilhe nomes, links ou perfis de concorrentes que admira ou quer se diferenciar',
+          
+          threeMonthGoals: 'Que resultados você quer alcançar com marketing nos próximos 3 meses?',
+          threeMonthGoalsPlaceholder: 'ex: mais vendas, mais seguidores, mais autoridade, abertura de novos canais, números específicos...'
+        },
+        
+        // Options
+        options: {
+          marketingGoals: [
+            'Gerar mais vendas',
+            'Crescer seguidores e autoridade',
+            'Capturar leads para nutrição',
+            'Posicionar a marca como referência',
+            'Atrair clientes para loja física',
+            'Promover lançamentos ou promoções'
+          ],
+          
+          communicationTone: [
+            'Profissional e confiável',
+            'Divertido e descontraído',
+            'Amigável e acolhedor',
+            'Criativo e ousado',
+            'Tradicional e seguro'
+          ],
+          
+          positioningStatus: [
+            'Já tenho um posicionamento claro',
+            'Tenho uma ideia, mas preciso de ajuda para refinar',
+            'Ainda não tenho, quero ajuda para definir'
+          ]
+        }
+      }
     },
 
     // Home Section
@@ -580,7 +750,92 @@ export const translations: any = {
       pageCopy: 'Copia de Página',
       aiImageGeneration: 'Script de Generación de Imagen AI',
       marketingStrategy: 'Resumen de Estrategia de Marketing',
-      contentSchedule: 'Tu Programación de Contenido de 7 Días'
+      contentSchedule: 'Tu Programación de Contenido de 7 Días',
+      
+      // Marketing Strategy Agent
+      marketingStrategyAgent: {
+        title: 'Estrategia de Marketing',
+        description: 'Obtenga una estrategia de marketing personalizada con orientación paso a paso de un consultor de marketing AI.',
+        questionCounter: 'Pregunta {current} de {total}',
+        aiConsultant: '🤖 Consultor de Marketing AI',
+        pleaseProvideComplete: 'Por favor, proporcione una respuesta completa y específica.',
+        previous: 'Anterior',
+        test: 'Probar',
+        next: 'Siguiente',
+        complete: 'Completar',
+        consultationCompleted: '🎯 ¡Consulta estratégica completada! Listo para generar tu resumen empresarial.',
+        analyzingCreating: 'Analizando y Creando Resumen...',
+        generateSummary: 'Generar Resumen Estratégico',
+        successfullyGenerated: '¡Generado con Éxito! 🎉',
+        strategicSummary: 'Resumen Estratégico Empresarial:',
+        startOver: 'Comenzar de Nuevo',
+        insufficientCredits: '¡Saldo de créditos insuficiente, por favor recarga!',
+        
+        // Questions
+        questions: {
+          brandName: '¿Cuál es el nombre de tu marca o negocio?',
+          brandNamePlaceholder: 'Ingresa el nombre de tu marca o negocio',
+          
+          productService: '¿Qué vendes o ofreces exactamente?',
+          productServicePlaceholder: 'ej: cursos online de repostería, servicios de pintura residencial, ropa fitness femenina, consultoría de marketing para freelancers. Sé específico e incluye ejemplos si es posible.',
+          
+          targetAudience: '¿Quién es tu audiencia ideal?',
+          targetAudiencePlaceholder: 'Describe edad, profesión, dolores, deseos, ubicación, nivel de conocimiento sobre el tema, etc. Esto ayuda a hacer el contenido más atractivo y relevante.',
+          
+          differentiator: '¿Cuál es tu principal diferenciador o promesa?',
+          differentiatorPlaceholder: '¿Por qué alguien debería comprar de ti y no de otra persona? Ejemplos: servicio más personal, precio accesible, entrega más rápida, producto exclusivo, soporte diferenciado, etc.',
+          
+          marketingGoals: '¿Cuál es tu principal objetivo con marketing? (puedes elegir más de uno)',
+          marketingGoalsPlaceholder: 'Selecciona tu objetivo principal de marketing',
+          
+          communicationTone: '¿Qué tono quieres transmitir en tu comunicación?',
+          communicationTonePlaceholder: 'Selecciona tu tono de comunicación preferido',
+          
+          socialPlatforms: '¿Ya vendes en redes sociales? ¿Qué plataformas usas o planeas usar?',
+          socialPlatformsPlaceholder: 'ej: Instagram, Facebook, WhatsApp, YouTube, TikTok, LinkedIn...',
+          
+          limitations: '¿Hay limitaciones importantes que debemos considerar?',
+          limitationsPlaceholder: 'ej: Poco tiempo para grabar, sin diseñador, no me gusta el video, sin sitio web, no quiero aparecer, presupuesto limitado, etc.',
+          
+          focusProducts: '¿Cuáles son tus productos o servicios más importantes (en los que quieres enfocarte primero)?',
+          focusProductsPlaceholder: 'Lista tus productos/servicios prioritarios para enfoque de marketing',
+          
+          positioningStatus: '¿Ya tienes un posicionamiento claro o quieres ayuda para definirlo?',
+          positioningStatusPlaceholder: 'Selecciona tu estado de posicionamiento',
+          
+          competitors: '¿Tienes competidores que admiras o de los que quieres diferenciarte?',
+          competitorsPlaceholder: 'Comparte nombres, enlaces o perfiles de competidores que admiras o de los que quieres diferenciarte',
+          
+          threeMonthGoals: '¿Qué resultados quieres lograr con marketing en los próximos 3 meses?',
+          threeMonthGoalsPlaceholder: 'ej: más ventas, más seguidores, más autoridad, apertura de nuevos canales, números específicos...'
+        },
+        
+        // Options
+        options: {
+          marketingGoals: [
+            'Generar más ventas',
+            'Crecer seguidores y autoridad',
+            'Capturar leads para nutrición',
+            'Posicionar la marca como referencia',
+            'Atraer clientes a tienda física',
+            'Promover lanzamientos o promociones'
+          ],
+          
+          communicationTone: [
+            'Profesional y confiable',
+            'Divertido y relajado',
+            'Amigable y acogedor',
+            'Creativo y audaz',
+            'Tradicional y seguro'
+          ],
+          
+          positioningStatus: [
+            'Ya tengo un posicionamiento claro',
+            'Tengo una idea, pero necesito ayuda para refinarlo',
+            'Aún no tengo, quiero ayuda para definirlo'
+          ]
+        }
+      }
     },
 
     // Home Section
