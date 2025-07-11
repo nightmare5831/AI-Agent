@@ -837,6 +837,118 @@ export const translations: any = {
             'Mix de tudo, mas mantendo simples'
           ]
         }
+      },
+      
+      postTextAgent: {
+        title: 'Textos e Scripts',
+        description: 'Escreva scripts de copy convincentes para seu conteúdo.',
+        insufficientCredits: 'Saldo de créditos insuficiente, por favor recarregue!',
+        emptyPostIdeas: 'Ideias de posts vazias!. Por favor, crie Ideias de Posts!',
+        successMessage: 'Scripts de Posts criados com sucesso!',
+        successSaved: 'Scripts de Posts salvos com sucesso!',
+        questionCounter: 'Pergunta {current} de {total}',
+        copywriterAI: '✍️ Copywriter AI',
+        previous: 'Anterior',
+        next: 'Próximo',
+        complete: 'Concluir',
+        allCompleted: 'Todas as perguntas concluídas! ✅',
+        generating: 'Escrevendo Scripts Profissionais...',
+        generateScripts: 'Gerar Scripts de Copy',
+        copyScripts: 'Scripts de Copy Profissionais:',
+        successfullyGenerated: 'Gerado com Sucesso! 🎉',
+        startOver: 'Começar Novamente',
+        regenerateScripts: 'Regenerar Scripts',
+        
+        questions: {
+          contentType: 'Que tipo de conteúdo você quer criar?',
+          contentTypePlaceholder: 'Selecione tipos de conteúdo',
+          selectedIdea: 'Qual ideia de conteúdo da etapa anterior você quer desenvolver?',
+          selectedIdeaPlaceholder: 'Selecione uma ideia de conteúdo para desenvolver',
+          copyFocus: 'Qual deve ser o foco principal do seu copy?',
+          copyFocusPlaceholder: 'Selecione o foco do seu copy',
+          ctaPreference: 'Que tipo de call-to-action você prefere?',
+          ctaPreferencePlaceholder: 'Selecione sua preferência de CTA'
+        },
+        
+        options: {
+          contentTypes: ['Legenda de Mídia Social', 'Copy de Página (Website/WhatsApp)', 'Script de Geração de Imagem AI'],
+          copyFocus: ['Gerar vendas imediatas', 'Construir consciência de marca', 'Educar audiência', 'Aumentar engajamento', 'Gerar leads'],
+          ctaPreference: ['Vendas diretas (Compre agora, Compre hoje)', 'Engajamento (Comente, Compartilhe, Marque)', 'Tráfego (Visite o site, Link na bio)', 'Geração de leads (Mande DM, Inscreva-se)', 'Abordagem suave (Salve este post, Siga para mais)']
+        }
+      },
+      
+      imageGenerationAgent: {
+        title: 'Geração de Imagens',
+        description: 'Crie visuais impressionantes e gráficos para suas campanhas de marketing.',
+        insufficientCredits: 'Saldo de créditos insuficiente, por favor recarregue!',
+        successMessage: 'Geração de Imagens criada com sucesso!',
+        successSaved: 'Geração de Imagens salva com sucesso!',
+        questionCounter: 'Pergunta {current} de {total}',
+        visualCreator: '🎨 Criador Visual AI',
+        previous: 'Anterior',
+        next: 'Próximo',
+        complete: 'Concluir',
+        allCompleted: 'Todas as perguntas concluídas! ✅',
+        generating: 'Gerando Conteúdo Visual...',
+        generateImages: 'Gerar Imagens',
+        visualContent: 'Conteúdo Visual Gerado:',
+        successfullyGenerated: 'Gerado com Sucesso! 🎉',
+        startOver: 'Começar Novamente',
+        regenerateImages: 'Regenerar Imagens',
+        
+        questions: {
+          prompt: 'Que imagem você gostaria de gerar? Descreva em detalhes.',
+          promptPlaceholder: 'Descreva a imagem que você quer gerar em detalhes...',
+          visualStyle: 'Que estilo visual você prefere?',
+          visualStylePlaceholder: 'Escolha o estilo visual',
+          imageFormat: 'Qual formato a imagem deve ter?',
+          imageFormatPlaceholder: 'Selecione o formato da imagem',
+          includeLogo: 'Você quer incluir um logo na imagem?',
+          includeLogoPlaceholder: 'Incluir logo?',
+          logoPosition: 'Onde o logo deve ser posicionado?',
+          logoPositionPlaceholder: 'Escolha a posição do logo',
+          includeProduct: 'Você quer incluir uma imagem de produto?',
+          includeProductPlaceholder: 'Incluir imagem de produto?',
+          campaignName: 'Qual é o nome da campanha para esta imagem?',
+          campaignNamePlaceholder: 'Digite o nome da campanha'
+        },
+        
+        options: {
+          visualStyle: ['Realista', 'Ilustrado', 'Minimalista', 'Comercial', 'Futurista'],
+          imageFormat: ['Quadrado (Feed)', 'Vertical (Story/Reel)', 'Horizontal (Capa/Banner)'],
+          includeLogo: ['Sim', 'Não'],
+          logoPosition: ['Superior Esquerdo', 'Superior Direito', 'Inferior Esquerdo', 'Inferior Direito'],
+          includeProduct: ['Sim', 'Não']
+        }
+      },
+      
+      seoOptimizationAgent: {
+        title: 'Otimização SEO',
+        description: 'Otimize seu conteúdo e perfil para melhor visibilidade nos mecanismos de busca e alcance nas redes sociais.',
+        insufficientCredits: 'Saldo de créditos insuficiente, por favor recarregue!',
+        successMessage: 'Otimização SEO criada com sucesso!',
+        successSaved: 'Otimização SEO salva com sucesso!',
+        questionCounter: 'Pergunta {current} de {total}',
+        seoSpecialist: '🔍 Especialista SEO AI',
+        previous: 'Anterior',
+        next: 'Próximo',
+        complete: 'Concluir',
+        allCompleted: 'Todas as perguntas concluídas! ✅',
+        generating: 'Otimizando Conteúdo...',
+        generateOptimization: 'Gerar Otimização SEO',
+        seoContent: 'Resultados da Otimização SEO:',
+        successfullyGenerated: 'Gerado com Sucesso! 🎉',
+        startOver: 'Começar Novamente',
+        regenerateOptimization: 'Regenerar Otimização',
+        
+        questions: {
+          optimizationType: 'O que você gostaria de otimizar?',
+          optimizationTypePlaceholder: 'Selecione o tipo de otimização'
+        },
+        
+        options: {
+          optimizationType: ['Otimização de Conteúdo', 'Otimização de Perfil']
+        }
       }
     },
 
@@ -1243,6 +1355,118 @@ export const translations: any = {
             'Mejor con gráficos y contenido basado en texto',
             'Mezcla de todo pero manteniéndolo simple'
           ]
+        }
+      },
+      
+      postTextAgent: {
+        title: 'Textos y Scripts',
+        description: 'Escribe scripts de copy convincentes para tu contenido.',
+        insufficientCredits: '¡Saldo de créditos insuficiente, por favor recarga!',
+        emptyPostIdeas: '¡Ideas de publicaciones vacías!. ¡Por favor, crea Ideas de Publicaciones!',
+        successMessage: '¡Scripts de Publicaciones creados con éxito!',
+        successSaved: '¡Scripts de Publicaciones guardados con éxito!',
+        questionCounter: 'Pregunta {current} de {total}',
+        copywriterAI: '✍️ Copywriter AI',
+        previous: 'Anterior',
+        next: 'Siguiente',
+        complete: 'Completar',
+        allCompleted: '¡Todas las preguntas completadas! ✅',
+        generating: 'Escribiendo Scripts Profesionales...',
+        generateScripts: 'Generar Scripts de Copy',
+        copyScripts: 'Scripts de Copy Profesionales:',
+        successfullyGenerated: '¡Generado con Éxito! 🎉',
+        startOver: 'Comenzar de Nuevo',
+        regenerateScripts: 'Regenerar Scripts',
+        
+        questions: {
+          contentType: '¿Qué tipo de contenido quieres crear?',
+          contentTypePlaceholder: 'Selecciona tipos de contenido',
+          selectedIdea: '¿Qué idea de contenido del paso anterior quieres desarrollar?',
+          selectedIdeaPlaceholder: 'Selecciona una idea de contenido para desarrollar',
+          copyFocus: '¿Cuál debe ser el enfoque principal de tu copy?',
+          copyFocusPlaceholder: 'Selecciona el enfoque de tu copy',
+          ctaPreference: '¿Qué tipo de call-to-action prefieres?',
+          ctaPreferencePlaceholder: 'Selecciona tu preferencia de CTA'
+        },
+        
+        options: {
+          contentTypes: ['Leyenda de Redes Sociales', 'Copy de Página (Website/WhatsApp)', 'Script de Generación de Imagen AI'],
+          copyFocus: ['Generar ventas inmediatas', 'Construir conciencia de marca', 'Educar audiencia', 'Aumentar engagement', 'Generar leads'],
+          ctaPreference: ['Ventas directas (Compra ahora, Compra hoy)', 'Engagement (Comenta, Comparte, Etiqueta)', 'Tráfico (Visita el sitio web, Link en bio)', 'Generación de leads (Envía DM, Regístrate)', 'Enfoque suave (Guarda este post, Síguenos para más)']
+        }
+      },
+      
+      imageGenerationAgent: {
+        title: 'Generación de Imágenes',
+        description: 'Crea visuales impresionantes y gráficos para tus campañas de marketing.',
+        insufficientCredits: '¡Saldo de créditos insuficiente, por favor recarga!',
+        successMessage: '¡Generación de Imágenes creada con éxito!',
+        successSaved: '¡Generación de Imágenes guardada con éxito!',
+        questionCounter: 'Pregunta {current} de {total}',
+        visualCreator: '🎨 Creador Visual AI',
+        previous: 'Anterior',
+        next: 'Siguiente',
+        complete: 'Completar',
+        allCompleted: '¡Todas las preguntas completadas! ✅',
+        generating: 'Generando Contenido Visual...',
+        generateImages: 'Generar Imágenes',
+        visualContent: 'Contenido Visual Generado:',
+        successfullyGenerated: '¡Generado con Éxito! 🎉',
+        startOver: 'Comenzar de Nuevo',
+        regenerateImages: 'Regenerar Imágenes',
+        
+        questions: {
+          prompt: '¿Qué imagen te gustaría generar? Descríbela en detalle.',
+          promptPlaceholder: 'Describe la imagen que quieres generar en detalle...',
+          visualStyle: '¿Qué estilo visual prefieres?',
+          visualStylePlaceholder: 'Elige el estilo visual',
+          imageFormat: '¿Qué formato debe tener la imagen?',
+          imageFormatPlaceholder: 'Selecciona el formato de imagen',
+          includeLogo: '¿Quieres incluir un logo en la imagen?',
+          includeLogoPlaceholder: '¿Incluir logo?',
+          logoPosition: '¿Dónde debe posicionarse el logo?',
+          logoPositionPlaceholder: 'Elige la posición del logo',
+          includeProduct: '¿Quieres incluir una imagen de producto?',
+          includeProductPlaceholder: '¿Incluir imagen de producto?',
+          campaignName: '¿Cuál es el nombre de la campaña para esta imagen?',
+          campaignNamePlaceholder: 'Ingresa el nombre de la campaña'
+        },
+        
+        options: {
+          visualStyle: ['Realista', 'Ilustrado', 'Minimalista', 'Comercial', 'Futurista'],
+          imageFormat: ['Cuadrado (Feed)', 'Vertical (Story/Reel)', 'Horizontal (Portada/Banner)'],
+          includeLogo: ['Sí', 'No'],
+          logoPosition: ['Superior Izquierdo', 'Superior Derecho', 'Inferior Izquierdo', 'Inferior Derecho'],
+          includeProduct: ['Sí', 'No']
+        }
+      },
+      
+      seoOptimizationAgent: {
+        title: 'Optimización SEO',
+        description: 'Optimiza tu contenido y perfil para mejor visibilidad en motores de búsqueda y alcance en redes sociales.',
+        insufficientCredits: '¡Saldo de créditos insuficiente, por favor recarga!',
+        successMessage: '¡Optimización SEO creada con éxito!',
+        successSaved: '¡Optimización SEO guardada con éxito!',
+        questionCounter: 'Pregunta {current} de {total}',
+        seoSpecialist: '🔍 Especialista SEO AI',
+        previous: 'Anterior',
+        next: 'Siguiente',
+        complete: 'Completar',
+        allCompleted: '¡Todas las preguntas completadas! ✅',
+        generating: 'Optimizando Contenido...',
+        generateOptimization: 'Generar Optimización SEO',
+        seoContent: 'Resultados de Optimización SEO:',
+        successfullyGenerated: '¡Generado con Éxito! 🎉',
+        startOver: 'Comenzar de Nuevo',
+        regenerateOptimization: 'Regenerar Optimización',
+        
+        questions: {
+          optimizationType: '¿Qué te gustaría optimizar?',
+          optimizationTypePlaceholder: 'Selecciona el tipo de optimización'
+        },
+        
+        options: {
+          optimizationType: ['Optimización de Contenido', 'Optimización de Perfil']
         }
       }
     },
