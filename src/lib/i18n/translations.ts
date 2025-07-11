@@ -424,11 +424,33 @@ export const translations: any = {
         
         questions: {
           optimizationType: 'What would you like to optimize?',
-          optimizationTypePlaceholder: 'Select optimization type'
+          optimizationTypePlaceholder: 'Select optimization type',
+          caption: 'Caption or Post Text',
+          captionPlaceholder: 'Enter your current post caption...',
+          targetPlatform: 'Target Platform',
+          targetPlatformPlaceholder: 'Select target platform',
+          mainTheme: 'Main Theme of Content',
+          mainThemePlaceholder: 'e.g., anxiety and productivity',
+          postObjective: 'Post Objective',
+          postObjectivePlaceholder: 'Select post objective',
+          brandName: 'Brand or Professional Name',
+          brandNamePlaceholder: 'Your brand/professional name',
+          niche: 'Niche / Field of Activity',
+          nichePlaceholder: 'e.g., Fitness Coach, Digital Marketing',
+          idealAudience: 'Ideal Audience',
+          idealAudiencePlaceholder: 'Describe your target audience',
+          toneOfVoice: 'Tone of Voice',
+          toneOfVoicePlaceholder: 'Select tone of voice',
+          primaryContact: 'Primary Contact Channel',
+          primaryContactPlaceholder: 'Select contact channel'
         },
         
         options: {
-          optimizationType: ['Content Optimization', 'Profile Optimization']
+          optimizationType: ['Content Optimization', 'Profile Optimization'],
+          targetPlatform: ['Instagram', 'TikTok', 'Facebook', 'YouTube Shorts'],
+          postObjective: ['Attract', 'Sell', 'Educate', 'Engage'],
+          toneOfVoice: ['Casual', 'Technical', 'Institutional', 'Other'],
+          primaryContact: ['WhatsApp', 'Link in Bio', 'DM', 'Other']
         }
       }
     },
@@ -943,11 +965,33 @@ export const translations: any = {
         
         questions: {
           optimizationType: 'O que você gostaria de otimizar?',
-          optimizationTypePlaceholder: 'Selecione o tipo de otimização'
+          optimizationTypePlaceholder: 'Selecione o tipo de otimização',
+          caption: 'Legenda ou Texto do Post',
+          captionPlaceholder: 'Digite sua legenda atual do post...',
+          targetPlatform: 'Plataforma Alvo',
+          targetPlatformPlaceholder: 'Selecione a plataforma alvo',
+          mainTheme: 'Tema Principal do Conteúdo',
+          mainThemePlaceholder: 'ex: ansiedade e produtividade',
+          postObjective: 'Objetivo do Post',
+          postObjectivePlaceholder: 'Selecione o objetivo do post',
+          brandName: 'Nome da Marca ou Profissional',
+          brandNamePlaceholder: 'Seu nome de marca/profissional',
+          niche: 'Nicho / Área de Atuação',
+          nichePlaceholder: 'ex: Coach de Fitness, Marketing Digital',
+          idealAudience: 'Público Ideal',
+          idealAudiencePlaceholder: 'Descreva seu público-alvo',
+          toneOfVoice: 'Tom de Voz',
+          toneOfVoicePlaceholder: 'Selecione o tom de voz',
+          primaryContact: 'Canal de Contato Principal',
+          primaryContactPlaceholder: 'Selecione o canal de contato'
         },
         
         options: {
-          optimizationType: ['Otimização de Conteúdo', 'Otimização de Perfil']
+          optimizationType: ['Otimização de Conteúdo', 'Otimização de Perfil'],
+          targetPlatform: ['Instagram', 'TikTok', 'Facebook', 'YouTube Shorts'],
+          postObjective: ['Atrair', 'Vender', 'Educar', 'Engajar'],
+          toneOfVoice: ['Casual', 'Técnico', 'Institucional', 'Outro'],
+          primaryContact: ['WhatsApp', 'Link na Bio', 'DM', 'Outro']
         }
       }
     },
@@ -1462,11 +1506,33 @@ export const translations: any = {
         
         questions: {
           optimizationType: '¿Qué te gustaría optimizar?',
-          optimizationTypePlaceholder: 'Selecciona el tipo de optimización'
+          optimizationTypePlaceholder: 'Selecciona el tipo de optimización',
+          caption: 'Leyenda o Texto de la Publicación',
+          captionPlaceholder: 'Ingresa tu leyenda actual de la publicación...',
+          targetPlatform: 'Plataforma Objetivo',
+          targetPlatformPlaceholder: 'Selecciona la plataforma objetivo',
+          mainTheme: 'Tema Principal del Contenido',
+          mainThemePlaceholder: 'ej: ansiedad y productividad',
+          postObjective: 'Objetivo de la Publicación',
+          postObjectivePlaceholder: 'Selecciona el objetivo de la publicación',
+          brandName: 'Nombre de Marca o Profesional',
+          brandNamePlaceholder: 'Tu nombre de marca/profesional',
+          niche: 'Nicho / Área de Actividad',
+          nichePlaceholder: 'ej: Coach de Fitness, Marketing Digital',
+          idealAudience: 'Audiencia Ideal',
+          idealAudiencePlaceholder: 'Describe tu audiencia objetivo',
+          toneOfVoice: 'Tono de Voz',
+          toneOfVoicePlaceholder: 'Selecciona el tono de voz',
+          primaryContact: 'Canal de Contacto Principal',
+          primaryContactPlaceholder: 'Selecciona el canal de contacto'
         },
         
         options: {
-          optimizationType: ['Optimización de Contenido', 'Optimización de Perfil']
+          optimizationType: ['Optimización de Contenido', 'Optimización de Perfil'],
+          targetPlatform: ['Instagram', 'TikTok', 'Facebook', 'YouTube Shorts'],
+          postObjective: ['Atraer', 'Vender', 'Educar', 'Involucrar'],
+          toneOfVoice: ['Casual', 'Técnico', 'Institucional', 'Otro'],
+          primaryContact: ['WhatsApp', 'Link en Bio', 'DM', 'Otro']
         }
       }
     },
