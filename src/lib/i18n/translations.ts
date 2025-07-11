@@ -256,6 +256,180 @@ export const translations: any = {
           formats: ['Image', 'Carousel', 'Plain Text', 'Mixed (text + image)'],
           platforms: ['Instagram', 'Facebook', 'TikTok', 'WhatsApp', 'YouTube', 'LinkedIn', 'Twitter', 'No specific priority']
         }
+      },
+      
+      postIdeasAgent: {
+        title: 'Post Ideas',
+        description: 'Generate creative and engaging social media post concepts based on your strategy and schedule.',
+        insufficientCredits: 'Insufficient Credit balance, please charge this!',
+        emptyCalendar: 'Empty marketing-calendar!. Please create Schedule!',
+        successMessage: 'PostIdeas successfully created!',
+        successSaved: 'PostIdeas successfully saved!',
+        questionCounter: 'Question {current} of {total}',
+        creativeStrategist: '💡 Creative Strategist',
+        previous: 'Previous',
+        next: 'Next',
+        complete: 'Complete',
+        usingData: 'Using Data From Previous Agents:',
+        brand: 'Brand',
+        product: 'Product',
+        schedule: 'Schedule',
+        postsFrom: '{count} posts from Marketing Calendar',
+        allCompleted: 'All questions completed! ✅',
+        generating: 'Generating Creative Ideas...',
+        generateIdeas: 'Generate Content Ideas',
+        creativeContent: 'Creative Content Ideas (2 per post):',
+        successfullyGenerated: 'Successfully Generated! 🎉',
+        startOver: 'Start Over',
+        regenerateIdeas: 'Regenerate Ideas',
+        
+        // Questions
+        questions: {
+          creativeStyle: 'What creative style do you prefer for your content ideas?',
+          creativeStylePlaceholder: 'Select your preferred creative style',
+          contentThemes: 'Which content themes resonate most with your audience? (You can select multiple)',
+          contentThemesPlaceholder: 'Select content themes',
+          filmingComfort: 'How comfortable are you with creating different types of content?',
+          filmingComfortPlaceholder: 'Select your comfort level'
+        },
+        
+        // Options
+        options: {
+          creativeStyle: [
+            'Simple and direct',
+            'Creative and bold',
+            'Educational and informative',
+            'Fun and entertaining',
+            'Professional and polished'
+          ],
+          contentThemes: [
+            'Behind-the-scenes',
+            'Tips and tutorials',
+            'Customer testimonials',
+            'Product showcases',
+            'Industry trends',
+            'Personal stories',
+            'Challenges and solutions',
+            'Community highlights'
+          ],
+          filmingComfort: [
+            'Prefer behind-the-scenes and product shots',
+            'Better with graphics and text-based content',
+            'Mix of everything but keep it simple'
+          ]
+        }
+      },
+      
+      postTextAgent: {
+        title: 'Post Text & Scripts',
+        description: 'Write compelling copy scripts for your content.',
+        insufficientCredits: 'Insufficient Credit balance, please charge this!',
+        emptyPostIdeas: 'Empty post-ideas!. Please create Post Ideas!',
+        successMessage: 'Post Scripts successfully created!',
+        successSaved: 'Post Scripts successfully saved!',
+        questionCounter: 'Question {current} of {total}',
+        copywriterAI: '✍️ Copywriter AI',
+        previous: 'Previous',
+        next: 'Next',
+        complete: 'Complete',
+        allCompleted: 'All questions completed! ✅',
+        generating: 'Writing Professional Scripts...',
+        generateScripts: 'Generate Copy Scripts',
+        copyScripts: 'Professional Copy Scripts:',
+        successfullyGenerated: 'Successfully Generated! 🎉',
+        startOver: 'Start Over',
+        regenerateScripts: 'Regenerate Scripts',
+        
+        questions: {
+          contentType: 'What type of content do you want to create?',
+          contentTypePlaceholder: 'Select content types',
+          selectedIdea: 'Which content idea from the previous step do you want to develop?',
+          selectedIdeaPlaceholder: 'Select a content idea to develop',
+          copyFocus: 'What should be the main focus of your copy?',
+          copyFocusPlaceholder: 'Select your copy focus',
+          ctaPreference: 'What type of call-to-action do you prefer?',
+          ctaPreferencePlaceholder: 'Select your CTA preference'
+        },
+        
+        options: {
+          contentTypes: ['Social Media Caption', 'Page Copy (Website/WhatsApp)', 'AI Image Generation Script'],
+          copyFocus: ['Drive immediate sales', 'Build brand awareness', 'Educate audience', 'Increase engagement', 'Generate leads'],
+          ctaPreference: ['Direct sales (Buy now, Shop today)', 'Engagement (Comment, Share, Tag)', 'Traffic (Visit website, Link in bio)', 'Lead generation (DM us, Sign up)', 'Soft approach (Save this post, Follow for more)']
+        }
+      },
+      
+      imageGenerationAgent: {
+        title: 'Image Generation',
+        description: 'Create stunning visuals and graphics for your marketing campaigns.',
+        insufficientCredits: 'Insufficient Credit balance, please charge this!',
+        successMessage: 'Image Generation successfully created!',
+        successSaved: 'Image Generation successfully saved!',
+        questionCounter: 'Question {current} of {total}',
+        visualCreator: '🎨 Visual Creator AI',
+        previous: 'Previous',
+        next: 'Next',
+        complete: 'Complete',
+        allCompleted: 'All questions completed! ✅',
+        generating: 'Generating Visual Content...',
+        generateImages: 'Generate Images',
+        visualContent: 'Generated Visual Content:',
+        successfullyGenerated: 'Successfully Generated! 🎉',
+        startOver: 'Start Over',
+        regenerateImages: 'Regenerate Images',
+        
+        questions: {
+          prompt: 'What image would you like to generate? Describe it in detail.',
+          promptPlaceholder: 'Describe the image you want to generate in detail...',
+          visualStyle: 'What visual style do you prefer?',
+          visualStylePlaceholder: 'Choose visual style',
+          imageFormat: 'What format should the image be?',
+          imageFormatPlaceholder: 'Select image format',
+          includeLogo: 'Do you want to include a logo in the image?',
+          includeLogoPlaceholder: 'Include logo?',
+          logoPosition: 'Where should the logo be positioned?',
+          logoPositionPlaceholder: 'Choose logo position',
+          includeProduct: 'Do you want to include a product image?',
+          includeProductPlaceholder: 'Include product image?',
+          campaignName: 'What is the campaign name for this image?',
+          campaignNamePlaceholder: 'Enter campaign name'
+        },
+        
+        options: {
+          visualStyle: ['Realistic', 'Illustrated', 'Minimalist', 'Commercial', 'Futuristic'],
+          imageFormat: ['Square (Feed)', 'Vertical (Story/Reel)', 'Horizontal (Cover/Banner)'],
+          includeLogo: ['Yes', 'No'],
+          logoPosition: ['Top Left', 'Top Right', 'Bottom Left', 'Bottom Right'],
+          includeProduct: ['Yes', 'No']
+        }
+      },
+      
+      seoOptimizationAgent: {
+        title: 'SEO Optimization',
+        description: 'Optimize your content and profile for better search engine visibility and social media reach.',
+        insufficientCredits: 'Insufficient Credit balance, please charge this!',
+        successMessage: 'SEO Optimization successfully created!',
+        successSaved: 'SEO Optimization successfully saved!',
+        questionCounter: 'Question {current} of {total}',
+        seoSpecialist: '🔍 SEO Specialist AI',
+        previous: 'Previous',
+        next: 'Next',
+        complete: 'Complete',
+        allCompleted: 'All questions completed! ✅',
+        generating: 'Optimizing Content...',
+        generateOptimization: 'Generate SEO Optimization',
+        seoContent: 'SEO Optimization Results:',
+        successfullyGenerated: 'Successfully Generated! 🎉',
+        startOver: 'Start Over',
+        regenerateOptimization: 'Regenerate Optimization',
+        
+        questions: {
+          optimizationType: 'What would you like to optimize?',
+          optimizationTypePlaceholder: 'Select optimization type'
+        },
+        
+        options: {
+          optimizationType: ['Content Optimization', 'Profile Optimization']
+        }
       }
     },
 
@@ -601,6 +775,68 @@ export const translations: any = {
           formats: ['Imagem', 'Carrossel', 'Texto Simples', 'Misto (texto + imagem)'],
           platforms: ['Instagram', 'Facebook', 'TikTok', 'WhatsApp', 'YouTube', 'LinkedIn', 'Twitter', 'Sem prioridade específica']
         }
+      },
+      
+      postIdeasAgent: {
+        title: 'Ideias de Posts',
+        description: 'Gere conceitos criativos e envolventes de posts para redes sociais baseados em sua estratégia e programação.',
+        insufficientCredits: 'Saldo de créditos insuficiente, por favor recarregue!',
+        emptyCalendar: 'Calendário de marketing vazio!. Por favor, crie uma Programação!',
+        successMessage: 'Ideias de Posts criadas com sucesso!',
+        successSaved: 'Ideias de Posts salvas com sucesso!',
+        questionCounter: 'Pergunta {current} de {total}',
+        creativeStrategist: '💡 Estrategista Criativo',
+        previous: 'Anterior',
+        next: 'Próximo',
+        complete: 'Concluir',
+        usingData: 'Usando Dados de Agentes Anteriores:',
+        brand: 'Marca',
+        product: 'Produto',
+        schedule: 'Programação',
+        postsFrom: '{count} posts do Calendário de Marketing',
+        allCompleted: 'Todas as perguntas concluídas! ✅',
+        generating: 'Gerando Ideias Criativas...',
+        generateIdeas: 'Gerar Ideias de Conteúdo',
+        creativeContent: 'Ideias de Conteúdo Criativo (2 por post):',
+        successfullyGenerated: 'Gerado com Sucesso! 🎉',
+        startOver: 'Começar Novamente',
+        regenerateIdeas: 'Regenerar Ideias',
+        
+        // Questions
+        questions: {
+          creativeStyle: 'Qual estilo criativo você prefere para suas ideias de conteúdo?',
+          creativeStylePlaceholder: 'Selecione seu estilo criativo preferido',
+          contentThemes: 'Quais temas de conteúdo mais ressoam com seu público? (Você pode selecionar vários)',
+          contentThemesPlaceholder: 'Selecione temas de conteúdo',
+          filmingComfort: 'Quão confortável você está com a criação de diferentes tipos de conteúdo?',
+          filmingComfortPlaceholder: 'Selecione seu nível de conforto'
+        },
+        
+        // Options
+        options: {
+          creativeStyle: [
+            'Simples e direto',
+            'Criativo e ousado',
+            'Educativo e informativo',
+            'Divertido e entretenimento',
+            'Profissional e polido'
+          ],
+          contentThemes: [
+            'Bastidores',
+            'Dicas e tutoriais',
+            'Depoimentos de clientes',
+            'Mostruário de produtos',
+            'Tendências do setor',
+            'Histórias pessoais',
+            'Desafios e soluções',
+            'Destaques da comunidade'
+          ],
+          filmingComfort: [
+            'Prefiro bastidores e fotos de produtos',
+            'Melhor com gráficos e conteúdo baseado em texto',
+            'Mix de tudo, mas mantendo simples'
+          ]
+        }
       }
     },
 
@@ -945,6 +1181,68 @@ export const translations: any = {
           posts: ['3 publicaciones', '5 publicaciones', '7 publicaciones', '10 publicaciones', '14 publicaciones'],
           formats: ['Imagen', 'Carrusel', 'Texto Simple', 'Mixto (texto + imagen)'],
           platforms: ['Instagram', 'Facebook', 'TikTok', 'WhatsApp', 'YouTube', 'LinkedIn', 'Twitter', 'Sin prioridad específica']
+        }
+      },
+      
+      postIdeasAgent: {
+        title: 'Ideas de Publicaciones',
+        description: 'Genera conceptos creativos y atractivos de publicaciones para redes sociales basados en tu estrategia y programación.',
+        insufficientCredits: '¡Saldo de créditos insuficiente, por favor recarga!',
+        emptyCalendar: '¡Calendario de marketing vacío!. ¡Por favor, crea una Programación!',
+        successMessage: '¡Ideas de Publicaciones creadas con éxito!',
+        successSaved: '¡Ideas de Publicaciones guardadas con éxito!',
+        questionCounter: 'Pregunta {current} de {total}',
+        creativeStrategist: '💡 Estratega Creativo',
+        previous: 'Anterior',
+        next: 'Siguiente',
+        complete: 'Completar',
+        usingData: 'Usando Datos de Agentes Anteriores:',
+        brand: 'Marca',
+        product: 'Producto',
+        schedule: 'Programación',
+        postsFrom: '{count} publicaciones del Calendario de Marketing',
+        allCompleted: '¡Todas las preguntas completadas! ✅',
+        generating: 'Generando Ideas Creativas...',
+        generateIdeas: 'Generar Ideas de Contenido',
+        creativeContent: 'Ideas de Contenido Creativo (2 por publicación):',
+        successfullyGenerated: '¡Generado con Éxito! 🎉',
+        startOver: 'Comenzar de Nuevo',
+        regenerateIdeas: 'Regenerar Ideas',
+        
+        // Questions
+        questions: {
+          creativeStyle: '¿Qué estilo creativo prefieres para tus ideas de contenido?',
+          creativeStylePlaceholder: 'Selecciona tu estilo creativo preferido',
+          contentThemes: '¿Qué temas de contenido resuenan más con tu audiencia? (Puedes seleccionar varios)',
+          contentThemesPlaceholder: 'Selecciona temas de contenido',
+          filmingComfort: '¿Qué tan cómodo estás con la creación de diferentes tipos de contenido?',
+          filmingComfortPlaceholder: 'Selecciona tu nivel de comodidad'
+        },
+        
+        // Options
+        options: {
+          creativeStyle: [
+            'Simple y directo',
+            'Creativo y audaz',
+            'Educativo e informativo',
+            'Divertido y entretenido',
+            'Profesional y pulido'
+          ],
+          contentThemes: [
+            'Detrás de escenas',
+            'Consejos y tutoriales',
+            'Testimonios de clientes',
+            'Presentación de productos',
+            'Tendencias de la industria',
+            'Historias personales',
+            'Desafíos y soluciones',
+            'Destacados de la comunidad'
+          ],
+          filmingComfort: [
+            'Prefiero detrás de escenas y fotos de productos',
+            'Mejor con gráficos y contenido basado en texto',
+            'Mezcla de todo pero manteniéndolo simple'
+          ]
         }
       }
     },

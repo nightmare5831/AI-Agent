@@ -21,6 +21,7 @@ import {
 import { Agent } from '@/lib/agentType';
 import { useResults } from '@/contexts/ResultsContext';
 import { useAuth } from '@/core/auth/AuthProvider';
+import { useLanguage } from '@/lib/i18n/language-context';
 import Request from '@/lib/request';
 import { toast } from 'sonner';
 interface PostIdeasAgentProps {
@@ -60,6 +61,7 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
   const [isCompleted, setIsCompleted] = useState(false); // Add this state
   const { results, addResult } = useResults();
   const [{ profile }] = useAuth();
+  const { t, language } = useLanguage();
   const [schedule, setSchedule] = useState([]);
   const [marketingStrategy, setMarketingStrategy] = useState('');
 
@@ -84,7 +86,7 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
 
   const handleNext = () => {
     if (profile.credits_balance <= 0) {
-      toast.error('Insufficient Credit balance, please charge this!');
+      toast.error(t.agents.postIdeasAgent.insufficientCredits);
     } else if (schedule.length > 0) {
       if (currentQuestionIndex < agent.questions.length - 1) {
         setCurrentQuestionIndex((prev) => prev + 1);
@@ -92,7 +94,7 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
         setIsCompleted(true);
       }
     } else {
-      toast.error('Empty marketing-calendar!. Please create Schedule!');
+      toast.error(t.agents.postIdeasAgent.emptyCalendar);
     }
   };
 
@@ -114,7 +116,7 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
       .join('\n');
 
     const jsonData = JSON.parse(jsonString);
-    toast.success('PostIdeas successfully created!');
+    toast.success(t.agents.postIdeasAgent.successMessage);
     const mockIdeas: ContentIdea[] = schedule.map((item) => ({
       day: item.day,
       channel: item.channel,
@@ -134,7 +136,7 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
     };
 
     await Request.Post('/api/stripe/discount', task);
-    toast.success('PostIdeas successfully saved!');
+    toast.success(t.agents.postIdeasAgent.successSaved);
     setContentIdeas(mockIdeas);
     addResult(agent.id, agent.title, agent.icon, mockIdeas);
 
@@ -154,6 +156,70 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
     setAnswers({});
     setContentIdeas([]);
     setIsCompleted(false);
+  };
+
+  const getTranslatedQuestion = (questionId: string) => {
+    const questionKeyMap: Record<string, string> = {
+      'creative-style': 'creativeStyle',
+      'content-themes': 'contentThemes',
+      'filming-comfort': 'filmingComfort'
+    };
+    
+    const key = questionKeyMap[questionId];
+    return key ? t.agents.postIdeasAgent.questions[key] : agent.questions.find(q => q.id === questionId)?.question || questionId;
+  };
+
+  const getTranslatedPlaceholder = (questionId: string) => {
+    const questionKeyMap: Record<string, string> = {
+      'creative-style': 'creativeStylePlaceholder',
+      'content-themes': 'contentThemesPlaceholder',
+      'filming-comfort': 'filmingComfortPlaceholder'
+    };
+    
+    const key = questionKeyMap[questionId];
+    return key ? t.agents.postIdeasAgent.questions[key] : agent.questions.find(q => q.id === questionId)?.placeholder || '';
+  };
+
+  const getTranslatedOption = (questionId: string, option: string) => {
+    if (questionId === 'creative-style') {
+      const englishOptions = [
+        'Simple and direct',
+        'Creative and bold',
+        'Educational and informative',
+        'Fun and entertaining',
+        'Professional and polished'
+      ];
+      const index = englishOptions.indexOf(option);
+      return index >= 0 && t.agents.postIdeasAgent.options.creativeStyle[index] 
+        ? t.agents.postIdeasAgent.options.creativeStyle[index] 
+        : option;
+    } else if (questionId === 'content-themes') {
+      const englishThemes = [
+        'Behind-the-scenes',
+        'Tips and tutorials',
+        'Customer testimonials',
+        'Product showcases',
+        'Industry trends',
+        'Personal stories',
+        'Challenges and solutions',
+        'Community highlights'
+      ];
+      const index = englishThemes.indexOf(option);
+      return index >= 0 && t.agents.postIdeasAgent.options.contentThemes[index]
+        ? t.agents.postIdeasAgent.options.contentThemes[index]
+        : option;
+    } else if (questionId === 'filming-comfort') {
+      const englishComfort = [
+        'Prefer behind-the-scenes and product shots',
+        'Better with graphics and text-based content',
+        'Mix of everything but keep it simple'
+      ];
+      const index = englishComfort.indexOf(option);
+      return index >= 0 && t.agents.postIdeasAgent.options.filmingComfort[index]
+        ? t.agents.postIdeasAgent.options.filmingComfort[index]
+        : option;
+    }
+    return option;
   };
 
   useEffect(() => {
@@ -176,6 +242,7 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
 
   const renderInputField = (question: any) => {
     const value = answers[question.id] || '';
+    const translatedPlaceholder = getTranslatedPlaceholder(question.id);
 
     switch (question.type) {
       case 'text':
@@ -183,7 +250,7 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
           <Input
             value={value}
             onChange={(e) => handleAnswerChange(e.target.value)}
-            placeholder={question.placeholder}
+            placeholder={translatedPlaceholder}
             className="w-full"
           />
         );
@@ -192,7 +259,7 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
           <Textarea
             value={value}
             onChange={(e) => handleAnswerChange(e.target.value)}
-            placeholder={question.placeholder}
+            placeholder={translatedPlaceholder}
             rows={4}
             className="w-full"
           />
@@ -201,14 +268,17 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
         return (
           <Select value={value} onValueChange={handleAnswerChange}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder={question.placeholder} />
+              <SelectValue placeholder={translatedPlaceholder} />
             </SelectTrigger>
             <SelectContent>
-              {question.options?.map((option: string) => (
-                <SelectItem key={option} value={option}>
-                  {option}
-                </SelectItem>
-              ))}
+              {question.options?.map((option: string) => {
+                const translatedOption = getTranslatedOption(question.id, option);
+                return (
+                  <SelectItem key={option} value={option}>
+                    {translatedOption}
+                  </SelectItem>
+                );
+              })}
             </SelectContent>
           </Select>
         );
@@ -216,22 +286,25 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
         const selectedOptions = value ? value.split(',') : [];
         return (
           <div className="space-y-2">
-            {question.options?.map((option: string) => (
-              <label key={option} className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  checked={selectedOptions.includes(option)}
-                  onChange={(e) => {
-                    const newSelection = e.target.checked
-                      ? [...selectedOptions, option]
-                      : selectedOptions.filter((item) => item !== option);
-                    handleAnswerChange(newSelection.join(','));
-                  }}
-                  className="rounded border-gray-300 dark:border-gray-600"
-                />
-                <span className="text-sm dark:text-slate-300">{option}</span>
-              </label>
-            ))}
+            {question.options?.map((option: string) => {
+              const translatedOption = getTranslatedOption(question.id, option);
+              return (
+                <label key={option} className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    checked={selectedOptions.includes(option)}
+                    onChange={(e) => {
+                      const newSelection = e.target.checked
+                        ? [...selectedOptions, option]
+                        : selectedOptions.filter((item) => item !== option);
+                      handleAnswerChange(newSelection.join(','));
+                    }}
+                    className="rounded border-gray-300 dark:border-gray-600"
+                  />
+                  <span className="text-sm dark:text-slate-300">{translatedOption}</span>
+                </label>
+              );
+            })}
           </div>
         );
       }
@@ -251,9 +324,9 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
             <div className="text-2xl">{agent.icon}</div>
             <div>
               <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
-                {agent.title}
+                {t.agents.postIdeasAgent.title}
               </h3>
-              <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{agent.description}</p>
+              <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{t.agents.postIdeasAgent.description}</p>
             </div>
           </div>
           <div className="text-slate-400 dark:text-slate-500">
@@ -273,11 +346,12 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
               <div className="mb-4">
                 <div className="mb-2 flex justify-between text-sm text-slate-600 dark:text-slate-300">
                   <span>
-                    Question {currentQuestionIndex + 1} of{' '}
-                    {agent.questions.length}
+                    {t.agents.postIdeasAgent.questionCounter
+                      .replace('{current}', (currentQuestionIndex + 1).toString())
+                      .replace('{total}', agent.questions.length.toString())}
                   </span>
                   <span className="text-purple-600">
-                    💡 Creative Strategist
+                    {t.agents.postIdeasAgent.creativeStrategist}
                   </span>
                 </div>
                 <div className="h-2 w-full rounded-full bg-slate-200 dark:bg-slate-600">
@@ -293,7 +367,7 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
               <div className="space-y-4">
                 <div>
                   <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                    {currentQuestion.question}
+                    {getTranslatedQuestion(currentQuestion.id)}
                   </label>
                   {renderInputField(currentQuestion)}
                 </div>
@@ -308,7 +382,7 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
                     }
                     disabled={currentQuestionIndex === 0}
                   >
-                    Previous
+                    {t.agents.postIdeasAgent.previous}
                   </Button>
 
                   <Button
@@ -316,7 +390,7 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
                     disabled={!answers[currentQuestion.id]}
                     className="bg-purple-600 text-white hover:bg-purple-700"
                   >
-                    {isLastQuestion ? 'Complete' : 'Next'}
+                    {isLastQuestion ? t.agents.postIdeasAgent.complete : t.agents.postIdeasAgent.next}
                   </Button>
                 </div>
               </div>
@@ -327,24 +401,23 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
                 <div className="space-y-4 text-center">
                   <div className="mb-4 rounded-lg border border-blue-200 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/50 p-4">
                     <h4 className="mb-2 font-medium text-blue-800 dark:text-blue-200">
-                      📋 Using Data From Previous Agents:
+                      📋 {t.agents.postIdeasAgent.usingData}
                     </h4>
                     <div className="space-y-1 text-sm text-blue-700 dark:text-blue-300">
                       <p>
-                        <strong>Brand:</strong> {mockBrandStrategy.brandName}
+                        <strong>{t.agents.postIdeasAgent.brand}:</strong> {mockBrandStrategy.brandName}
                       </p>
                       <p>
-                        <strong>Product:</strong> {mockBrandStrategy.product}
+                        <strong>{t.agents.postIdeasAgent.product}:</strong> {mockBrandStrategy.product}
                       </p>
                       <p>
-                        <strong>Schedule:</strong> {schedule.length} posts from
-                        Marketing Calendar
+                        <strong>{t.agents.postIdeasAgent.schedule}:</strong> {t.agents.postIdeasAgent.postsFrom.replace('{count}', schedule.length.toString())}
                       </p>
                     </div>
                   </div>
 
                   <div className="font-medium text-green-600">
-                    All questions completed! ✅
+                    {t.agents.postIdeasAgent.allCompleted}
                   </div>
                   <Button
                     onClick={handleRunAgent}
@@ -354,12 +427,12 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
                     {isLoading ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Generating Creative Ideas...
+                        {t.agents.postIdeasAgent.generating}
                       </>
                     ) : (
                       <>
                         <Lightbulb className="mr-2 h-4 w-4" />
-                        Generate Content Ideas
+                        {t.agents.postIdeasAgent.generateIdeas}
                       </>
                     )}
                   </Button>
@@ -369,9 +442,9 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
                   <div className="rounded-lg border border-purple-200 dark:border-purple-700 bg-white dark:bg-slate-800 p-4">
                     <h4 className="mb-4 flex items-center font-medium text-slate-800 dark:text-slate-100">
                       <Sparkles className="mr-2 h-5 w-5 text-purple-600" />
-                      Creative Content Ideas (2 per post):
+                      {t.agents.postIdeasAgent.creativeContent}
                     </h4>
-                    Successfully Generated! 🎉
+                    {t.agents.postIdeasAgent.successfullyGenerated}
                   </div>
 
                   <div className="flex gap-3">
@@ -380,14 +453,14 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
                       variant="default"
                       className="flex-1"
                     >
-                      Start Over
+                      {t.agents.postIdeasAgent.startOver}
                     </Button>
                     <Button
                       onClick={handleRunAgent}
                       disabled={isLoading}
                       className="flex-1 bg-blue-600 text-white hover:bg-blue-700"
                     >
-                      Regenerate Ideas
+                      {t.agents.postIdeasAgent.regenerateIdeas}
                     </Button>
                   </div>
                 </div>
