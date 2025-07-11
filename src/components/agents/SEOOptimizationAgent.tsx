@@ -57,7 +57,7 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
   // First determine which optimization type they want
   const optimizationTypeQuestion: Question = {
     id: 'optimization-type',
-    question: 'What would you like to optimize?',
+    question: getTranslatedQuestion('optimization-type'),
     type: 'select',
     options: ['Content Optimization', 'Profile Optimization'],
     required: true,
@@ -67,28 +67,28 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
   const contentQuestions: Question[] = [
     {
       id: 'caption',
-      question: 'Caption or Post Text',
+      question: getTranslatedQuestion('caption'),
       type: 'textarea',
-      placeholder: 'Enter your current post caption...',
+      placeholder: getTranslatedPlaceholder('caption'),
       required: true,
     },
     {
       id: 'target-platform',
-      question: 'Target Platform',
+      question: getTranslatedQuestion('target-platform'),
       type: 'select',
       options: ['Instagram', 'TikTok', 'Facebook', 'YouTube Shorts'],
       required: true,
     },
     {
       id: 'main-theme',
-      question: 'Main Theme of Content',
+      question: getTranslatedQuestion('main-theme'),
       type: 'text',
-      placeholder: 'e.g., anxiety and productivity',
+      placeholder: getTranslatedPlaceholder('main-theme'),
       required: true,
     },
     {
       id: 'post-objective',
-      question: 'Post Objective',
+      question: getTranslatedQuestion('post-objective'),
       type: 'select',
       options: ['Attract', 'Sell', 'Educate', 'Engage'],
       required: true,
@@ -99,35 +99,35 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
   const profileQuestions: Question[] = [
     {
       id: 'brand-name',
-      question: 'Brand or Professional Name',
+      question: getTranslatedQuestion('brand-name'),
       type: 'text',
-      placeholder: 'Your brand/professional name',
+      placeholder: getTranslatedPlaceholder('brand-name'),
       required: true,
     },
     {
       id: 'niche',
-      question: 'Niche / Field of Activity',
+      question: getTranslatedQuestion('niche'),
       type: 'text',
-      placeholder: 'e.g., Fitness Coach, Digital Marketing',
+      placeholder: getTranslatedPlaceholder('niche'),
       required: true,
     },
     {
       id: 'ideal-audience',
-      question: 'Ideal Audience',
+      question: getTranslatedQuestion('ideal-audience'),
       type: 'text',
-      placeholder: 'Describe your target audience',
+      placeholder: getTranslatedPlaceholder('ideal-audience'),
       required: true,
     },
     {
       id: 'tone-of-voice',
-      question: 'Tone of Voice',
+      question: getTranslatedQuestion('tone-of-voice'),
       type: 'select',
       options: ['Casual', 'Technical', 'Institutional', 'Other'],
       required: true,
     },
     {
       id: 'primary-contact',
-      question: 'Primary Contact Channel',
+      question: getTranslatedQuestion('primary-contact'),
       type: 'select',
       options: ['WhatsApp', 'Link in Bio', 'DM', 'Other'],
       required: true,
@@ -236,6 +236,77 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
     setCurrentStep(0);
     setAnswers({});
     setIsExpanded(false);
+  };
+
+  const getTranslatedQuestion = (questionId: string) => {
+    const questionKeyMap: Record<string, string> = {
+      'optimization-type': 'optimizationType',
+      'caption': 'caption',
+      'target-platform': 'targetPlatform',
+      'main-theme': 'mainTheme',
+      'post-objective': 'postObjective',
+      'brand-name': 'brandName',
+      'niche': 'niche',
+      'ideal-audience': 'idealAudience',
+      'tone-of-voice': 'toneOfVoice',
+      'primary-contact': 'primaryContact'
+    };
+    
+    const key = questionKeyMap[questionId];
+    return key ? t.agents.seoOptimizationAgent.questions[key] : questionId;
+  };
+
+  const getTranslatedPlaceholder = (questionId: string) => {
+    const questionKeyMap: Record<string, string> = {
+      'optimization-type': 'optimizationTypePlaceholder',
+      'caption': 'captionPlaceholder',
+      'target-platform': 'targetPlatformPlaceholder',
+      'main-theme': 'mainThemePlaceholder',
+      'post-objective': 'postObjectivePlaceholder',
+      'brand-name': 'brandNamePlaceholder',
+      'niche': 'nichePlaceholder',
+      'ideal-audience': 'idealAudiencePlaceholder',
+      'tone-of-voice': 'toneOfVoicePlaceholder',
+      'primary-contact': 'primaryContactPlaceholder'
+    };
+    
+    const key = questionKeyMap[questionId];
+    return key ? t.agents.seoOptimizationAgent.questions[key] : '';
+  };
+
+  const getTranslatedOption = (questionId: string, option: string) => {
+    if (questionId === 'optimization-type') {
+      const englishOptions = ['Content Optimization', 'Profile Optimization'];
+      const index = englishOptions.indexOf(option);
+      return index >= 0 && t.agents.seoOptimizationAgent.options.optimizationType[index] 
+        ? t.agents.seoOptimizationAgent.options.optimizationType[index] 
+        : option;
+    } else if (questionId === 'target-platform') {
+      const englishOptions = ['Instagram', 'TikTok', 'Facebook', 'YouTube Shorts'];
+      const index = englishOptions.indexOf(option);
+      return index >= 0 && t.agents.seoOptimizationAgent.options.targetPlatform[index]
+        ? t.agents.seoOptimizationAgent.options.targetPlatform[index]
+        : option;
+    } else if (questionId === 'post-objective') {
+      const englishOptions = ['Attract', 'Sell', 'Educate', 'Engage'];
+      const index = englishOptions.indexOf(option);
+      return index >= 0 && t.agents.seoOptimizationAgent.options.postObjective[index]
+        ? t.agents.seoOptimizationAgent.options.postObjective[index]
+        : option;
+    } else if (questionId === 'tone-of-voice') {
+      const englishOptions = ['Casual', 'Technical', 'Institutional', 'Other'];
+      const index = englishOptions.indexOf(option);
+      return index >= 0 && t.agents.seoOptimizationAgent.options.toneOfVoice[index]
+        ? t.agents.seoOptimizationAgent.options.toneOfVoice[index]
+        : option;
+    } else if (questionId === 'primary-contact') {
+      const englishOptions = ['WhatsApp', 'Link in Bio', 'DM', 'Other'];
+      const index = englishOptions.indexOf(option);
+      return index >= 0 && t.agents.seoOptimizationAgent.options.primaryContact[index]
+        ? t.agents.seoOptimizationAgent.options.primaryContact[index]
+        : option;
+    }
+    return option;
   };
 
   useEffect(() => {
@@ -364,7 +435,7 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
               <div className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="answer" className="text-base font-medium text-slate-700 dark:text-slate-300">
-                    {currentQuestion.question}
+                    {getTranslatedQuestion(currentQuestion.id)}
                     {currentQuestion.required && (
                       <span className="ml-1 text-red-500">*</span>
                     )}
@@ -373,7 +444,7 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
                   {currentQuestion.type === 'text' && (
                     <Input
                       id="answer"
-                      placeholder={currentQuestion.placeholder || ''}
+                      placeholder={getTranslatedPlaceholder(currentQuestion.id)}
                       value={answers[currentQuestion.id] || ''}
                       onChange={(e) => handleAnswer(e.target.value)}
                       className="w-full"
@@ -383,7 +454,7 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
                   {currentQuestion.type === 'textarea' && (
                     <Textarea
                       id="answer"
-                      placeholder={currentQuestion.placeholder || ''}
+                      placeholder={getTranslatedPlaceholder(currentQuestion.id)}
                       value={answers[currentQuestion.id] || ''}
                       onChange={(e) => handleAnswer(e.target.value)}
                       rows={4}
@@ -398,12 +469,12 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
                         onValueChange={handleAnswer}
                       >
                         <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Please select an option" />
+                          <SelectValue placeholder={getTranslatedPlaceholder(currentQuestion.id)} />
                         </SelectTrigger>
                         <SelectContent>
                           {currentQuestion.options.map((option) => (
                             <SelectItem key={option} value={option}>
-                              {option}
+                              {getTranslatedOption(currentQuestion.id, option)}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -418,7 +489,7 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
                     disabled={currentStep === 0}
                   >
                     <ArrowLeft className="mr-2 h-4 w-4" />
-                    Previous
+                    {t.agents.seoOptimizationAgent.previous}
                   </Button>
 
                   {isLastStep ? (
@@ -430,12 +501,12 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
                       {isLoading ? (
                         <>
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Optimizing...
+                          {t.agents.seoOptimizationAgent.generating}
                         </>
                       ) : (
                         <>
                           <Eye className="mr-2 h-4 w-4" />
-                          Generate Results
+                          {t.agents.seoOptimizationAgent.generateOptimization}
                         </>
                       )}
                     </Button>
@@ -445,7 +516,7 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
                       disabled={!canProceed()}
                       className="bg-blue-600 text-white hover:bg-blue-700"
                     >
-                      Next
+                      {t.agents.seoOptimizationAgent.next}
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   )}
