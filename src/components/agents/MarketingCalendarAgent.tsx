@@ -15,6 +15,7 @@ import {
 import { Agent } from '@/lib/agentType';
 import { useResults } from '@/contexts/ResultsContext';
 import { useAuth } from '@/core/auth/AuthProvider';
+import { useLanguage } from '@/lib/i18n/language-context';
 import Request from '@/lib/request';
 import { toast } from 'sonner';
 
@@ -44,6 +45,7 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
   const [marketingStrategy, setMarketingStrategy] = useState('');
   const { results, addResult } = useResults();
   const [{ profile }] = useAuth();
+  const { t, language } = useLanguage();
 
   const currentQuestion = agent.questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === agent.questions.length - 1;
@@ -58,9 +60,9 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
 
   const handleNext = () => {
     if (profile.credits_balance <= 0) {
-      toast.error('Insufficient Credit balance, please charge this!');
+      toast.error(t.agents.marketingCalendarAgent.insufficientCredits);
     } else if (marketingStrategy === '') {
-      toast.error('Empty marketing-strategy!. Please create that!');
+      toast.error(t.agents.marketingCalendarAgent.emptyStrategy);
     } else {
       if (currentQuestionIndex < agent.questions.length - 1) {
         setCurrentQuestionIndex((prev) => prev + 1);
@@ -92,7 +94,7 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
         description: parts[5].replace(/^"|"$/g, ''),
       };
     });
-    toast.success('Marketing-Calandar result successfully created!');
+    toast.success(t.agents.marketingCalendarAgent.successMessage);
     const task = {
       profile_id: profile.id,
       project_id: projectId,
@@ -102,7 +104,7 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
     };
 
     await Request.Post('/api/stripe/discount', task);
-    toast.success('Marketing-Calandar result successfully saved!');
+    toast.success(t.agents.marketingCalendarAgent.successSaved);
 
     addResult(agent.id, agent.title, agent.icon, schedule);
     setSchedule(schedule);
@@ -113,6 +115,51 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
     setCurrentQuestionIndex(0);
     setAnswers({});
     setSchedule([]);
+  };
+
+  const getTranslatedQuestion = (questionId: string) => {
+    const questionKeyMap: Record<string, string> = {
+      'posts-per-week': 'postsPerWeek',
+      'content-formats': 'contentFormats',
+      'priority-platform': 'priorityPlatform'
+    };
+    
+    const key = questionKeyMap[questionId];
+    return key ? t.agents.marketingCalendarAgent.questions[key] : agent.questions.find(q => q.id === questionId)?.question || questionId;
+  };
+
+  const getTranslatedPlaceholder = (questionId: string) => {
+    const questionKeyMap: Record<string, string> = {
+      'posts-per-week': 'postsPerWeekPlaceholder',
+      'content-formats': 'contentFormatsPlaceholder',
+      'priority-platform': 'priorityPlatformPlaceholder'
+    };
+    
+    const key = questionKeyMap[questionId];
+    return key ? t.agents.marketingCalendarAgent.questions[key] : agent.questions.find(q => q.id === questionId)?.placeholder || '';
+  };
+
+  const getTranslatedOption = (questionId: string, option: string) => {
+    if (questionId === 'posts-per-week') {
+      const englishOptions = ['3 posts', '5 posts', '7 posts', '10 posts', '14 posts'];
+      const index = englishOptions.indexOf(option);
+      return index >= 0 && t.agents.marketingCalendarAgent.options.posts[index] 
+        ? t.agents.marketingCalendarAgent.options.posts[index] 
+        : option;
+    } else if (questionId === 'content-formats') {
+      const englishFormats = ['Image', 'Carousel', 'Plain Text', 'Mixed (text + image)'];
+      const index = englishFormats.indexOf(option);
+      return index >= 0 && t.agents.marketingCalendarAgent.options.formats[index]
+        ? t.agents.marketingCalendarAgent.options.formats[index]
+        : option;
+    } else if (questionId === 'priority-platform') {
+      const englishPlatforms = ['Instagram', 'Facebook', 'TikTok', 'WhatsApp', 'YouTube', 'LinkedIn', 'Twitter', 'No specific priority'];
+      const index = englishPlatforms.indexOf(option);
+      return index >= 0 && t.agents.marketingCalendarAgent.options.platforms[index]
+        ? t.agents.marketingCalendarAgent.options.platforms[index]
+        : option;
+    }
+    return option;
   };
 
   useEffect(() => {
@@ -127,6 +174,7 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
 
   const renderInputField = (question: any) => {
     const value = answers[question.id] || '';
+    const translatedPlaceholder = getTranslatedPlaceholder(question.id);
 
     switch (question.type) {
       case 'text':
@@ -134,7 +182,7 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
           <Input
             value={value}
             onChange={(e) => handleAnswerChange(e.target.value)}
-            placeholder={question.placeholder}
+            placeholder={translatedPlaceholder}
             className="w-full"
           />
         );
@@ -143,7 +191,7 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
           <Textarea
             value={value}
             onChange={(e) => handleAnswerChange(e.target.value)}
-            placeholder={question.placeholder}
+            placeholder={translatedPlaceholder}
             rows={4}
             className="w-full"
           />
@@ -152,14 +200,17 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
         return (
           <Select value={value} onValueChange={handleAnswerChange}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder={question.placeholder} />
+              <SelectValue placeholder={translatedPlaceholder} />
             </SelectTrigger>
             <SelectContent>
-              {question.options?.map((option: string) => (
-                <SelectItem key={option} value={option}>
-                  {option}
-                </SelectItem>
-              ))}
+              {question.options?.map((option: string) => {
+                const translatedOption = getTranslatedOption(question.id, option);
+                return (
+                  <SelectItem key={option} value={option}>
+                    {translatedOption}
+                  </SelectItem>
+                );
+              })}
             </SelectContent>
           </Select>
         );
@@ -167,22 +218,25 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
         const selectedOptions = value ? value.split(',') : [];
         return (
           <div className="space-y-2">
-            {question.options?.map((option: string) => (
-              <label key={option} className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  checked={selectedOptions.includes(option)}
-                  onChange={(e) => {
-                    const newSelection = e.target.checked
-                      ? [...selectedOptions, option]
-                      : selectedOptions.filter((item) => item !== option);
-                    handleAnswerChange(newSelection.join(','));
-                  }}
-                  className="rounded border-gray-300 dark:border-gray-600"
-                />
-                <span className="text-sm dark:text-slate-300">{option}</span>
-              </label>
-            ))}
+            {question.options?.map((option: string) => {
+              const translatedOption = getTranslatedOption(question.id, option);
+              return (
+                <label key={option} className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    checked={selectedOptions.includes(option)}
+                    onChange={(e) => {
+                      const newSelection = e.target.checked
+                        ? [...selectedOptions, option]
+                        : selectedOptions.filter((item) => item !== option);
+                      handleAnswerChange(newSelection.join(','));
+                    }}
+                    className="rounded border-gray-300 dark:border-gray-600"
+                  />
+                  <span className="text-sm dark:text-slate-300">{translatedOption}</span>
+                </label>
+              );
+            })}
           </div>
         );
       }
@@ -202,9 +256,9 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
             <div className="text-2xl">{agent.icon}</div>
             <div>
               <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
-                {agent.title}
+                {t.agents.marketingCalendarAgent.title}
               </h3>
-              <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{agent.description}</p>
+              <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{t.agents.marketingCalendarAgent.description}</p>
             </div>
           </div>
           <div className="text-slate-400 dark:text-slate-500">
@@ -224,8 +278,9 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
               <div className="mb-4">
                 <div className="mb-2 flex justify-between text-sm text-slate-600 dark:text-slate-300">
                   <span>
-                    Question {currentQuestionIndex + 1} of{' '}
-                    {agent.questions.length}
+                    {t.agents.marketingCalendarAgent.questionCounter
+                      .replace('{current}', (currentQuestionIndex + 1).toString())
+                      .replace('{total}', agent.questions.length.toString())}
                   </span>
                 </div>
                 <div className="h-2 w-full rounded-full bg-slate-200 dark:bg-slate-600">
@@ -241,7 +296,7 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
               <div className="space-y-4">
                 <div>
                   <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                    {currentQuestion.question}
+                    {getTranslatedQuestion(currentQuestion.id)}
                   </label>
                   {renderInputField(currentQuestion)}
                 </div>
@@ -256,7 +311,7 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
                     }
                     disabled={currentQuestionIndex === 0}
                   >
-                    Previous
+                    {t.agents.marketingCalendarAgent.previous}
                   </Button>
 
                   <Button
@@ -264,7 +319,7 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
                     disabled={!answers[currentQuestion.id]}
                     className="bg-blue-600 text-white hover:bg-blue-700"
                   >
-                    {isLastQuestion ? 'Complete' : 'Next'}
+                    {isLastQuestion ? t.agents.marketingCalendarAgent.complete : t.agents.marketingCalendarAgent.next}
                   </Button>
                 </div>
               </div>
@@ -274,7 +329,7 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
               {schedule.length === 0 ? (
                 <div className="space-y-4 text-center">
                   <div className="font-medium text-green-600">
-                    All questions completed! ✅
+                    {t.agents.marketingCalendarAgent.allCompleted}
                   </div>
                   <Button
                     onClick={handleRunAgent}
@@ -284,12 +339,12 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
                     {isLoading ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Creating Schedule...
+                        {t.agents.marketingCalendarAgent.creating}
                       </>
                     ) : (
                       <>
                         <Play className="mr-2 h-4 w-4" />
-                        Generate 7-Day Schedule
+                        {t.agents.marketingCalendarAgent.generateSchedule}
                       </>
                     )}
                   </Button>
@@ -299,9 +354,9 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
                   <div className="rounded-lg border border-green-200 dark:border-green-700 bg-white dark:bg-slate-800 p-4">
                     <h4 className="mb-4 flex items-center font-medium text-slate-800 dark:text-slate-100">
                       <Sparkles className="mr-2 h-5 w-5 text-purple-600" />
-                      Your 7-Day Content Schedule:
+                      {t.agents.marketingCalendarAgent.yourSchedule}
                     </h4>
-                    Successfully! Generated! 🎉
+                    {t.agents.marketingCalendarAgent.successfullyGenerated}
                   </div>
 
                   <div className="flex gap-3">
@@ -310,14 +365,14 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
                       variant="default"
                       className="flex-1"
                     >
-                      Start Over
+                      {t.agents.marketingCalendarAgent.startOver}
                     </Button>
                     <Button
                       onClick={handleRunAgent}
                       disabled={isLoading}
                       className="flex-1 bg-blue-600 text-white hover:bg-blue-700"
                     >
-                      Regenerate Schedule
+                      {t.agents.marketingCalendarAgent.regenerateSchedule}
                     </Button>
                   </div>
                 </div>
