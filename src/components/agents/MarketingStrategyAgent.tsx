@@ -46,7 +46,7 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
   const isLastQuestion = currentQuestionIndex === agent.questions.length - 1;
   const { addResult } = useResults();
   const [{ profile }] = useAuth();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const handleAnswerChange = (value: string) => {
     setAnswers((prev) => ({
       ...prev,
@@ -93,25 +93,7 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
     } else {
       setIsLoading(true);
 
-      const strategicSummary = `
-        📄 STRATEGIC BUSINESS SUMMARY
-  
-        • Brand Name: ${answers['brand-name'] || 'Your Business'}
-        • Product/Service: ${answers['product-service'] || 'Your offerings'}
-        • Target Audience: ${answers['target-audience'] || 'Your ideal customers'}
-        • Differentiators: ${answers['differentiator'] || 'Your unique value proposition'}
-        • Marketing Goals: ${answers['marketing-goals'] || 'Your objectives'}
-        • Communication Tone: ${answers['communication-tone'] || 'Your preferred tone'}
-        • Appears in Videos: ${answers['video-appearance'] || 'Not specified'}
-        • Channels Used: ${answers['social-platforms'] || 'Your platforms'}
-        • Limitations: ${answers['limitations'] || 'None specified'}
-        • Focus Products: ${answers['focus-products'] || 'Your priority offerings'}
-        • Positioning Status: ${answers['positioning-status'] || 'To be defined'}
-        • Competitors: ${answers['competitors'] || 'To be researched'}
-        • 3-Month Goals: ${answers['three-month-goals'] || 'Your targets'}
-  
-        🎯 This strategic foundation will be used by all other AI agents to create personalized content that aligns with your business goals and brand identity.
-      `;
+      const strategicSummary = generateStrategicSummary(answers, language);
       const task = {
         profile_id: profile.id,
         project_id: projectId,
@@ -135,8 +117,216 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
     setIsCompleted(false);
   };
 
+  const getTranslatedQuestion = (questionId: string) => {
+    const questionKeyMap: Record<string, string> = {
+      'brand-name': 'brandName',
+      'product-service': 'productService',
+      'target-audience': 'targetAudience',
+      'differentiator': 'differentiator',
+      'marketing-goals': 'marketingGoals',
+      'communication-tone': 'communicationTone',
+      'social-platforms': 'socialPlatforms',
+      'limitations': 'limitations',
+      'focus-products': 'focusProducts',
+      'positioning-status': 'positioningStatus',
+      'competitors': 'competitors',
+      'three-month-goals': 'threeMonthGoals'
+    };
+    
+    const key = questionKeyMap[questionId];
+    return key ? t.agents.marketingStrategyAgent.questions[key] : agent.questions.find(q => q.id === questionId)?.question || questionId;
+  };
+
+  const getTranslatedPlaceholder = (questionId: string) => {
+    const questionKeyMap: Record<string, string> = {
+      'brand-name': 'brandNamePlaceholder',
+      'product-service': 'productServicePlaceholder',
+      'target-audience': 'targetAudiencePlaceholder',
+      'differentiator': 'differentiatorPlaceholder',
+      'marketing-goals': 'marketingGoalsPlaceholder',
+      'communication-tone': 'communicationTonePlaceholder',
+      'social-platforms': 'socialPlatformsPlaceholder',
+      'limitations': 'limitationsPlaceholder',
+      'focus-products': 'focusProductsPlaceholder',
+      'positioning-status': 'positioningStatusPlaceholder',
+      'competitors': 'competitorsPlaceholder',
+      'three-month-goals': 'threeMonthGoalsPlaceholder'
+    };
+    
+    const key = questionKeyMap[questionId];
+    return key ? t.agents.marketingStrategyAgent.questions[key] : agent.questions.find(q => q.id === questionId)?.placeholder || '';
+  };
+
+  const getTranslatedOption = (questionId: string, option: string) => {
+    const optionKeyMap: Record<string, string> = {
+      'marketing-goals': 'marketingGoals',
+      'communication-tone': 'communicationTone',
+      'positioning-status': 'positioningStatus'
+    };
+    
+    const optionKey = optionKeyMap[questionId];
+    const optionsArray = t.agents.marketingStrategyAgent.options[optionKey];
+    
+    if (optionsArray && Array.isArray(optionsArray)) {
+      const englishOptions: Record<string, string[]> = {
+        'marketingGoals': [
+          'Generate more sales',
+          'Grow followers and authority',
+          'Capture leads for nurturing',
+          'Position the brand as a reference',
+          'Attract customers to a physical store',
+          'Promote new releases or promotions'
+        ],
+        'communicationTone': [
+          'Professional and trustworthy',
+          'Fun and relaxed',
+          'Friendly and welcoming',
+          'Creative and bold',
+          'Traditional and safe'
+        ],
+        'positioningStatus': [
+          'I already have a clear positioning',
+          'I have an idea, but need help refining it',
+          "I don't have one yet, I want help defining it"
+        ]
+      };
+      
+      const englishOptionsArray = englishOptions[optionKey];
+      if (englishOptionsArray) {
+        const index = englishOptionsArray.indexOf(option);
+        return index >= 0 && optionsArray[index] ? optionsArray[index] : option;
+      }
+    }
+    
+    return option;
+  };
+
+  const generateStrategicSummary = (answers: Record<string, string>, language: string) => {
+    const labels = {
+      en: {
+        title: '📄 STRATEGIC BUSINESS SUMMARY',
+        brandName: 'Brand Name',
+        productService: 'Product/Service',
+        targetAudience: 'Target Audience',
+        differentiators: 'Differentiators',
+        marketingGoals: 'Marketing Goals',
+        communicationTone: 'Communication Tone',
+        appearsInVideos: 'Appears in Videos',
+        channelsUsed: 'Channels Used',
+        limitations: 'Limitations',
+        focusProducts: 'Focus Products',
+        positioningStatus: 'Positioning Status',
+        competitors: 'Competitors',
+        threeMonthGoals: '3-Month Goals',
+        conclusion: '🎯 This strategic foundation will be used by all other AI agents to create personalized content that aligns with your business goals and brand identity.',
+        defaults: {
+          business: 'Your Business',
+          offerings: 'Your offerings',
+          customers: 'Your ideal customers',
+          valueProposition: 'Your unique value proposition',
+          objectives: 'Your objectives',
+          tone: 'Your preferred tone',
+          notSpecified: 'Not specified',
+          platforms: 'Your platforms',
+          none: 'None specified',
+          priority: 'Your priority offerings',
+          toBeDefined: 'To be defined',
+          toBeResearched: 'To be researched',
+          targets: 'Your targets'
+        }
+      },
+      pt: {
+        title: '📄 RESUMO ESTRATÉGICO EMPRESARIAL',
+        brandName: 'Nome da Marca',
+        productService: 'Produto/Serviço',
+        targetAudience: 'Público-Alvo',
+        differentiators: 'Diferenciais',
+        marketingGoals: 'Objetivos de Marketing',
+        communicationTone: 'Tom de Comunicação',
+        appearsInVideos: 'Aparece em Vídeos',
+        channelsUsed: 'Canais Utilizados',
+        limitations: 'Limitações',
+        focusProducts: 'Produtos Prioritários',
+        positioningStatus: 'Status de Posicionamento',
+        competitors: 'Concorrentes',
+        threeMonthGoals: 'Objetivos de 3 Meses',
+        conclusion: '🎯 Esta base estratégica será usada por todos os outros agentes AI para criar conteúdo personalizado que se alinha com seus objetivos de negócio e identidade de marca.',
+        defaults: {
+          business: 'Seu Negócio',
+          offerings: 'Suas ofertas',
+          customers: 'Seus clientes ideais',
+          valueProposition: 'Sua proposta de valor única',
+          objectives: 'Seus objetivos',
+          tone: 'Seu tom preferido',
+          notSpecified: 'Não especificado',
+          platforms: 'Suas plataformas',
+          none: 'Nenhuma especificada',
+          priority: 'Suas ofertas prioritárias',
+          toBeDefined: 'A ser definido',
+          toBeResearched: 'A ser pesquisado',
+          targets: 'Seus alvos'
+        }
+      },
+      es: {
+        title: '📄 RESUMEN ESTRATÉGICO EMPRESARIAL',
+        brandName: 'Nombre de la Marca',
+        productService: 'Producto/Servicio',
+        targetAudience: 'Audiencia Objetivo',
+        differentiators: 'Diferenciadores',
+        marketingGoals: 'Objetivos de Marketing',
+        communicationTone: 'Tono de Comunicación',
+        appearsInVideos: 'Aparece en Videos',
+        channelsUsed: 'Canales Utilizados',
+        limitations: 'Limitaciones',
+        focusProducts: 'Productos Prioritarios',
+        positioningStatus: 'Estado de Posicionamiento',
+        competitors: 'Competidores',
+        threeMonthGoals: 'Objetivos de 3 Meses',
+        conclusion: '🎯 Esta base estratégica será utilizada por todos los otros agentes AI para crear contenido personalizado que se alinee con tus objetivos de negocio e identidad de marca.',
+        defaults: {
+          business: 'Tu Negocio',
+          offerings: 'Tus ofertas',
+          customers: 'Tus clientes ideales',
+          valueProposition: 'Tu propuesta de valor única',
+          objectives: 'Tus objetivos',
+          tone: 'Tu tono preferido',
+          notSpecified: 'No especificado',
+          platforms: 'Tus plataformas',
+          none: 'Ninguna especificada',
+          priority: 'Tus ofertas prioritarias',
+          toBeDefined: 'Por definir',
+          toBeResearched: 'Por investigar',
+          targets: 'Tus objetivos'
+        }
+      }
+    };
+
+    const currentLabels = labels[language] || labels.en;
+
+    return `
+        ${currentLabels.title}
+
+        • ${currentLabels.brandName}: ${answers['brand-name'] || currentLabels.defaults.business}
+        • ${currentLabels.productService}: ${answers['product-service'] || currentLabels.defaults.offerings}
+        • ${currentLabels.targetAudience}: ${answers['target-audience'] || currentLabels.defaults.customers}
+        • ${currentLabels.differentiators}: ${answers['differentiator'] || currentLabels.defaults.valueProposition}
+        • ${currentLabels.marketingGoals}: ${answers['marketing-goals'] || currentLabels.defaults.objectives}
+        • ${currentLabels.communicationTone}: ${answers['communication-tone'] || currentLabels.defaults.tone}
+        • ${currentLabels.appearsInVideos}: ${answers['video-appearance'] || currentLabels.defaults.notSpecified}
+        • ${currentLabels.channelsUsed}: ${answers['social-platforms'] || currentLabels.defaults.platforms}
+        • ${currentLabels.limitations}: ${answers['limitations'] || currentLabels.defaults.none}
+        • ${currentLabels.focusProducts}: ${answers['focus-products'] || currentLabels.defaults.priority}
+        • ${currentLabels.positioningStatus}: ${answers['positioning-status'] || currentLabels.defaults.toBeDefined}
+        • ${currentLabels.competitors}: ${answers['competitors'] || currentLabels.defaults.toBeResearched}
+        • ${currentLabels.threeMonthGoals}: ${answers['three-month-goals'] || currentLabels.defaults.targets}
+
+        ${currentLabels.conclusion}
+      `;
+  };
+
   const renderInputField = (question: any) => {
     const value = answers[question.id] || '';
+    const translatedPlaceholder = getTranslatedPlaceholder(question.id);
 
     switch (question.type) {
       case 'text':
@@ -144,7 +334,7 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
           <Input
             value={value}
             onChange={(e) => handleAnswerChange(e.target.value)}
-            placeholder={question.placeholder}
+            placeholder={translatedPlaceholder}
             className="w-full"
           />
         );
@@ -153,7 +343,7 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
           <Textarea
             value={value}
             onChange={(e) => handleAnswerChange(e.target.value)}
-            placeholder={question.placeholder}
+            placeholder={translatedPlaceholder}
             rows={4}
             className="w-full"
           />
@@ -162,14 +352,17 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
         return (
           <Select value={value} onValueChange={handleAnswerChange}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder={question.placeholder} />
+              <SelectValue placeholder={translatedPlaceholder} />
             </SelectTrigger>
             <SelectContent>
-              {question.options?.map((option: string) => (
-                <SelectItem key={option} value={option}>
-                  {option}
-                </SelectItem>
-              ))}
+              {question.options?.map((option: string) => {
+                const translatedOption = getTranslatedOption(question.id, option);
+                return (
+                  <SelectItem key={option} value={option}>
+                    {translatedOption}
+                  </SelectItem>
+                );
+              })}
             </SelectContent>
           </Select>
         );
@@ -189,9 +382,9 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
             <div className="text-2xl">{agent.icon}</div>
             <div>
               <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
-                {agent.title}
+                {t.agents.marketingStrategyAgent.title}
               </h3>
-              <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{agent.description}</p>
+              <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{t.agents.marketingStrategyAgent.description}</p>
             </div>
           </div>
           <div className="text-slate-400 dark:text-slate-500">
@@ -232,7 +425,7 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
               <div className="space-y-4">
                 <div>
                   <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                    {currentQuestion.question}
+                    {getTranslatedQuestion(currentQuestion.id)}
                   </label>
                   {renderInputField(currentQuestion)}
                   <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
