@@ -194,6 +194,7 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
     const body = {
       agent: 'seo-optimization',
       inputs: { ...answers, marketingStrategy: marketingStrategy },
+      language: language,
     };
 
     const response = await Request.Post('/api/agents', body);

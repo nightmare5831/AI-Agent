@@ -15,6 +15,7 @@ type Agent =
 interface AgentRequest {
   agent: Agent;
   inputs: Record<string, any>;
+  language?: string;
 }
 
 // Agent-specific system prompts
@@ -92,10 +93,20 @@ function ensureArray(value: any): string[] {
 }
 
 // Dynamically generate a GPT-friendly prompt
-function buildPrompt(agent: Agent, inputs: Record<string, any>): string {
+function buildPrompt(agent: Agent, inputs: Record<string, any>, language: string = 'en'): string {
+  // Language instruction
+  const languageInstruction = language === 'en' 
+    ? '' 
+    : language === 'pt' 
+      ? 'IMPORTANT: Generate all content in Portuguese (Brazil). All text output should be in Portuguese.'
+      : language === 'es'
+        ? 'IMPORTANT: Generate all content in Spanish. All text output should be in Spanish.'
+        : '';
   switch (agent) {
     case 'marketing-calendar':
-      return `Based on the following business strategy, create exactly ${inputs['post-per-week']} content posts for a weekly schedule. 
+      return `${languageInstruction}
+
+Based on the following business strategy, create exactly ${inputs['post-per-week']} content posts for a weekly schedule. 
         Use only these content formats: ${inputs['content-formats']}. ${inputs['priority-platform'] !== 'No specific priority' ? `Prioritize ${inputs['priority-platform']} but include other suitable platforms.` : 'Distribute across Instagram, WhatsApp, TikTok, and Facebook as appropriate.'}
         ${inputs['marketing-strategy']}
         Create a structured weekly schedule with these exact fields for each post:
@@ -110,7 +121,9 @@ function buildPrompt(agent: Agent, inputs: Record<string, any>): string {
       break;
 
     case 'post-ideas':
-      return `Based on the brand strategy and content schedule provided, generate TWO DIFFERENT sets of creative and practical content ideas for each scheduled post. Focus on these content themes: ${inputs['content-themes']}. Apply a ${inputs['creative-style']} approach to all ideas, while considering the filming preference: ${inputs['filming-comfort']}.
+      return `${languageInstruction}
+
+Based on the brand strategy and content schedule provided, generate TWO DIFFERENT sets of creative and practical content ideas for each scheduled post. Focus on these content themes: ${inputs['content-themes']}. Apply a ${inputs['creative-style']} approach to all ideas, while considering the filming preference: ${inputs['filming-comfort']}.
         ${inputs['marketing-strategy']}
         Content Schedule: ${JSON.stringify(inputs['schedule'])}
         For each scheduled post, create TWO DISTINCT content idea variations that respect the specified format, platform, and content type while maintaining brand consistency. Each idea should align with the preferred content themes and serve the strategic marketing goals (brand awareness, follower growth, repeat purchases).
@@ -154,7 +167,9 @@ function buildPrompt(agent: Agent, inputs: Record<string, any>): string {
       {
         const contentType = inputs['content-type'];
 
-        let basePrompt = `You are an intelligent copywriter who transforms content ideas into persuasive, light, and sales-oriented texts. Based on the brand strategy and selected content idea, create compelling content focused on ${inputs['copy-focus']} with a ${inputs['cta-preference']} call-to-action approach.
+        let basePrompt = `${languageInstruction}
+
+You are an intelligent copywriter who transforms content ideas into persuasive, light, and sales-oriented texts. Based on the brand strategy and selected content idea, create compelling content focused on ${inputs['copy-focus']} with a ${inputs['cta-preference']} call-to-action approach.
           ${inputs['marketing-strategy']}
           Selected Content Idea: ${JSON.stringify(inputs['selected-idea'])}
 
@@ -245,7 +260,9 @@ function buildPrompt(agent: Agent, inputs: Record<string, any>): string {
       }
       break;
     case 'image-generation':
-      return `Create ${inputs['visual-style'].toLowerCase()} style image for "${inputs['campaign-name'] || 'Untitled Campaign'}". 
+      return `${languageInstruction}
+
+Create ${inputs['visual-style'].toLowerCase()} style image for "${inputs['campaign-name'] || 'Untitled Campaign'}". 
         Base concept: ${inputs['prompt']}
         
         Requirements:
@@ -286,7 +303,8 @@ function buildPrompt(agent: Agent, inputs: Record<string, any>): string {
       {
         const contentType = inputs['optimization-type'];
         if (contentType === 'Content Optimization') {
-          return `
+          return `${languageInstruction}
+
             You are a content optimization expert for social media platforms like Instagram, TikTok, Facebook, and YouTube Shorts.
             Based on the inputs below, improve the performance of the caption by enhancing SEO, platform engagement, and CTA strategy.
 
@@ -318,7 +336,8 @@ function buildPrompt(agent: Agent, inputs: Record<string, any>): string {
             Return ONLY the JSON object with actual generated content. Do not include any explanatory text, markdown formatting, or additional fields outside the JSON structure.
           `;
         } else if (contentType === 'Profile Optimization') {
-          return `
+          return `${languageInstruction}
+
             You are a profile optimization expert for social platforms like Instagram, TikTok, and YouTube.
             Your goal is to improve a brand's social media profile to increase clarity, searchability, and conversion — turning profile visitors into loyal followers or customers.
 
@@ -370,7 +389,7 @@ function parseOutput(text: string) {
 // Main POST handler
 export const POST = async (request: Request) => {
   try {
-    const { agent, inputs } = (await request.json()) as AgentRequest;
+    const { agent, inputs, language = 'en' } = (await request.json()) as AgentRequest;
 
     if (!agent || !inputs || !systemRoles[agent]) {
       return NextResponse.json(
@@ -379,7 +398,7 @@ export const POST = async (request: Request) => {
       );
     }
 
-    const prompt = buildPrompt(agent, inputs);
+    const prompt = buildPrompt(agent, inputs, language);
     if (agent === 'image-generation') {
       // If reference images are provided, use them to enhance the prompt
       let enhancedPrompt = prompt;

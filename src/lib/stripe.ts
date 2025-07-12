@@ -17,19 +17,14 @@ interface CreditPack {
 
 export const PLANS: Record<PlanType, Plan> = {
   essential: {
-    name: 'Essential',
-    priceId: 'price_1RXMqqFsOXsRMDlMdaYJWJg4', 
+    name: 'Monthly',
+    priceId: 'price_1RjqIKFsOXsRMDlM5BsE0tjH', 
     credits: 100,
   },
   professional: {
-    name: 'Professional',
-    priceId: 'price_1RXMrcFsOXsRMDlMJkQmtYQ4',
-    credits: 150,
-  },
-  complete: {
-    name: 'Complete',
-    priceId: 'price_1RXMsTFsOXsRMDlM0P8cPd45',
-    credits: 200,
+    name: 'Annual',
+    priceId: 'price_1RjqJTFsOXsRMDlMErKWNkds',
+    credits: 100,
   },
 };
 
@@ -37,7 +32,7 @@ export const PLANS: Record<PlanType, Plan> = {
 export const CREDIT_PACKS: Record<PackType, CreditPack> = {
   PACK_100: {
     name: '100 Credits',
-    priceId: 'price_1RXMtdFsOXsRMDlMyhJPKaot',
+    priceId: 'price_1RjqQbFsOXsRMDlMh4FKezLm',
     credits: 100,
   },
   PACK_200: {
