@@ -115,7 +115,6 @@ enum UserRole {
 enum PlanType {
   essential
   professional
-  complete
 
   @@schema("public")
 }
