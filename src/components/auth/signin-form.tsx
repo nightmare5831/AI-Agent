@@ -72,7 +72,7 @@ export function SignInForm(): JSX.Element {
       toast.success(t.auth.signin.successMessage);
 
       if (profile?.role === 'user') {
-        router.push('/user');
+        router.push('/user/credits');
       } else if (profile?.role === 'admin') {
         router.push('/admin');
       } else {

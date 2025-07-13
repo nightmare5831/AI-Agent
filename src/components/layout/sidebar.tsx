@@ -9,6 +9,8 @@ import Link from 'next/link';
 
 import { getAdminItems, getUserItems } from '@/lib/constants/navigation';
 import { ChevronLeft, ChevronRight, Settings } from 'lucide-react';
+import { useAuth } from '@/core/auth/AuthProvider';
+import { toast } from 'sonner';
 
 import { usePathname } from 'next/navigation';
 import { useLanguage } from '@/lib/i18n/language-context';
@@ -23,6 +25,7 @@ interface SidebarProps {
 export function Sidebar({ open, onOpenChange, type }: SidebarProps) {
   const { t } = useLanguage();
   const pathname = usePathname();
+  const [{ profile }] = useAuth();
   
   // Animation variants
   const sidebarVariants = {
@@ -62,7 +65,7 @@ export function Sidebar({ open, onOpenChange, type }: SidebarProps) {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [open, onOpenChange]);
-  
+
   return (
     <div className="relative">
       <motion.div
@@ -83,7 +86,7 @@ export function Sidebar({ open, onOpenChange, type }: SidebarProps) {
                 whileHover={{ y: -2 }}
                 whileTap={{ y: 0 }}
               >
-                <Link href={item.href}>
+                <Link href={profile?.subscription_plan === "free" ? '/user/credits' : item.href}>
                   <Button
                     variant="ghost"
                     className={cn(
@@ -93,6 +96,7 @@ export function Sidebar({ open, onOpenChange, type }: SidebarProps) {
                         'bg-gradient-to-r from-[#d32f2f]/10 to-[#ec4899]/10 text-[#63B3ED] font-medium' : 
                         'hover:bg-[#63B3ED]/5 hover:text-[#63B3ED]'
                     )}
+                    onClick={()=>{if(profile?.subscription_plan==="free") {toast.info('Please purchase Subscription plan!')}}}
                   >
                     <motion.div
                       whileHover="hover"
