@@ -202,7 +202,7 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
   };
 
   const generateStrategicSummary = (answers: Record<string, string>, language: string) => {
-    const labels = {
+    const labels : any = {
       en: {
         title: '📄 STRATEGIC BUSINESS SUMMARY',
         brandName: 'Brand Name',
