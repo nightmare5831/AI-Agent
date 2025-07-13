@@ -19,10 +19,12 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import Request from '@/lib/request';
 import { getSubscription } from '@/core/subscription';
+import { useLanguage } from '@/lib/i18n/language-context';
 
 const CreditsPage = () => {
   const router = useRouter();
   const [{ profile }] = useAuth();
+  const { t } = useLanguage();
   const [currentCredit, setCurrentCredit] = useState({
     plan: 'Free',
     balance: 0,
@@ -40,11 +42,10 @@ const CreditsPage = () => {
         subscriptionId: profile.stripeSubscriptionId,
       });
       router.push(url.url);
-      toast.success('Subscripion created successfully!');
+      toast.success(t.user.credits.subscriptionSuccess);
     } catch (error: any) {
       toast.error(
-        error?.response?.data?.message ||
-          'Failed to create Subscription. Please try again.'
+        error?.response?.data?.message || t.user.credits.subscriptionError
       );
     }
   };
@@ -58,7 +59,7 @@ const CreditsPage = () => {
       if (url?.url) {
         router.push(url.url);
       }
-      toast.success('Credit purchased successfully!');
+      toast.success(t.user.credits.creditPurchaseSuccess);
     } catch (error) {
       console.log('Select Credit Pack error', error);
     }
@@ -95,12 +96,9 @@ const CreditsPage = () => {
         {/* Header section */}
         <div className="rounded-lg border border-[#8b5cf6]/20 bg-background/70 p-8 shadow-xl backdrop-blur-md">
           <h1 className="bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6] bg-clip-text text-3xl font-bold text-transparent md:text-4xl">
-            Purchase Credits & Upgrade Plan
+            {t.user.credits.title}
           </h1>
-          <p className="text-muted-foreground">
-            Upgrade your plan or purchase additional credits to continue using
-            our services
-          </p>
+          <p className="text-muted-foreground">{t.user.credits.subtitle}</p>
         </div>
 
         {/* Alert */}
@@ -115,8 +113,7 @@ const CreditsPage = () => {
               </div>
               <div className="ml-3">
                 <p className="text-sm text-yellow-700">
-                  You have less than 10 credits remaining. Consider purchasing
-                  additional credits to avoid interruptions.
+                  {t.user.credits.lowCreditsWarning}
                 </p>
               </div>
             </div>
@@ -125,27 +122,30 @@ const CreditsPage = () => {
 
         <Card className="mb-10">
           <CardHeader>
-            <CardTitle>Your Current Plan</CardTitle>
+            <CardTitle>{t.user.credits.currentPlan}</CardTitle>
             <CardDescription>
-              You are currently on the {profile?.subscription_plan} plan with{' '}
-              {profile?.credits_balance} credits remaining.
+              {t.user.credits.currentPlanDescription
+                .replace('{plan}', profile?.subscription_plan)
+                .replace('{credits}', profile?.credits_balance)}
             </CardDescription>
           </CardHeader>
           <CardContent className="pb-0">
             <div className="flex flex-col gap-4 md:flex-row md:gap-8">
               <div className="flex-1">
-                <h3 className="mb-2 font-medium">Plan Details</h3>
+                <h3 className="mb-2 font-medium">
+                  {t.user.credits.planDetails}
+                </h3>
                 <div className="text-md space-y-1">
                   <div className="flex justify-between">
-                    <span>Plan:</span>
+                    <span>{t.user.credits.plan}:</span>
                     <span className="font-semibold">{currentCredit.plan}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Price:</span>
+                    <span>{t.user.credits.price}:</span>
                     <span className="font-semibold">{currentCredit.price}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Next Billing:</span>
+                    <span>{t.user.credits.nextBilling}:</span>
                     <span className="font-semibold">
                       {currentCredit.nextBilling}
                     </span>
@@ -154,22 +154,24 @@ const CreditsPage = () => {
               </div>
 
               <div className="flex-1">
-                <h3 className="mb-2 font-medium">Credit Details</h3>
+                <h3 className="mb-2 font-medium">
+                  {t.user.credits.creditDetails}
+                </h3>
                 <div className="text-md space-y-1">
                   <div className="flex justify-between">
-                    <span>Monthly Credits:</span>
+                    <span>{t.user.credits.monthlyCredits}:</span>
                     <span className="font-semibold">
                       {currentCredit.credits}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Current Balance:</span>
+                    <span>{t.user.credits.currentBalance}:</span>
                     <span className="font-semibold">
                       {currentCredit.balance}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Reset Date:</span>
+                    <span>{t.user.credits.resetDate}:</span>
                     <span className="font-semibold">
                       {currentCredit.resetDate}
                     </span>
@@ -181,22 +183,19 @@ const CreditsPage = () => {
         </Card>
 
         <div className="mb-10">
-          <h3 className="mb-6 text-xl font-semibold">Upgrade Your Plan</h3>
+          <h3 className="mb-6 text-xl font-semibold">
+            {t.user.credits.upgradePlan}
+          </h3>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {plans.map((plan) => (
               <Card
                 key={plan.id}
-                className={`relative overflow-hidden ${
+                className={`relative overflow-hidden flex flex-col h-full ${
                   plan.id === currentCredit.plan?.toLocaleLowerCase()
                     ? 'border-2 border-[#2B6CB0]'
                     : 'border border-border'
                 }`}
               >
-                {plan.recommended && (
-                  <div className="absolute right-0 top-0">
-                    <Badge variant="success">Recommended</Badge>
-                  </div>
-                )}
                 <CardHeader>
                   <CardTitle>{plan.name}</CardTitle>
                   <div className="mt-2 flex items-end">
@@ -209,7 +208,7 @@ const CreditsPage = () => {
                     Includes {plan.credits} credits per month
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="flex-1">
                   <ul className="space-y-2">
                     {plan.features.map((feature, index) => (
                       <li key={index} className="flex items-center">
@@ -221,7 +220,7 @@ const CreditsPage = () => {
                 </CardContent>
                 <CardFooter>
                   <Button
-                    className="mt-3 bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6] hover:from-[#8b5cf6] hover:to-[#2B6CB0]"
+                    className="mt-3 w-full bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6] hover:from-[#8b5cf6] hover:to-[#2B6CB0]"
                     size="sm"
                     onClick={() => selectedPlan(plan.id)}
                     disabled={
@@ -237,18 +236,10 @@ const CreditsPage = () => {
                 </CardFooter>
               </Card>
             ))}
-          </div>
-        </div>
-
-        <div>
-          <h3 className="mb-6 text-xl font-semibold">
-            Purchase Additional Credits
-          </h3>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {creditPacks.map((pack) => (
               <Card
                 key={pack.id}
-                className={`relative overflow-hidden ${
+                className={`relative overflow-hidden flex flex-col h-full ${
                   pack.recommended
                     ? 'border-2 border-[#2B6CB0]'
                     : 'border border-border'
@@ -267,7 +258,7 @@ const CreditsPage = () => {
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="flex-1">
                   <div className="text-center">
                     <div className="flex items-baseline justify-center">
                       <span className="text-3xl font-bold">{pack.credits}</span>
@@ -288,7 +279,7 @@ const CreditsPage = () => {
                 </CardContent>
                 <CardFooter>
                   <Button
-                    className="mt-3 bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6] hover:from-[#8b5cf6] hover:to-[#2B6CB0]"
+                    className="mt-3 w-full bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6] hover:from-[#8b5cf6] hover:to-[#2B6CB0]"
                     size="sm"
                     onClick={() => selecteCreditPack(pack.id)}
                   >
@@ -298,20 +289,18 @@ const CreditsPage = () => {
               </Card>
             ))}
           </div>
+        </div>
 
+        <div>
           <Card className="mt-8">
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Gift className="mr-2 h-5 w-5 text-[#2B6CB0]" />
-                Referral Program
+                {t.user.credits.referralProgram}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm">
-                Invite your friends and get 50 free credits for each successful
-                referral. Your friends will also receive 25 free credits on
-                signup.
-              </p>
+              <p className="text-sm">{t.user.credits.referralDescription}</p>
             </CardContent>
             <CardFooter className="flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
               <input
@@ -324,7 +313,7 @@ const CreditsPage = () => {
                 className="mt-3 bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6] hover:from-[#8b5cf6] hover:to-[#2B6CB0]"
                 size="sm"
               >
-                Copy Link
+                {t.user.credits.copyLink}
               </Button>
             </CardFooter>
           </Card>
