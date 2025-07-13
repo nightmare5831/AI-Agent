@@ -45,8 +45,7 @@ const CreditsPage = () => {
       toast.success(t.user.credits.subscriptionSuccess);
     } catch (error: any) {
       toast.error(
-        error?.response?.data?.message ||
-          t.user.credits.subscriptionError
+        error?.response?.data?.message || t.user.credits.subscriptionError
       );
     }
   };
@@ -99,9 +98,7 @@ const CreditsPage = () => {
           <h1 className="bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6] bg-clip-text text-3xl font-bold text-transparent md:text-4xl">
             {t.user.credits.title}
           </h1>
-          <p className="text-muted-foreground">
-            {t.user.credits.subtitle}
-          </p>
+          <p className="text-muted-foreground">{t.user.credits.subtitle}</p>
         </div>
 
         {/* Alert */}
@@ -135,7 +132,9 @@ const CreditsPage = () => {
           <CardContent className="pb-0">
             <div className="flex flex-col gap-4 md:flex-row md:gap-8">
               <div className="flex-1">
-                <h3 className="mb-2 font-medium">{t.user.credits.planDetails}</h3>
+                <h3 className="mb-2 font-medium">
+                  {t.user.credits.planDetails}
+                </h3>
                 <div className="text-md space-y-1">
                   <div className="flex justify-between">
                     <span>{t.user.credits.plan}:</span>
@@ -155,7 +154,9 @@ const CreditsPage = () => {
               </div>
 
               <div className="flex-1">
-                <h3 className="mb-2 font-medium">{t.user.credits.creditDetails}</h3>
+                <h3 className="mb-2 font-medium">
+                  {t.user.credits.creditDetails}
+                </h3>
                 <div className="text-md space-y-1">
                   <div className="flex justify-between">
                     <span>{t.user.credits.monthlyCredits}:</span>
@@ -182,22 +183,19 @@ const CreditsPage = () => {
         </Card>
 
         <div className="mb-10">
-          <h3 className="mb-6 text-xl font-semibold">{t.user.credits.upgradePlan}</h3>
+          <h3 className="mb-6 text-xl font-semibold">
+            {t.user.credits.upgradePlan}
+          </h3>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {plans.map((plan) => (
               <Card
                 key={plan.id}
-                className={`relative overflow-hidden ${
+                className={`relative overflow-hidden flex flex-col h-full ${
                   plan.id === currentCredit.plan?.toLocaleLowerCase()
                     ? 'border-2 border-[#2B6CB0]'
                     : 'border border-border'
                 }`}
               >
-                {plan.recommended && (
-                  <div className="absolute right-0 top-0">
-                    <Badge variant="success">{t.user.credits.recommended}</Badge>
-                  </div>
-                )}
                 <CardHeader>
                   <CardTitle>{plan.name}</CardTitle>
                   <div className="mt-2 flex items-end">
@@ -210,7 +208,7 @@ const CreditsPage = () => {
                     Includes {plan.credits} credits per month
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="flex-1">
                   <ul className="space-y-2">
                     {plan.features.map((feature, index) => (
                       <li key={index} className="flex items-center">
@@ -222,7 +220,7 @@ const CreditsPage = () => {
                 </CardContent>
                 <CardFooter>
                   <Button
-                    className="mt-3 bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6] hover:from-[#8b5cf6] hover:to-[#2B6CB0]"
+                    className="mt-3 w-full bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6] hover:from-[#8b5cf6] hover:to-[#2B6CB0]"
                     size="sm"
                     onClick={() => selectedPlan(plan.id)}
                     disabled={
@@ -232,24 +230,16 @@ const CreditsPage = () => {
                     }
                   >
                     {plan.id === currentCredit.plan?.toLocaleLowerCase()
-                      ? t.user.credits.currentPlanButton
-                      : t.user.credits.selectPlan}
+                      ? 'Current Plan'
+                      : 'Select Plan'}
                   </Button>
                 </CardFooter>
               </Card>
             ))}
-          </div>
-        </div>
-
-        <div>
-          <h3 className="mb-6 text-xl font-semibold">
-            {t.user.credits.purchaseCredits}
-          </h3>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {creditPacks.map((pack) => (
               <Card
                 key={pack.id}
-                className={`relative overflow-hidden ${
+                className={`relative overflow-hidden flex flex-col h-full ${
                   pack.recommended
                     ? 'border-2 border-[#2B6CB0]'
                     : 'border border-border'
@@ -257,7 +247,7 @@ const CreditsPage = () => {
               >
                 {pack.recommended && (
                   <div className="absolute right-0 top-0">
-                    <Badge variant="success">{t.user.credits.bestValue}</Badge>
+                    <Badge variant="success">Best Value</Badge>
                   </div>
                 )}
                 <CardHeader>
@@ -268,12 +258,12 @@ const CreditsPage = () => {
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="flex-1">
                   <div className="text-center">
                     <div className="flex items-baseline justify-center">
                       <span className="text-3xl font-bold">{pack.credits}</span>
                       <span className="ml-1 text-muted-foreground">
-                        {t.user.credits.credits}
+                        credits
                       </span>
                     </div>
                     <div className="mt-3 text-xl font-semibold">
@@ -283,23 +273,25 @@ const CreditsPage = () => {
                       {(
                         Number(pack.price.replace('R$', '')) / pack.credits
                       ).toFixed(2)}{' '}
-                      {t.user.credits.perCredit}
+                      per credit
                     </p>
                   </div>
                 </CardContent>
                 <CardFooter>
                   <Button
-                    className="mt-3 bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6] hover:from-[#8b5cf6] hover:to-[#2B6CB0]"
+                    className="mt-3 w-full bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6] hover:from-[#8b5cf6] hover:to-[#2B6CB0]"
                     size="sm"
                     onClick={() => selecteCreditPack(pack.id)}
                   >
-                    {t.user.credits.purchaseNow}
+                    Purchase Now
                   </Button>
                 </CardFooter>
               </Card>
             ))}
           </div>
+        </div>
 
+        <div>
           <Card className="mt-8">
             <CardHeader>
               <CardTitle className="flex items-center">
@@ -308,9 +300,7 @@ const CreditsPage = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm">
-                {t.user.credits.referralDescription}
-              </p>
+              <p className="text-sm">{t.user.credits.referralDescription}</p>
             </CardContent>
             <CardFooter className="flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
               <input
