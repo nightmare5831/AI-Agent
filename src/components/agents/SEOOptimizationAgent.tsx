@@ -54,6 +54,42 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
   const [{ profile }] = useAuth();
   const { t, language } = useLanguage();
 
+  const getTranslatedQuestion = (questionId: string) => {
+    const questionKeyMap: Record<string, string> = {
+      'optimization-type': 'optimizationType',
+      'caption': 'caption',
+      'target-platform': 'targetPlatform',
+      'main-theme': 'mainTheme',
+      'post-objective': 'postObjective',
+      'brand-name': 'brandName',
+      'niche': 'niche',
+      'ideal-audience': 'idealAudience',
+      'tone-of-voice': 'toneOfVoice',
+      'primary-contact': 'primaryContact'
+    };
+    
+    const key = questionKeyMap[questionId];
+    return key ? t.agents.seoOptimizationAgent.questions[key] : questionId;
+  };
+
+  const getTranslatedPlaceholder = (questionId: string) => {
+    const questionKeyMap: Record<string, string> = {
+      'optimization-type': 'optimizationTypePlaceholder',
+      'caption': 'captionPlaceholder',
+      'target-platform': 'targetPlatformPlaceholder',
+      'main-theme': 'mainThemePlaceholder',
+      'post-objective': 'postObjectivePlaceholder',
+      'brand-name': 'brandNamePlaceholder',
+      'niche': 'nichePlaceholder',
+      'ideal-audience': 'idealAudiencePlaceholder',
+      'tone-of-voice': 'toneOfVoicePlaceholder',
+      'primary-contact': 'primaryContactPlaceholder'
+    };
+    
+    const key = questionKeyMap[questionId];
+    return key ? t.agents.seoOptimizationAgent.questions[key] : '';
+  };
+
   // First determine which optimization type they want
   const optimizationTypeQuestion: Question = {
     id: 'optimization-type',
@@ -237,42 +273,6 @@ export const SEOOptimizationAgent: React.FC<SEOOptimizationAgentProps> = ({
     setCurrentStep(0);
     setAnswers({});
     setIsExpanded(false);
-  };
-
-  const getTranslatedQuestion = (questionId: string) => {
-    const questionKeyMap: Record<string, string> = {
-      'optimization-type': 'optimizationType',
-      'caption': 'caption',
-      'target-platform': 'targetPlatform',
-      'main-theme': 'mainTheme',
-      'post-objective': 'postObjective',
-      'brand-name': 'brandName',
-      'niche': 'niche',
-      'ideal-audience': 'idealAudience',
-      'tone-of-voice': 'toneOfVoice',
-      'primary-contact': 'primaryContact'
-    };
-    
-    const key = questionKeyMap[questionId];
-    return key ? t.agents.seoOptimizationAgent.questions[key] : questionId;
-  };
-
-  const getTranslatedPlaceholder = (questionId: string) => {
-    const questionKeyMap: Record<string, string> = {
-      'optimization-type': 'optimizationTypePlaceholder',
-      'caption': 'captionPlaceholder',
-      'target-platform': 'targetPlatformPlaceholder',
-      'main-theme': 'mainThemePlaceholder',
-      'post-objective': 'postObjectivePlaceholder',
-      'brand-name': 'brandNamePlaceholder',
-      'niche': 'nichePlaceholder',
-      'ideal-audience': 'idealAudiencePlaceholder',
-      'tone-of-voice': 'toneOfVoicePlaceholder',
-      'primary-contact': 'primaryContactPlaceholder'
-    };
-    
-    const key = questionKeyMap[questionId];
-    return key ? t.agents.seoOptimizationAgent.questions[key] : '';
   };
 
   const getTranslatedOption = (questionId: string, option: string) => {

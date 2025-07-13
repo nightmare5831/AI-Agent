@@ -96,7 +96,7 @@ export function Sidebar({ open, onOpenChange, type }: SidebarProps) {
                         'bg-gradient-to-r from-[#d32f2f]/10 to-[#ec4899]/10 text-[#63B3ED] font-medium' : 
                         'hover:bg-[#63B3ED]/5 hover:text-[#63B3ED]'
                     )}
-                    onClick={()=>{if(profile?.subscription_plan==="free") {toast.info('Please purchase Subscription plan!')}}}
+                    onClick={()=>{if(profile?.subscription_plan == "free") {toast.info('Please purchase Subscription plan!')}}}
                   >
                     <motion.div
                       whileHover="hover"

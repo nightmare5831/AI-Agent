@@ -1,6 +1,12 @@
 'use client';
 
-import { BarChart2, CreditCard, Users, CheckCircle } from 'lucide-react';
+import {
+  BarChart2,
+  CreditCard,
+  Users,
+  CheckCircle,
+  Router,
+} from 'lucide-react';
 import {
   Card,
   CardContent,
@@ -51,9 +57,7 @@ export default function UserDashboard() {
           <h1 className="bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6] bg-clip-text text-3xl font-bold text-transparent md:text-4xl">
             {t.dashboard.welcome}, {currentUser?.name.split(' ')[0]}!
           </h1>
-          <p className="text-muted-foreground">
-            {t.dashboard.overview}
-          </p>
+          <p className="text-muted-foreground">{t.dashboard.overview}</p>
         </div>
 
         {/* Alert */}
@@ -163,7 +167,9 @@ export default function UserDashboard() {
                 </Badge>
               </div>
               <div className="mt-4">
-                <p className="text-sm font-medium">{t.dashboard.planDetails}:</p>
+                <p className="text-sm font-medium">
+                  {t.dashboard.planDetails}:
+                </p>
                 <ul className="mt-2 space-y-2 text-sm">
                   {currentPlan?.features.map((feature, index) => (
                     <li key={index} className="flex items-center">
@@ -196,10 +202,18 @@ export default function UserDashboard() {
               <table className="w-full min-w-[600px]">
                 <thead>
                   <tr className="border-b border-[#8b5cf6]/10">
-                    <th className="p-3 text-left font-medium">{t.user.usage.tableHeaders.date}</th>
-                    <th className="p-3 text-left font-medium">{t.user.usage.tableHeaders.agent}</th>
-                    <th className="p-3 text-left font-medium">{t.user.usage.tableHeaders.activity}</th>
-                    <th className="p-3 text-left font-medium">{t.user.usage.tableHeaders.creditsUsed}</th>
+                    <th className="p-3 text-left font-medium">
+                      {t.user.usage.tableHeaders.date}
+                    </th>
+                    <th className="p-3 text-left font-medium">
+                      {t.user.usage.tableHeaders.agent}
+                    </th>
+                    <th className="p-3 text-left font-medium">
+                      {t.user.usage.tableHeaders.activity}
+                    </th>
+                    <th className="p-3 text-left font-medium">
+                      {t.user.usage.tableHeaders.creditsUsed}
+                    </th>
                   </tr>
                 </thead>
                 <tbody>

@@ -120,67 +120,69 @@ const CreditsPage = () => {
           </div>
         ) : null}
 
-        <Card className="mb-10">
-          <CardHeader>
-            <CardTitle>{t.user.credits.currentPlan}</CardTitle>
-            <CardDescription>
-              {t.user.credits.currentPlanDescription
-                .replace('{plan}', profile?.subscription_plan)
-                .replace('{credits}', profile?.credits_balance)}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="pb-0">
-            <div className="flex flex-col gap-4 md:flex-row md:gap-8">
-              <div className="flex-1">
-                <h3 className="mb-2 font-medium">
-                  {t.user.credits.planDetails}
-                </h3>
-                <div className="text-md space-y-1">
-                  <div className="flex justify-between">
-                    <span>{t.user.credits.plan}:</span>
-                    <span className="font-semibold">{currentCredit.plan}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>{t.user.credits.price}:</span>
-                    <span className="font-semibold">{currentCredit.price}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>{t.user.credits.nextBilling}:</span>
-                    <span className="font-semibold">
-                      {currentCredit.nextBilling}
-                    </span>
+        {profile?.subscription_plan != 'free' && (
+          <Card className="mb-10">
+            <CardHeader>
+              <CardTitle>{t.user.credits.currentPlan}</CardTitle>
+              <CardDescription>
+                {t.user.credits.currentPlanDescription
+                  .replace('{plan}', profile?.subscription_plan)
+                  .replace('{credits}', profile?.credits_balance)}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pb-0">
+              <div className="flex flex-col gap-4 md:flex-row md:gap-8">
+                <div className="flex-1">
+                  <h3 className="mb-2 font-medium">
+                    {t.user.credits.planDetails}
+                  </h3>
+                  <div className="text-md space-y-1">
+                    <div className="flex justify-between">
+                      <span>{t.user.credits.plan}:</span>
+                      <span className="font-semibold">{currentCredit.plan}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>{t.user.credits.price}:</span>
+                      <span className="font-semibold">{currentCredit.price}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>{t.user.credits.nextBilling}:</span>
+                      <span className="font-semibold">
+                        {currentCredit.nextBilling}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="flex-1">
-                <h3 className="mb-2 font-medium">
-                  {t.user.credits.creditDetails}
-                </h3>
-                <div className="text-md space-y-1">
-                  <div className="flex justify-between">
-                    <span>{t.user.credits.monthlyCredits}:</span>
-                    <span className="font-semibold">
-                      {currentCredit.credits}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>{t.user.credits.currentBalance}:</span>
-                    <span className="font-semibold">
-                      {currentCredit.balance}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>{t.user.credits.resetDate}:</span>
-                    <span className="font-semibold">
-                      {currentCredit.resetDate}
-                    </span>
+                <div className="flex-1">
+                  <h3 className="mb-2 font-medium">
+                    {t.user.credits.creditDetails}
+                  </h3>
+                  <div className="text-md space-y-1">
+                    <div className="flex justify-between">
+                      <span>{t.user.credits.monthlyCredits}:</span>
+                      <span className="font-semibold">
+                        {currentCredit.credits}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>{t.user.credits.currentBalance}:</span>
+                      <span className="font-semibold">
+                        {currentCredit.balance}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>{t.user.credits.resetDate}:</span>
+                      <span className="font-semibold">
+                        {currentCredit.resetDate}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        )}
 
         <div className="mb-10">
           <h3 className="mb-6 text-xl font-semibold">
