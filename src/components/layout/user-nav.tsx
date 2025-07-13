@@ -13,13 +13,12 @@ import {
 import { useAuth } from '@/core/auth/AuthProvider';
 import { capitalizeFirst, getInitials } from '@/lib/utils';
 import { LogOut } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/lib/i18n/language-context';
 
 export function UserNav() {
   const { t } = useLanguage();
   const [{ profile }, { actionSignOut }] = useAuth();
-  const router = useRouter();
+  
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
