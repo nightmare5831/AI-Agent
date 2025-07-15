@@ -20,10 +20,13 @@ import { toast } from 'sonner';
 import Request from '@/lib/request';
 import { getSubscription } from '@/core/subscription';
 import { useLanguage } from '@/lib/i18n/language-context';
+import { Loader } from 'lucide-react';
 
 const CreditsPage = () => {
   const router = useRouter();
   const [{ profile }] = useAuth();
+  const [spinner, setSpinner] = useState(false)
+  const [targetPlan, setTargetPlan] = useState('no')
   const { t } = useLanguage();
   const [currentCredit, setCurrentCredit] = useState({
     plan: 'Free',
@@ -36,6 +39,8 @@ const CreditsPage = () => {
 
   const selectedPlan = async (plan: string) => {
     try {
+      setSpinner(true);
+      setTargetPlan(plan);
       const url = await Request.Post('/api/stripe/create-subscription', {
         planType: plan,
         userId: profile.id,
@@ -43,6 +48,7 @@ const CreditsPage = () => {
       });
       router.push(url.url);
       toast.success(t.user.credits.subscriptionSuccess);
+      setSpinner(false);
     } catch (error: any) {
       toast.error(
         error?.response?.data?.message || t.user.credits.subscriptionError
@@ -52,6 +58,8 @@ const CreditsPage = () => {
 
   const selecteCreditPack = async (credit: string) => {
     try {
+      setSpinner(true);
+      setTargetPlan('onetime');
       const url = await Request.Post('/api/stripe/buy-credits', {
         packType: credit,
         userId: profile.id,
@@ -60,6 +68,7 @@ const CreditsPage = () => {
         router.push(url.url);
       }
       toast.success(t.user.credits.creditPurchaseSuccess);
+      setSpinner(false);
     } catch (error) {
       console.log('Select Credit Pack error', error);
     }
@@ -207,7 +216,7 @@ const CreditsPage = () => {
                     </span>
                   </div>
                   <CardDescription className="mt-1">
-                    Includes {plan.credits} credits per month
+                    {t.user.credits.includesCreditsPerMonth.replace('{credits}', plan.credits.toString())}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="flex-1">
@@ -231,9 +240,10 @@ const CreditsPage = () => {
                         : false
                     }
                   >
+                    {spinner && targetPlan === plan?.id && <Loader className="mr-1 animate-spin"/>}
                     {plan.id === currentCredit.plan?.toLocaleLowerCase()
-                      ? 'Current Plan'
-                      : 'Select Plan'}
+                      ? t.user.credits.currentPlanButton
+                      : t.user.credits.selectPlanButton}
                   </Button>
                 </CardFooter>
               </Card>
@@ -249,7 +259,7 @@ const CreditsPage = () => {
               >
                 {pack.recommended && (
                   <div className="absolute right-0 top-0">
-                    <Badge variant="success">Best Value</Badge>
+                    <Badge variant="success">{t.user.credits.bestValueBadge}</Badge>
                   </div>
                 )}
                 <CardHeader>
@@ -265,7 +275,7 @@ const CreditsPage = () => {
                     <div className="flex items-baseline justify-center">
                       <span className="text-3xl font-bold">{pack.credits}</span>
                       <span className="ml-1 text-muted-foreground">
-                        credits
+                        {t.user.credits.creditsUnit}
                       </span>
                     </div>
                     <div className="mt-3 text-xl font-semibold">
@@ -275,7 +285,7 @@ const CreditsPage = () => {
                       {(
                         Number(pack.price.replace('R$', '')) / pack.credits
                       ).toFixed(2)}{' '}
-                      per credit
+                      {t.user.credits.perCreditText}
                     </p>
                   </div>
                 </CardContent>
@@ -285,7 +295,8 @@ const CreditsPage = () => {
                     size="sm"
                     onClick={() => selecteCreditPack(pack.id)}
                   >
-                    Purchase Now
+                    {spinner && targetPlan === "onetime" && <Loader className="mr-1 animate-spin"/>}
+                    {t.user.credits.purchaseNowButton}
                   </Button>
                 </CardFooter>
               </Card>

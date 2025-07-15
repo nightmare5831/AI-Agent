@@ -1,0 +1,135 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../src/prisma/client"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+  schemas   = ["public"]
+}
+
+model profile {
+  id                   String                @id @db.Uuid
+  email                String                @unique
+  name                 String
+  role                 UserRole              @default(user)
+  ip_address           String                @default("")
+  subscription_plan    String?               @default("free")
+  credits_balance      Int                   @default(20)
+  created_at           DateTime              @default(now())
+  stripeSubscriptionId String?
+  admin_activities     admin_activity_logs[] @relation("AdminActivities")
+  credit_purchases     credit_purchases[]
+  projects             projects[]
+  subscriptions        subscriptions[]
+  tasks_log            tasks_log[]
+  whatsapp_messages    whatsapp_messages[]
+
+  @@schema("public")
+}
+
+model projects {
+  id          String      @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  profile_id  String      @db.Uuid
+  createId    String      @unique
+  name        String
+  description String
+  profile     profile     @relation(fields: [profile_id], references: [id], onDelete: Cascade)
+  tasks_log   tasks_log[]
+
+  @@schema("public")
+}
+
+model subscriptions {
+  id         String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  profile_id String   @db.Uuid
+  plan_type  PlanType
+  status     String
+  start_date DateTime
+  end_date   DateTime
+  method     String
+  amount     Int      @default(0)
+  profile    profile  @relation(fields: [profile_id], references: [id], onDelete: Cascade)
+
+  @@schema("public")
+}
+
+model credit_purchases {
+  id           String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  profile_id   String   @db.Uuid
+  pack_type    PackType
+  credits      Int
+  price        Float
+  purchased_at DateTime @default(now())
+  profile      profile  @relation(fields: [profile_id], references: [id], onDelete: Cascade)
+
+  @@schema("public")
+}
+
+model tasks_log {
+  id            String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  profile_id    String   @db.Uuid
+  agent_type    String
+  credits_spent Int
+  timestamp     DateTime @default(now())
+  agent_results String
+  project_id    String
+  profile       profile  @relation(fields: [profile_id], references: [id], onDelete: Cascade)
+  project       projects @relation(fields: [project_id], references: [createId], onDelete: Cascade)
+
+  @@schema("public")
+}
+
+model whatsapp_messages {
+  id           String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  profile_id   String           @db.Uuid
+  direction    MessageDirection
+  message_text String
+  timestamp    DateTime         @default(now())
+  profile      profile          @relation(fields: [profile_id], references: [id], onDelete: Cascade)
+
+  @@schema("public")
+}
+
+model admin_activity_logs {
+  id          String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  admin_id    String   @db.Uuid
+  action_type String
+  target_id   String
+  timestamp   DateTime @default(now())
+  admin       profile  @relation("AdminActivities", fields: [admin_id], references: [id], onDelete: Cascade)
+
+  @@schema("public")
+}
+
+enum UserRole {
+  user
+  admin
+
+  @@schema("public")
+}
+
+enum PlanType {
+  essential
+  professional
+
+  @@schema("public")
+}
+
+enum PackType {
+  PACK_100
+  PACK_200
+  PACK_400
+
+  @@schema("public")
+}
+
+enum MessageDirection {
+  inbound
+  outbound
+
+  @@schema("public")
+}

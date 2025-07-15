@@ -111,7 +111,14 @@ export const translations: any = {
         copyLink: 'Copy Link',
         subscriptionSuccess: 'Subscription created successfully!',
         subscriptionError: 'Failed to create Subscription. Please try again.',
-        creditPurchaseSuccess: 'Credit purchased successfully!'
+        creditPurchaseSuccess: 'Credit purchased successfully!',
+        includesCreditsPerMonth: 'Includes {credits} credits per month',
+        currentPlanButton: 'Current Plan',
+        selectPlanButton: 'Select Plan',
+        bestValueBadge: 'Best Value',
+        creditsUnit: 'credits',
+        perCreditText: 'per credit',
+        purchaseNowButton: 'Purchase Now'
       },
       usage: {
         title: 'Credit Usage History',
@@ -673,7 +680,14 @@ export const translations: any = {
         copyLink: 'Copiar Link',
         subscriptionSuccess: 'Assinatura criada com sucesso!',
         subscriptionError: 'Falha ao criar Assinatura. Tente novamente.',
-        creditPurchaseSuccess: 'Crédito comprado com sucesso!'
+        creditPurchaseSuccess: 'Crédito comprado com sucesso!',
+        includesCreditsPerMonth: 'Inclui {credits} créditos por mês',
+        currentPlanButton: 'Plano Atual',
+        selectPlanButton: 'Selecionar Plano',
+        bestValueBadge: 'Melhor Valor',
+        creditsUnit: 'créditos',
+        perCreditText: 'por crédito',
+        purchaseNowButton: 'Comprar Agora'
       },
       usage: {
         title: 'Histórico de Uso de Créditos',
@@ -1235,7 +1249,14 @@ export const translations: any = {
         copyLink: 'Copiar Enlace',
         subscriptionSuccess: '¡Suscripción creada exitosamente!',
         subscriptionError: 'Error al crear la Suscripción. Inténtalo de nuevo.',
-        creditPurchaseSuccess: '¡Crédito comprado exitosamente!'
+        creditPurchaseSuccess: '¡Crédito comprado exitosamente!',
+        includesCreditsPerMonth: 'Incluye {credits} créditos por mes',
+        currentPlanButton: 'Plan Actual',
+        selectPlanButton: 'Seleccionar Plan',
+        bestValueBadge: 'Mejor Valor',
+        creditsUnit: 'créditos',
+        perCreditText: 'por crédito',
+        purchaseNowButton: 'Comprar Ahora'
       },
       usage: {
         title: 'Historial de Uso de Créditos',
