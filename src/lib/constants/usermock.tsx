@@ -240,7 +240,7 @@ export const plans = [
   },
   {
     id: 'professional',
-    name: 'Anuual Plan',
+    name: 'Annual Plan',
     price: 'R$377.00',
     interval: 'annual',
     credits: 100,

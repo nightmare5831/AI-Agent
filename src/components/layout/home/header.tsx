@@ -91,7 +91,7 @@ export function Header() {
           {/* Right - Actions */}
           <div className="flex items-center space-x-4 animate-fadeIn transition-all delay-500">
             {profile ? (
-              <Link href={profile?.role === 'admin' ? '/admin' : '/user'}>
+              <Link href={profile?.role === 'admin' ? '/admin' : profile?.credits_balance >=2 ? '/user' : '/user/credits'}>
                 <Button
                   className="bg-gradient-to-r from-[#63B3ED] to-[#2B6CB0] hover:opacity-90 text-white rounded-full px-5 py-2 text-sm font-medium border-0 hover:shadow-lg hover:shadow-purple-500/20 transition-all duration-300"
                 >
