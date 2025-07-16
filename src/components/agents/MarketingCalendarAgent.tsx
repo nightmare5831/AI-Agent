@@ -101,7 +101,7 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
       project_id: projectId,
       agent_type: agent.id,
       agent_results: JSON.stringify(schedule),
-      credits_spent: 1,
+      credits_spent: 2,
     };
 
     await Request.Post('/api/stripe/discount', task);

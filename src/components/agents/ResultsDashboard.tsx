@@ -18,8 +18,9 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useResults } from '@/contexts/ResultsContext';
+import { useLanguage } from '@/lib/i18n/language-context';
 
-export const renderGeneratedContent = (content : any) => {
+export const renderGeneratedContent = (content : any, t: any) => {
   const selectedTypes = content.type;
 
   return (
@@ -28,7 +29,7 @@ export const renderGeneratedContent = (content : any) => {
         <div className="rounded-lg border border-blue-200 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/50 p-4">
           <h5 className="mb-3 flex items-center font-medium text-blue-800 dark:text-blue-200">
             <FileText className="mr-2 h-4 w-4" />
-            Social Media Caption
+            {t.agents.socialMediaCaption || 'Social Media Caption'}
           </h5>
           <div className="space-y-3 text-sm">
             <div>
@@ -59,7 +60,7 @@ export const renderGeneratedContent = (content : any) => {
           <div className="rounded-lg border border-green-200 dark:border-green-700 bg-green-50 dark:bg-green-900/50 p-4">
             <h5 className="mb-3 flex items-center font-medium text-green-800 dark:text-green-200">
               <FileText className="mr-2 h-4 w-4" />
-              Page Copy
+              {t.agents.pageCopy || 'Page Copy'}
             </h5>
             <div className="space-y-3 text-sm">
               <div>
@@ -90,7 +91,7 @@ export const renderGeneratedContent = (content : any) => {
           <div className="rounded-lg border border-purple-200 dark:border-purple-700 bg-purple-50 dark:bg-purple-900/50 p-4">
             <h5 className="mb-3 flex items-center font-medium text-purple-800 dark:text-purple-200">
               <Image className="mr-2 h-4 w-4" />
-              AI Image Generation Script
+              {t.agents.aiImageGeneration || 'AI Image Generation Script'}
             </h5>
             <div className="space-y-2 text-sm">
               <p>
@@ -138,15 +139,16 @@ export const renderGeneratedContent = (content : any) => {
 
 export const ResultsDashboard: React.FC = () => {
   const { results, clearResults } = useResults();
+  const { t } = useLanguage();
 
   if (results.length === 0) {
     return (
       <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm">
         <h3 className="mb-2 text-lg font-semibold text-slate-800 dark:text-slate-100">
-          Agent Results
+          {t.agents.results}
         </h3>
         <p className="text-sm text-slate-600 dark:text-slate-300">
-          No results yet. Run any agent to see results here.
+          {t.agents.noResults}
         </p>
       </div>
     );
@@ -167,7 +169,7 @@ export const ResultsDashboard: React.FC = () => {
         <div className="text-sm text-slate-700 dark:text-slate-300">
           <div className="rounded-lg border border-green-200 dark:border-green-700 bg-white dark:bg-slate-800 p-4">
             <h4 className="mb-2 font-medium text-slate-800 dark:text-slate-100">
-              Marketing Strategy Summary:
+              {t.agents.marketingStrategy}:
             </h4>
             <div className="whitespace-pre-line text-slate-700 dark:text-slate-300">{result}</div>
           </div>
@@ -179,18 +181,18 @@ export const ResultsDashboard: React.FC = () => {
       return (
         <div className="rounded-lg border border-green-200 dark:border-green-700 bg-white dark:bg-slate-800 p-4">
           <h4 className="mb-4 font-medium text-slate-800 dark:text-slate-100">
-            Your 7-Day Content Schedule:
+            {t.agents.contentSchedule}:
           </h4>
           <div className="max-w-full overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="text-xs">Day</TableHead>
-                  <TableHead className="text-xs">Channel</TableHead>
-                  <TableHead className="text-xs">Format</TableHead>
-                  <TableHead className="text-xs">Placement</TableHead>
-                  <TableHead className="text-xs">Content Type</TableHead>
-                  <TableHead className="text-xs">Description</TableHead>
+                  <TableHead className="text-xs">{t.agents.tableHeaders?.day || 'Day'}</TableHead>
+                  <TableHead className="text-xs">{t.agents.tableHeaders?.channel || 'Channel'}</TableHead>
+                  <TableHead className="text-xs">{t.agents.tableHeaders?.format || 'Format'}</TableHead>
+                  <TableHead className="text-xs">{t.agents.tableHeaders?.placement || 'Placement'}</TableHead>
+                  <TableHead className="text-xs">{t.agents.tableHeaders?.contentType || 'Content Type'}</TableHead>
+                  <TableHead className="text-xs">{t.agents.tableHeaders?.description || 'Description'}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -271,7 +273,7 @@ export const ResultsDashboard: React.FC = () => {
     if (agentId === 'post-text' && result) {
       return (
         <div className="space-y-3">
-          {renderGeneratedContent(result)}
+          {renderGeneratedContent(result, t)}
         </div>
       );
     }
@@ -301,7 +303,7 @@ export const ResultsDashboard: React.FC = () => {
                 className="mt-1 flex items-center text-sm text-blue-600 hover:text-blue-800"
               >
                 <ExternalLink className="mr-1 h-3 w-3" />
-                View Full Size
+                {t.agents.viewFullSize || 'View Full Size'}
               </button>
             </div>
           </div>
@@ -453,7 +455,7 @@ export const ResultsDashboard: React.FC = () => {
   return (
     <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm">
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">Agent Results</h3>
+        <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">{t.agents.results}</h3>
         <Button
           variant="outline"
           size="sm"
@@ -461,7 +463,7 @@ export const ResultsDashboard: React.FC = () => {
           className="text-red-600 hover:bg-red-50"
         >
           <Trash2 className="mr-2 h-4 w-4" />
-          Clear All
+          {t.agents.clearAll}
         </Button>
       </div>
 

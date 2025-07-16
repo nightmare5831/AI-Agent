@@ -133,7 +133,7 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
       project_id: projectId,
       agent_type: agent.id,
       agent_results: JSON.stringify(mockIdeas),
-      credits_spent: 1,
+      credits_spent: 2,
     };
 
     await Request.Post('/api/stripe/discount', task);

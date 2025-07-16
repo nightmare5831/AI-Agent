@@ -41,7 +41,7 @@ export async function POST(req: Request) {
         const planType = session.metadata.planType as PlanType;
         const userId = session.metadata.userId;
         const subscriptionId = session.subscription;
-
+        
         await prisma.subscriptions.create({
           data: {
             profile_id: userId,

@@ -5,6 +5,7 @@ import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { useLanguage } from '@/lib/i18n/language-context';
 
 interface ProjectModalProps {
   isOpen: boolean;
@@ -13,6 +14,7 @@ interface ProjectModalProps {
 }
 
 export const ProjectModal: React.FC<ProjectModalProps> = ({ isOpen, onClose, onSubmit }) => {
+  const { t } = useLanguage();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
@@ -31,7 +33,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ isOpen, onClose, onS
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-md w-full p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100">Create New Project</h2>
+          <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100">{t.user.agents.createProject || 'Create New Project'}</h2>
           <Button variant="ghost" size="sm" onClick={onClose}>
             <X className="w-4 h-4" />
           </Button>
@@ -41,24 +43,24 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ isOpen, onClose, onS
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                Project Name *
+                {t.user.agents.projectName || 'Project Name'} *
               </label>
               <Input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Enter project name"
+                placeholder={t.user.agents.projectNamePlaceholder || 'Enter project name'}
                 required
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                Description
+                {t.user.agents.description || 'Description'}
               </label>
               <Textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Brief description of your project"
+                placeholder={t.user.agents.descriptionPlaceholder || 'Brief description of your project'}
                 rows={3}
               />
             </div>
@@ -66,10 +68,10 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ isOpen, onClose, onS
 
           <div className="flex gap-3 justify-end mt-6">
             <Button type="button" variant="outline" onClick={onClose}>
-              Cancel
+              {t.user.agents.cancel || 'Cancel'}
             </Button>
             <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white">
-              Create Project
+              {t.user.agents.createProject || 'Create Project'}
             </Button>
           </div>
         </form>

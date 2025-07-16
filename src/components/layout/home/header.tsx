@@ -9,12 +9,13 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/core/auth/AuthProvider';
 import { useLanguage } from '@/lib/i18n/language-context';
+import { useTheme } from 'next-themes';
 
 export function Header() {
   const { t } = useLanguage();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
-
+  const {theme} = useTheme()
   const [{ profile }] = useAuth();
 
   useEffect(() => {
@@ -54,12 +55,20 @@ export function Header() {
               href="/"
               className="flex items-center space-x-3 transition-colors hover:opacity-90"
             >
-              <Image
-                alt="Logo"
-                src="/assets/images/logo/logo.png"
-                width={160}
-                height={160}
-              />
+              {theme === 'dark' ? 
+                <Image
+                  alt="Logo"
+                  src="/assets/images/logo/logo-dark.png"
+                  width={160}
+                  height={160}
+                /> : 
+                <Image
+                  alt="Logo"
+                  src="/assets/images/logo/logo.png"
+                  width={160}
+                  height={160}
+                />
+              }
             </Link>
           </div>
 

@@ -56,7 +56,8 @@ export async function POST(req: Request) {
         planType,
       },
     });
-    return NextResponse.json({ url: session.url });
+    
+    return NextResponse.json({ url: session.url }, {status:200});
   } catch (error) {
     console.error('Error creating subscription:', error);
     return NextResponse.json({ error: (error as Error).message }, { status: 500 });

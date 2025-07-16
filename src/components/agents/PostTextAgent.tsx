@@ -192,7 +192,7 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
         ...parsedJson,
         type: answers['content-type'],
       }),
-      credits_spent: 1,
+      credits_spent: 2,
     };
 
     await Request.Post('/api/stripe/discount', task);
