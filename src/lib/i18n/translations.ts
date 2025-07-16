@@ -113,12 +113,24 @@ export const translations: any = {
         subscriptionError: 'Failed to create Subscription. Please try again.',
         creditPurchaseSuccess: 'Credit purchased successfully!',
         includesCreditsPerMonth: 'Includes {credits} credits per month',
-        currentPlanButton: 'Current Plan',
         selectPlanButton: 'Select Plan',
         bestValueBadge: 'Best Value',
         creditsUnit: 'credits',
         perCreditText: 'per credit',
-        purchaseNowButton: 'Purchase Now'
+        purchaseNowButton: 'Purchase Now',
+        // Plan names
+        monthlyPlan: 'Monthly Plan',
+        annualPlan: 'Annual Plan',
+        extraPack: 'Extra Pack',
+        // Intervals
+        month: 'month',
+        annual: 'annual',
+        // Features
+        aiCredits: '{credits} AI Credits',
+        allAiAgents: 'All AI Agents',
+        aiSchedulingBot: 'AI Scheduling Bot',
+        prioritySupport: 'Priority Support',
+        dayHistory: '{days}-day History'
       },
       usage: {
         title: 'Credit Usage History',
@@ -682,12 +694,24 @@ export const translations: any = {
         subscriptionError: 'Falha ao criar Assinatura. Tente novamente.',
         creditPurchaseSuccess: 'Crédito comprado com sucesso!',
         includesCreditsPerMonth: 'Inclui {credits} créditos por mês',
-        currentPlanButton: 'Plano Atual',
         selectPlanButton: 'Selecionar Plano',
         bestValueBadge: 'Melhor Valor',
         creditsUnit: 'créditos',
         perCreditText: 'por crédito',
-        purchaseNowButton: 'Comprar Agora'
+        purchaseNowButton: 'Comprar Agora',
+        // Plan names
+        monthlyPlan: 'Plano Mensal',
+        annualPlan: 'Plano Anual',
+        extraPack: 'Pacote Extra',
+        // Intervals
+        month: 'mês',
+        annual: 'anual',
+        // Features
+        aiCredits: '{credits} Créditos AI',
+        allAiAgents: 'Todos os Agentes AI',
+        aiSchedulingBot: 'Bot de Agendamento AI',
+        prioritySupport: 'Suporte Prioritário',
+        dayHistory: 'Histórico de {days} dias'
       },
       usage: {
         title: 'Histórico de Uso de Créditos',
@@ -1251,12 +1275,24 @@ export const translations: any = {
         subscriptionError: 'Error al crear la Suscripción. Inténtalo de nuevo.',
         creditPurchaseSuccess: '¡Crédito comprado exitosamente!',
         includesCreditsPerMonth: 'Incluye {credits} créditos por mes',
-        currentPlanButton: 'Plan Actual',
         selectPlanButton: 'Seleccionar Plan',
         bestValueBadge: 'Mejor Valor',
         creditsUnit: 'créditos',
         perCreditText: 'por crédito',
-        purchaseNowButton: 'Comprar Ahora'
+        purchaseNowButton: 'Comprar Ahora',
+        // Plan names
+        monthlyPlan: 'Plan Mensual',
+        annualPlan: 'Plan Anual',
+        extraPack: 'Paquete Extra',
+        // Intervals
+        month: 'mes',
+        annual: 'anual',
+        // Features
+        aiCredits: '{credits} Créditos AI',
+        allAiAgents: 'Todos los Agentes AI',
+        aiSchedulingBot: 'Bot de Programación AI',
+        prioritySupport: 'Soporte Prioritario',
+        dayHistory: 'Historial de {days} días'
       },
       usage: {
         title: 'Historial de Uso de Créditos',

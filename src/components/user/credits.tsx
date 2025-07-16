@@ -13,7 +13,6 @@ import { Badge } from '@/components/ui/badge';
 import { CreditCard, CheckCircle, Gift } from 'lucide-react';
 import { AlertTriangle } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { creditPacks, plans } from '@/lib/constants/usermock';
 import { useAuth } from '@/core/auth/AuthProvider';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
@@ -36,6 +35,58 @@ const CreditsPage = () => {
     nextBilling: '',
     resetDate: '',
   });
+
+  // Get translated plans
+  const getTranslatedPlans = () => {
+    return [
+      {
+        id: 'essential',
+        name: t.user.credits.monthlyPlan,
+        price: 'R$47.90',
+        interval: t.user.credits.month,
+        credits: 100,
+        features: [
+          t.user.credits.aiCredits.replace('{credits}', '100'),
+          t.user.credits.allAiAgents,
+          t.user.credits.aiSchedulingBot,
+          t.user.credits.prioritySupport,
+          t.user.credits.dayHistory.replace('{days}', '30'),
+        ],
+        recommended: false,
+      },
+      {
+        id: 'professional',
+        name: t.user.credits.annualPlan,
+        price: 'R$377.00',
+        interval: t.user.credits.annual,
+        credits: 100,
+        features: [
+          t.user.credits.aiCredits.replace('{credits}', '100'),
+          t.user.credits.allAiAgents,
+          t.user.credits.aiSchedulingBot,
+          t.user.credits.prioritySupport,
+          t.user.credits.dayHistory.replace('{days}', '30'),
+        ],
+        recommended: true,
+      },
+    ];
+  };
+
+  // Get translated credit packs
+  const getTranslatedCreditPacks = () => {
+    return [
+      {
+        id: 'PACK_100',
+        name: t.user.credits.extraPack,
+        credits: 100,
+        price: 'R$39.90',
+        recommended: false,
+      },
+    ];
+  };
+
+  const plans = getTranslatedPlans();
+  const creditPacks = getTranslatedCreditPacks();
 
   const selectedPlan = async (plan: string) => {
     try {
