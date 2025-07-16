@@ -170,7 +170,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
       language: language,
     };
     const response = await Request.Post('/api/agents', body);
-    console.log('answer', response);
+
     const imageName = generateImageName(answers['campaign-name']);
     const newImage: GeneratedImage = {
       id: `img_${Date.now()}`,
@@ -194,7 +194,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
       project_id: projectId,
       agent_type: agent.id,
       agent_results: JSON.stringify(newImage),
-      credits_spent: 1,
+      credits_spent: 4,
     };
 
     await Request.Post('/api/stripe/discount', task);

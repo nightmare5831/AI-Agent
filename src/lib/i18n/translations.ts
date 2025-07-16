@@ -81,7 +81,12 @@ export const translations: any = {
         create: 'Create',
         delete: 'Delete',
         deleteProject: 'Delete Project',
-        cancel: 'Cancel'
+        cancel: 'Cancel',
+        createProject: 'Create Project',
+        projectName: 'Project Name',
+        projectNamePlaceholder: 'Enter project name',
+        description: 'Description',
+        descriptionPlaceholder: 'Brief description of your project'
       },
       credits: {
         title: 'Purchase Credits & Upgrade Plan',
@@ -175,6 +180,15 @@ export const translations: any = {
       aiImageGeneration: 'AI Image Generation Script',
       marketingStrategy: 'Marketing Strategy Summary',
       contentSchedule: 'Your 7-Day Content Schedule',
+      viewFullSize: 'View Full Size',
+      tableHeaders: {
+        day: 'Day',
+        channel: 'Channel',
+        format: 'Format',
+        placement: 'Placement',
+        contentType: 'Content Type',
+        description: 'Description'
+      },
       
       // Marketing Strategy Agent
       marketingStrategyAgent: {
@@ -662,7 +676,12 @@ export const translations: any = {
         create: 'Criar',
         delete: 'Excluir',
         deleteProject: 'Excluir Projeto',
-        cancel: 'Cancelar'
+        cancel: 'Cancelar',
+        createProject: 'Criar Projeto',
+        projectName: 'Nome do Projeto',
+        projectNamePlaceholder: 'Digite o nome do projeto',
+        description: 'Descrição',
+        descriptionPlaceholder: 'Breve descrição do seu projeto'
       },
       credits: {
         title: 'Comprar Créditos e Atualizar Plano',
@@ -756,6 +775,15 @@ export const translations: any = {
       aiImageGeneration: 'Script de Geração de Imagem AI',
       marketingStrategy: 'Resumo da Estratégia de Marketing',
       contentSchedule: 'Sua Programação de Conteúdo de 7 Dias',
+      viewFullSize: 'Ver Tamanho Completo',
+      tableHeaders: {
+        day: 'Dia',
+        channel: 'Canal',
+        format: 'Formato',
+        placement: 'Posição',
+        contentType: 'Tipo de Conteúdo',
+        description: 'Descrição'
+      },
       
       // Marketing Strategy Agent
       marketingStrategyAgent: {
@@ -1243,7 +1271,12 @@ export const translations: any = {
         create: 'Crear',
         delete: 'Eliminar',
         deleteProject: 'Eliminar Proyecto',
-        cancel: 'Cancelar'
+        cancel: 'Cancelar',
+        createProject: 'Crear Proyecto',
+        projectName: 'Nombre del Proyecto',
+        projectNamePlaceholder: 'Ingresa el nombre del proyecto',
+        description: 'Descripción',
+        descriptionPlaceholder: 'Breve descripción de tu proyecto'
       },
       credits: {
         title: 'Comprar Créditos y Actualizar Plan',
@@ -1337,6 +1370,15 @@ export const translations: any = {
       aiImageGeneration: 'Script de Generación de Imagen AI',
       marketingStrategy: 'Resumen de Estrategia de Marketing',
       contentSchedule: 'Tu Programación de Contenido de 7 Días',
+      viewFullSize: 'Ver Tamaño Completo',
+      tableHeaders: {
+        day: 'Día',
+        channel: 'Canal',
+        format: 'Formato',
+        placement: 'Ubicación',
+        contentType: 'Tipo de Contenido',
+        description: 'Descripción'
+      },
       
       // Marketing Strategy Agent
       marketingStrategyAgent: {
