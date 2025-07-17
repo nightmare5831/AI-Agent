@@ -7,6 +7,7 @@ import {
   ExternalLink,
   FileText,
   Image,
+  Video,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -133,6 +134,82 @@ export const renderGeneratedContent = (content : any, t: any) => {
             </div>
           </div>
         )}
+
+      {content && selectedTypes.includes('Video Script') && (
+        <div className="rounded-lg border border-orange-200 dark:border-orange-700 bg-orange-50 dark:bg-orange-900/50 p-4">
+          <h5 className="mb-3 flex items-center font-medium text-orange-800 dark:text-orange-200">
+            <Video className="mr-2 h-4 w-4" />
+            {t.agents.videoScript || 'Video Script'}
+          </h5>
+          <div className="space-y-4 text-sm">
+            <div>
+              <strong>Hook (Opening):</strong>
+              <p className="mt-1 text-orange-700 dark:text-orange-300">{content.hook}</p>
+            </div>
+            <div>
+              <strong>Introduction:</strong>
+              <p className="mt-1 text-orange-700 dark:text-orange-300">{content.introduction}</p>
+            </div>
+            <div>
+              <strong>Main Content:</strong>
+              <div className="mt-2 space-y-3">
+                {content.mainContent && content.mainContent.map((section: any, index: number) => (
+                  <div key={index} className="rounded border border-orange-300 dark:border-orange-600 bg-orange-100 dark:bg-orange-800/30 p-3">
+                    <div className="flex justify-between items-start mb-2">
+                      <h6 className="font-medium text-orange-800 dark:text-orange-200">{section.section}</h6>
+                      <span className="text-xs text-orange-600 dark:text-orange-400">({section.duration})</span>
+                    </div>
+                    <p className="text-orange-700 dark:text-orange-300 mb-2">{section.script}</p>
+                    <p className="text-xs text-orange-600 dark:text-orange-400 italic">Visual: {section.visuals}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div>
+              <strong>Visual Cues:</strong>
+              <p className="mt-1 text-orange-700 dark:text-orange-300">{content.visualCues}</p>
+            </div>
+            <div>
+              <strong>Audio Elements:</strong>
+              <p className="mt-1 text-orange-700 dark:text-orange-300">{content.audioElements}</p>
+            </div>
+            <div>
+              <strong>On-Screen Captions:</strong>
+              <div className="mt-1 flex flex-wrap gap-2">
+                {content.captions && content.captions.map((caption: string, index: number) => (
+                  <span key={index} className="rounded bg-orange-200 dark:bg-orange-800/50 px-2 py-1 text-xs text-orange-800 dark:text-orange-200">
+                    {caption}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div>
+              <strong>Transitions:</strong>
+              <p className="mt-1 text-orange-700 dark:text-orange-300">{content.transitions}</p>
+            </div>
+            <div>
+              <strong>Call-to-Action:</strong>
+              <p className="mt-1 text-orange-700 dark:text-orange-300">{content.cta}</p>
+            </div>
+            <div>
+              <strong>Total Duration:</strong>
+              <span className="ml-2 rounded bg-orange-200 dark:bg-orange-800/50 px-2 py-1 text-xs text-orange-800 dark:text-orange-200">
+                {content.duration}
+              </span>
+            </div>
+            <div>
+              <strong>Hashtags:</strong>
+              <div className="mt-1 flex flex-wrap gap-2">
+                {content.hashtags && content.hashtags.map((hashtag: string, index: number) => (
+                  <span key={index} className="rounded bg-orange-200 dark:bg-orange-800/50 px-2 py-1 text-xs text-orange-800 dark:text-orange-200">
+                    {hashtag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
