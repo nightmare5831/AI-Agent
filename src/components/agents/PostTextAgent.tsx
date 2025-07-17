@@ -49,6 +49,23 @@ interface GeneratedContent {
     orientation: string;
     finalPrompt: string;
   };
+  videoScript?: {
+    hook: string;
+    introduction: string;
+    mainContent: Array<{
+      section: string;
+      script: string;
+      duration: string;
+      visuals: string;
+    }>;
+    visualCues: string;
+    audioElements: string;
+    captions: string[];
+    transitions: string;
+    cta: string;
+    duration: string;
+    hashtags: string[];
+  };
 }
 
 interface IdeaContent {
@@ -239,7 +256,7 @@ export const PostTextAgent: React.FC<PostTextAgentProps> = ({
 
   const getTranslatedOption = (questionId: string, option: string) => {
     if (questionId === 'content-type') {
-      const englishOptions = ['Social Media Caption', 'Page Copy (Website/WhatsApp)', 'AI Image Generation Script'];
+      const englishOptions = ['Social Media Caption', 'Page Copy (Website/WhatsApp)', 'AI Image Generation Script', 'Video Script'];
       const index = englishOptions.indexOf(option);
       return index >= 0 && t.agents.postTextAgent.options.contentTypes[index] 
         ? t.agents.postTextAgent.options.contentTypes[index] 

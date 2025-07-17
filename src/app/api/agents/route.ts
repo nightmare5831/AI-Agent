@@ -44,6 +44,7 @@ Your role is to:
 - Create compelling social media captions focused on connection, desire, and conversions
 - Write website copy, product descriptions, and landing page content
 - Generate detailed scripts for AI image generation
+- Create engaging video scripts for social media videos
 - Maintain communication consistency using brand data
 - Adapt language and structure according to post format
 - Include impactful headlines, clear CTAs, relevant emojis, and strategic hashtags
@@ -113,7 +114,7 @@ Based on the following business strategy, create exactly ${inputs['post-per-week
         - day: (Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday)
         - channel: (Instagram, WhatsApp, TikTok, Facebook, YouTube)
         - placement: (Feed, Story, Reels, Broadcast List, etc.)
-        - format: (Image, Carousel, Plain Text, Video, Text + Image, Poll)
+        - format: (Image, Carousel, Plain Text, Video, Mixed (text + image), Poll)
         - contentType: (Tip, Offer, Behind-the-scenes, Engagement, Social Proof, Entertaining, Customer Repost, Educational, Product Showcase)
         - description: (Specific actionable content idea in 8-12 words)
 
@@ -263,6 +264,43 @@ You are an intelligent copywriter who transforms content ideas into persuasive, 
               "elements": "actual elements here",
               "orientation": "actual orientation here",
               "finalPrompt": "actual complete AI prompt here"
+            }`;
+        } else if (
+          contentType === 'Video Script' ||
+          contentType === 'videoScript'
+        ) {
+          basePrompt += `
+            For Video Script, create:
+            - hook: Write an actual attention-grabbing opening line (first 3 seconds)
+            - introduction: Write actual intro that establishes context (5-10 seconds)
+            - mainContent: Write actual main content in sections with timing
+            - visualCues: Provide actual visual directions for each section
+            - audioElements: Suggest actual background music/sound effects
+            - captions: Write actual on-screen text overlays
+            - transitions: Describe actual transition effects between scenes
+            - cta: Write actual call-to-action for the end
+            - duration: Specify actual total video duration
+            - hashtags: Provide actual array of 8-12 strategic video hashtags
+
+            JSON structure:
+            {
+              "hook": "your actual hook here",
+              "introduction": "your actual introduction here",
+              "mainContent": [
+                {
+                  "section": "section name",
+                  "script": "actual script for this section",
+                  "duration": "duration in seconds",
+                  "visuals": "visual description"
+                }
+              ],
+              "visualCues": "your actual visual directions here",
+              "audioElements": "your actual audio suggestions here",
+              "captions": ["actual", "caption", "overlays"],
+              "transitions": "your actual transition descriptions here",
+              "cta": "your actual CTA here",
+              "duration": "total duration (e.g., 30 seconds)",
+              "hashtags": ["actual", "video", "hashtags"]
             }`;
         }
 
