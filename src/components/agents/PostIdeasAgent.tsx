@@ -145,11 +145,45 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
   };
 
   const generateIdea1 = (scheduleItem: any, option: any) => {
-    return option[scheduleItem.day as keyof typeof option] || option['Monday'];
+    const dayData = option[scheduleItem.day as keyof typeof option];
+    if (dayData) {
+      return dayData;
+    }
+    
+    // Fallback: find the first available day data if the specific day doesn't exist
+    const availableDays = Object.keys(option);
+    if (availableDays.length > 0) {
+      return option[availableDays[0] as keyof typeof option];
+    }
+    
+    // Last resort fallback
+    return {
+      title: "Content Idea 1",
+      description: "Create engaging content for your audience",
+      hook: "Get your audience's attention",
+      cta: "Take action now"
+    };
   };
 
   const generateIdea2 = (scheduleItem: any, option: any) => {
-    return option[scheduleItem.day as keyof typeof option] || option['Monday'];
+    const dayData = option[scheduleItem.day as keyof typeof option];
+    if (dayData) {
+      return dayData;
+    }
+    
+    // Fallback: find the first available day data if the specific day doesn't exist
+    const availableDays = Object.keys(option);
+    if (availableDays.length > 0) {
+      return option[availableDays[0] as keyof typeof option];
+    }
+    
+    // Last resort fallback
+    return {
+      title: "Content Idea 2",
+      description: "Create alternative engaging content for your audience",
+      hook: "Capture your audience's interest",
+      cta: "Engage with us now"
+    };
   };
 
   const handleReset = () => {

@@ -86,7 +86,6 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
     }
   };
 
-
   const handleRunAgent = async () => {
     if (profile.credits_balance <= 0) {
       toast.error(t.agents.marketingStrategyAgent.insufficientCredits);
@@ -103,6 +102,8 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
       };
 
       await Request.Post('/api/stripe/discount', task);
+      toast.success(t.agents.postIdeasAgent.successSaved);
+
       setResult(strategicSummary);
       addResult(agent.id, agent.title, agent.icon, strategicSummary);
 
@@ -122,19 +123,22 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
       'brand-name': 'brandName',
       'product-service': 'productService',
       'target-audience': 'targetAudience',
-      'differentiator': 'differentiator',
+      differentiator: 'differentiator',
       'marketing-goals': 'marketingGoals',
       'communication-tone': 'communicationTone',
       'social-platforms': 'socialPlatforms',
-      'limitations': 'limitations',
+      limitations: 'limitations',
       'focus-products': 'focusProducts',
       'positioning-status': 'positioningStatus',
-      'competitors': 'competitors',
-      'three-month-goals': 'threeMonthGoals'
+      competitors: 'competitors',
+      'three-month-goals': 'threeMonthGoals',
     };
-    
+
     const key = questionKeyMap[questionId];
-    return key ? t.agents.marketingStrategyAgent.questions[key] : agent.questions.find(q => q.id === questionId)?.question || questionId;
+    return key
+      ? t.agents.marketingStrategyAgent.questions[key]
+      : agent.questions.find((q) => q.id === questionId)?.question ||
+          questionId;
   };
 
   const getTranslatedPlaceholder = (questionId: string) => {
@@ -142,67 +146,72 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
       'brand-name': 'brandNamePlaceholder',
       'product-service': 'productServicePlaceholder',
       'target-audience': 'targetAudiencePlaceholder',
-      'differentiator': 'differentiatorPlaceholder',
+      differentiator: 'differentiatorPlaceholder',
       'marketing-goals': 'marketingGoalsPlaceholder',
       'communication-tone': 'communicationTonePlaceholder',
       'social-platforms': 'socialPlatformsPlaceholder',
-      'limitations': 'limitationsPlaceholder',
+      limitations: 'limitationsPlaceholder',
       'focus-products': 'focusProductsPlaceholder',
       'positioning-status': 'positioningStatusPlaceholder',
-      'competitors': 'competitorsPlaceholder',
-      'three-month-goals': 'threeMonthGoalsPlaceholder'
+      competitors: 'competitorsPlaceholder',
+      'three-month-goals': 'threeMonthGoalsPlaceholder',
     };
-    
+
     const key = questionKeyMap[questionId];
-    return key ? t.agents.marketingStrategyAgent.questions[key] : agent.questions.find(q => q.id === questionId)?.placeholder || '';
+    return key
+      ? t.agents.marketingStrategyAgent.questions[key]
+      : agent.questions.find((q) => q.id === questionId)?.placeholder || '';
   };
 
   const getTranslatedOption = (questionId: string, option: string) => {
     const optionKeyMap: Record<string, string> = {
       'marketing-goals': 'marketingGoals',
       'communication-tone': 'communicationTone',
-      'positioning-status': 'positioningStatus'
+      'positioning-status': 'positioningStatus',
     };
-    
+
     const optionKey = optionKeyMap[questionId];
     const optionsArray = t.agents.marketingStrategyAgent.options[optionKey];
-    
+
     if (optionsArray && Array.isArray(optionsArray)) {
       const englishOptions: Record<string, string[]> = {
-        'marketingGoals': [
+        marketingGoals: [
           'Generate more sales',
           'Grow followers and authority',
           'Capture leads for nurturing',
           'Position the brand as a reference',
           'Attract customers to a physical store',
-          'Promote new releases or promotions'
+          'Promote new releases or promotions',
         ],
-        'communicationTone': [
+        communicationTone: [
           'Professional and trustworthy',
           'Fun and relaxed',
           'Friendly and welcoming',
           'Creative and bold',
-          'Traditional and safe'
+          'Traditional and safe',
         ],
-        'positioningStatus': [
+        positioningStatus: [
           'I already have a clear positioning',
           'I have an idea, but need help refining it',
-          "I don't have one yet, I want help defining it"
-        ]
+          "I don't have one yet, I want help defining it",
+        ],
       };
-      
+
       const englishOptionsArray = englishOptions[optionKey];
       if (englishOptionsArray) {
         const index = englishOptionsArray.indexOf(option);
         return index >= 0 && optionsArray[index] ? optionsArray[index] : option;
       }
     }
-    
+
     return option;
   };
 
-  const generateStrategicSummary = (answers: Record<string, string>, language: string) => {
-    const labels : any = {
+  const generateStrategicSummary = (
+    answers: Record<string, string>,
+    language: string
+  ) => {
+    const labels: any = {
       en: {
         title: '📄 STRATEGIC BUSINESS SUMMARY',
         brandName: 'Brand Name',
@@ -218,7 +227,8 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
         positioningStatus: 'Positioning Status',
         competitors: 'Competitors',
         threeMonthGoals: '3-Month Goals',
-        conclusion: '🎯 This strategic foundation will be used by all other AI agents to create personalized content that aligns with your business goals and brand identity.',
+        conclusion:
+          '🎯 This strategic foundation will be used by all other AI agents to create personalized content that aligns with your business goals and brand identity.',
         defaults: {
           business: 'Your Business',
           offerings: 'Your offerings',
@@ -232,8 +242,8 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
           priority: 'Your priority offerings',
           toBeDefined: 'To be defined',
           toBeResearched: 'To be researched',
-          targets: 'Your targets'
-        }
+          targets: 'Your targets',
+        },
       },
       pt: {
         title: '📄 RESUMO ESTRATÉGICO EMPRESARIAL',
@@ -250,7 +260,8 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
         positioningStatus: 'Status de Posicionamento',
         competitors: 'Concorrentes',
         threeMonthGoals: 'Objetivos de 3 Meses',
-        conclusion: '🎯 Esta base estratégica será usada por todos os outros agentes AI para criar conteúdo personalizado que se alinha com seus objetivos de negócio e identidade de marca.',
+        conclusion:
+          '🎯 Esta base estratégica será usada por todos os outros agentes AI para criar conteúdo personalizado que se alinha com seus objetivos de negócio e identidade de marca.',
         defaults: {
           business: 'Seu Negócio',
           offerings: 'Suas ofertas',
@@ -264,8 +275,8 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
           priority: 'Suas ofertas prioritárias',
           toBeDefined: 'A ser definido',
           toBeResearched: 'A ser pesquisado',
-          targets: 'Seus alvos'
-        }
+          targets: 'Seus alvos',
+        },
       },
       es: {
         title: '📄 RESUMEN ESTRATÉGICO EMPRESARIAL',
@@ -282,7 +293,8 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
         positioningStatus: 'Estado de Posicionamiento',
         competitors: 'Competidores',
         threeMonthGoals: 'Objetivos de 3 Meses',
-        conclusion: '🎯 Esta base estratégica será utilizada por todos los otros agentes AI para crear contenido personalizado que se alinee con tus objetivos de negocio e identidad de marca.',
+        conclusion:
+          '🎯 Esta base estratégica será utilizada por todos los otros agentes AI para crear contenido personalizado que se alinee con tus objetivos de negocio e identidad de marca.',
         defaults: {
           business: 'Tu Negocio',
           offerings: 'Tus ofertas',
@@ -296,9 +308,9 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
           priority: 'Tus ofertas prioritarias',
           toBeDefined: 'Por definir',
           toBeResearched: 'Por investigar',
-          targets: 'Tus objetivos'
-        }
-      }
+          targets: 'Tus objetivos',
+        },
+      },
     };
 
     const currentLabels = labels[language] || labels.en;
@@ -356,7 +368,10 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
             </SelectTrigger>
             <SelectContent>
               {question.options?.map((option: string) => {
-                const translatedOption = getTranslatedOption(question.id, option);
+                const translatedOption = getTranslatedOption(
+                  question.id,
+                  option
+                );
                 return (
                   <SelectItem key={option} value={option}>
                     {translatedOption}
@@ -372,7 +387,7 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
   };
 
   return (
-    <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm transition-all duration-300 hover:shadow-md">
+    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:shadow-md dark:border-slate-700 dark:bg-slate-800">
       <div
         className="cursor-pointer p-6"
         onClick={() => setIsExpanded(!isExpanded)}
@@ -384,7 +399,9 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
               <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
                 {t.agents.marketingStrategyAgent.title}
               </h3>
-              <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{t.agents.marketingStrategyAgent.description}</p>
+              <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+                {t.agents.marketingStrategyAgent.description}
+              </p>
             </div>
           </div>
           <div className="text-slate-400 dark:text-slate-500">
@@ -398,14 +415,17 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
       </div>
 
       {isExpanded && (
-        <div className="border-t border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-6">
+        <div className="border-t border-slate-100 bg-slate-50 p-6 dark:border-slate-700 dark:bg-slate-900">
           {!isCompleted ? (
             <>
               <div className="mb-4">
                 <div className="mb-2 flex justify-between text-sm text-slate-600 dark:text-slate-300">
                   <span>
                     {t.agents.marketingStrategyAgent.questionCounter
-                      .replace('{current}', (currentQuestionIndex + 1).toString())
+                      .replace(
+                        '{current}',
+                        (currentQuestionIndex + 1).toString()
+                      )
                       .replace('{total}', agent.questions.length.toString())}
                   </span>
                   <span className="text-blue-600">
@@ -458,7 +478,9 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
                     disabled={!answers[currentQuestion.id]}
                     className="bg-blue-600 text-white hover:bg-blue-700"
                   >
-                    {isLastQuestion ? t.agents.marketingStrategyAgent.complete : t.agents.marketingStrategyAgent.next}
+                    {isLastQuestion
+                      ? t.agents.marketingStrategyAgent.complete
+                      : t.agents.marketingStrategyAgent.next}
                   </Button>
                 </div>
               </div>
@@ -490,7 +512,7 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <div className="rounded-lg border border-blue-200 dark:border-blue-700 bg-white dark:bg-slate-800 p-4">
+                  <div className="rounded-lg border border-blue-200 bg-white p-4 dark:border-blue-700 dark:bg-slate-800">
                     <h4 className="mb-4 flex items-center font-medium text-slate-800 dark:text-slate-100">
                       <Sparkles className="mr-2 h-5 w-5 text-purple-600" />
                       {t.agents.marketingStrategyAgent.strategicSummary}
