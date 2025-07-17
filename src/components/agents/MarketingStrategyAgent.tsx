@@ -103,6 +103,8 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
       };
 
       await Request.Post('/api/stripe/discount', task);
+      toast.success(t.agents.postIdeasAgent.successSaved);
+
       setResult(strategicSummary);
       addResult(agent.id, agent.title, agent.icon, strategicSummary);
 

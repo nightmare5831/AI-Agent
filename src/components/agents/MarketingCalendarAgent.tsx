@@ -148,7 +148,7 @@ export const MarketingCalendarAgent: React.FC<MarketingCalendarAgentProps> = ({
         ? t.agents.marketingCalendarAgent.options.posts[index] 
         : option;
     } else if (questionId === 'content-formats') {
-      const englishFormats = ['Image', 'Carousel', 'Plain Text', 'Mixed (text + image)'];
+      const englishFormats = ['Image', 'Carousel', 'Plain Text', 'Mixed (text + image)', 'Video'];
       const index = englishFormats.indexOf(option);
       return index >= 0 && t.agents.marketingCalendarAgent.options.formats[index]
         ? t.agents.marketingCalendarAgent.options.formats[index]

@@ -307,7 +307,7 @@ export const translations: any = {
         // Options
         options: {
           posts: ['3 posts', '5 posts', '7 posts', '10 posts', '14 posts'],
-          formats: ['Image', 'Carousel', 'Plain Text', 'Mixed (text + image)'],
+          formats: ['Image', 'Carousel', 'Plain Text', 'Mixed (text + image)', 'Video'],
           platforms: ['Instagram', 'Facebook', 'TikTok', 'WhatsApp', 'YouTube', 'LinkedIn', 'Twitter', 'No specific priority']
         }
       },
@@ -406,7 +406,7 @@ export const translations: any = {
         },
         
         options: {
-          contentTypes: ['Social Media Caption', 'Page Copy (Website/WhatsApp)', 'AI Image Generation Script'],
+          contentTypes: ['Social Media Caption', 'Page Copy (Website/WhatsApp)', 'AI Image Generation Script', 'Video Script'],
           copyFocus: ['Drive immediate sales', 'Build brand awareness', 'Educate audience', 'Increase engagement', 'Generate leads'],
           ctaPreference: ['Direct sales (Buy now, Shop today)', 'Engagement (Comment, Share, Tag)', 'Traffic (Visit website, Link in bio)', 'Lead generation (DM us, Sign up)', 'Soft approach (Save this post, Follow for more)']
         }
@@ -902,7 +902,7 @@ export const translations: any = {
         // Options
         options: {
           posts: ['3 postagens', '5 postagens', '7 postagens', '10 postagens', '14 postagens'],
-          formats: ['Imagem', 'Carrossel', 'Texto Simples', 'Misto (texto + imagem)'],
+          formats: ['Imagem', 'Carrossel', 'Texto Simples', 'Misto (texto + imagem)', 'Vídeo'],
           platforms: ['Instagram', 'Facebook', 'TikTok', 'WhatsApp', 'YouTube', 'LinkedIn', 'Twitter', 'Sem prioridade específica']
         }
       },
@@ -1001,7 +1001,7 @@ export const translations: any = {
         },
         
         options: {
-          contentTypes: ['Legenda de Mídia Social', 'Copy de Página (Website/WhatsApp)', 'Script de Geração de Imagem AI'],
+          contentTypes: ['Legenda de Mídia Social', 'Copy de Página (Website/WhatsApp)', 'Script de Geração de Imagem AI', 'Roteiro de Vídeo'],
           copyFocus: ['Gerar vendas imediatas', 'Construir consciência de marca', 'Educar audiência', 'Aumentar engajamento', 'Gerar leads'],
           ctaPreference: ['Vendas diretas (Compre agora, Compre hoje)', 'Engajamento (Comente, Compartilhe, Marque)', 'Tráfego (Visite o site, Link na bio)', 'Geração de leads (Mande DM, Inscreva-se)', 'Abordagem suave (Salve este post, Siga para mais)']
         }
@@ -1497,7 +1497,7 @@ export const translations: any = {
         // Options
         options: {
           posts: ['3 publicaciones', '5 publicaciones', '7 publicaciones', '10 publicaciones', '14 publicaciones'],
-          formats: ['Imagen', 'Carrusel', 'Texto Simple', 'Mixto (texto + imagen)'],
+          formats: ['Imagen', 'Carrusel', 'Texto Simple', 'Mixto (texto + imagen)', 'Video'],
           platforms: ['Instagram', 'Facebook', 'TikTok', 'WhatsApp', 'YouTube', 'LinkedIn', 'Twitter', 'Sin prioridad específica']
         }
       },
@@ -1596,7 +1596,7 @@ export const translations: any = {
         },
         
         options: {
-          contentTypes: ['Leyenda de Redes Sociales', 'Copy de Página (Website/WhatsApp)', 'Script de Generación de Imagen AI'],
+          contentTypes: ['Leyenda de Redes Sociales', 'Copy de Página (Website/WhatsApp)', 'Script de Generación de Imagen AI', 'Guion de Video'],
           copyFocus: ['Generar ventas inmediatas', 'Construir conciencia de marca', 'Educar audiencia', 'Aumentar engagement', 'Generar leads'],
           ctaPreference: ['Ventas directas (Compra ahora, Compra hoy)', 'Engagement (Comenta, Comparte, Etiqueta)', 'Tráfico (Visita el sitio web, Link en bio)', 'Generación de leads (Envía DM, Regístrate)', 'Enfoque suave (Guarda este post, Síguenos para más)']
         }
