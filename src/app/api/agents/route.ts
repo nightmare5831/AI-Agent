@@ -123,44 +123,57 @@ Based on the following business strategy, create exactly ${inputs['post-per-week
     case 'post-ideas':
       return `${languageInstruction}
 
-Based on the brand strategy and content schedule provided, generate TWO DIFFERENT sets of creative and practical content ideas for each scheduled post. Focus on these content themes: ${inputs['content-themes']}. Apply a ${inputs['creative-style']} approach to all ideas, while considering the filming preference: ${inputs['filming-comfort']}.
+Based on the brand strategy and content schedule provided, generate TWO COMPLETELY DIFFERENT and UNIQUE creative content ideas for each scheduled post. Each idea must be distinctly different in concept, approach, and execution. Focus on these content themes: ${inputs['content-themes']}. Apply a ${inputs['creative-style']} approach to all ideas, while considering the filming preference: ${inputs['filming-comfort']}.
         ${inputs['marketing-strategy']}
         Content Schedule: ${JSON.stringify(inputs['schedule'])}
-        For each scheduled post, create TWO DISTINCT content idea variations that respect the specified format, platform, and content type while maintaining brand consistency. Each idea should align with the preferred content themes and serve the strategic marketing goals (brand awareness, follower growth, repeat purchases).
-        Consider the brand's friendly, informative, and empowering tone while incorporating eco-conscious messaging and product benefits. Make suggestions practical for implementation within the brand's operational limitations and suitable for the target platforms.
-        IMPORTANT: Return your response as a valid JSON object with TWO separate option sets with the following structure for each day of the week that has scheduled content:
+        
+        CRITICAL REQUIREMENTS:
+        1. For each scheduled post, create TWO COMPLETELY DIFFERENT content ideas - never repeat or reuse the same concept
+        2. Each idea must be tailored to the specific day's content type, format, and platform
+        3. Ensure variety across all days - avoid similar concepts even for different days
+        4. Each idea should serve the specific content type (tip, offer, behind-the-scenes, etc.) mentioned in the schedule
+        5. Make each idea specific to the scheduled post's format (video, image, carousel, etc.) and platform (Instagram, TikTok, etc.)
+        
+        VARIETY GUIDELINES:
+        - Use different angles: educational vs. emotional, product-focused vs. lifestyle, professional vs. casual
+        - Vary content formats: tutorials, testimonials, behind-the-scenes, product showcases, user-generated content inspiration
+        - Mix engagement types: questions, polls, challenges, tips, stories, demonstrations
+        - Alternate between direct selling, brand awareness, community building, and educational content
+        - Consider different visual approaches: close-ups vs. wide shots, studio vs. natural lighting, posed vs. candid
+        
+        IMPORTANT: Return your response as a valid JSON object with TWO separate option sets. Each day that has scheduled content MUST have completely unique ideas that don't repeat across any other day:
         {
           "option1": {
             "Monday": {
-              "title": "Creative title for the content",
-              "description": "Detailed practical description of how to create this content, including specific actions, props, settings, or filming instructions",
-              "hook": "Attention-grabbing opening line or caption starter that connects with the target audience",
-              "cta": "Clear call-to-action that drives engagement or conversions"
+              "title": "Unique creative title specific to Monday's scheduled content type",
+              "description": "Detailed practical description with specific actions, props, settings, or filming instructions that align with Monday's content type and format",
+              "hook": "Attention-grabbing opening line that connects with target audience for this specific content",
+              "cta": "Clear call-to-action that matches the content objective"
             },
             "Tuesday": {
-              "title": "Creative title for the content",
-              "description": "Detailed practical description of how to create this content",
-              "hook": "Attention-grabbing opening line or caption starter",
-              "cta": "Clear call-to-action"
+              "title": "COMPLETELY DIFFERENT title for Tuesday's scheduled content - unique from Monday",
+              "description": "ENTIRELY DIFFERENT approach with different props, settings, or filming instructions for Tuesday's specific content type",
+              "hook": "UNIQUE opening line different from Monday's approach",
+              "cta": "DISTINCT call-to-action for Tuesday's content objective"
             }
           },
           "option2": {
             "Monday": {
-              "title": "DIFFERENT creative title for the same scheduled content",
-              "description": "ALTERNATIVE detailed practical description with different approach, props, settings, or filming instructions",
-              "hook": "DIFFERENT attention-grabbing opening line or caption starter",
-              "cta": "ALTERNATIVE clear call-to-action"
+              "title": "ALTERNATIVE creative title for Monday - different from option1",
+              "description": "COMPLETELY DIFFERENT approach from option1 with alternative props, settings, or filming instructions",
+              "hook": "ALTERNATIVE opening line with different tone/approach from option1",
+              "cta": "DIFFERENT call-to-action strategy from option1"
             },
             "Tuesday": {
-              "title": "DIFFERENT creative title for the same scheduled content",
-              "description": "ALTERNATIVE detailed practical description with different approach",
-              "hook": "DIFFERENT attention-grabbing opening line or caption starter",
-              "cta": "ALTERNATIVE clear call-to-action"
+              "title": "UNIQUE alternative title for Tuesday - different from all previous ideas",
+              "description": "FRESH approach entirely different from Tuesday's option1 and Monday's ideas",
+              "hook": "DISTINCT opening line unlike any previous hooks",
+              "cta": "UNIQUE call-to-action different from all other CTAs"
             }
           }
         }
-        Only include days that have scheduled content. Each content idea should be specific to the scheduled post's format (video, image, carousel, etc.), platform (Instagram, TikTok, etc.), and content type (tip, offer, social proof, etc.).
-        Ensure both options are distinctly different in approach, creativity, and execution while serving the same strategic purpose. Make sure the JSON is properly formatted and valid. Do not include any additional text outside the JSON object.`;
+        
+        Only include days that have scheduled content. Ensure ALL ideas are completely unique - no repetition of concepts, approaches, or similar language across any day or option. Each content idea must serve the strategic marketing goals while being distinctly different from all others. Make sure the JSON is properly formatted and valid. Do not include any additional text outside the JSON object.`;
       break;
 
     case 'post-text-scripts':
