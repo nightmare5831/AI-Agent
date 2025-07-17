@@ -232,7 +232,6 @@ export const plans = [
     features: [
       '100 AI Credits',
       'All AI Agents',
-      'AI Scheduling Bot',
       'Priority Support',
       '30-day History',
     ],
@@ -247,7 +246,6 @@ export const plans = [
     features: [
       '100 AI Credits',
       'All AI Agents',
-      'AI Scheduling Bot',
       'Priority Support',
       '30-day History',
     ],
