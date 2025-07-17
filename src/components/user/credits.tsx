@@ -48,7 +48,6 @@ const CreditsPage = () => {
         features: [
           t.user.credits.aiCredits.replace('{credits}', '100'),
           t.user.credits.allAiAgents,
-          t.user.credits.aiSchedulingBot,
           t.user.credits.prioritySupport,
           t.user.credits.dayHistory.replace('{days}', '30'),
         ],
@@ -63,7 +62,6 @@ const CreditsPage = () => {
         features: [
           t.user.credits.aiCredits.replace('{credits}', '100'),
           t.user.credits.allAiAgents,
-          t.user.credits.aiSchedulingBot,
           t.user.credits.prioritySupport,
           t.user.credits.dayHistory.replace('{days}', '30'),
         ],

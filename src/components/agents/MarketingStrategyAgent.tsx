@@ -6,7 +6,6 @@ import {
   ChevronUp,
   Play,
   Loader2,
-  CheckCircle,
   Sparkles,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -54,26 +53,6 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
     }));
   };
 
-  const generateAnswerSummary = (question: any, answer: string) => {
-    const summaries: Record<string, string> = {
-      'brand-name': `Brand: ${answer}`,
-      'product-service': `Offers: ${answer}`,
-      'target-audience': `Target: ${answer}`,
-      differentiator: `Differentiator: ${answer}`,
-      'marketing-goals': `Goal: ${answer}`,
-      'communication-tone': `Tone: ${answer}`,
-      'video-appearance': `Video appearance: ${answer}`,
-      'social-platforms': `Platforms: ${answer}`,
-      limitations: `Limitations: ${answer || 'None specified'}`,
-      'focus-products': `Focus: ${answer}`,
-      'positioning-status': `Positioning: ${answer}`,
-      competitors: `Competitors: ${answer || 'None specified'}`,
-      'three-month-goals': `3-month goals: ${answer}`,
-    };
-
-    return summaries[question.id] || `${question.question}: ${answer}`;
-  };
-
   const handleNext = () => {
     if (profile.credits_balance <= 0) {
       toast.error(t.agents.marketingStrategyAgent.insufficientCredits);
@@ -85,7 +64,6 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
       }
     }
   };
-
 
   const handleRunAgent = async () => {
     if (profile.credits_balance <= 0) {
