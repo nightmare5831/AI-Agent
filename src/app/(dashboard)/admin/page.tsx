@@ -1,20 +1,55 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Bell, AlertTriangle, Search } from "lucide-react";
-import { adminUsers, creditUsageData } from "@/lib/constants/mockData";
+import { Bell, AlertTriangle, Search, Loader2, RefreshCw } from "lucide-react";
 import { useLanguage } from '@/lib/i18n/language-context';
+import { getAdminUsers, getAdminStats, getCreditUsageOverTime, type AdminUser, type AdminStats, type CreditUsageData } from '@/core/admin/get-admin-data';
 
 export default function AdminPage() {
   const { t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState("");
   const [filterActive, setFilterActive] = useState(true);
   const [filterPlan, setFilterPlan] = useState("all");
+  const [adminUsers, setAdminUsers] = useState<AdminUser[]>([]);
+  const [adminStats, setAdminStats] = useState<AdminStats | null>(null);
+  const [creditUsageData, setCreditUsageData] = useState<CreditUsageData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchAdminData = async (isRefresh = false) => {
+    try {
+      if (isRefresh) {
+        setRefreshing(true);
+      } else {
+        setLoading(true);
+      }
+      const [users, stats, creditUsage] = await Promise.all([
+        getAdminUsers(),
+        getAdminStats(),
+        getCreditUsageOverTime()
+      ]);
+      setAdminUsers(users);
+      setAdminStats(stats);
+      setCreditUsageData(creditUsage);
+      setError(null);
+    } catch (err) {
+      setError('Failed to load admin data');
+      console.error(err);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAdminData();
+  }, []);
 
   const filteredUsers = adminUsers.filter((user) => {
     const searchMatch =
@@ -28,6 +63,25 @@ export default function AdminPage() {
 
     return searchMatch && statusMatch && planMatch;
   });
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="h-8 w-8 animate-spin text-[#8b5cf6]" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-red-500">{error}</p>
+        <Button onClick={() => fetchAdminData()} className="mt-4">
+          Retry
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="relative overflow-hidden">
@@ -44,10 +98,18 @@ export default function AdminPage() {
               </p>
             </div>
             <div className="flex space-x-2">
+              <Button 
+                variant="outline" 
+                className="relative border-[#8b5cf6]/20"
+                onClick={() => fetchAdminData(true)}
+                disabled={refreshing}
+              >
+                <RefreshCw className={`h-5 w-5 text-[#8b5cf6] ${refreshing ? 'animate-spin' : ''}`} />
+              </Button>
               <Button variant="outline" className="relative border-[#8b5cf6]/20">
                 <Bell className="h-5 w-5 text-[#8b5cf6]" />
                 <span className="absolute -top-1 -right-1 bg-[#2B6CB0] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  4
+                  {adminStats?.lowCreditAccounts || 0}
                 </span>
               </Button>
               <Button className="bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6] hover:from-[#8b5cf6] hover:to-[#2B6CB0]">
@@ -58,18 +120,20 @@ export default function AdminPage() {
         </div>
 
         {/* Alert */}
-        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-md">
-          <div className="flex">
-            <div className="flex-shrink-0">
-              <AlertTriangle className="h-5 w-5 text-yellow-400" aria-hidden="true" />
-            </div>
-            <div className="ml-3">
-              <p className="text-sm text-yellow-700">
-                4 users have credits below 20% of their plan allocation. Consider sending a reminder email.
-              </p>
+        {adminStats && adminStats.lowCreditAccounts > 0 && (
+          <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-md">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <AlertTriangle className="h-5 w-5 text-yellow-400" aria-hidden="true" />
+              </div>
+              <div className="ml-3">
+                <p className="text-sm text-yellow-700">
+                  {adminStats.lowCreditAccounts} users have credits below 20% of their plan allocation. Consider sending a reminder email.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Analytics Charts */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -111,29 +175,29 @@ export default function AdminPage() {
               <div className="space-y-4">
                 <div className="flex justify-between">
                   <span className="font-medium">{t.dashboard.totalUsers}</span>
-                  <span className="font-semibold">{adminUsers.length}</span>
+                  <span className="font-semibold">{adminStats?.totalUsers || 0}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="font-medium">{t.dashboard.activeSubscriptions}</span>
                   <span className="font-semibold">
-                    {adminUsers.filter((u) => u.status === "active").length}
+                    {adminStats?.activeSubscriptions || 0}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="font-medium">Low Credit Accounts</span>
-                  <span className="text-yellow-500 font-semibold">4</span>
+                  <span className="text-yellow-500 font-semibold">{adminStats?.lowCreditAccounts || 0}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="font-medium">Expired Subscriptions</span>
-                  <span className="text-red-500 font-semibold">1</span>
+                  <span className="text-red-500 font-semibold">{adminStats?.expiredSubscriptions || 0}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="font-medium">Credits Used (30d)</span>
-                  <span className="font-semibold">12,457</span>
+                  <span className="font-semibold">{adminStats?.creditsUsed30d.toLocaleString() || 0}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="font-medium">New Users (30d)</span>
-                  <span className="font-semibold">23</span>
+                  <span className="font-semibold">{adminStats?.newUsers30d || 0}</span>
                 </div>
               </div>
             </CardContent>
@@ -175,9 +239,9 @@ export default function AdminPage() {
                     onChange={(e) => setFilterPlan(e.target.value)}
                   >
                     <option value="all">All Plans</option>
+                    <option value="free">Free</option>
                     <option value="essential">Essential</option>
                     <option value="professional">Professional</option>
-                    <option value="completo">Completo</option>
                   </select>
                 </div>
               </div>
