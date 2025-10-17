@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   ChevronDown,
   ChevronUp,
-  Image,
+  Image as ImageIcon,
   Loader2,
   Download,
   RefreshCw,
@@ -578,7 +578,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
                       </>
                     ) : (
                       <>
-                        <Image className="mr-2 h-5 w-5" />
+                        <ImageIcon className="mr-2 h-5 w-5" />
                         Generate AI Image
                       </>
                     )}
@@ -634,7 +634,7 @@ export const ImageGenerationAgent: React.FC<ImageGenerationAgentProps> = ({
                           variant="outline"
                           className="flex items-center text-slate-600 dark:text-slate-300"
                         >
-                          <Image className="mr-2 h-4 w-4" />
+                          <ImageIcon className="mr-2 h-4 w-4" />
                           Generate New Image
                         </Button>
                       </div>

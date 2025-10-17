@@ -150,7 +150,7 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
     console.log('Available days in option:', Object.keys(option));
 
     // Try exact match first
-    let dayData = option[scheduleItem.day as keyof typeof option];
+    const dayData = option[scheduleItem.day as keyof typeof option];
     if (dayData) {
       return dayData;
     }
@@ -166,7 +166,7 @@ export const PostIdeasAgent: React.FC<PostIdeasAgentProps> = ({
 
   const generateIdea2 = (scheduleItem: any, option: any) => {
     // Try exact match first
-    let dayData = option[scheduleItem.day as keyof typeof option];
+    const dayData = option[scheduleItem.day as keyof typeof option];
     if (dayData) {
       return dayData;
     }
