@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { DashboardHeader } from './dashboard-header';
 import { Sidebar } from './sidebar';
+import { NavigationProgress } from '../navigation-progress';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -13,6 +14,7 @@ export function DashboardLayout({ children, type }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   return (
     <div className="min-h-screen bg-background">
+      <NavigationProgress />
       <DashboardHeader />
       <Sidebar open={sidebarOpen} onOpenChange={setSidebarOpen} type={type} />
       <main

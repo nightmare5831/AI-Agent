@@ -77,16 +77,35 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
         project_id: projectId,
         agent_type: agent.id,
         agent_results: JSON.stringify(strategicSummary),
-        credits_spent: 2,
+        credits_spent: 1,
       };
 
-      await Request.Post('/api/stripe/discount', task);
-      toast.success(t.agents.postIdeasAgent.successSaved);
+      try {
+        const response = await Request.Post('/api/stripe/discount', task);
 
-      setResult(strategicSummary);
-      addResult(agent.id, agent.title, agent.icon, strategicSummary);
+        // Request.Post returns the data directly, not the full response
+        if (response.message && (response.message.includes('success') || response.task)) {
+          toast.success(t.agents.marketingStrategyAgent.successSaved);
+          setResult(strategicSummary);
+          addResult(agent.id, agent.title, agent.icon, strategicSummary);
+        } else if (response.error) {
+          toast.error(response.error || 'Failed to save task');
+          console.error('Task save error:', response);
+        }
+      } catch (error: any) {
+        console.error('Error saving task:', error);
 
-      setIsLoading(false);
+        // Handle axios error response
+        if (error.response?.data?.error) {
+          toast.error(error.response.data.error);
+        } else if (error.message) {
+          toast.error(error.message);
+        } else {
+          toast.error('Failed to save task. Please try again.');
+        }
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -209,19 +228,19 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
         conclusion:
           '🎯 This strategic foundation will be used by all other AI agents to create personalized content that aligns with your business goals and brand identity.',
         defaults: {
-          business: 'Your Business',
-          offerings: 'Your offerings',
-          customers: 'Your ideal customers',
-          valueProposition: 'Your unique value proposition',
-          objectives: 'Your objectives',
-          tone: 'Your preferred tone',
-          notSpecified: 'Not specified',
-          platforms: 'Your platforms',
-          none: 'None specified',
-          priority: 'Your priority offerings',
-          toBeDefined: 'To be defined',
-          toBeResearched: 'To be researched',
-          targets: 'Your targets',
+          business: 'FitLife Studio',
+          offerings: 'Premium online fitness coaching and personalized nutrition plans with 24/7 support through WhatsApp. We offer customized workout programs, meal planning, and accountability coaching for busy professionals.',
+          customers: 'Working professionals aged 28-45 who struggle with time management, want to lose 10-30 lbs, have tried multiple diets without lasting results, value convenience and personalization, and are willing to invest $200-500/month in their health.',
+          valueProposition: 'Unlike generic fitness apps, we provide 1-on-1 coaching with certified nutritionists and trainers via WhatsApp. Real accountability, personalized plans that adapt weekly, and same-day responses to questions. Results guaranteed in 90 days or money back.',
+          objectives: 'Generate more sales, Grow followers and authority, Position the brand as a reference',
+          tone: 'Professional and trustworthy',
+          notSpecified: 'Yes - comfortable with educational content and behind-the-scenes',
+          platforms: 'Instagram (primary), Facebook, WhatsApp for client communication, YouTube for workout tutorials',
+          none: 'Limited time for content creation (3-4 hours weekly), no video editor on team, prefer not to do dance trends or comedy content',
+          priority: '90-Day Transformation Program ($497), VIP 1-on-1 Coaching ($997), Corporate Wellness Packages (custom pricing)',
+          toBeDefined: 'I have an idea, but need help refining it',
+          toBeResearched: 'Local boutique gyms, Noom app, and @FitWithEmily on Instagram (admire her engagement and authenticity)',
+          targets: 'Reach 50 new clients per month, grow Instagram to 10K followers, achieve 4.8+ star rating, launch group coaching program',
         },
       },
       pt: {
@@ -242,19 +261,19 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
         conclusion:
           '🎯 Esta base estratégica será usada por todos os outros agentes AI para criar conteúdo personalizado que se alinha com seus objetivos de negócio e identidade de marca.',
         defaults: {
-          business: 'Seu Negócio',
-          offerings: 'Suas ofertas',
-          customers: 'Seus clientes ideais',
-          valueProposition: 'Sua proposta de valor única',
-          objectives: 'Seus objetivos',
-          tone: 'Seu tom preferido',
-          notSpecified: 'Não especificado',
-          platforms: 'Suas plataformas',
-          none: 'Nenhuma especificada',
-          priority: 'Suas ofertas prioritárias',
-          toBeDefined: 'A ser definido',
-          toBeResearched: 'A ser pesquisado',
-          targets: 'Seus alvos',
+          business: 'FitLife Studio',
+          offerings: 'Coaching fitness online premium e planos nutricionais personalizados com suporte 24/7 via WhatsApp. Oferecemos programas de treino customizados, planejamento de refeições e coaching de responsabilidade para profissionais ocupados.',
+          customers: 'Profissionais trabalhadores de 28-45 anos que lutam com gestão de tempo, querem perder 10-30 kg, tentaram várias dietas sem resultados duradouros, valorizam conveniência e personalização, e estão dispostos a investir R$1.000-2.500/mês na saúde.',
+          valueProposition: 'Ao contrário de apps fitness genéricos, fornecemos coaching 1-a-1 com nutricionistas e treinadores certificados via WhatsApp. Responsabilidade real, planos personalizados que se adaptam semanalmente, e respostas no mesmo dia. Resultados garantidos em 90 dias ou dinheiro de volta.',
+          objectives: 'Gerar mais vendas, Crescer seguidores e autoridade, Posicionar a marca como referência',
+          tone: 'Profissional e confiável',
+          notSpecified: 'Sim - confortável com conteúdo educacional e bastidores',
+          platforms: 'Instagram (principal), Facebook, WhatsApp para comunicação com clientes, YouTube para tutoriais de treino',
+          none: 'Tempo limitado para criação de conteúdo (3-4 horas semanais), sem editor de vídeo na equipe, prefiro não fazer trends de dança ou conteúdo de comédia',
+          priority: 'Programa Transformação 90 Dias (R$2.497), Coaching VIP 1-a-1 (R$4.997), Pacotes Wellness Corporativo (preço personalizado)',
+          toBeDefined: 'Tenho uma ideia, mas preciso de ajuda para refinar',
+          toBeResearched: 'Academias boutique locais, app Noom, e @FitWithEmily no Instagram (admiro seu engajamento e autenticidade)',
+          targets: 'Alcançar 50 novos clientes por mês, crescer Instagram para 10K seguidores, atingir avaliação 4.8+ estrelas, lançar programa de coaching em grupo',
         },
       },
       es: {
@@ -275,19 +294,19 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
         conclusion:
           '🎯 Esta base estratégica será utilizada por todos los otros agentes AI para crear contenido personalizado que se alinee con tus objetivos de negocio e identidad de marca.',
         defaults: {
-          business: 'Tu Negocio',
-          offerings: 'Tus ofertas',
-          customers: 'Tus clientes ideales',
-          valueProposition: 'Tu propuesta de valor única',
-          objectives: 'Tus objetivos',
-          tone: 'Tu tono preferido',
-          notSpecified: 'No especificado',
-          platforms: 'Tus plataformas',
-          none: 'Ninguna especificada',
-          priority: 'Tus ofertas prioritarias',
-          toBeDefined: 'Por definir',
-          toBeResearched: 'Por investigar',
-          targets: 'Tus objetivos',
+          business: 'FitLife Studio',
+          offerings: 'Coaching fitness online premium y planes nutricionales personalizados con soporte 24/7 por WhatsApp. Ofrecemos programas de entrenamiento personalizados, planificación de comidas y coaching de responsabilidad para profesionales ocupados.',
+          customers: 'Profesionales trabajadores de 28-45 años que luchan con la gestión del tiempo, quieren perder 10-30 kg, han probado múltiples dietas sin resultados duraderos, valoran la conveniencia y personalización, y están dispuestos a invertir $200-500/mes en su salud.',
+          valueProposition: 'A diferencia de las apps fitness genéricas, proporcionamos coaching 1-a-1 con nutricionistas y entrenadores certificados vía WhatsApp. Responsabilidad real, planes personalizados que se adaptan semanalmente, y respuestas el mismo día. Resultados garantizados en 90 días o devolución del dinero.',
+          objectives: 'Generar más ventas, Crecer seguidores y autoridad, Posicionar la marca como referencia',
+          tone: 'Profesional y confiable',
+          notSpecified: 'Sí - cómodo con contenido educativo y detrás de escenas',
+          platforms: 'Instagram (principal), Facebook, WhatsApp para comunicación con clientes, YouTube para tutoriales de entrenamiento',
+          none: 'Tiempo limitado para creación de contenido (3-4 horas semanales), sin editor de video en el equipo, prefiero no hacer trends de baile o contenido de comedia',
+          priority: 'Programa Transformación 90 Días ($497), Coaching VIP 1-a-1 ($997), Paquetes Wellness Corporativo (precio personalizado)',
+          toBeDefined: 'Tengo una idea, pero necesito ayuda para refinarlo',
+          toBeResearched: 'Gimnasios boutique locales, app Noom, y @FitWithEmily en Instagram (admiro su engagement y autenticidad)',
+          targets: 'Alcanzar 50 nuevos clientes por mes, crecer Instagram a 10K seguidores, lograr calificación 4.8+ estrellas, lanzar programa de coaching grupal',
         },
       },
     };
@@ -491,13 +510,20 @@ export const MarketingStrategyAgent: React.FC<MarketingStrategyAgentProps> = ({
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <div className="rounded-lg border border-blue-200 bg-white p-4 dark:border-blue-700 dark:bg-slate-800">
-                    <h4 className="mb-4 flex items-center font-medium text-slate-800 dark:text-slate-100">
+                  <div className="mb-4 text-center">
+                    <div className="inline-flex items-center gap-2 rounded-full bg-green-100 px-4 py-2 text-sm font-medium text-green-700 dark:bg-green-900 dark:text-green-300">
+                      <Sparkles className="h-4 w-4" />
+                      {t.agents.marketingStrategyAgent.successfullyGenerated}
+                    </div>
+                  </div>
+
+                  <div className="rounded-lg border border-blue-200 bg-white p-6 dark:border-blue-700 dark:bg-slate-800">
+                    <h4 className="mb-4 flex items-center font-semibold text-lg text-slate-800 dark:text-slate-100">
                       <Sparkles className="mr-2 h-5 w-5 text-purple-600" />
                       {t.agents.marketingStrategyAgent.strategicSummary}
                     </h4>
-                    <div className="whitespace-pre-line text-sm text-slate-700 dark:text-slate-300">
-                      {t.agents.marketingStrategyAgent.successfullyGenerated}
+                    <div className="whitespace-pre-line text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                      {result}
                     </div>
                   </div>
 

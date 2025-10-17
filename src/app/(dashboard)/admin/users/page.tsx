@@ -1,20 +1,39 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { adminUsers } from "@/lib/constants/mockData";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"; 
-import { Search, Filter, Download, Mail, Edit, MoreHorizontal, AlertTriangle } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Search, Filter, Download, Mail, Edit, MoreHorizontal, AlertTriangle, Loader2 } from "lucide-react";
+import Request from "@/lib/request";
+import { toast } from "sonner";
 
 export default function AdminUsersPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterActive, setFilterActive] = useState(true);
   const [filterPlan, setFilterPlan] = useState("all");
   const [showFilters, setShowFilters] = useState(false);
+  const [users, setUsers] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const users = adminUsers;
+  // Fetch users from API
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      const data = await Request.Get('/api/admin/users');
+      setUsers(data.users || []);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      toast.error('Failed to load users');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Filter users based on search and filters
   const filteredUsers = users.filter((user) => {
@@ -182,21 +201,27 @@ export default function AdminUsersPage() {
             )}
 
             <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-[#8b5cf6]/10">
-                    <th className="text-left p-3 font-medium">User</th>
-                    <th className="text-left p-3 font-medium">Plan</th>
-                    <th className="text-left p-3 font-medium">Credits</th>
-                    <th className="text-left p-3 font-medium">Status</th>
-                    <th className="text-left p-3 font-medium">Last Active</th>
-                    <th className="text-left p-3 font-medium">Signup Date</th>
-                    <th className="text-left p-3 font-medium">Billing</th>
-                    <th className="text-right p-3 font-medium"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredUsers.map((user) => (
+              {loading ? (
+                <div className="flex items-center justify-center p-12">
+                  <Loader2 className="h-8 w-8 animate-spin text-[#8b5cf6]" />
+                  <span className="ml-3 text-muted-foreground">Loading users...</span>
+                </div>
+              ) : (
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-[#8b5cf6]/10">
+                      <th className="text-left p-3 font-medium">User</th>
+                      <th className="text-left p-3 font-medium">Plan</th>
+                      <th className="text-left p-3 font-medium">Credits</th>
+                      <th className="text-left p-3 font-medium">Status</th>
+                      <th className="text-left p-3 font-medium">Last Active</th>
+                      <th className="text-left p-3 font-medium">Signup Date</th>
+                      <th className="text-left p-3 font-medium">Billing</th>
+                      <th className="text-right p-3 font-medium"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredUsers.map((user) => (
                     <tr key={user.id} className="border-b border-[#8b5cf6]/10 hover:bg-[#8b5cf6]/5">
                       <td className="p-3">
                         <div>
@@ -244,11 +269,13 @@ export default function AdminUsersPage() {
                         </div>
                       </td>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                    ))}
+                  </tbody>
+                </table>
+              )}
             </div>
 
+            {!loading && (
             <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="text-sm text-muted-foreground">
                 Showing <span className="font-medium">{filteredUsers.length}</span> of{" "}
@@ -266,6 +293,7 @@ export default function AdminUsersPage() {
                 </Button>
               </div>
             </div>
+            )}
           </CardContent>
         </Card>
       </div>

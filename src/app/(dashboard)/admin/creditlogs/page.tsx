@@ -1,37 +1,51 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { creditLogs, creditData } from "@/lib/constants/mockData";
-
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Search, Filter, Download, Calendar, ArrowUpRight, ArrowDownRight, AlertCircle } from "lucide-react";
+import { Search, Filter, Download, Calendar, ArrowUpRight, ArrowDownRight, AlertCircle, Loader2 } from "lucide-react";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import Request from "@/lib/request";
+import { toast } from "sonner";
 
 export default function CreditLogsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [dateRange, setDateRange] = useState("7-days");
   const [showFilters, setShowFilters] = useState(false);
-  
+  const [logs, setLogs] = useState<any[]>([]);
+  const [chartData, setChartData] = useState<any[]>([]);
+  const [stats, setStats] = useState({ totalUsed: 0, totalPurchased: 0, balance: 0 });
+  const [loading, setLoading] = useState(true);
+
+  // Fetch credit logs from API
+  useEffect(() => {
+    fetchCreditLogs();
+  }, [dateRange]);
+
+  const fetchCreditLogs = async () => {
+    try {
+      setLoading(true);
+      const days = dateRange === '7-days' ? 7 : dateRange === '30-days' ? 30 : 90;
+      const data = await Request.Get(`/api/admin/creditlogs?days=${days}`);
+      setLogs(data.logs || []);
+      setStats(data.stats || { totalUsed: 0, totalPurchased: 0, balance: 0 });
+      setChartData(data.chartData || []);
+    } catch (error) {
+      console.error('Error fetching credit logs:', error);
+      toast.error('Failed to load credit logs');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Filter logs based on search term
-  const filteredLogs = creditLogs.filter(log => 
+  const filteredLogs = logs.filter(log =>
     log.user.toLowerCase().includes(searchTerm.toLowerCase()) ||
     log.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
     log.details.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  // Calculate sums
-  const totalCreditsUsed = creditLogs
-    .filter(log => log.type === 'used')
-    .reduce((sum, log) => sum + log.amount, 0);
-    
-  const totalCreditsPurchased = creditLogs
-    .filter(log => log.type === 'purchased' || log.type === 'allocated')
-    .reduce((sum, log) => sum + log.amount, 0);
-    
-  const creditBalance = totalCreditsPurchased - totalCreditsUsed;
 
   const getTypeDisplay = (type: string) => {
     switch (type) {
@@ -93,24 +107,24 @@ export default function CreditLogsPage() {
             </CardHeader>
             <CardContent>
               <div className="flex flex-col items-center justify-center">
-                <span className="text-4xl font-bold text-red-500">{totalCreditsUsed}</span>
+                <span className="text-4xl font-bold text-red-500">{stats.totalUsed}</span>
                 <span className="text-sm text-muted-foreground">across all users</span>
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-background/70 backdrop-blur-md shadow-md border border-[#8b5cf6]/20">
             <CardHeader>
               <CardTitle>Credits Earned/Purchased</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex flex-col items-center justify-center">
-                <span className="text-4xl font-bold text-green-500">{totalCreditsPurchased}</span>
+                <span className="text-4xl font-bold text-green-500">{stats.totalPurchased}</span>
                 <span className="text-sm text-muted-foreground">total added credits</span>
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-background/70 backdrop-blur-md shadow-md border border-[#8b5cf6]/20">
             <CardHeader>
               <CardTitle>Current Balance</CardTitle>
@@ -118,7 +132,7 @@ export default function CreditLogsPage() {
             <CardContent>
               <div className="flex flex-col items-center justify-center">
                 <span className="text-4xl font-bold bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6] bg-clip-text text-transparent">
-                  {creditBalance}
+                  {stats.balance}
                 </span>
                 <span className="text-sm text-muted-foreground">across all accounts</span>
               </div>
@@ -164,24 +178,30 @@ export default function CreditLogsPage() {
           </CardHeader>
           <CardContent>
             <div className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart
-                  data={creditData}
-                  margin={{
-                    top: 10,
-                    right: 30,
-                    left: 0,
-                    bottom: 0,
-                  }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" />
-                  <YAxis />
-                  <Tooltip />
-                  <Area type="monotone" dataKey="earned" stackId="1" stroke="#38A169" fill="#38A169" fillOpacity={0.3} name="Credits Earned" />
-                  <Area type="monotone" dataKey="used" stackId="2" stroke="#E53E3E" fill="#E53E3E" fillOpacity={0.3} name="Credits Used" />
-                </AreaChart>
-              </ResponsiveContainer>
+              {loading ? (
+                <div className="flex items-center justify-center h-full">
+                  <Loader2 className="h-8 w-8 animate-spin text-[#8b5cf6]" />
+                </div>
+              ) : (
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart
+                    data={chartData}
+                    margin={{
+                      top: 10,
+                      right: 30,
+                      left: 0,
+                      bottom: 0,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="date" />
+                    <YAxis />
+                    <Tooltip />
+                    <Area type="monotone" dataKey="earned" stackId="1" stroke="#38A169" fill="#38A169" fillOpacity={0.3} name="Credits Earned" />
+                    <Area type="monotone" dataKey="used" stackId="2" stroke="#E53E3E" fill="#E53E3E" fillOpacity={0.3} name="Credits Used" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              )}
             </div>
           </CardContent>
         </Card>
@@ -297,50 +317,56 @@ export default function CreditLogsPage() {
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-[#8b5cf6]/10">
-                    <th className="text-left p-3 font-medium">Date & Time</th>
-                    <th className="text-left p-3 font-medium">User</th>
-                    <th className="text-left p-3 font-medium">Type</th>
-                    <th className="text-left p-3 font-medium">Amount</th>
-                    <th className="text-left p-3 font-medium">Details</th>
-                    <th className="text-left p-3 font-medium">Balance</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredLogs.map((log) => (
-                    <tr key={log.id} className="border-b border-[#8b5cf6]/10 hover:bg-[#8b5cf6]/5">
-                      <td className="p-3">{log.date}</td>
-                      <td className="p-3">
-                        <div>
-                          <p className="font-medium">{log.user}</p>
-                          <p className="text-sm text-muted-foreground">{log.email}</p>
-                        </div>
-                      </td>
-                      <td className="p-3">
-                        <div className="flex items-center space-x-2">
-                          {getTypeDisplay(log.type).icon}
-                          {getTypeDisplay(log.type).badge}
-                        </div>
-                      </td>
-                      <td className="p-3">
-                        <span className={log.type === "used" ? "text-red-500" : "text-green-500"}>
-                          {log.type === "used" ? "-" : "+"}{log.amount} credits
-                        </span>
-                      </td>
-                      <td className="p-3">{log.details}</td>
-                      <td className="p-3 font-medium">{log.balance} credits</td>
+              {loading ? (
+                <div className="flex items-center justify-center py-12">
+                  <Loader2 className="h-8 w-8 animate-spin text-[#8b5cf6]" />
+                </div>
+              ) : (
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-[#8b5cf6]/10">
+                      <th className="text-left p-3 font-medium">Date & Time</th>
+                      <th className="text-left p-3 font-medium">User</th>
+                      <th className="text-left p-3 font-medium">Type</th>
+                      <th className="text-left p-3 font-medium">Amount</th>
+                      <th className="text-left p-3 font-medium">Details</th>
+                      <th className="text-left p-3 font-medium">Balance</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {filteredLogs.map((log) => (
+                      <tr key={log.id} className="border-b border-[#8b5cf6]/10 hover:bg-[#8b5cf6]/5">
+                        <td className="p-3">{log.date}</td>
+                        <td className="p-3">
+                          <div>
+                            <p className="font-medium">{log.user}</p>
+                            <p className="text-sm text-muted-foreground">{log.email}</p>
+                          </div>
+                        </td>
+                        <td className="p-3">
+                          <div className="flex items-center space-x-2">
+                            {getTypeDisplay(log.type).icon}
+                            {getTypeDisplay(log.type).badge}
+                          </div>
+                        </td>
+                        <td className="p-3">
+                          <span className={log.type === "used" ? "text-red-500" : "text-green-500"}>
+                            {log.type === "used" ? "-" : "+"}{log.amount} credits
+                          </span>
+                        </td>
+                        <td className="p-3">{log.details}</td>
+                        <td className="p-3 font-medium">{log.balance} credits</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
             </div>
 
             <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="text-sm text-muted-foreground">
                 Showing <span className="font-medium">{filteredLogs.length}</span> of{" "}
-                <span className="font-medium">{creditLogs.length}</span> transactions
+                <span className="font-medium">{logs.length}</span> transactions
               </div>
               <div className="flex items-center space-x-2">
                 <Button 

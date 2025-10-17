@@ -522,14 +522,180 @@ export const translations: any = {
       },
       hero: {
         title: 'Transform Your Business with AI-Powered Automation',
-        subtitle: 'Streamline your operations, enhance customer engagement, and boost productivity with our intelligent automation platform.',
-        learnMore: 'Learn More',
-        aiPoweredTools: 'AI-Powered Tools',
-        studentEngagement: 'Student Engagement',
-        detailedAnalytics: 'Detailed Analytics',
-        business: 'Business',
-        users: 'users',
+        subtitle: 'Execute pre-defined commands through WhatsApp with AI agents. Automate marketing, organization, and strategy with a simple credit-based system.',
+        learnMore: 'Get Started Free',
+        aiAgents: '3 Core AI Agents',
+        whatsappIntegration: 'WhatsApp Integration',
+        creditBased: 'Credit-Based System',
+        business: 'Businesses',
+        users: 'Users',
         satisfaction: 'Satisfaction'
+      },
+      agents: {
+        badge: 'AI-Powered Agents',
+        title: 'Three Powerful AI Agents for Your Business',
+        subtitle: 'Access Marketing, Organization, and Strategy agents through web or WhatsApp. Each task consumes 1 credit.',
+        addon: 'Add-on',
+        extraAgentsTitle: 'Optional Add-On Agents',
+        extraAgentsSubtitle: 'Expand your capabilities with specialized bots',
+        marketing: {
+          name: 'Marketing Agent',
+          description: 'Create comprehensive marketing strategies and content with AI assistance',
+          features: {
+            strategy: 'Marketing strategy generation',
+            calendar: 'Content calendar with scheduling',
+            postIdeas: 'Post ideas & concepts',
+            copywriting: 'Copy & script writing',
+            imageGen: 'Image generation (DALL·E)',
+            seo: 'SEO optimization'
+          }
+        },
+        organization: {
+          name: 'Organization Agent',
+          description: 'Streamline workflows and manage daily operations efficiently',
+          features: {
+            routines: 'Daily routine checklists',
+            customerService: 'Customer service workflows',
+            briefings: 'Service briefing templates',
+            delegation: 'Task delegation & planning'
+          }
+        },
+        strategy: {
+          name: 'Strategy Agent',
+          description: 'Define positioning, audience, and growth strategies',
+          features: {
+            positioning: 'Brand positioning',
+            audience: 'Ideal audience definition',
+            valueProposition: 'Value proposition creation',
+            goalPlanning: 'Strategic goal planning'
+          }
+        },
+        autoSupport: {
+          name: 'Auto Support Bot',
+          description: 'AI-powered customer support with training and takeover features',
+          features: {
+            training: 'Simple chat-based training',
+            realtime: 'Real-time conversation panel',
+            takeover: 'Manual takeover & escalation'
+          }
+        },
+        bookingBot: {
+          name: 'Booking Bot',
+          description: 'Automated scheduling system integrated with WhatsApp',
+          features: {
+            scheduling: 'Integrated scheduling system',
+            whatsapp: 'WhatsApp time suggestions',
+            confirmation: 'Automated confirmations'
+          }
+        }
+      },
+      whatsapp: {
+        badge: 'WhatsApp Integration',
+        title: 'Execute Tasks Directly from WhatsApp',
+        subtitle: 'Access all AI agents through WhatsApp with a simple menu system. No app switching required.',
+        howItWorks: 'How It Works',
+        features: {
+          menuSystem: {
+            title: 'Agent Menu System',
+            description: 'Choose from 3 main agents directly in your WhatsApp chat'
+          },
+          guidedChat: {
+            title: 'Guided Chat Flow',
+            description: 'Follow step-by-step prompts to complete tasks'
+          },
+          multiFormat: {
+            title: 'Multi-Format Delivery',
+            description: 'Receive results as text, images, PDFs, or links'
+          },
+          creditSync: {
+            title: 'Synced Credit System',
+            description: 'Credits automatically sync between web and WhatsApp'
+          }
+        },
+        steps: {
+          connect: {
+            title: 'Connect WhatsApp',
+            description: 'Link your account to our WhatsApp service'
+          },
+          choose: {
+            title: 'Choose Agent',
+            description: 'Select from Marketing, Organization, or Strategy'
+          },
+          execute: {
+            title: 'Execute Task',
+            description: 'Follow guided prompts to complete your task'
+          },
+          receive: {
+            title: 'Receive Results',
+            description: 'Get deliverables instantly in your chat'
+          }
+        },
+        chatDemo: {
+          welcome: 'Welcome! Choose an agent:\n1️⃣ Marketing\n2️⃣ Organization\n3️⃣ Strategy',
+          userChoice: '1 - Marketing Agent',
+          agentResponse: 'Great! What would you like to create?\n• Strategy\n• Content Calendar\n• Post Ideas\n• Images',
+          deliverable: 'Content-Strategy.pdf',
+          creditUsed: '1 credit used'
+        }
+      },
+      pricing: {
+        badge: 'Simple Pricing',
+        title: 'Choose Your Plan',
+        subtitle: 'Start with 20 free credits. Every completed task consumes 1 credit. Upgrade anytime.',
+        popular: 'Most Popular',
+        getStarted: 'Get Started',
+        plans: {
+          monthly: {
+            name: 'Monthly Plan',
+            price: '$49',
+            period: 'month',
+            description: 'Perfect for growing businesses',
+            credits: '100 credits per month',
+            features: {
+              credits: '100 AI credits per month',
+              agents: 'Access to all 3 core agents',
+              whatsapp: 'WhatsApp integration',
+              support: 'Email support',
+              history: '30-day usage history'
+            }
+          },
+          annual: {
+            name: 'Annual Plan',
+            price: '$490',
+            period: 'year',
+            description: 'Best value for committed teams',
+            credits: '1200 credits per year',
+            savings: 'Save 2 months',
+            features: {
+              credits: '1200 AI credits (100/month)',
+              agents: 'Access to all 3 core agents',
+              whatsapp: 'WhatsApp integration',
+              priority: 'Priority support',
+              history: '90-day usage history',
+              discount: '10% discount on add-on agents'
+            }
+          },
+          payAsYouGo: {
+            name: 'Pay As You Go',
+            price: '$0.75',
+            period: 'credit',
+            description: 'Flexible option for occasional use',
+            credits: 'Buy credits as needed',
+            features: {
+              flexible: 'Buy 50, 100, or 200 credits',
+              noExpiry: 'Credits never expire',
+              allAgents: 'Access all 3 core agents',
+              whatsapp: 'WhatsApp integration'
+            }
+          }
+        },
+        creditSystem: {
+          title: 'How Credits Work',
+          description: 'Simple, transparent, and fair usage tracking',
+          perTask: 'Credit per completed task',
+          freeCredits: 'Free credits on signup',
+          neverExpire: 'Purchased credits never expire'
+        }
       },
       features: {
         badge: 'Key Capabilities',

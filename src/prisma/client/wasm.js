@@ -5,13 +5,28 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 
 const {
+  PrismaClientKnownRequestError,
+  PrismaClientUnknownRequestError,
+  PrismaClientRustPanicError,
+  PrismaClientInitializationError,
+  PrismaClientValidationError,
+  getPrismaClient,
+  sqltag,
+  empty,
+  join,
+  raw,
+  skip,
   Decimal,
+  Debug,
   objectEnumValues,
   makeStrictEnum,
+  Extensions,
+  warnOnce,
+  defineDmmfProperty,
   Public,
   getRuntime,
-  skip
-} = require('./runtime/index-browser.js')
+  createParam,
+} = require('./runtime/wasm-engine-edge.js')
 
 
 const Prisma = {}
@@ -20,79 +35,35 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.9.0
- * Query Engine version: 81e4af48011447c3cc503a190e86995b66d2a28e
+ * Prisma Client JS version: 6.17.1
+ * Query Engine version: 272a37d34178c2894197e17273bf937f25acdeac
  */
 Prisma.prismaVersion = {
-  client: "6.9.0",
-  engine: "81e4af48011447c3cc503a190e86995b66d2a28e"
+  client: "6.17.1",
+  engine: "272a37d34178c2894197e17273bf937f25acdeac"
 }
 
-Prisma.PrismaClientKnownRequestError = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`PrismaClientKnownRequestError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)};
-Prisma.PrismaClientUnknownRequestError = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`PrismaClientUnknownRequestError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.PrismaClientRustPanicError = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`PrismaClientRustPanicError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.PrismaClientInitializationError = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`PrismaClientInitializationError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.PrismaClientValidationError = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`PrismaClientValidationError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
+Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
+Prisma.PrismaClientUnknownRequestError = PrismaClientUnknownRequestError
+Prisma.PrismaClientRustPanicError = PrismaClientRustPanicError
+Prisma.PrismaClientInitializationError = PrismaClientInitializationError
+Prisma.PrismaClientValidationError = PrismaClientValidationError
 Prisma.Decimal = Decimal
 
 /**
  * Re-export of sql-template-tag
  */
-Prisma.sql = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`sqltag is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.empty = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`empty is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.join = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`join is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.raw = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`raw is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
+Prisma.sql = sqltag
+Prisma.empty = empty
+Prisma.join = join
+Prisma.raw = raw
 Prisma.validator = Public.validator
 
 /**
 * Extensions
 */
-Prisma.getExtensionContext = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`Extensions.getExtensionContext is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.defineExtension = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`Extensions.defineExtension is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
+Prisma.getExtensionContext = Extensions.getExtensionContext
+Prisma.defineExtension = Extensions.defineExtension
 
 /**
  * Shorthand utilities for JSON filtering
@@ -109,10 +80,11 @@ Prisma.NullTypes = {
 
 
 
+
+
 /**
  * Enums
  */
-
 exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   ReadUncommitted: 'ReadUncommitted',
   ReadCommitted: 'ReadCommitted',
@@ -230,34 +202,84 @@ exports.Prisma.ModelName = {
   whatsapp_messages: 'whatsapp_messages',
   admin_activity_logs: 'admin_activity_logs'
 };
-
 /**
- * This is a stub Prisma Client that will error at runtime if called.
+ * Create the Client
  */
-class PrismaClient {
-  constructor() {
-    return new Proxy(this, {
-      get(target, prop) {
-        let message
-        const runtime = getRuntime()
-        if (runtime.isEdge) {
-          message = `PrismaClient is not configured to run in ${runtime.prettyName}. In order to run Prisma Client on edge runtime, either:
-- Use Prisma Accelerate: https://pris.ly/d/accelerate
-- Use Driver Adapters: https://pris.ly/d/driver-adapters
-`;
-        } else {
-          message = 'PrismaClient is unable to run in this browser environment, or has been bundled for the browser (running in `' + runtime.prettyName + '`).'
-        }
-
-        message += `
-If this is unexpected, please open an issue: https://pris.ly/prisma-prisma-bug-report`
-
-        throw new Error(message)
+const config = {
+  "generator": {
+    "name": "client",
+    "provider": {
+      "fromEnvVar": null,
+      "value": "prisma-client-js"
+    },
+    "output": {
+      "value": "/home/admin/Documents/AI-Agent/src/prisma/client",
+      "fromEnvVar": null
+    },
+    "config": {
+      "engineType": "library"
+    },
+    "binaryTargets": [
+      {
+        "fromEnvVar": null,
+        "value": "debian-openssl-3.0.x",
+        "native": true
       }
-    })
+    ],
+    "previewFeatures": [
+      "multiSchema"
+    ],
+    "sourceFilePath": "/home/admin/Documents/AI-Agent/prisma/schema.prisma",
+    "isCustomOutput": true
+  },
+  "relativeEnvPaths": {
+    "rootEnvPath": null,
+    "schemaEnvPath": "../../../.env"
+  },
+  "relativePath": "../../../prisma",
+  "clientVersion": "6.17.1",
+  "engineVersion": "272a37d34178c2894197e17273bf937f25acdeac",
+  "datasourceNames": [
+    "db"
+  ],
+  "activeProvider": "postgresql",
+  "inlineDatasources": {
+    "db": {
+      "url": {
+        "fromEnvVar": "DATABASE_URL",
+        "value": null
+      }
+    }
+  },
+  "inlineSchema": "generator client {\n  provider        = \"prisma-client-js\"\n  output          = \"../src/prisma/client\"\n  previewFeatures = [\"multiSchema\"]\n}\n\ndatasource db {\n  provider  = \"postgresql\"\n  url       = env(\"DATABASE_URL\")\n  directUrl = env(\"DIRECT_URL\")\n  schemas   = [\"public\"]\n}\n\nmodel profile {\n  id                   String                @id @db.Uuid\n  email                String                @unique\n  name                 String\n  role                 UserRole              @default(user)\n  ip_address           String                @default(\"\")\n  subscription_plan    String?               @default(\"free\")\n  credits_balance      Int                   @default(20)\n  created_at           DateTime              @default(now())\n  stripeSubscriptionId String?\n  admin_activities     admin_activity_logs[] @relation(\"AdminActivities\")\n  credit_purchases     credit_purchases[]\n  projects             projects[]\n  subscriptions        subscriptions[]\n  tasks_log            tasks_log[]\n  whatsapp_messages    whatsapp_messages[]\n\n  @@schema(\"public\")\n}\n\nmodel projects {\n  id          String      @id @default(dbgenerated(\"uuid_generate_v4()\")) @db.Uuid\n  profile_id  String      @db.Uuid\n  createId    String      @unique\n  name        String\n  description String\n  profile     profile     @relation(fields: [profile_id], references: [id], onDelete: Cascade)\n  tasks_log   tasks_log[]\n\n  @@schema(\"public\")\n}\n\nmodel subscriptions {\n  id         String   @id @default(dbgenerated(\"uuid_generate_v4()\")) @db.Uuid\n  profile_id String   @db.Uuid\n  plan_type  PlanType\n  status     String\n  start_date DateTime\n  end_date   DateTime\n  method     String\n  amount     Int      @default(0)\n  profile    profile  @relation(fields: [profile_id], references: [id], onDelete: Cascade)\n\n  @@schema(\"public\")\n}\n\nmodel credit_purchases {\n  id           String   @id @default(dbgenerated(\"uuid_generate_v4()\")) @db.Uuid\n  profile_id   String   @db.Uuid\n  pack_type    PackType\n  credits      Int\n  price        Float\n  purchased_at DateTime @default(now())\n  profile      profile  @relation(fields: [profile_id], references: [id], onDelete: Cascade)\n\n  @@schema(\"public\")\n}\n\nmodel tasks_log {\n  id            String   @id @default(dbgenerated(\"uuid_generate_v4()\")) @db.Uuid\n  profile_id    String   @db.Uuid\n  agent_type    String\n  credits_spent Int\n  timestamp     DateTime @default(now())\n  agent_results String\n  project_id    String\n  profile       profile  @relation(fields: [profile_id], references: [id], onDelete: Cascade)\n  project       projects @relation(fields: [project_id], references: [createId], onDelete: Cascade)\n\n  @@schema(\"public\")\n}\n\nmodel whatsapp_messages {\n  id           String           @id @default(dbgenerated(\"uuid_generate_v4()\")) @db.Uuid\n  profile_id   String           @db.Uuid\n  direction    MessageDirection\n  message_text String\n  timestamp    DateTime         @default(now())\n  profile      profile          @relation(fields: [profile_id], references: [id], onDelete: Cascade)\n\n  @@schema(\"public\")\n}\n\nmodel admin_activity_logs {\n  id          String   @id @default(dbgenerated(\"uuid_generate_v4()\")) @db.Uuid\n  admin_id    String   @db.Uuid\n  action_type String\n  target_id   String\n  timestamp   DateTime @default(now())\n  admin       profile  @relation(\"AdminActivities\", fields: [admin_id], references: [id], onDelete: Cascade)\n\n  @@schema(\"public\")\n}\n\nenum UserRole {\n  user\n  admin\n\n  @@schema(\"public\")\n}\n\nenum PlanType {\n  essential\n  professional\n\n  @@schema(\"public\")\n}\n\nenum PackType {\n  PACK_100\n  PACK_200\n  PACK_400\n\n  @@schema(\"public\")\n}\n\nenum MessageDirection {\n  inbound\n  outbound\n\n  @@schema(\"public\")\n}\n",
+  "inlineSchemaHash": "53d3be514a6ab2624fa55fd5af957885e518c5755f7cf9ec28612a61c7cf5d7c",
+  "copyEngine": true
+}
+config.dirname = '/'
+
+config.runtimeDataModel = JSON.parse("{\"models\":{\"profile\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"UserRole\"},{\"name\":\"ip_address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"subscription_plan\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"credits_balance\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"stripeSubscriptionId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"admin_activities\",\"kind\":\"object\",\"type\":\"admin_activity_logs\",\"relationName\":\"AdminActivities\"},{\"name\":\"credit_purchases\",\"kind\":\"object\",\"type\":\"credit_purchases\",\"relationName\":\"credit_purchasesToprofile\"},{\"name\":\"projects\",\"kind\":\"object\",\"type\":\"projects\",\"relationName\":\"profileToprojects\"},{\"name\":\"subscriptions\",\"kind\":\"object\",\"type\":\"subscriptions\",\"relationName\":\"profileTosubscriptions\"},{\"name\":\"tasks_log\",\"kind\":\"object\",\"type\":\"tasks_log\",\"relationName\":\"profileTotasks_log\"},{\"name\":\"whatsapp_messages\",\"kind\":\"object\",\"type\":\"whatsapp_messages\",\"relationName\":\"profileTowhatsapp_messages\"}],\"dbName\":null},\"projects\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"profile_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"profile\",\"kind\":\"object\",\"type\":\"profile\",\"relationName\":\"profileToprojects\"},{\"name\":\"tasks_log\",\"kind\":\"object\",\"type\":\"tasks_log\",\"relationName\":\"projectsTotasks_log\"}],\"dbName\":null},\"subscriptions\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"profile_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"plan_type\",\"kind\":\"enum\",\"type\":\"PlanType\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"start_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"end_date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"method\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"amount\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"profile\",\"kind\":\"object\",\"type\":\"profile\",\"relationName\":\"profileTosubscriptions\"}],\"dbName\":null},\"credit_purchases\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"profile_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"pack_type\",\"kind\":\"enum\",\"type\":\"PackType\"},{\"name\":\"credits\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"price\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"purchased_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"profile\",\"kind\":\"object\",\"type\":\"profile\",\"relationName\":\"credit_purchasesToprofile\"}],\"dbName\":null},\"tasks_log\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"profile_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"agent_type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"credits_spent\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"timestamp\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"agent_results\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"project_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"profile\",\"kind\":\"object\",\"type\":\"profile\",\"relationName\":\"profileTotasks_log\"},{\"name\":\"project\",\"kind\":\"object\",\"type\":\"projects\",\"relationName\":\"projectsTotasks_log\"}],\"dbName\":null},\"whatsapp_messages\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"profile_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"direction\",\"kind\":\"enum\",\"type\":\"MessageDirection\"},{\"name\":\"message_text\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"timestamp\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"profile\",\"kind\":\"object\",\"type\":\"profile\",\"relationName\":\"profileTowhatsapp_messages\"}],\"dbName\":null},\"admin_activity_logs\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"admin_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"action_type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"target_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"timestamp\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"admin\",\"kind\":\"object\",\"type\":\"profile\",\"relationName\":\"AdminActivities\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
+config.engineWasm = {
+  getRuntime: async () => require('./query_engine_bg.js'),
+  getQueryEngineWasmModule: async () => {
+    const loader = (await import('#wasm-engine-loader')).default
+    const engine = (await loader).default
+    return engine
   }
 }
+config.compilerWasm = undefined
 
+config.injectableEdgeEnv = () => ({
+  parsed: {
+    DATABASE_URL: typeof globalThis !== 'undefined' && globalThis['DATABASE_URL'] || typeof process !== 'undefined' && process.env && process.env.DATABASE_URL || undefined
+  }
+})
+
+if (typeof globalThis !== 'undefined' && globalThis['DEBUG'] || typeof process !== 'undefined' && process.env && process.env.DEBUG || undefined) {
+  Debug.enable(typeof globalThis !== 'undefined' && globalThis['DEBUG'] || typeof process !== 'undefined' && process.env && process.env.DEBUG || undefined)
+}
+
+const PrismaClient = getPrismaClient(config)
 exports.PrismaClient = PrismaClient
-
 Object.assign(exports, Prisma)
+

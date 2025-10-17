@@ -1,19 +1,44 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Search, Download, RefreshCcw, AlertCircle } from "lucide-react";
+import { Search, Download, RefreshCcw, AlertCircle, Loader2 } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
-import { subscriptions } from "@/lib/constants/mockData";
+import { Request } from "@/lib/request";
+import { toast } from "sonner";
 
 export default function SubscriptionsPage() {
+  const [subscriptions, setSubscriptions] = useState<any[]>([]);
+  const [planStats, setPlanStats] = useState<any[]>([]);
+  const [statusStats, setStatusStats] = useState<any[]>([]);
+  const [stats, setStats] = useState({ active: 0, total: 0, revenue: 0, upcoming: 0, overdue: 0 });
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPlan, setSelectedPlan] = useState("all");
   const [sortBy, setSortBy] = useState("date-desc");
-  
+
+  useEffect(() => {
+    fetchSubscriptions();
+  }, []);
+
+  const fetchSubscriptions = async () => {
+    try {
+      setLoading(true);
+      const data = await Request.Get('/api/admin/subscriptions');
+      setSubscriptions(data.subscriptions || []);
+      setStats(data.stats || { active: 0, total: 0, revenue: 0, upcoming: 0, overdue: 0 });
+      setPlanStats(data.planStats || []);
+      setStatusStats(data.statusStats || []);
+    } catch (error) {
+      toast.error('Failed to load subscriptions');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Filter and sort subscriptions
   const filteredSubscriptions = subscriptions
     .filter((sub) => {
@@ -39,24 +64,6 @@ export default function SubscriptionsPage() {
           return 0;
       }
     });
-
-  const planStats = [
-    { name: 'Essential', value: 2, color: '#63B3ED' },
-    { name: 'Professional', value: 3, color: '#2B6CB0' },
-    { name: 'Completo', value: 2, color: '#8b5cf6' },
-  ];
-
-  const statusStats = [
-    { name: 'Active', value: 4, color: '#38A169' },
-    { name: 'Overdue', value: 1, color: '#E53E3E' },
-    { name: 'Trial', value: 1, color: '#ECC94B' },
-    { name: 'Canceled', value: 1, color: '#718096' },
-  ];
-
-  const activeSubscriptions = subscriptions.filter(sub => sub.status === 'active').length;
-  const totalRevenue = subscriptions
-    .filter(sub => sub.status === 'active' || sub.status === 'overdue')
-    .reduce((sum, sub) => sum + parseFloat(sub.amount.replace("R$", "")), 0);
 
   const getBadgeVariant = (status : string) => {
     switch (status) {
@@ -87,18 +94,20 @@ export default function SubscriptionsPage() {
         </div>
 
         {/* Alert */}
-        <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-md">
-          <div className="flex">
-            <div className="flex-shrink-0">
-              <AlertCircle className="h-5 w-5 text-blue-400" aria-hidden="true" />
-            </div>
-            <div className="ml-3">
-              <p className="text-sm text-blue-700">
-                1 subscription payment is overdue. A payment reminder has been sent.
-              </p>
+        {stats.overdue > 0 && (
+          <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-md">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <AlertCircle className="h-5 w-5 text-blue-400" aria-hidden="true" />
+              </div>
+              <div className="ml-3">
+                <p className="text-sm text-blue-700">
+                  {stats.overdue} subscription payment{stats.overdue > 1 ? 's are' : ' is'} overdue. A payment reminder has been sent.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Stats Cards */}
         <div className="grid gap-6 md:grid-cols-3">
@@ -108,31 +117,31 @@ export default function SubscriptionsPage() {
             </CardHeader>
             <CardContent>
               <div className="flex flex-col items-center justify-center">
-                <span className="text-4xl font-bold text-[#2B6CB0]">{activeSubscriptions}</span>
-                <span className="text-sm text-muted-foreground">out of {subscriptions.length} total</span>
+                <span className="text-4xl font-bold text-[#2B6CB0]">{stats.active}</span>
+                <span className="text-sm text-muted-foreground">out of {stats.total} total</span>
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-background/70 backdrop-blur-md shadow-md border border-[#8b5cf6]/20">
             <CardHeader>
               <CardTitle>Monthly Revenue</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex flex-col items-center justify-center">
-                <span className="text-4xl font-bold bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6] bg-clip-text text-transparent">R${totalRevenue.toFixed(2)}</span>
+                <span className="text-4xl font-bold bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6] bg-clip-text text-transparent">R${stats.revenue.toFixed(2)}</span>
                 <span className="text-sm text-muted-foreground">recurring monthly</span>
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-background/70 backdrop-blur-md shadow-md border border-[#8b5cf6]/20">
             <CardHeader>
               <CardTitle>Next Renewal</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex flex-col items-center justify-center">
-                <span className="text-4xl font-bold text-[#8b5cf6]">3</span>
+                <span className="text-4xl font-bold text-[#8b5cf6]">{stats.upcoming}</span>
                 <span className="text-sm text-muted-foreground">subscriptions in next 7 days</span>
               </div>
             </CardContent>
@@ -148,25 +157,31 @@ export default function SubscriptionsPage() {
             </CardHeader>
             <CardContent>
               <div className="h-64">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={planStats}
-                      dataKey="value"
-                      nameKey="name"
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={80}
-                      label
-                    >
-                      {planStats.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                    <Legend />
-                  </PieChart>
-                </ResponsiveContainer>
+                {loading ? (
+                  <div className="flex items-center justify-center h-full">
+                    <Loader2 className="h-8 w-8 animate-spin text-[#8b5cf6]" />
+                  </div>
+                ) : (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={planStats}
+                        dataKey="value"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={80}
+                        label
+                      >
+                        {planStats.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                      <Legend />
+                    </PieChart>
+                  </ResponsiveContainer>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -178,25 +193,31 @@ export default function SubscriptionsPage() {
             </CardHeader>
             <CardContent>
               <div className="h-64">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={statusStats}
-                      dataKey="value"
-                      nameKey="name"
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={80}
-                      label
-                    >
-                      {statusStats.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                    <Legend />
-                  </PieChart>
-                </ResponsiveContainer>
+                {loading ? (
+                  <div className="flex items-center justify-center h-full">
+                    <Loader2 className="h-8 w-8 animate-spin text-[#8b5cf6]" />
+                  </div>
+                ) : (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={statusStats}
+                        dataKey="value"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={80}
+                        label
+                      >
+                        {statusStats.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                      <Legend />
+                    </PieChart>
+                  </ResponsiveContainer>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -268,70 +289,76 @@ export default function SubscriptionsPage() {
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-[#8b5cf6]/10">
-                    <th className="text-left p-3 font-medium">Customer</th>
-                    <th className="text-left p-3 font-medium">Plan</th>
-                    <th className="text-left p-3 font-medium">Amount</th>
-                    <th className="text-left p-3 font-medium">Start Date</th>
-                    <th className="text-left p-3 font-medium">Next Billing</th>
-                    <th className="text-left p-3 font-medium">Status</th>
-                    <th className="text-left p-3 font-medium">Payment Method</th>
-                    <th className="text-left p-3 font-medium">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredSubscriptions.map((subscription) => (
-                    <tr key={subscription.id} className="border-b border-[#8b5cf6]/10 hover:bg-[#8b5cf6]/5">
-                      <td className="p-3">
-                        <div>
-                          <p className="font-medium">{subscription.user}</p>
-                          <p className="text-sm text-muted-foreground">{subscription.email}</p>
-                        </div>
-                      </td>
-                      <td className="p-3">{subscription.plan}</td>
-                      <td className="p-3">{subscription.amount}</td>
-                      <td className="p-3">{subscription.startDate}</td>
-                      <td className="p-3">{subscription.nextBilling}</td>
-                      <td className="p-3">
-                        <Badge className={getBadgeVariant(subscription.status)}>
-                          {subscription.status.charAt(0).toUpperCase() + subscription.status.slice(1)}
-                        </Badge>
-                      </td>
-                      <td className="p-3">{subscription.paymentMethod}</td>
-                      <td className="p-3">
-                        <div className="flex gap-2">
-                          <Button 
-                            variant="outline" 
-                            size="sm"
-                            className="border-[#8b5cf6]/20 hover:border-[#8b5cf6]/40 hover:bg-[#8b5cf6]/5"
-                          >
-                            Edit
-                          </Button>
-                          <Button 
-                            variant={subscription.status === 'canceled' ? 'default' : 'outline'} 
-                            size="sm"
-                            className={
-                              subscription.status === 'canceled' 
-                                ? "bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6]" 
-                                : "border-red-300 text-red-500 hover:bg-red-50"
-                            }
-                          >
-                            {subscription.status === 'canceled' ? 'Reactivate' : 'Cancel'}
-                          </Button>
-                        </div>
-                      </td>
+              {loading ? (
+                <div className="flex items-center justify-center py-12">
+                  <Loader2 className="h-8 w-8 animate-spin text-[#8b5cf6]" />
+                </div>
+              ) : (
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-[#8b5cf6]/10">
+                      <th className="text-left p-3 font-medium">Customer</th>
+                      <th className="text-left p-3 font-medium">Plan</th>
+                      <th className="text-left p-3 font-medium">Amount</th>
+                      <th className="text-left p-3 font-medium">Start Date</th>
+                      <th className="text-left p-3 font-medium">Next Billing</th>
+                      <th className="text-left p-3 font-medium">Status</th>
+                      <th className="text-left p-3 font-medium">Payment Method</th>
+                      <th className="text-left p-3 font-medium">Actions</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {filteredSubscriptions.map((subscription) => (
+                      <tr key={subscription.id} className="border-b border-[#8b5cf6]/10 hover:bg-[#8b5cf6]/5">
+                        <td className="p-3">
+                          <div>
+                            <p className="font-medium">{subscription.user}</p>
+                            <p className="text-sm text-muted-foreground">{subscription.email}</p>
+                          </div>
+                        </td>
+                        <td className="p-3">{subscription.plan}</td>
+                        <td className="p-3">{subscription.amount}</td>
+                        <td className="p-3">{subscription.startDate}</td>
+                        <td className="p-3">{subscription.nextBilling}</td>
+                        <td className="p-3">
+                          <Badge className={getBadgeVariant(subscription.status)}>
+                            {subscription.status.charAt(0).toUpperCase() + subscription.status.slice(1)}
+                          </Badge>
+                        </td>
+                        <td className="p-3">{subscription.paymentMethod}</td>
+                        <td className="p-3">
+                          <div className="flex gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="border-[#8b5cf6]/20 hover:border-[#8b5cf6]/40 hover:bg-[#8b5cf6]/5"
+                            >
+                              Edit
+                            </Button>
+                            <Button
+                              variant={subscription.status === 'canceled' ? 'default' : 'outline'}
+                              size="sm"
+                              className={
+                                subscription.status === 'canceled'
+                                  ? "bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6]"
+                                  : "border-red-300 text-red-500 hover:bg-red-50"
+                              }
+                            >
+                              {subscription.status === 'canceled' ? 'Reactivate' : 'Cancel'}
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
             </div>
 
             <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="text-sm text-muted-foreground">
                 Showing <span className="font-medium">{filteredSubscriptions.length}</span> of{" "}
-                <span className="font-medium">{subscriptions.length}</span> subscriptions
+                <span className="font-medium">{stats.total}</span> subscriptions
               </div>
               <div className="flex items-center space-x-2">
                 <Button 

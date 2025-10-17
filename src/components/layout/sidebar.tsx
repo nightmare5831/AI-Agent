@@ -86,17 +86,17 @@ export function Sidebar({ open, onOpenChange, type }: SidebarProps) {
                 whileHover={{ y: -2 }}
                 whileTap={{ y: 0 }}
               >
-                <Link href={profile?.credits_balance <= 2 ? '/user/credits' : item.href}>
+                <Link href={type === 'user' && profile?.credits_balance <= 2 ? '/user/credits' : item.href}>
                   <Button
                     variant="ghost"
                     className={cn(
                       'w-full justify-start transition-all duration-300',
                       !open && 'justify-center px-0',
-                      pathname === item.href ? 
-                        'bg-gradient-to-r from-[#d32f2f]/10 to-[#ec4899]/10 text-[#63B3ED] font-medium' : 
+                      pathname === item.href ?
+                        'bg-gradient-to-r from-[#d32f2f]/10 to-[#ec4899]/10 text-[#63B3ED] font-medium' :
                         'hover:bg-[#63B3ED]/5 hover:text-[#63B3ED]'
                     )}
-                    onClick={()=>{if(profile?.credits_balance <= 2) {toast.info('Please purchase Subscription plan!')}}}
+                    onClick={()=>{if(type === 'user' && profile?.credits_balance <= 2) {toast.info('Please purchase Subscription plan!')}}}
                   >
                     <motion.div
                       whileHover="hover"

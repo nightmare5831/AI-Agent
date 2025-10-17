@@ -1,16 +1,43 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Background } from "@/components/ui/background";
-import { Download,RefreshCw } from "lucide-react";
+import { Download, RefreshCw, Loader2 } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts';
-import { userActivityData, revenueData, agentUsageData, availableReports, systemStats } from "@/lib/constants/mockData";
+import { Request } from "@/lib/request";
+import { toast } from "sonner";
+import { availableReports } from "@/lib/constants/mockData";
 
 export default function ReportsPage() {
+  const [systemStats, setSystemStats] = useState<any[]>([]);
+  const [userActivityData, setUserActivityData] = useState<any[]>([]);
+  const [revenueData, setRevenueData] = useState<any[]>([]);
+  const [agentUsageData, setAgentUsageData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState("30-days");
+
+  useEffect(() => {
+    fetchReports();
+  }, [timeRange]);
+
+  const fetchReports = async () => {
+    try {
+      setLoading(true);
+      const days = timeRange === "7-days" ? 7 : 30;
+      const data = await Request.Get(`/api/admin/reports?days=${days}`);
+      setSystemStats(data.systemStats || []);
+      setUserActivityData(data.userActivityData || []);
+      setRevenueData(data.revenueData || []);
+      setAgentUsageData(data.agentUsageData || []);
+    } catch (error) {
+      toast.error('Failed to load reports');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="relative overflow-hidden">
@@ -27,19 +54,29 @@ export default function ReportsPage() {
 
         {/* Stats Cards */}
         <div className="grid gap-6 md:grid-cols-4">
-          {systemStats.map((stat, index) => (
-            <Card key={index} className="bg-background/70 backdrop-blur-md shadow-md border border-[#8b5cf6]/20">
+          {loading ? (
+            <Card className="bg-background/70 backdrop-blur-md shadow-md border border-[#8b5cf6]/20">
               <CardContent className="pt-6">
-                <div className="flex flex-col items-center text-center">
-                  <h3 className="text-muted-foreground text-sm font-medium">{stat.name}</h3>
-                  <p className="text-3xl font-bold mt-2 bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6] bg-clip-text text-transparent">{stat.value}</p>
-                  <p className={`text-sm mt-1 ${stat.isPositive ? 'text-green-500' : 'text-red-500'}`}>
-                    {stat.change} from last month
-                  </p>
+                <div className="flex items-center justify-center h-20">
+                  <Loader2 className="h-8 w-8 animate-spin text-[#8b5cf6]" />
                 </div>
               </CardContent>
             </Card>
-          ))}
+          ) : (
+            systemStats.map((stat, index) => (
+              <Card key={index} className="bg-background/70 backdrop-blur-md shadow-md border border-[#8b5cf6]/20">
+                <CardContent className="pt-6">
+                  <div className="flex flex-col items-center text-center">
+                    <h3 className="text-muted-foreground text-sm font-medium">{stat.name}</h3>
+                    <p className="text-3xl font-bold mt-2 bg-gradient-to-r from-[#2B6CB0] to-[#8b5cf6] bg-clip-text text-transparent">{stat.value}</p>
+                    <p className={`text-sm mt-1 ${stat.isPositive ? 'text-green-500' : 'text-red-500'}`}>
+                      {stat.change} from last month
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))
+          )}
         </div>
 
         {/* Charts - User Activity and Revenue */}
@@ -73,25 +110,31 @@ export default function ReportsPage() {
             </CardHeader>
             <CardContent>
               <div className="h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={userActivityData}
-                    margin={{
-                      top: 20,
-                      right: 30,
-                      left: 20,
-                      bottom: 5,
-                    }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="active" name="Active Users" fill="#2B6CB0" />
-                    <Bar dataKey="new" name="New Signups" fill="#8b5cf6" />
-                  </BarChart>
-                </ResponsiveContainer>
+                {loading ? (
+                  <div className="flex items-center justify-center h-full">
+                    <Loader2 className="h-8 w-8 animate-spin text-[#8b5cf6]" />
+                  </div>
+                ) : (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                      data={userActivityData}
+                      margin={{
+                        top: 20,
+                        right: 30,
+                        left: 20,
+                        bottom: 5,
+                      }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
+                      <Bar dataKey="active" name="Active Users" fill="#2B6CB0" />
+                      <Bar dataKey="new" name="New Signups" fill="#8b5cf6" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -115,30 +158,36 @@ export default function ReportsPage() {
             </CardHeader>
             <CardContent>
               <div className="h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart
-                    data={revenueData}
-                    margin={{
-                      top: 20,
-                      right: 30,
-                      left: 20,
-                      bottom: 5,
-                    }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip formatter={(value) => [`R$${value}`, 'Revenue']} />
-                    <Legend />
-                    <Line
-                      type="monotone"
-                      dataKey="revenue"
-                      name="Revenue"
-                      stroke="#38A169"
-                      activeDot={{ r: 8 }}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
+                {loading ? (
+                  <div className="flex items-center justify-center h-full">
+                    <Loader2 className="h-8 w-8 animate-spin text-[#8b5cf6]" />
+                  </div>
+                ) : (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart
+                      data={revenueData}
+                      margin={{
+                        top: 20,
+                        right: 30,
+                        left: 20,
+                        bottom: 5,
+                      }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Tooltip formatter={(value) => [`R$${value}`, 'Revenue']} />
+                      <Legend />
+                      <Line
+                        type="monotone"
+                        dataKey="revenue"
+                        name="Revenue"
+                        stroke="#38A169"
+                        activeDot={{ r: 8 }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -152,25 +201,31 @@ export default function ReportsPage() {
           </CardHeader>
           <CardContent>
             <div className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  layout="vertical"
-                  data={agentUsageData}
-                  margin={{
-                    top: 20,
-                    right: 30,
-                    left: 100,
-                    bottom: 5,
-                  }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis type="number" />
-                  <YAxis type="category" dataKey="name" />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="usage" name="Credits Used" fill="#2B6CB0" />
-                </BarChart>
-              </ResponsiveContainer>
+              {loading ? (
+                <div className="flex items-center justify-center h-full">
+                  <Loader2 className="h-8 w-8 animate-spin text-[#8b5cf6]" />
+                </div>
+              ) : (
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    layout="vertical"
+                    data={agentUsageData}
+                    margin={{
+                      top: 20,
+                      right: 30,
+                      left: 100,
+                      bottom: 5,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis type="number" />
+                    <YAxis type="category" dataKey="name" />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="usage" name="Credits Used" fill="#2B6CB0" />
+                  </BarChart>
+                </ResponsiveContainer>
+              )}
             </div>
           </CardContent>
         </Card>
@@ -217,14 +272,16 @@ export default function ReportsPage() {
           </CardContent>
           <CardFooter className="flex justify-between border-t border-[#8b5cf6]/10 p-4">
             <div className="text-sm text-muted-foreground">
-              Last updated: May 18, 2025 at 10:23 AM
+              Last updated: {new Date().toLocaleString()}
             </div>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               size="sm"
               className="border-[#8b5cf6]/20 hover:border-[#8b5cf6]/40 hover:bg-[#8b5cf6]/5"
+              onClick={fetchReports}
+              disabled={loading}
             >
-              <RefreshCw className="mr-2 h-4 w-4" />
+              <RefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
               Refresh Data
             </Button>
           </CardFooter>
